@@ -1,0 +1,331 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>网易云音乐</title>
+    <link rel="stylesheet" type="text/css" href="http://music.163.com/style/web2/css/base.css">
+    <link rel="stylesheet" type="text/css" href="http://music.163.com/style/web2/css/outchain-player.css">
+    <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <style type="text/css">
+        #player {
+            margin: 10px 0 0 10px;
+        }
+    </style>
+    <!--[if lt IE 9]>
+<style>
+.player{border:1px solid #ccc;}
+</style>
+<![endif]-->
+</head>
+
+<body marginwidth="0" marginheight="0">
+    <div id="player" style="height: 66px;">
+        <div class="player player-mid f-cb f-pr">
+            <audio id="audio"></audio>
+            <div class="cover cover-sm f-pr">
+                <img id="cover" src="http://p3.music.126.net/nsIo4izrq3mHxRXkNaPvFg==/2479398720652460.jpg?param=90y90">
+                <div class="mask"></div>
+                <div id="play" class="bg play-bg" data-action="play"></div>
+                <div id="pause" class="bg pause-bg f-hide" data-action="pause"></div>
+            </div>
+            <div id="mid-ctrl" class="ctrlBox" style="">
+                <h2 class="f-pr"><i data-action="home" class="bg logo"></i>
+                    <div id="title" class="title" >
+                        <marquee scrollamount="2" onmouseover="this.stop()" onmouseout="this.start()">手纸 ~拝啓 十五の君へ~-strings version-<span class="sub"> - アンジェラ・アキ</span></marquee>
+                    </div>
+                </h2>
+                <div id="bar" class="bar" >
+                    <div id="mask" class="played j-flag" style="width: 0%;"><span class="bg thumb j-flag" id="slider"></span></div>
+                </div>
+            </div>
+            <span id="time" class="time">- 00:00</span>
+        </div>
+    </div>
+
+    <script>
+        window.onresize = function setWidth(){
+            var baseWidth = parseInt($("body").css("width"));
+            $("#player").css("width",(baseWidth - 20) + "px");
+            $("#mid-ctrl").css("width",(baseWidth - 20 -86) + "px");
+            $("#title").css("width",(baseWidth - 20 -86-24) + "px");
+            $("#bar").css("width",(baseWidth - 20 -86-24-20) + "px");
+        };
+        function GetUrlParms() {
+            var args = new Object();
+            var query = location.search.substring(1); //获取查询串  
+            var pairs = query.split("&"); //在逗号处断开  
+            for (var i = 0; i < pairs.length; i++) {
+                var pos = pairs[i].indexOf('='); //查找name=value   
+                if (pos == -1) continue; //如果没有找到就跳过   
+                var argname = pairs[i].substring(0, pos); //提取name   
+                var value = pairs[i].substring(pos + 1); //提取value   
+                args[argname] = value; //存为属性   
+            }
+            return args;
+        }
+        $(document).ready(function() {
+            var args = new Object();
+            args = GetUrlParms();
+            if (args["music"] != undefined) {
+                var music_url = args["music"];
+                $("#audio").attr("src", music_url);
+                document.getElementById("audio").loop = true;
+            }
+        });
+
+        //数字字符串补0  
+        function pad(num, n) {
+            var len = num.toString().length;
+            while (len < n) {
+                num = "0" + num;
+                len++;
+            }
+            return num;
+        }
+
+        function changeRestTime() {
+            var total_time = document.getElementById("audio").duration;
+            var current_time = document.getElementById("audio").currentTime;
+            var rest_time = total_time - current_time;
+            $("#time").text("- " + pad(Math.floor(rest_time / 60), 2).toString() + ":" + (rest_time % 60 / 100).toFixed(
+                2).slice(-
+                2));
+        }
+
+        function changeProgress() {
+            var total_time = document.getElementById("audio").duration;
+            var current_time = document.getElementById("audio").currentTime;
+            var ratio = accDiv(current_time * 100, total_time);
+            $(".played").css("width", ratio + "%");
+        }
+
+        var change_RestTime;
+        var change_Progress;
+        $("#play").click(function() {
+            if (document.getElementById("audio").readyState != 4) return;
+            $("#play").addClass("f-hide");
+            $("#pause").removeClass("f-hide");
+            changeRestTime();
+            changeProgress();
+            document.getElementById("audio").play();
+            change_RestTime = setInterval("changeRestTime()", 500);
+            change_Progress = setInterval("changeProgress()", 500);
+        });
+        $("#pause").click(function() {
+            document.getElementById("audio").pause();
+            if (change_RestTime != undefined) clearInterval(change_RestTime);
+            if (change_Progress != undefined) clearInterval(change_Progress);
+            $("#pause").addClass("f-hide");
+            $("#play").removeClass("f-hide");
+        });
+
+        // var bar = document.getElementById('bar');
+        // var slider = document.getElementById('slider');
+        // var mask = document.getElementById('mask');
+        // var sliderleft = 0;
+        // var current_time;
+        // slider.onmousedown = function (event) {
+        //     var event = event || window.event;
+        //     var leftVal = event.clientX - this.offsetLeft;
+        //     var that = this;
+        //     if (change_Progress != undefined) clearInterval(change_Progress);            
+        //     // 拖动一定写到 down 里面才可以
+        //     document.onmousemove = function (event) {
+        //         var event = event || window.event;
+        //         sliderleft = event.clientX - leftVal;
+        //         if (sliderleft < 0)
+        //             sliderleft = 0;
+        //         else if (sliderleft > bar.offsetWidth - slider.offsetWidth)
+        //             // sliderleft = bar.offsetWidth - slider.offsetWidth;
+        //             sliderleft = bar.offsetWidth;
+        //         mask.style.width = accDiv(sliderleft * 100, bar.offsetWidth) + '%';
+        //         current_time = accDiv(sliderleft, bar.offsetWidth) * (document.getElementById("audio").duration);
+        //         // that.style.left = sliderleft + "px";
+        //         // ptxt.innerHTML = "已经走了" + parseInt(sliderleft / (bar.offsetWidth - slider.offsetWidth) * 100) +
+        //         //     "%";
+
+        //         //防止选择内容--当拖动鼠标过快时候，弹起鼠标，bar也会移动，修复bug
+        //         window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+        //     }
+
+        // }
+
+        // slider.onmouseup = function(){
+        //     // $("#time").text(generateRestTime());
+        //     // document.getElementById("audio").currentTime = Math.round(current_time);
+        //     // document.onmousemove = null; //弹起鼠标不做任何操作
+        //     // change_Progress = setInterval("changeProgress()", 500);
+        // }
+        // document.onmouseup = function () {
+        //     // if (!change_Progress) change_Progress = setInterval("changeProgress()", 500);
+        //     // if (change_Progress == undefined) change_Progress = setInterval("changeProgress()", 500);
+        //     document.onmousemove = null; //弹起鼠标不做任何操作
+        // }
+    </script>
+    <script>
+        //加法函数，用来得到精确的加法结果
+        //说明：javascript的加法结果会有误差，在两个浮点数相加的时候会比较明显。这个函数返回较为精确的加法结果。
+        //调用：accAdd(arg1,arg2)
+        //返回值：arg1加上arg2的精确结果
+        function accAdd(arg1, arg2) {
+            var r1, r2, m;
+            try {
+                r1 = arg1.toString().split(".")[1].length
+            } catch (e) {
+                r1 = 0
+            }
+            try {
+                r2 = arg2.toString().split(".")[1].length
+            } catch (e) {
+                r2 = 0
+            }
+            m = Math.pow(10, Math.max(r1, r2))
+            return (arg1 * m + arg2 * m) / m
+        }
+        //给Number类型增加一个add方法，调用起来更加方便。
+        Number.prototype.add = function(arg) {
+            return accAdd(arg, this);
+        }
+
+        //减法函数，用来得到精确的减法结果
+        //说明：javascript的加法结果会有误差，在两个浮点数相加的时候会比较明显。这个函数返回较为精确的减法结果。
+        //调用：accSub(arg1,arg2)
+        //返回值：arg1减去arg2的精确结果
+        function accSub(arg1, arg2) {
+            var r1, r2, m, n;
+            try {
+                r1 = arg1.toString().split(".")[1].length
+            } catch (e) {
+                r1 = 0
+            }
+            try {
+                r2 = arg2.toString().split(".")[1].length
+            } catch (e) {
+                r2 = 0
+            }
+            m = Math.pow(10, Math.max(r1, r2));
+            //last modify by deeka
+            //动态控制精度长度
+            n = (r1 >= r2) ? r1 : r2;
+            return ((arg1 * m - arg2 * m) / m).toFixed(n);
+        }
+
+        //除法函数，用来得到精确的除法结果
+        //说明：javascript的除法结果会有误差，在两个浮点数相除的时候会比较明显。这个函数返回较为精确的除法结果。
+        //调用：accDiv(arg1,arg2)
+        //返回值：arg1除以arg2的精确结果
+        function accDiv(arg1, arg2) {
+            var t1 = 0,
+                t2 = 0,
+                r1, r2;
+            try {
+                t1 = arg1.toString().split(".")[1].length
+            } catch (e) {}
+            try {
+                t2 = arg2.toString().split(".")[1].length
+            } catch (e) {}
+            with(Math) {
+                r1 = Number(arg1.toString().replace(".", ""))
+                r2 = Number(arg2.toString().replace(".", ""))
+                return (r1 / r2) * pow(10, t2 - t1);
+            }
+        }
+        //给Number类型增加一个div方法，调用起来更加方便。
+        Number.prototype.div = function(arg) {
+            return accDiv(this, arg);
+        }
+
+        //乘法函数，用来得到精确的乘法结果
+        //说明：javascript的乘法结果会有误差，在两个浮点数相乘的时候会比较明显。这个函数返回较为精确的乘法结果。
+        //调用：accMul(arg1,arg2)
+        //返回值：arg1乘以arg2的精确结果
+        function accMul(arg1, arg2) {
+            var m = 0,
+                s1 = arg1.toString(),
+                s2 = arg2.toString();
+            try {
+                m += s1.split(".")[1].length
+            } catch (e) {}
+            try {
+                m += s2.split(".")[1].length
+            } catch (e) {}
+            return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
+        }
+        //给Number类型增加一个mul方法，调用起来更加方便。
+        Number.prototype.mul = function(arg) {
+            return accMul(arg, this);
+        }
+    </script>
+
+    <style>
+        .m-pbar,
+        .m-pbar .barbg {
+            width: calc( 455px - 2.5em);
+        }
+        
+        .m-playbar .play {
+            width: calc( 570px - 2.5em);
+        }
+        
+        .m-playbar .oper {
+            width: initial;
+        }
+        
+        .jx_dl:hover {
+            color: white;
+        }
+        /* 底部单曲下载 */
+        
+        .m-playbar .oper .jx_btn {
+            text-indent: 0;
+            font-size: 1.5em;
+            margin: 13px 2px 0 0;
+            float: left;
+            color: #ccc;
+            text-shadow: 1px 1px 2px black, 0 0 1em black, 0 0 0.2em #aaa;
+            line-height: 1.6em;
+            font-size: 1.2em;
+        }
+        
+        .m-playbar .oper .jx_dl::before {
+            padding-right: .25em;
+        }
+        
+        .jx_btn:hover {
+            color: white;
+        }
+        /* 播放列表下载 */
+        
+        .m-playbar .listhdc .jx_dl.addall {
+            left: 306px;
+            line-height: 1em;
+            /* 多一个 px, 对齐文字 */
+            top: 13px;
+        }
+        
+        .m-playbar .listhdc .line.jx_dl_line {
+            left: 385px;
+        }
+        
+        @font-face {
+            font-family: ccc;
+            src: url(https://cdn.bootcss.com/font-awesome/4.2.0/fonts/fontawesome-webfont.woff) format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        .jx_dl::before {
+            font-family: ccc;
+            content: "\f019";
+            padding-right: .5em;
+        }
+        
+        .jx_hide {
+            display: none;
+        }
+    </style>
+</body>
+
+</html>

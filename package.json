@@ -1,0 +1,45 @@
+{
+  "name": "hexo-blog",
+  "version": "1.0.0",
+  "private": true,
+  "hexo": {
+    "version": "4.0.0"
+  },
+  "scripts": {
+    "generate": "yuque-hexo clean && yuque-hexo sync && hexo algolia clean && hexo clean && hexo a && hexo g && hexo d",
+    "dev": "npm run sync && hexo g",
+    "sync": "yuque-hexo sync",
+    "clean:yuque": "yuque-hexo clean"
+  },
+  "yuqueConfig": {
+    "baseUrl": "https://www.yuque.com/api/v2",
+    "login": "xiayinchang",
+    "repo": "qgw8ek",
+    "mdNameFormat": "title",
+    "postPath": "source/_posts",
+    "onlyPublished": false
+  },
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "hexo": "^4.0.0",
+    "hexo-algolia": "^1.3.1",
+    "hexo-deployer-git": "^2.1.0",
+    "hexo-front-matter": "git+https://git@github.com/hexojs/hexo-front-matter.git",
+    "hexo-generator-archive": "^1.0.0",
+    "hexo-generator-category": "^1.0.0",
+    "hexo-generator-feed": "^2.1.1",
+    "hexo-generator-index": "^1.0.0",
+    "hexo-generator-tag": "^1.0.0",
+    "hexo-leancloud-counter-security": "^1.4.1",
+    "hexo-related-popular-posts": "^3.0.6",
+    "hexo-renderer-ejs": "^1.0.0",
+    "hexo-renderer-marked": "^2.0.0",
+    "hexo-renderer-stylus": "^1.1.0",
+    "hexo-server": "^1.0.0",
+    "hexo-symbols-count-time": "^0.7.0",
+    "mime": "^2.4.4"
+  },
+  "devDependencies": {
+    "yuque-hexo": "^1.6.2"
+  }
+}

@@ -1,0 +1,555 @@
+
+---
+
+title: Linux 实用命令集合
+
+urlname: qyggmq
+
+date: 2019-11-09 00:00:00 +0800
+
+layout: post
+
+categories: Linux
+
+tags: [Linux, 云计算]
+
+keywords: Linux, Docker
+
+description: 在云计算场景下常用的 Linux 命令记录。
+
+---
+
+<a name="CYJKi"></a>
+#### Docker
+
+- 按指定格式输出Images信息
+
+```bash
+ docker images --format "{{.ID}}: {{.Repository}}"
+```
+| Placeholder | Description |
+| :--- | :--- |
+| `.ID` | Image ID |
+| `.Repository` | Image repository |
+| `.Tag` | Image tag |
+
+
+- 使用镜像下载 docker image
+
+```bash
+docker pull golang:1.13.0 => docker pull dockerhub.azk8s.cn/library/golang:1.13.0
+docker pull rook/ceph:v1.0.6 => docker pull dockerhub.azk8s.cn/rook/ceph:v1.0.6
+docker pull gcr.io/kubernetes-helm/tiller:v2.9.1 => docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.9.1
+docker pull k8s.gcr.io/kube-apiserver:v1.14.1 => docker pull gcr.azk8s.cn/google-containers/kube-apiserver:v1.14.1
+docker pull quay.io/k8scsi/csi-node-driver-registrar:v1.1.0 => docker pull quay.azk8s.cn/k8scsi/csi-node-driver-registrar:v1.1.0
+```
+
+- 新建容器时加入已有容器网络
+
+```
+docker run --name b2 -it --network container:b1 --rm busybox:latest
+```
+
+- docker 容器的四种网络模型：Bridge, Host, Container, None
+
+     参考： [Docker 的网络模式详解](https://juejin.im/post/5c3363bf6fb9a049e2322cdb)
+
+- 查看 docker registry 中的镜像信息
+
+```
+curl -X GET https://myregistry:5000/v2/_catalog
+curl -X GET https://myregistry:5000/v2/ubuntu/tags/list
+```
+
+<a name="LzPfH"></a>
+#### CentOS
+
+- 升级系统内核
+```bash
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
+yum --enablerepo=elrepo-kernel install kernel-ml
+awk -F\' '$1=="menuentry " {print i++ " : " $2}' /etc/grub2.cfg
+grub2-set-default 0
+grub2-mkconfig -o /boot/grub2/grub.cfg
+reboot
+```
+
+- 安装fish
+```bash
+cd /etc/yum.repos.d/
+wget https://download.opensuse.org/repositories/shells:fish:release:2/CentOS_7/shells:fish:release:2.repo
+yum install fish -y
+```
+
+- 创建网桥
+
+可以直接在配置文件修改，如下创建网桥 br0：
+```bash
+# cat /etc/sysconfig/network-scripts/ifcfg-br0 
+TYPE=Bridge
+BOOTPROTO=static
+DEFROUTE=yes
+NAME=br0
+DEVICE=br0
+ONBOOT=yes
+IPADDR=192.168.180.136
+NETMASK=255.255.255.0
+GATEWAY=192.168.180.254
+DNS1=114.114.114.114
+```
+
+
+加入物理网卡 em1 到网桥
+
+```bash
+# cat /etc/sysconfig/network-scripts/ifcfg-em1
+TYPE=Ethernet
+BOOTPROTO=static
+DEFROUTE=no
+NAME=em1
+DEVICE=em1
+ONBOOT=yes
+BRIDGE=br0
+```
+
+
+- 创建 veth 并持久化
+
+创建两对 veth 并加入到网桥，脚本如下：
+
+```bash
+# cat /root/config_veth.sh 
+#!/bin/bash
+
+ip link add dev veth0 type veth peer name veth1
+ip link add dev veth2 type veth peer name veth3
+ip link set dev veth0 up
+ip link set dev veth1 up
+ip link set dev veth2 up
+ip link set dev veth3 up
+
+exit 0
+```
+
+执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：
+
+```bash
+# cat /usr/lib/systemd/system/veth.service 
+[Unit]
+Description=Create veths
+After=network-pre.target dbus.service
+Before=network.target network.service
+
+[Service]
+ExecStart=/root/config_veth.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+创建完上述文件，不要忘了执行 systemctl enable --now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：
+
+```bash
+# cat /etc/sysconfig/network-scripts/ifcfg-veth0
+DEVICE=veth0
+DEVICETYPE=veth
+VETH_PEER=veth1
+BRIDGE=br0
+ONBOOT=yes
+
+# cat /etc/sysconfig/network-scripts/ifcfg-veth1
+DEVICE=veth1
+DEVICETYPE=veth
+VETH_PEER=veth0
+ONBOOT=yes
+BOOTPROTO=static
+IPADDR=192.168.180.211
+MTU=1500
+NETMASK=255.255.255.0
+
+# cat /etc/sysconfig/network-scripts/ifcfg-veth2
+DEVICE=veth2
+DEVICETYPE=veth
+VETH_PEER=veth3
+BRIDGE=br0
+ONBOOT=yes
+
+# cat /etc/sysconfig/network-scripts/ifcfg-veth3
+DEVICE=veth3
+DEVICETYPE=veth
+VETH_PEER=veth2
+ONBOOT=yes
+```
+
+现在，就算重启系统虚拟网卡也会被自动重建了。
+
+- 自动加载内核模块
+
+以下示例加载 ipvs 内核模块:
+
+```bash
+$ cat /etc/modules-load.d/ipvs.conf
+ip_vs
+ip_vs_lc
+ip_vs_wlc
+ip_vs_rr
+ip_vs_wrr
+ip_vs_lblc
+ip_vs_lblcr
+ip_vs_dh
+ip_vs_sh
+ip_vs_nq
+ip_vs_sed
+ip_vs_ftp
+nf_conntrack
+```
+
+- 自动设置内核参数
+以下示例启用 ipv4 转发功能：
+
+```bash
+$ cat /etc/sysctl.conf
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+vm.max_map_count=262144
+vm.swappiness=0
+net.core.somaxconn=32768
+net.ipv4.tcp_syncookies=0
+net.ipv4.conf.all.rp_filter=1
+net.ipv4.ip_forward=1
+```
+
+- 磁盘性能测试
+
+```bash
+yum install epel-release
+yum install fio
+fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=test --filename=test --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75
+
+//latnecy
+yum install epel-release
+yum install ioping
+ioping -c 10 .
+```
+
+- 安装 MariaDB
+
+```bash
+# 添加 MariaDB 仓库
+cat /etc/yum.repos.d/MariaDB.repo
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.4/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+  
+# 执行安装
+yum -y install MariaDB-server MariaDB-client
+systemctl enable --now mariadb
+```
+
+- 在 grub 引导界面临时编辑内核启动参数
+
+     首先，选中要编辑的内核项，按 **e** 进入编辑页面，编辑完成后按 **Ctrl + x**  启动系统。下图为编辑内核参数直接进入救援模式。
+
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&display=inline&height=230&name=image.png&originHeight=230&originWidth=716&search=&size=13999&status=done&width=716)<br />
+
+- 在操作系统中编辑内核启动参数并重新生成 grub 引导
+
+```bash
+// 修改 /etc/default/grub 中的参数设置
+[root@umstor03 ~]# cat /etc/default/grub 
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=centos_umstor03/root video=640x480 nomodeset"
+GRUB_DISABLE_RECOVERY="true"
+
+// 执行以下命令生成新的 grub 引导文件
+grub2-mkconfig -o /boot/grub2/grub.cfg
+// 重启系统时参数生效
+```
+
+- netinstall  centos 1804 可用如下镜像源
+
+```
+// 不要遗漏最后的反斜线
+https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.5.1804/os/x86_64/
+```
+
+- 包版本降级
+
+```bash
+yum downgrade httpd-2.2.3-22.el5
+```
+
+<a name="3HTPv"></a>
+#### VIM
+
+- 替换空格为换行
+
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&name=image.png&originHeight=25&originWidth=160&search=&size=2640&status=done&width=160)
+
+<a name="FfBcn"></a>
+#### Git
+
+- 修改历史 commit 信息
+```
+git rebase -i HEAD~2
+pick -> edit
+git commit --amend
+git rebase --continue
+```
+
+- 修改 commit 时间
+```
+# 设置为当前时间
+GIT_COMMITTER_DATE="$(date '+%Y-%m-%d %H:%M:%S')" git commit --amend --no-edit --date "$(date)"
+# 设置为指定时间
+GIT_COMMITTER_DATE="Mon 20 Aug 2018 20:19:19 BST" git commit --amend --no-edit --date "Mon 20 Aug 2018 20:19:19 BST"
+```
+
+- 比较两个分支的不同
+```
+git diff branch_1..branch_2
+```
+
+- merge 时使用指定方代码解决冲突
+```go
+git merge -X theirs origin/dev
+git merge -X ours origin/dev
+```
+
+- 查看一个文件完整的修改历史
+```
+git log --follow -p -- _config.yml
+```
+
+- 将当前分支下子目录内容提交至另一个分支
+```
+git subtree push --prefix dist origin gh-pages
+```
+
+- 删除 submodule
+```
+git submodule deinit <path_to_submodule>
+git rm <path_to_submodule>
+git commit -m "Removed submodule "
+```
+
+<a name="Qgmi6"></a>
+#### Ansible
+
+- 打印 Ansible 所有的变量 
+
+```
+- name: Print some debug information 
+  vars: 
+    msg: |
+        Module Variables ("vars"):
+        --------------------------------
+        {{ vars | to_nice_json }} 
+ 
+        Environment Variables ("environment"):
+        --------------------------------
+        {{ environment | to_nice_json }} 
+ 
+        GROUP NAMES Variables ("group_names"):
+        --------------------------------
+        {{ group_names | to_nice_json }}
+ 
+        GROUPS Variables ("groups"):
+        --------------------------------
+        {{ groups | to_nice_json }}
+ 
+        HOST Variables ("hostvars"):
+        --------------------------------
+        {{ hostvars | to_nice_json }} 
+ 
+  debug: 
+    msg: "{{ msg.split('\n') }}"       
+  tags: debug_info
+```
+
+或者
+
+```
+- name: Display all variables/facts known for a host
+  debug:
+    var: hostvars[inventory_hostname]
+  tags: debug_info
+```
+
+<a name="gzyiV"></a>
+#### tcpdump 捕获 http 包
+
+```bash
+tcpdump -s 0 -A 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420'
+tcpdump -ni ens5f0 -A -s 10240 'tcp port 8056 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' | egrep --line-buffered "^........(GET |HTTP\/|POST |HEAD )|^[A-Za-z0-9-]+: " | sed -r 's/^........(GET |HTTP\/|POST |HEAD )/\n\1/g'
+```
+
+<a name="WZCnh"></a>
+#### mount 查看目录或分区挂载情况
+
+```bash
+cat /proc/mounts
+// or
+cat /proc/self/mountinfo
+// or
+mount -l
+// or
+findmnt
+// or
+df -aTh
+```
+
+<a name="1rSZC"></a>
+#### pgrep 进程检索与杀死
+
+```bash
+// 按名称列出进程 ID
+pgrep chrome
+// 按名称杀死进程
+pkill -9 fish
+killall -9 fish
+// 杀死指定 ID 的进程
+kill -9 3049
+// 列出进程树
+pstree -p
+```
+
+<a name="e1tG9"></a>
+#### fuser 找到正在使用某个文件的进程
+
+```bash
+// fuser 是 file user 的缩写
+fuser -uv <filename>
+fuser -uvm /folder
+// 查看哪个程序在占用 8000 端口
+fuser -v -n tcp 8000
+```
+
+<a name="lw5hk"></a>
+#### lsof 列出所有打开的文件
+
+```bash
+// lsof 是 list open files 的缩写
+// -i 代表列出正在打开的 IPV4[6] 文件； -n 表示不进行 DNS 反解； -P 表示不进行端口反解
+lsof -i -n -P
+// 查看当前目录下打开的文件
+lsof .
+```
+
+<a name="70PLT"></a>
+#### strace 跟踪系统调用
+strace 用法参考： [https://www.howtoforge.com/linux-strace-command/](https://www.howtoforge.com/linux-strace-command/)
+
+```
+strace -i ls
+```
+
+<a name="6F4YX"></a>
+#### getent 获取系统用户信息
+
+```
+getent passwd
+```
+
+<a name="zdvyH"></a>
+#### sed 删除所有以 # 开头的行
+```bash
+sed '/^#/ d'
+```
+更多使用方法参考：[https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html](https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html)
+
+<a name="tZDa5"></a>
+#### 生成 Linux 用户密码的哈希值
+
+```
+python -c "import crypt, getpass, pwd; print(crypt.crypt('password', '\$6\$saltsalt\$'))"
+// 或者使用 go
+package main                                                
+import (
+    "fmt"
+    "github.com/tredoe/osutil/user/crypt/sha512_crypt"
+)
+func main() {
+    c := sha512_crypt.New()
+    hash, err := c.Generate([]byte("rasmuslerdorf"), []byte("$6$usesomesillystringforsalt"))
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(hash)
+}
+```
+
+<a name="uvsm2"></a>
+#### 允许使用 root 用户 ssh 登录
+先删除 `/root/.ssh/authorized_keys` 中的多余限制信息，之后在 `/etc/ssh/sshd_config` 中添加 `PermitRootLogin yes` 后重启 sshd 服务。
+
+<a name="vwUdA"></a>
+#### 解决"rtnetlink answers file exists"
+```
+ip a flush dev eth0
+```
+
+<a name="HPtZj"></a>
+#### ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地
+```bash
+echo "Host *" > /etc/ssh/ssh_config
+echo "  StrictHostKeyChecking=no" >> /etc/ssh/ssh_config
+echo "  UserKnownHostsFile=/dev/null" >> /etc/ssh/ssh_config
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+echo "$SSH_PUBLIC_KEY" > ~/.ssh/id_rsa.pub
+chmod 600 ~/.ssh/id_rsa
+chmod 644 ~/.ssh/id_rsa.pub
+```
+
+<a name="Ey88A"></a>
+#### 查看登录记录
+```bash
+# 查看当前登录用户
+who
+# 查看最近登录记录
+last -F
+# 查看最近90天所有用户的最后登录时间
+lastlog --time 90
+```
+
+<a name="g7NoE"></a>
+#### rsync 同步时需要 root 权限
+```bash
+rsync -aru -e "ssh" --rsync-path="sudo rsync" 172.16.110.215:~/ ~/  --progress --exclude=.cache
+```
+
+<a name="hU4cE"></a>
+#### expr 比较字符串大小
+```bash
+str3='v1.13'
+str2='v1.14'
+if [ $(expr ${str3} \<= ${str2}) -eq 1 ]; then    echo "[${str3}] <= [${str2}]"; else    echo "[${str3}] > [${str2}]"; fi
+```
+
+<a name="bjtsD"></a>
+#### tr 移除所有空格
+```bash
+// 获取 kubernetes 版本
+kubectl version --short | tail -1 | cut -d':' -f2 | tr -d '[:space:]'
+```
+
+<a name="fL7Yx"></a>
+#### 实用工具
+
+- 一个在线渲染代码为图片的网站：[https://carbon.now.sh/](https://carbon.now.sh/) ， 可以通过设置修改边框等信息。
+- pandoc 可以借助第三方引擎实现各种文档格式之间的转换：[https://pandoc.org/](https://pandoc.org/)。
+- MOBI 转 PDF 的在线网站：[https://ebook2pdf.com/](https://ebook2pdf.com/)
+- Github dispatch 使用示例：[https://alejandroandr.eu/posts/manual-trigger-github-workflows/](https://alejandroandr.eu/posts/manual-trigger-github-workflows/)
+
+
+
