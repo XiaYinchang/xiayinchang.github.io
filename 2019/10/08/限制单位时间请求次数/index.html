@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="referrer" content="no-referrer" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '2G7JFNVWAW',
+      apiKey: '23b567f471485e636d6558ba032fbb90',
+      indexName: 'xyc',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Ceph Rgw 提供了兼容 S3 协议的对象存储访问接口，在使用过程中会有针对客户端进行请求限制的需求来避免单一客户端大量消耗服务端的计算和带宽资源，而 S3 协议基于 Http 协议，所以可以按照对 Http 服务进行请求限制的方式对 S3 服务实行请求限制。">
+<meta name="keywords" content="S3, Envoy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="限制单位时间请求次数">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;2019&#x2F;10&#x2F;08&#x2F;%E9%99%90%E5%88%B6%E5%8D%95%E4%BD%8D%E6%97%B6%E9%97%B4%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0&#x2F;index.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="Ceph Rgw 提供了兼容 S3 协议的对象存储访问接口，在使用过程中会有针对客户端进行请求限制的需求来避免单一客户端大量消耗服务端的计算和带宽资源，而 S3 协议基于 Http 协议，所以可以按照对 Http 服务进行请求限制的方式对 S3 服务实行请求限制。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570516385891-e3718bb2-93bc-46d8-ad5e-d5514de1a882.png#align=left&amp;display=inline&amp;height=201&amp;name=rate%20limit%20using%20envoy.png&amp;originHeight=201&amp;originWidth=541&amp;search=&amp;size=11509&amp;status=done&amp;width=541">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1571380553625-7cd700cf-3ff5-488c-96e3-3a15b7e07953.png#align=left&amp;display=inline&amp;height=81&amp;name=image.png&amp;originHeight=81&amp;originWidth=541&amp;search=&amp;size=6154&amp;status=done&amp;width=541">
+<meta property="og:updated_time" content="2019-11-21T02:39:29.684Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570516385891-e3718bb2-93bc-46d8-ad5e-d5514de1a882.png#align=left&amp;display=inline&amp;height=201&amp;name=rate%20limit%20using%20envoy.png&amp;originHeight=201&amp;originWidth=541&amp;search=&amp;size=11509&amp;status=done&amp;width=541">
+
+<link rel="canonical" href="https://www.xiayinchang.top/2019/10/08/%E9%99%90%E5%88%B6%E5%8D%95%E4%BD%8D%E6%97%B6%E9%97%B4%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>限制单位时间请求次数 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/2019/10/08/%E9%99%90%E5%88%B6%E5%8D%95%E4%BD%8D%E6%97%B6%E9%97%B4%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          限制单位时间请求次数
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-08 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-08T00:00:00+08:00">2019-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-21 10:39:29" itemprop="dateModified" datetime="2019-11-21T10:39:29+08:00">2019-11-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Envoy/" itemprop="url" rel="index">
+                    <span itemprop="name">Envoy</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/10/08/%E9%99%90%E5%88%B6%E5%8D%95%E4%BD%8D%E6%97%B6%E9%97%B4%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/" class="post-meta-item leancloud_visitors" data-flag-title="限制单位时间请求次数" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Ceph Rgw 提供了兼容 S3 协议的对象存储访问接口，在使用过程中会有针对客户端进行请求限制的需求来避免单一客户端大量消耗服务端的计算和带宽资源，而 S3 协议基于 Http 协议，所以可以按照对 Http 服务进行请求限制的方式对 S3 服务实行请求限制。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a name="z0hPi"></a></p><h4 id="Rate-Limit"><a href="#Rate-Limit" class="headerlink" title="Rate Limit"></a>Rate Limit</h4><p>在众多的反向代理服务器中，实现请求次数限制的功能往往称作 rate-limit。   Rate-limit 在公网环境下实际上主要是为了防止 DoS 攻击。Rate-limit 实现了对每个客户端单位时间内请求次数的限制，例如 5 r/s，就是限制每个客户端 1s 之内针对该服务端只能发起 5 个 Http 请求。其原理往往是基于客户端请求中的某些标志性信息（一般是 IP）使用某种限流算法在服务端做出相应处理：如果该客户端的单位时间请求次数超出限制，服务端直接返回状态码为 429 的响应，在 Http 规范中，状态码 429 含义为“请求次数过多”。<br><a name="38NLy"></a></p><a id="more"></a>
+
+<h4 id="限流算法"><a href="#限流算法" class="headerlink" title="限流算法"></a>限流算法</h4><p>常用的限流算法有两种：漏桶和令牌桶。<br>漏桶算法：请求先进入到漏桶中，漏桶以一定的速率将请求转给后端处理, 当请求速率过大会直接溢出即返回状态码为 429 的响应。漏桶对以不规则速率进入的请求进行了整形，使其以固定的速率被处理，往往被反向代理服务器用于保护真正的后端服务。<br>令牌桶算法：系统会按固定时间向桶中放入令牌, 如果桶已经满了就不再加了。新请求来临时，会各自拿走一个令牌并被转给后端服务处理, 如果没有令牌可拿就拒绝服务即返回状态码为 429 的响应。<br>假设漏桶和令牌桶均处于最佳状态（漏桶为空，令牌桶已满），当出现突发大流量时，对于漏桶，一部分请求被置于桶中，超出桶容量的请求被拒绝服务，而桶中的请求会以固定速率转给后端处理，因此必然存在排队情况，也就意味着请求可能存在较大的响应延时，这对后端服务来说是友好的，因为大流量经过漏桶已经被整形为平滑的请求序列，对后端压力较小，只不过压力较小可能意味着资源利用不充分；对于令牌桶来说，一部分请求立即获得令牌并且被立即转给服务后端处理，超出桶容量的请求一样被拒绝服务，转给后端服务的请求会被立即处理，因此响应延时会小很多，但是后端服务器会直接受到大流量的冲击，因此对后端服务不是很友好，不过这个问题并不严重，后端服务器的处理能力往往是很强的，只要设定的桶容量适宜，这些流量冲击一般不构成威胁，反而能够更充分的利用服务端资源。<br>除了应对突发流量时的较大差别，漏桶和令牌桶对于一般情况下的请求限速效果是类似的。<br>Nginx 的 Http 限速模块 <a href="http://nginx.org/en/docs/http/ngx_http_limit_req_module.html" target="_blank" rel="noopener">ngx_http_limit_req_module</a> 使用的是漏桶算法。OpenResty 的限速模块 <a href="https://github.com/openresty/lua-resty-limit-traffic" target="_blank" rel="noopener">lua-resty-limit-traffic</a> 支持配置使用漏桶或者令牌桶，配置方法可参考<a href="https://developpaper.com/gateway-rate-limit-network-rate-limitation-scheme/" target="_blank" rel="noopener">这篇文章</a>。<br><a name="j2z6C"></a></p>
+<h4 id="针对-S3-请求的限速方案"><a href="#针对-S3-请求的限速方案" class="headerlink" title="针对 S3 请求的限速方案"></a>针对 S3 请求的限速方案</h4><p>进行限速的第一步是要确定使用什么信息来区分不同的客户端，一般来讲客户端 IP 使用的较为广泛，在 Nginx 和 OpenResty 的限速模块中都有现成的可获取客户端 IP 的变量 ，分别是 $binary_remote_addr 和 ngx.var.binary_remote_addr。当然还有一些其它的信息也可以用以区分客户端从而分别进行限速，例如 Http 请求头中的 Authorization 信息等。这里需要对 S3 进行限速，区分不同客户端使用的是 s3 的 accesskey。 根据 s3 协议<a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html" target="_blank" rel="noopener">文档</a>，这个 accesskey 包含在请求信息的 Authorization 请求头中，但需要去提取出来才能用，因此需要对限速的逻辑进行定制以实现从 Authorization 中提取 accesskey 并基于此实现限速。无论对 Nginx 还是 OpenResty 的限速模块进行定制开发都是可以实现这个功能，但最终选择使用另外一个反向代理服务器 Envoy 来进行定制开发，这是因为：Envoy 对扩展开发原生就有非常友好的支持，扩展模块和 Envoy 本身的核心模块是完全解耦的，它们通过 grpc 进行通信，使用 grpc 的另一个好处就是可以使用任何开发语言实现扩展模块而不用关心 Envoy 本身使用的开发语言，因此完全可以采用一种开发人员最熟悉的语言去实现扩展模块逻辑，相比之下， Nginx 或者 OpenResty 的扩展开发只能使用 C 语言或者 Lua 。由于这种扩展模块的解耦，对扩展模块的更改并不需要重新编译打包 Envoy 本身的镜像，而 OpenResty 就必须重新打包整个镜像。因此，最终决定采用 Envoy 实现对 S3 的请求限速，其基本原理如下图所示，所有的客户端请求都要经过 envoy 的处理，针对每个请求 envoy 将其请求头中的 Authorization 信息作为参数向 rate-limiter 发起 rpc 调用以确定该请求是否应该被接受，如果是则将该请求转发给后端 rgw 服务进一步处理，如果否则直接返回状态码为 429 的响应。rate-limiter（采用令牌桶算法） 从 Authorization 信息中提取出 accesskey 并以此为 key 去检索出相应的桶中是否有令牌存在，进而决定是否应该接受该请求。<br>Envoy 的限速服务 gRPC 接口定义：<br><a href="https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/ratelimit/v2/rls.proto" target="_blank" rel="noopener">https://github.com/envoyproxy/envoy/blob/master/api/envoy/service/ratelimit/v2/rls.proto</a><br>Envoy go 版本控制平面生成的代码：<br><a href="https://github.com/envoyproxy/go-control-plane/blob/master/envoy/service/ratelimit/v2/rls.pb.go" target="_blank" rel="noopener">https://github.com/envoyproxy/go-control-plane/blob/master/envoy/service/ratelimit/v2/rls.pb.go</a><br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1570516385891-e3718bb2-93bc-46d8-ad5e-d5514de1a882.png#align=left&display=inline&height=201&name=rate%20limit%20using%20envoy.png&originHeight=201&originWidth=541&search=&size=11509&status=done&width=541" alt="rate limit using envoy.png"><br></p>
+<p><a name="6rvwm"></a></p>
+<h4 id="Rate-limiter"><a href="#Rate-limiter" class="headerlink" title="Rate-limiter"></a>Rate-limiter</h4><p>这里采用 Go 语言实现 Rate-limiter 扩展模块。为每个 accesskey 维护一个令牌桶，令牌发放速率可调节，accesskey 和令牌桶的对应关系通过 map 结构维护。accesskey 和其限速值均存于数据库中，Rate-limiter 定期从数据库中同步限速信息并依次调节令牌桶发放速率，存储数据库中的限速值可通过控制平面 API 进行调整。添加一个全局限速值，存于数据库中，Rate-limiter 服务启动时从数据库中读取，该值可以通过控制平面 API 进行设置，值为 0 时涵义是不进行全局限速，当有携带新的 accesskey 的请求到来时，只记录下该 accesskey 的存在，不自动进行限速处理，除非用户指定要对其限速，非零值则意味着对新接入的 accesskey 自动添加限速规则，创建令牌桶进行限速。<br>初始状态下每个令牌桶中令牌数量为 0 ，随着时间推移，令牌数量逐渐增加，直到令牌桶满，令牌数量保存在内存中，一旦 Rate-limiter 重启则令牌数量重新初始化为 0. 若需要在分布式环境下保存令牌数量，则最好使用 Redis 作为存储后端。<br><a name="d4L4e"></a></p>
+<h4 id="Envoy-限流方案的实现参考"><a href="#Envoy-限流方案的实现参考" class="headerlink" title="Envoy 限流方案的实现参考"></a>Envoy 限流方案的实现参考</h4><ul>
+<li>一个较为完整的实现案例：<a href="https://venilnoronha.io/envoy-grpc-and-rate-limiting" target="_blank" rel="noopener">https://venilnoronha.io/envoy-grpc-and-rate-limiting</a></li>
+<li>Lyft 贡献了一个开源项目，同样是实现了一个 gRPC Server 供 Envoy 调用，使用 Redis 存储数据，可对数据库、消息队列等多种后端应用进行限速：<a href="https://github.com/lyft/ratelimit" target="_blank" rel="noopener">https://github.com/lyft/ratelimit</a><br><a name="cimY6"></a><h4 id="不使用-Envoy-的方案"><a href="#不使用-Envoy-的方案" class="headerlink" title="不使用 Envoy 的方案"></a>不使用 Envoy 的方案</h4>由于 Go 社区官方提供了一种可以创建简单反向代理服务器的工具包，也可以通过直接编写一个反向代理工具进行简单的 Http 限速，从而避免使用 Envoy 限速要引入 Envoy 本身和一个 rate-limiter grpc server 两个容器的问题，其基本的结构如下：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1571380553625-7cd700cf-3ff5-488c-96e3-3a15b7e07953.png#align=left&display=inline&height=81&name=image.png&originHeight=81&originWidth=541&search=&size=6154&status=done&width=541" alt="image.png"><br>其中 rate-limiter 不再是一个 grpc server ， 而是一个 http 反向代理服务器，直接接收来自客户端的请求，并通过限流算法决定是否应该接受该请求，对于接受的请求转给后端 rgw 进行处理，对于不接受的请求直接返回状态码为 429 的 Http 响应。<br>rate-limiter 和 rgw 作为两个容器部署于 K8S 同一个 Pod 中，同时还可以实现带宽限制和请求数限制同时使用。<br><a name="sMQRp"></a><h4 id="控制平面-API"><a href="#控制平面-API" class="headerlink" title="控制平面 API"></a>控制平面 API</h4>这里控制平面也使用 grpc 协议，主要实现添加 accesskey，设置限速值等操作。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RateLimit/" rel="tag"># RateLimit</a>
+              <a href="/tags/S3/" rel="tag"># S3</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/09/11/Ceph%20%E5%AF%B9%E6%8E%A5%20Kubernetes%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/" rel="next" title="Ceph 对接 Kubernetes 的两种方式">
+                  <i class="fa fa-chevron-left"></i> Ceph 对接 Kubernetes 的两种方式
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/10/09/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86/" rel="prev" title="基础网络知识">
+                  基础网络知识 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Rate-Limit"><span class="nav-number">1.</span> <span class="nav-text">Rate Limit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限流算法"><span class="nav-number">2.</span> <span class="nav-text">限流算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#针对-S3-请求的限速方案"><span class="nav-number">3.</span> <span class="nav-text">针对 S3 请求的限速方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rate-limiter"><span class="nav-number">4.</span> <span class="nav-text">Rate-limiter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Envoy-限流方案的实现参考"><span class="nav-number">5.</span> <span class="nav-text">Envoy 限流方案的实现参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不使用-Envoy-的方案"><span class="nav-number">6.</span> <span class="nav-text">不使用 Envoy 的方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#控制平面-API"><span class="nav-number">7.</span> <span class="nav-text">控制平面 API</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = visitors.getAttribute('id').trim();
+      var title = visitors.getAttribute('data-flag-title').trim();
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.log('Failed to save visitor count', error);
+              })
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return element.getAttribute('id').trim();
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.url;
+            var time = item.time;
+            leancloudSelector(url).innerText = time;
+          }
+          for (var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.log('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=oslQ36cvj9yTPOEpY8IDjcbS-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': 'oslQ36cvj9yTPOEpY8IDjcbS-gzGzoHsz',
+            'X-LC-Key': 'pgInvJiGHvJysPofHvBlYFLW',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        const localhost = /http:\/\/(localhost|127.0.0.1|0.0.0.0)/;
+        if (localhost.test(document.URL)) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='153,153,153' opacity='0.5' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script><script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>
