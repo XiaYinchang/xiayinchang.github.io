@@ -21,6 +21,7 @@
 {"title":"Centos 编译安装 zfs","url":"/2019/06/21/Centos 编译安装 zfs/"},
 {"title":"IPVS 模式下 NodePort 的工作过程浅析","url":"/2019/06/21/IPVS 模式下 NodePort 的工作过程浅析/"},
 {"title":"树莓派 3B 编译安装 zfs","url":"/2019/06/21/树莓派 3B 编译安装 zfs/"},
+{"title":"IPVS 模式下 NodePort 的工作过程浅析","url":"/2019/07/07/IPVS 模式下 NodePort 的工作过程浅析/"},
 {"title":"为 Proxmox 制作包含 cloud-init 的虚拟机模板","url":"/2019/08/14/为 Proxmox 制作包含 cloud-init 的虚拟机模板/"},
 {"title":"基于 CentOS Minimal 镜像制作 Docker Base Image","url":"/2019/08/30/制作 Docker Base Image/"},
 {"title":"Ceph 常用操作","url":"/2019/09/03/Ceph 常用操作/"},
@@ -44,4 +45,5 @@
 {"title":"Kubernetes 实践","url":"/2019/11/13/Kubernets 实践/"},
 {"title":"gRPC snippets","url":"/2019/11/14/gRPC snippets/"},
 {"title":"前端知识点滴","url":"/2019/11/14/前端知识点滴/"},
+{"title":"使用语雀、GitHub 和阿里云函数计算构建博客","url":"/2019/11/21/使用语雀、GitHub 和阿里云函数计算构建博客/"},
 ]
