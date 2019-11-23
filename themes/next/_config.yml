@@ -697,7 +697,7 @@ tencent_mta: # <app_id>
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn to get AppID and AppKey.
 leancloud_visitors:
-  enable: false
+  enable: true
   app_id: LEANCLOUD_APP_ID
   app_key: LEANCLOUD_APP_KEY
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
@@ -718,7 +718,7 @@ firestore:
 # Show Views / Visitors of the website / page with busuanzi.
 # Get more information on http://ibruce.info/2015/04/04/busuanzi
 busuanzi_count:
-  enable: true
+  enable: false
   total_visitors: true
   total_visitors_icon: user
   total_views: true
