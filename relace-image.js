@@ -41,7 +41,7 @@ function replaceImgAddr(filename) {
   if (path.extname(filename) === ".html") {
     fs.readFile(filename, "utf8", async (err, data) => {
       if (err) throw err;
-      dataStr = String(data);
+      let dataStr = String(data);
       const regexp = /<img.*?(?:>|\/>)/gi;
       const srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
       const matches = dataStr.matchAll(regexp);
