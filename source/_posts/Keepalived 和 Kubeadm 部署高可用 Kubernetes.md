@@ -5,7 +5,7 @@ title: Keepalived 和 Kubeadm 部署高可用 Kubernetes
 
 urlname: byko3z
 
-date: 2019-05-31 00:00:00 +0800
+date: 2019-05-31 00:00:00 +0000
 
 layout: post
 
