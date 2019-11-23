@@ -1,11 +1,10 @@
-var fs = require("fs");
-var path = require("path");
-var https = require("https");
-var FormData = require("form-data");
+const fs = require("fs");
+const path = require("path");
+const https = require("https");
+const FormData = require("form-data");
 const request = require("request");
-const uuidv4 = require("uuid/v4");
 
-var publicDir = "./public";
+const publicDir = "./public";
 // Loop through all the files in the temp directory
 function readDir(dir) {
   fs.readdir(dir, function(err, files) {
@@ -16,7 +15,7 @@ function readDir(dir) {
 
     files.forEach(function(file, index) {
       // Make one pass and make the file complete
-      var relativePath = path.join(dir, file);
+      const relativePath = path.join(dir, file);
 
       fs.stat(relativePath, function(error, stat) {
         if (error) {
@@ -81,7 +80,6 @@ function replaceImgAddr(filename) {
 }
 
 function downloadToLocal(imgAddr) {
-  // const localfileName = uuidv4();
   const tmpArr = imgAddr.split("#")[0].split("/");
   const imageName = tmpArr[tmpArr.length - 1];
   const relativePath = `/images/${imageName}`;

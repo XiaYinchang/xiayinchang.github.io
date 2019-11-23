@@ -37,8 +37,7 @@
     "hexo-renderer-stylus": "^1.1.0",
     "hexo-server": "^1.0.0",
     "hexo-symbols-count-time": "^0.7.0",
-    "mime": "^2.4.4",
-    "uuid": "^3.3.3"
+    "mime": "^2.4.4"
   },
   "devDependencies": {
     "yuque-hexo": "^1.6.2"
