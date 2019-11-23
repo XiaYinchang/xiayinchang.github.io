@@ -5,7 +5,7 @@ title: 使用语雀、GitHub 和阿里云函数计算构建博客
 
 urlname: rg9lhf
 
-date: 2019-11-21 00:00:00 +0800
+date: 2019-11-21 00:00:00 +0000
 
 layout: post
 

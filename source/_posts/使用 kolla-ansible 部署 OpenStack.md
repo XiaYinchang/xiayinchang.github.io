@@ -5,7 +5,7 @@ title: 使用 kolla-ansible 部署 OpenStack
 
 urlname: hd3h5q
 
-date: 2019-05-26 00:00:00 +0800
+date: 2019-05-26 00:00:00 +0000
 
 layout: post
 
