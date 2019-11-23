@@ -123,10 +123,12 @@ function uploadToSMMS(imgAddr) {
               const tmpStr = tmpArr[tmpArr.length - 1];
               if (tmpStr.startsWith("https")) {
                 imageNewAddr = tmpStr;
+              } else {
+                return reject(body.error);
               }
             }
           } catch (e) {
-            reject(e);
+            return reject(e);
           }
           resolve(imageNewAddr);
         });
