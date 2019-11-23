@@ -5,7 +5,7 @@ title: 为 Proxmox 制作包含 cloud-init 的虚拟机模板
 
 urlname: en0qpx
 
-date: 2019-08-14 00:00:00 +0000
+date: 2019-08-14 00:00:00 +0800
 
 layout: post
 

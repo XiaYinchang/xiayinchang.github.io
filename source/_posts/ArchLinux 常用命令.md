@@ -5,7 +5,7 @@ title: ArchLinux 常用命令
 
 urlname: egtn5p
 
-date: 2019-09-04 00:00:00 +0000
+date: 2019-09-04 00:00:00 +0800
 
 layout: post
 

@@ -5,7 +5,7 @@ title: 树莓派 3B 编译安装 zfs
 
 urlname: uv2afi
 
-date: 2019-06-21 00:00:00 +0000
+date: 2019-06-21 00:00:00 +0800
 
 layout: post
 

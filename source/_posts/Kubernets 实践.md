@@ -5,7 +5,7 @@ title: Kubernetes 实践
 
 urlname: kgmvfu
 
-date: 2019-11-13 00:00:00 +0000
+date: 2019-11-13 00:00:00 +0800
 
 layout: post
 

@@ -1,6 +1,9 @@
 {
   "images": [
-    { "origin": "", "smms": "" },
+    {
+      "origin": "",
+      "smms": ""
+    },
     {
       "origin": "https://cdn.nlark.com/yuque/0/2019/png/182657/1574345326347-21a088e7-b99e-48ab-b4d4-03da8cd43dd5.png#align=left&display=inline&height=281&name=image.png&originHeight=562&originWidth=1454&search=&size=81111&status=done&width=727",
       "smms": "https://i.loli.net/2019/11/23/e6PGrVa79I3B1Wp.png"

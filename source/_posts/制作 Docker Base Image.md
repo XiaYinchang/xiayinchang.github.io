@@ -5,7 +5,7 @@ title: 基于 CentOS Minimal 镜像制作 Docker Base Image
 
 urlname: xgi2cb
 
-date: 2019-08-30 00:00:00 +0000
+date: 2019-08-30 00:00:00 +0800
 
 layout: post
 
