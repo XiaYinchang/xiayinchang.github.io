@@ -52,7 +52,7 @@ rss:
 
 footer:
   # Specify the date when the site was setup. If not defined, current year will be used.
-  #since: 2015
+  since: 2017
 
   # Icon between year and copyright info.
   icon:
@@ -697,7 +697,7 @@ tencent_mta: # <app_id>
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn to get AppID and AppKey.
 leancloud_visitors:
-  enable: true
+  enable: false
   app_id: LEANCLOUD_APP_ID
   app_key: LEANCLOUD_APP_KEY
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
