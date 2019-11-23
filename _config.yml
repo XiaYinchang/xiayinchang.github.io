@@ -140,3 +140,9 @@ symbols_count_time:
   total_symbols: true
   total_time: true
   exclude_codeblock: false
+
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 100
