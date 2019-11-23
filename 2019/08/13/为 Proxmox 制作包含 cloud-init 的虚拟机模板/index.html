@@ -41,8 +41,8 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     sidebarPadding: 40
   };
@@ -64,7 +64,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align=left&amp;display=inline&amp;height=633&amp;name=image.png&amp;originHeight=633&amp;originWidth=719&amp;size=92450&amp;status=done&amp;width=719">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765613783-81f32306-e298-4d18-a553-128415466232.png#align=left&amp;display=inline&amp;height=388&amp;name=image.png&amp;originHeight=388&amp;originWidth=533&amp;size=35717&amp;status=done&amp;width=533">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align=left&amp;display=inline&amp;height=645&amp;name=image.png&amp;originHeight=645&amp;originWidth=720&amp;size=68736&amp;status=done&amp;width=720">
-<meta property="og:updated_time" content="2019-11-23T05:04:01.136Z">
+<meta property="og:updated_time" content="2019-11-23T05:10:57.373Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&amp;display=inline&amp;height=690&amp;name=image.png&amp;originHeight=690&amp;originWidth=1038&amp;size=159786&amp;status=done&amp;width=1038">
 
@@ -178,18 +178,17 @@
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
-  <div class="search-input" id="search-input"></div>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div class="algolia-results">
-  <div id="algolia-stats"></div>
-  <div id="algolia-hits"></div>
-  <div id="algolia-pagination" class="algolia-pagination"></div>
-</div>
+<div id="search-result"></div>
 
-  
 </div>
 <div class="search-pop-overlay"></div>
 
@@ -249,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-23 13:04:01" itemprop="dateModified" datetime="2019-11-23T13:04:01+08:00">2019-11-23</time>
+                <time title="修改时间：2019-11-23 13:10:57" itemprop="dateModified" datetime="2019-11-23T13:10:57+08:00">2019-11-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -725,10 +724,7 @@
 
 
 
-  
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
-<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script><script src="/js/algolia-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 
