@@ -48,16 +48,27 @@
   };
 </script>
 
-  <meta name="description" content="云计算从业者，全栈攻城狮">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Better">
-<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;tags&#x2F;Linux&#x2F;page&#x2F;2&#x2F;index.html">
+  <meta name="description" content="为了方便基于 Proxmox 平台创建虚拟机，本文描述了制作包含 cloud-init 的虚拟机模板。">
+<meta name="keywords" content="Proxmox, cloud-init">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为 Proxmox 制作包含 cloud-init 的虚拟机模板">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;2019&#x2F;08&#x2F;13&#x2F;%E4%B8%BA%20Proxmox%20%E5%88%B6%E4%BD%9C%E5%8C%85%E5%90%AB%20cloud-init%20%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A8%A1%E6%9D%BF&#x2F;index.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="云计算从业者，全栈攻城狮">
+<meta property="og:description" content="为了方便基于 Proxmox 平台创建虚拟机，本文描述了制作包含 cloud-init 的虚拟机模板。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&amp;display=inline&amp;height=690&amp;name=image.png&amp;originHeight=690&amp;originWidth=1038&amp;size=159786&amp;status=done&amp;width=1038">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png#align=left&amp;display=inline&amp;height=751&amp;name=image.png&amp;originHeight=751&amp;originWidth=1043&amp;size=125930&amp;status=done&amp;width=1043">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png#align=left&amp;display=inline&amp;height=769&amp;name=image.png&amp;originHeight=769&amp;originWidth=1026&amp;size=121666&amp;status=done&amp;width=1026">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png#align=left&amp;display=inline&amp;height=769&amp;name=image.png&amp;originHeight=769&amp;originWidth=1041&amp;size=165004&amp;status=done&amp;width=1041">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png#align=left&amp;display=inline&amp;height=733&amp;name=image.png&amp;originHeight=733&amp;originWidth=1020&amp;size=132613&amp;status=done&amp;width=1020">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align=left&amp;display=inline&amp;height=633&amp;name=image.png&amp;originHeight=633&amp;originWidth=719&amp;size=92450&amp;status=done&amp;width=719">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765613783-81f32306-e298-4d18-a553-128415466232.png#align=left&amp;display=inline&amp;height=388&amp;name=image.png&amp;originHeight=388&amp;originWidth=533&amp;size=35717&amp;status=done&amp;width=533">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align=left&amp;display=inline&amp;height=645&amp;name=image.png&amp;originHeight=645&amp;originWidth=720&amp;size=68736&amp;status=done&amp;width=720">
+<meta property="og:updated_time" content="2019-11-23T13:50:11.413Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&amp;display=inline&amp;height=690&amp;name=image.png&amp;originHeight=690&amp;originWidth=1038&amp;size=159786&amp;status=done&amp;width=1038">
 
-<link rel="canonical" href="https://www.xiayinchang.top/tags/Linux/page/2/">
+<link rel="canonical" href="https://www.xiayinchang.top/2019/08/13/%E4%B8%BA%20Proxmox%20%E5%88%B6%E4%BD%9C%E5%8C%85%E5%90%AB%20cloud-init%20%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A8%A1%E6%9D%BF/">
 
 
 <script id="page-configurations">
@@ -65,13 +76,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>标签: Linux | Better</title>
+  <title>为 Proxmox 制作包含 cloud-init 的虚拟机模板 | Better</title>
   
 
 
@@ -202,77 +213,246 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">Linux
-          <small>标签</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/2019/08/13/%E4%B8%BA%20Proxmox%20%E5%88%B6%E4%BD%9C%E5%8C%85%E5%90%AB%20cloud-init%20%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A8%A1%E6%9D%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          为 Proxmox 制作包含 cloud-init 的虚拟机模板
         </h2>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-14 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-14T00:00:00+08:00">2019-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-23 21:50:11" itemprop="dateModified" datetime="2019-11-23T21:50:11+08:00">2019-11-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Proxmox/" itemprop="url" rel="index">
+                    <span itemprop="name">Proxmox</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+            <div class="post-description">为了方便基于 Proxmox 平台创建虚拟机，本文描述了制作包含 cloud-init 的虚拟机模板。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h2 class="collection-header">2019</h2>
+        <p><a name="WsMUi"></a></p><h4 id="安装-Centos"><a href="#安装-Centos" class="headerlink" title="安装 Centos"></a>安装 Centos</h4><p>在我搭建的 Proxmox 平台中使用了 Ceph 作为虚拟机的后端存储，为了提高虚拟机磁盘性能，在安装虚拟机的时候使用 LVM raid0 逻辑分区挂载根目录。</p><ul>
+<li>在 install destination 中选中三块盘并勾选自行分区选项</li>
+</ul><p><img src="https://i.loli.net/2019/11/23/rTHyOAXIdYqvwmM.png" alt="image.png"></p><ul>
+<li>点击 automatically create lvm partition 自动创建分区，删除其它分区只保留 /boot 分区</li>
+</ul><a id="more"></a>
+
+
+
+
+<p><img src="/images/1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png" alt="image.png"></p>
+<ul>
+<li>点击 + 按钮添加新的分区，挂载点为根路径，容量超过磁盘最大容量，安装程序会自动校正到真实的最大可用容量。</li>
+</ul>
+<p><img src="/images/1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png" alt="image.png"></p>
+<ul>
+<li>点击 Modify 按钮修改新建分区的 RAID Level 为 RAID0。</li>
+</ul>
+<p><img src="/images/1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png" alt="image.png"></p>
+<ul>
+<li>以下是创建完成的分区，保存后按照常规步骤继续安装操作系统。</li>
+</ul>
+<p><img src="/images/1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png" alt="image.png"></p>
+<p><a name="0dMBI"></a></p>
+<h4 id="调整安装好的操作系统"><a href="#调整安装好的操作系统" class="headerlink" title="调整安装好的操作系统"></a>调整安装好的操作系统</h4><ul>
+<li>进入操作系统，首先关闭 selinux、firewalld 和 NetworkManager。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> --now firewalld NetworkManager</span><br><span class="line">setenforce 0</span><br><span class="line">sed -ri <span class="string">'/^[^#]*SELINUX=/s#=.+$#=disabled#'</span> /etc/selinux/config</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装acpid cloud-init cloud-utils-growpart</li>
+</ul>
+<p>apcid 是为了可以使 kvm 可以关闭和重启虚拟机，qemu-guest-agent 使得 Proxmox 可以获取虚拟机的 IP 等信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y acpid cloud-init cloud-utils-growpart qemu-guest-agent</span><br><span class="line">systemctl <span class="built_in">enable</span> acpid </span><br><span class="line">systemctl <span class="built_in">enable</span> qemu-guest-agent</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>禁用默认zeroconf路线</li>
+</ul>
+<p>当系统无法连接DHCP server的时候，就会尝试通过ZEROCONF来获取IP,并添加一条169.254.0.0/16的路由条目。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"NOZEROCONF=yes"</span> &gt;&gt; /etc/sysconfig/network</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改sshd不使用dns防止ssh连接慢</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/UseDNS/&#123;s@#@@;s@\s+.+@ no@&#125;'</span> /etc/ssh/sshd_config</span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 cloud-init 配置</li>
+</ul>
+<p>分别是允许 root 登录，允许使用 password 登录，禁止第一次开机自动更新系统。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/disable_root/&#123;s#\S$#0#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/ssh_pwauth/&#123;s#\S$#1#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/package-update/s@^@#@'</span> /etc/cloud/cloud.cfg</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如有需要可以自行添加一些额外的配置</li>
+</ul>
+<p>我在 /sbin/ifup-local 中添加了如下配置用于配置特殊的路由以适应办公室网络环境。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">touch /sbin/ifup-local</span><br><span class="line">chmod +x /sbin/ifup-local</span><br><span class="line">cat /sbin/ifup-local</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">ip r add 192.168.76.0/24 via 192.168.180.254</span><br><span class="line">ip r add 192.168.77.0/24 via 192.168.180.254</span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>关机，并在 Proxmox 中为之添加 CloudInit Drive。</li>
+</ul>
+<p><img src="/images/1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png" alt="image.png"></p>
+<ul>
+<li>填写相关 init 参数并 regenerate image。</li>
+</ul>
+<p><img src="/images/1565765613783-81f32306-e298-4d18-a553-128415466232.png" alt="image.png"></p>
+<ul>
+<li>启用 qemu-agent</li>
+</ul>
+<p><img src="/images/1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png" alt="image.png"></p>
+<ul>
+<li>将虚拟机转为模板，之后就可以以此为基础创建新的虚拟机。<br><a name="btgSa"></a><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><a href="https://zhangguanzhang.github.io/2019/01/22/proxmox-cloud-init/" target="_blank" rel="noopener">proxmox里使用cloud-init和一些笔记</a></li>
+</ul>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/11/08/Linux 实用命令集合/" rel="bookmark">Linux 实用命令集合</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/09/02/Proxmox 使用拾遗/" rel="bookmark">Proxmox 使用拾遗</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/09/03/ArchLinux 常用命令/" rel="bookmark">ArchLinux 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/20/Centos 编译安装 zfs/" rel="bookmark">Centos 编译安装 zfs</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/09/02/Ceph 常用操作/" rel="bookmark">Ceph 常用操作</a></div>
+    </li>
+  </ul>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-06-21T00:00:00+08:00"
-              content="2019-06-21">
-          06-21
-        </time>
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
       </div>
 
-      <h3 class="post-title">
-          <a class="post-title-link" href="/2019/06/20/Centos%20%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%20zfs/" itemprop="url">
-            <span itemprop="name">Centos 编译安装 zfs</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-06-21T00:00:00+08:00"
-              content="2019-06-21">
-          06-21
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/2019/06/20/%E6%A0%91%E8%8E%93%E6%B4%BE%203B%20%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%20zfs/" itemprop="url">
-            <span itemprop="name">树莓派 3B 编译安装 zfs</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-    </div>
   </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">#  云计算</a>
+              <a href="/tags/Proxmox/" rel="tag"># Proxmox</a>
+              <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag"># 虚拟机</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/07/06/IPVS%20%E6%A8%A1%E5%BC%8F%E4%B8%8B%20NodePort%20%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B%E6%B5%85%E6%9E%90/" rel="next" title="IPVS 模式下 NodePort 的工作过程浅析">
+                  <i class="fa fa-chevron-left"></i> IPVS 模式下 NodePort 的工作过程浅析
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/08/29/%E5%88%B6%E4%BD%9C%20Docker%20Base%20Image/" rel="prev" title="基于 CentOS Minimal 镜像制作 Docker Base Image">
+                  基于 CentOS Minimal 镜像制作 Docker Base Image <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
   
   
   
 
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/tags/Linux/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/tags/Linux/">1</a><span class="page-number current">2</span>
-  </nav>
-
+  </div>
 
 
           </div>
           
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
 
         </div>
           
@@ -297,6 +477,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-Centos"><span class="nav-number">1.</span> <span class="nav-text">安装 Centos</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调整安装好的操作系统"><span class="nav-number">2.</span> <span class="nav-text">调整安装好的操作系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -464,6 +645,19 @@
 
   
 
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
 
 </body>
 </html>
