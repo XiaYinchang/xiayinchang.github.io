@@ -57,11 +57,6 @@ function replaceImgAddr(filename) {
               imagePath = await uploadToSMMS(imgAddr);
               if (imagePath) {
                 imagesMap.images.push({ origin: imgAddr, smms: imagePath });
-                fs.writeFileSync(
-                  "./imageMap.json",
-                  JSON.stringify(imagesMap),
-                  "utf8"
-                );
               }
             } catch (error) {
               console.log(error);
@@ -76,6 +71,8 @@ function replaceImgAddr(filename) {
         }
       }
       fs.writeFileSync(filename, dataStr, "utf8");
+      console.log(imagesMap);
+      fs.writeFileSync("./imageMap.json", JSON.stringify(imagesMap), "utf8");
     });
   }
 }
@@ -114,7 +111,6 @@ function uploadToSMMS(imgAddr) {
         res.setEncoding("utf8");
         let imageNewAddr = "";
         res.on("data", function(chunk) {
-          console.log(String(chunk));
           try {
             body = JSON.parse(String(chunk));
             if (body.success) {
