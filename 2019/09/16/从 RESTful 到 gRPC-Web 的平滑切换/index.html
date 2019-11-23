@@ -27,7 +27,7 @@
     version: '7.5.0',
     exturl: false,
     sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
+    copycode: {"enable":true,"show_result":true,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
@@ -56,7 +56,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="在分布式系统架构中，后端服务较多使用 gRPC 进行通信，当需要暴露服务给前端时往往需要增加一层 Http Server 将 gRPC-Web 转换为 RESTful 接口，这会增加额外的工作量，而 gRPC-Web 项目可以帮助我们避免这些工作，实现在前端直接调用 gRPC 服务。对于已经存在大量 RESTful 调用的系统中，立即全部迁移至 gRPC-Web 是不现实的，因此我们需要一种平滑迁">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-23T05:22:25.331Z">
+<meta property="og:updated_time" content="2019-11-23T05:24:23.690Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/2019/09/16/%E4%BB%8E%20RESTful%20%E5%88%B0%20gRPC-Web%20%E7%9A%84%E5%B9%B3%E6%BB%91%E5%88%87%E6%8D%A2/">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-23 13:22:25" itemprop="dateModified" datetime="2019-11-23T13:22:25+08:00">2019-11-23</time>
+                <time title="修改时间：2019-11-23 13:24:23" itemprop="dateModified" datetime="2019-11-23T13:24:23+08:00">2019-11-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -463,11 +463,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
+      <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">129k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     <span title="站点阅读时长">1:57</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
