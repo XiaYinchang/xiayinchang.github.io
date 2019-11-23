@@ -64,7 +64,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574348964801-b5f5e678-23bd-4af9-b3ad-2a8fdb3eb129.png#align=left&amp;display=inline&amp;height=365&amp;name=image.png&amp;originHeight=1104&amp;originWidth=2256&amp;search=&amp;size=191252&amp;status=done&amp;width=746">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574349095187-c0ee05f1-2140-4664-b999-fb46b18e5b1d.png#align=left&amp;display=inline&amp;height=319&amp;name=image.png&amp;originHeight=638&amp;originWidth=2408&amp;search=&amp;size=127346&amp;status=done&amp;width=1204">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574349534969-cee1fcaf-2bbc-4eff-9c8a-dc44fa6363b8.png#align=left&amp;display=inline&amp;height=522&amp;name=image.png&amp;originHeight=1044&amp;originWidth=2132&amp;search=&amp;size=157428&amp;status=done&amp;width=1066">
-<meta property="og:updated_time" content="2019-11-23T13:50:11.393Z">
+<meta property="og:updated_time" content="2019-11-23T14:01:35.766Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574345326347-21a088e7-b99e-48ab-b4d4-03da8cd43dd5.png#align=left&amp;display=inline&amp;height=281&amp;name=image.png&amp;originHeight=562&amp;originWidth=1454&amp;search=&amp;size=81111&amp;status=done&amp;width=727">
 
@@ -248,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-23 21:50:11" itemprop="dateModified" datetime="2019-11-23T21:50:11+08:00">2019-11-23</time>
+                <time title="修改时间：2019-11-23 22:01:35" itemprop="dateModified" datetime="2019-11-23T22:01:35+08:00">2019-11-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -309,7 +309,7 @@
 <p>回过头查看上述工作流，涉及到了 xiayinchang.github.io 仓库的两个分支，一个是 src 分支，一个是 master 分支， src 分支保存的是 Hexo 项目的代码，用来生成静态文件，master 分支保存的是生成的静态文件，也是 GitHub Pages 服务的数据源，src 分支生成的静态文件要 push 到 master 分支才能被 GitHub Pages 使用，这是因为：根据 GitHub Pages 的说明，静态文件必须要放在 master 分支。<br>现在，只要修改了部分文章内容后，push 到 xiayinchang.github.io 仓库的 src 分支即会触发该工作流，完成从 Markdown 格式的源文件到博客静态文件的自动生成，并自动推送到 master 分支从而触发 GitHub Pages 的自动更新，进而完成博客站点的自动更新，此时再打开 xiayinchang.github.io 这个站点就能看到更新的文章内容已经显示在网页端了。</p>
 <p><a name="BCs47"></a></p>
 <h3 id="语雀更新触发-GitHub-Action-自动构建"><a href="#语雀更新触发-GitHub-Action-自动构建" class="headerlink" title="语雀更新触发 GitHub Action 自动构建"></a>语雀更新触发 GitHub Action 自动构建</h3><p><a name="Vwaex"></a></p>
-<h4 id="初步方案设计"><a href="#初步方案设计" class="headerlink" title="初步方案设计"></a>初步方案设计</h4><p>在上一步中虽然已经实现了自动生成静态文件，但是事件本身仍然需要我们手动生成，即手动 push 后触发自动构建，在这一步我们要实现的是在语雀上更新文章后就能触发 GitHub 的自动构建。语雀提供了 webhook 机制使得更新文章时能够触发外部事件，而 GitHub Action 能够通过我们之前提到过的 repository_dispatch 机制接收外部事件，如果能够将两者对接起来，也就实现了我们的目标，但这个过程并没有那么简单。<br>语雀支持的 webhook 是一个简单的 http url ，无法添加请求头和请求体，如下图所示:<br><img src="https://i.loli.net/2019/11/23/cj1pDuXyvtGFfsS.png" alt="image.png"><br>GitHub repository_dispatch 支持的外部事件必须具有以下请求头（包括认证信息）：</p>
+<h4 id="初步方案设计"><a href="#初步方案设计" class="headerlink" title="初步方案设计"></a>初步方案设计</h4><p>在上一步中虽然已经实现了自动生成静态文件，但是事件本身仍然需要我们手动生成，即手动 push 后触发自动构建，在这一步我们要实现的是在语雀上更新文章后就能触发 GitHub 的自动构建。语雀提供了 webhook 机制使得更新文章时能够触发外部事件，而 GitHub Action 能够通过我们之前提到过的 repository_dispatch 机制接收外部事件，如果能够将两者对接起来，也就实现了我们的目标，但这个过程并没有那么简单。<br>语雀支持的 webhook 是一个简单的 http url ，无法添加请求头和请求体，如下图所示:<br><img src="https://i.loli.net/2019/11/23/6wRlVhYyAfxUE5j.png" alt="image.png"><br>GitHub repository_dispatch 支持的外部事件必须具有以下请求头（包括认证信息）：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">    -H <span class="string">"Authorization: token $&#123;GITHUB_TOKEN&#125;"</span> \</span><br><span class="line">    -H <span class="string">'Accept: application/vnd.github.everest-preview+json'</span> \</span><br><span class="line">    -d <span class="string">'&#123;"event_type":"rollback"&#125;'</span> \</span><br><span class="line">    https:<span class="comment">//api.github.com/repos/$&#123;GITHUB_REPO_OWNER&#125;/$&#123;GITHUB_REPO&#125;/dispatches</span></span><br></pre></td></tr></table></figure>
 <p>所以直接在语雀 webhook 中添加 GitHub 事件的触发地址是不行的，因为无法添加必须的请求头信息，因此我们需要一个中间层把两者适配起来，示意图如下：</p>
 <p><img src="/images/1574346796484-cd1f3d51-6d05-4e95-a457-68f02556072e.svg" alt="yuque-github.svg"></p>
