@@ -5,7 +5,7 @@ title: Linux 实用命令集合
 
 urlname: qyggmq
 
-date: 2019-11-09 00:00:00 +0800
+date: 2019-11-09 00:00:00 +0000
 
 layout: post
 

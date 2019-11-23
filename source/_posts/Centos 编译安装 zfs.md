@@ -5,7 +5,7 @@ title: Centos 编译安装 zfs
 
 urlname: mr25kw
 
-date: 2019-06-21 00:00:00 +0800
+date: 2019-06-21 00:00:00 +0000
 
 layout: post
 

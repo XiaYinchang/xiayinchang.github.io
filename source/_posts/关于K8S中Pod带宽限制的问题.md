@@ -5,7 +5,7 @@ title: 关于K8S中Pod带宽限制的问题
 
 urlname: kb61zt
 
-date: 2019-01-13 00:00:00 +0800
+date: 2019-01-13 00:00:00 +0000
 
 layout: post
 

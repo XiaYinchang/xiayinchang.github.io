@@ -5,7 +5,7 @@ title: VMware Workstation 虚拟机 root 分区扩容
 
 urlname: vefh1k
 
-date: 2019-05-26 00:00:00 +0800
+date: 2019-05-26 00:00:00 +0000
 
 layout: post
 
