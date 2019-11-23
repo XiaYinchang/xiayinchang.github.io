@@ -29,12 +29,6 @@ jobs:
           CI: true
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
           LIVERE_UID: ${{ secrets.LIVERE_UID }}
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v2.5.0
-        env:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-          PUBLISH_BRANCH: master
-          PUBLISH_DIR: ./public
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
@@ -44,3 +38,9 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.PERSONAL_TOKEN }}
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v2.5.0
+        env:
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          PUBLISH_BRANCH: master
+          PUBLISH_DIR: ./public

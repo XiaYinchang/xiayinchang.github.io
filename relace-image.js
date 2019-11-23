@@ -114,6 +114,7 @@ function uploadToSMMS(imgAddr) {
         res.setEncoding("utf8");
         let imageNewAddr = "";
         res.on("data", function(chunk) {
+          console.log(String(chunk));
           try {
             body = JSON.parse(String(chunk));
             if (body.success) {
