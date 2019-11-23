@@ -103,24 +103,9 @@ deploy:
   #     mayun: git@git.oschina.net:xiayinchang/myblog.git
   #     gitlab: git@gitlab.com:xyc11223344/myblog.git
   #   branch: master
-  - type: leancloud_counter_security_sync
 
 # Swiftype Search Key
 # swiftype_key: edxiK4DuHG8u7CsozY7n
-
-algolia:
-  applicationID: ALGOLIA_APPLICATION_ID
-  apiKey: ALGOLIA_API_KEY
-  adminApiKey: ALGOLIA_ADMIN_API_KEY
-  indexName: xyc
-  chunkSize: 5000
-
-leancloud_counter_security:
-  enable_sync: true
-  app_id: LEANCLOUD_APP_ID
-  app_key: LEANCLOUD_APP_KEY
-  username: LEANCLOUD_USERNAME
-  password: LEANCLOUD_PASSWORD
 
 feed:
   type: atom

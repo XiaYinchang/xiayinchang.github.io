@@ -23,35 +23,12 @@ jobs:
       - name: npm install, build
         run: |
           npm install
-          sed -i "s/ALGOLIA_ADMIN_API_KEY/$ALGOLIA_ADMIN_API_KEY/g" _config.yml
-          sed -i "s/ALGOLIA_API_KEY/$ALGOLIA_API_KEY/g" _config.yml
-          sed -i "s/ALGOLIA_APPLICATION_ID/$ALGOLIA_APPLICATION_ID/g" _config.yml
-          sed -i "s/LEANCLOUD_APP_ID/$LEANCLOUD_APP_ID/g" _config.yml
-          sed -i "s/LEANCLOUD_APP_KEY/$LEANCLOUD_APP_KEY/g" _config.yml
-          sed -i "s/LEANCLOUD_PASSWORD/$LEANCLOUD_PASSWORD/g" _config.yml
-          sed -i "s/LEANCLOUD_USERNAME/$LEANCLOUD_USERNAME/g" _config.yml
-          sed -i "s/LIVERE_UID/$LIVERE_UID/g" _config.yml
-          sed -i "s/ALGOLIA_ADMIN_API_KEY/$ALGOLIA_ADMIN_API_KEY/g" themes/next/_config.yml
-          sed -i "s/ALGOLIA_API_KEY/$ALGOLIA_API_KEY/g" themes/next/_config.yml
-          sed -i "s/ALGOLIA_APPLICATION_ID/$ALGOLIA_APPLICATION_ID/g" themes/next/_config.yml
-          sed -i "s/LEANCLOUD_APP_ID/$LEANCLOUD_APP_ID/g" themes/next/_config.yml
-          sed -i "s/LEANCLOUD_APP_KEY/$LEANCLOUD_APP_KEY/g" themes/next/_config.yml
-          sed -i "s/LEANCLOUD_PASSWORD/$LEANCLOUD_PASSWORD/g" themes/next/_config.yml
-          sed -i "s/LEANCLOUD_USERNAME/$LEANCLOUD_USERNAME/g" themes/next/_config.yml
           sed -i "s/LIVERE_UID/$LIVERE_UID/g" themes/next/_config.yml
           npm run generate
           cp CNAME ./public/CNAME
         env:
           CI: true
-          HEXO_ALGOLIA_INDEXING_KEY: ${{ secrets.HEXO_ALGOLIA_INDEXING_KEY }}
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
-          ALGOLIA_ADMIN_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
-          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-          ALGOLIA_APPLICATION_ID: ${{ secrets.ALGOLIA_APPLICATION_ID }}
-          LEANCLOUD_APP_ID: ${{ secrets.LEANCLOUD_APP_ID }}
-          LEANCLOUD_APP_KEY: ${{ secrets.LEANCLOUD_APP_KEY }}
-          LEANCLOUD_PASSWORD: ${{ secrets.LEANCLOUD_PASSWORD }}
-          LEANCLOUD_USERNAME: ${{ secrets.LEANCLOUD_USERNAME }}
           LIVERE_UID: ${{ secrets.LIVERE_UID }}
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v2.5.0
