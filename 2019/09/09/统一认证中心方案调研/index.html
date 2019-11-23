@@ -66,7 +66,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568620339129-62544ce7-0f22-40be-9ac3-e8479f90b590.png#align=left&amp;display=inline&amp;height=231&amp;name=image.png&amp;originHeight=231&amp;originWidth=476&amp;size=12341&amp;status=done&amp;width=476">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568621100341-781dba8e-5d5d-4349-80d4-50449397caff.png#align=left&amp;display=inline&amp;height=341&amp;name=image.png&amp;originHeight=341&amp;originWidth=569&amp;size=16799&amp;status=done&amp;width=569">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568622013241-ade99ea1-a5b4-4da8-8c98-0c07cefd3044.png#align=left&amp;display=inline&amp;height=281&amp;name=image.png&amp;originHeight=281&amp;originWidth=637&amp;size=13836&amp;status=done&amp;width=637">
-<meta property="og:updated_time" content="2019-11-23T14:21:53.145Z">
+<meta property="og:updated_time" content="2019-11-23T14:23:23.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568099807740-b6f23b9f-79f7-4f1e-8c5b-e7e6dcc812c7.png#align=left&amp;display=inline&amp;height=121&amp;name=image.png&amp;originHeight=121&amp;originWidth=531&amp;size=9511&amp;status=done&amp;width=531">
 
@@ -250,7 +250,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-23 22:21:53" itemprop="dateModified" datetime="2019-11-23T22:21:53+08:00">2019-11-23</time>
+                <time title="修改时间：2019-11-23 22:23:23" itemprop="dateModified" datetime="2019-11-23T22:23:23+08:00">2019-11-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -299,7 +299,7 @@
       
         <p><a name="QW5Ia"></a></p><h4 id="为什么需要认证中心"><a href="#为什么需要认证中心" class="headerlink" title="为什么需要认证中心"></a>为什么需要认证中心</h4><p>认证（Authentication）和授权（Athorization）是企业级服务的基本功能，企业级应用的开发必须考虑到如何使提供的产品与用户已有的认证和授权体系结合起来，更进一步能够基于该体系提供开发接口给其它应用调用。如下图所示，不同的用户可能已经有不同的认证体系，有的用户可能用的是<br> LDAP，这是种比较老的认证方式，SAML 新一些，最新的是<br>OpenID，这些不同的认证后端都应当可以接入到统一认证中心，从而能够更好地管理用户和进行授权。</p><a id="more"></a>
 
-<p><img src="https://i.loli.net/2019/11/23/EhV2YbjeNMwys5J.png" alt="image.png"><br></p>
+<p><img src="https://i.loli.net/2019/11/23/2jkdU9lIDE7Oo8K.png" alt="image.png"><br></p>
 <p><a name="lMJ8j"></a></p>
 <h4 id="OpenID"><a href="#OpenID" class="headerlink" title="OpenID"></a>OpenID</h4><p>如上图所示，不论用户已有的认证体系是基于什么协议的，通过认证中心我们将其统一转换为 OpenID 协议从而方便应用服务的开发，协议的转换可以交由 Keystone 和 Keycloak 等开源方案来解决， 而 OpenID 是我们开发环节必须要涉及到的内容，因此需要搞清楚其原理。<br>OpenID 是 OAuth 2.0 协议的扩展，主要增强了认证功能，因此认识 OpenID 需要从 OAuth 2.0 开始。OAuth 2.0 协议的应用实际上已经相当广泛，现在很多网站都允许使用微信扫码登录，这个登录过程其实就是 OAuth 2.0 协议的一种实现。下面以<a href="https://www.ituring.com.cn" target="_blank" rel="noopener">图灵社区</a>使用微信账号登录为例说明整个过程：</p>
 <ol>
