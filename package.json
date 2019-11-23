@@ -6,7 +6,7 @@
     "version": "4.0.0"
   },
   "scripts": {
-    "generate": "yuque-hexo clean && yuque-hexo sync && hexo clean && hexo a && hexo g && hexo d",
+    "generate": "yuque-hexo clean && yuque-hexo sync && hexo clean && hexo g && hexo d",
     "dev": "npm run sync && hexo g",
     "sync": "yuque-hexo sync",
     "clean:yuque": "yuque-hexo clean"

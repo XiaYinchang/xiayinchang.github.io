@@ -341,6 +341,11 @@ git rm <path_to_submodule>
 git commit -m "Removed submodule "
 ```
 
+- 合并所有 commit 为一个
+```
+git rebase --root -i
+```
+
 <a name="Qgmi6"></a>
 #### Ansible
 
