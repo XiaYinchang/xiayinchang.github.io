@@ -72,7 +72,11 @@ function replaceImgAddr(filename) {
       }
       fs.writeFileSync(filename, dataStr, "utf8");
       console.log(imagesMap);
-      fs.writeFileSync("./imageMap.json", JSON.stringify(imagesMap), "utf8");
+      fs.writeFileSync(
+        "./imageMap.json",
+        JSON.stringify(imagesMap, null, 2),
+        "utf8"
+      );
     });
   }
 }
