@@ -25,6 +25,7 @@ jobs:
           npm install
           sed -i "s/LIVERE_UID/$LIVERE_UID/g" themes/next/_config.yml
           npm run generate
+          node relace-image.js
           cp CNAME ./public/CNAME
         env:
           CI: true
