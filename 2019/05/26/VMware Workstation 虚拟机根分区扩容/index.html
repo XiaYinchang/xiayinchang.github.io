@@ -11,6 +11,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
   <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -300,7 +302,7 @@
 
 
 
-<h4 id="物理磁盘扩容"><a href="#物理磁盘扩容" class="headerlink" title="物理磁盘扩容"></a>物理磁盘扩容</h4><p>在 VMware Workstation 虚拟机详情中，对虚拟物理盘扩容，如图：<br><img src="https://i.loli.net/2019/11/24/i9YB8GJLj4tgXyq.png" alt="image.png"></p>
+<h4 id="物理磁盘扩容"><a href="#物理磁盘扩容" class="headerlink" title="物理磁盘扩容"></a>物理磁盘扩容</h4><p>在 VMware Workstation 虚拟机详情中，对虚拟物理盘扩容，如图：<br><img src="https://i.loli.net/2019/11/24/HCvkjZPu5yF8wdK.png" alt="image.png"></p>
 <p>此时进入操作系统查看块设备详情，目标是增加 centos-root 容量：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># lsblk</span></span><br><span class="line">NAME            MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda               8:0    0  300G  0 disk </span><br><span class="line">├─sda1            8:1    0    1G  0 part /boot</span><br><span class="line">└─sda2            8:2    0   39G  0 part </span><br><span class="line">  ├─centos-root 253:0    0 35.1G  0 lvm  /</span><br><span class="line">  └─centos-swap 253:1    0  3.9G  0 lvm  [SWAP]</span><br><span class="line">sr0              11:0    1 1024M  0 rom</span><br></pre></td></tr></table></figure>
 
@@ -609,6 +611,15 @@
 
 
   
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
 
 
 
