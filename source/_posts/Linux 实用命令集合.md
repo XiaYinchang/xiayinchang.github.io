@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Sat Nov 23 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Sun Nov 24 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -541,6 +541,14 @@ if [ $(expr ${str3} \<= ${str2}) -eq 1 ]; then    echo "[${str3}] <= [${str2}]";
 // 获取 kubernetes 版本
 kubectl version --short | tail -1 | cut -d':' -f2 | tr -d '[:space:]'
 ```
+
+<a name="NBOFH"></a>
+#### vegeta 对 HTTP 服务进行性能测试
+```go
+echo "GET http://localhost:8080/cephcsi" | vegeta attack -rate=20000 -duration=60s > result.bin
+vegeta report result.bin
+```
+更多内容参考：[https://www.scaleway.com/en/docs/vegeta-load-testing/](https://www.scaleway.com/en/docs/vegeta-load-testing/)
 
 <a name="fL7Yx"></a>
 #### 实用工具

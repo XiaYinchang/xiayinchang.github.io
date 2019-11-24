@@ -2,6 +2,7 @@
 title: gRPC snippets
 urlname: xs66n7
 date: '2019-11-14 00:00:00 +0800'
+updated: 'Sun Nov 24 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: gRPC
@@ -133,6 +134,8 @@ protoc -I/usr/local/include -I. -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecos
 - [https://medium.com/swlh/rest-over-grpc-with-grpc-gateway-for-go-9584bfcbb835](https://medium.com/swlh/rest-over-grpc-with-grpc-gateway-for-go-9584bfcbb835)
 - [https://forum.golangbridge.org/t/go-rest-grpc-api/13072/5](https://forum.golangbridge.org/t/go-rest-grpc-api/13072/5)
 <a name="YWS6q"></a>
+#### 
+<a name="5XZZz"></a>
 #### 使用 Empty 类型
 在 gRPC 中要求每个函数调用都有返回值，如果确实不需要返回值，则为了统一规范与重用，我们可以使用 google  提供的 Empty 类型，Empty 类型的对象在序列化和反序列化时会被视为空对象，其 JSON 形式表示为 `{}` ，使用方法：
 ```protobuf

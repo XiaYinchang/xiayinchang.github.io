@@ -2,6 +2,7 @@
 title: Go 知识点汇总
 urlname: sfexfo
 date: '2019-10-12 00:00:00 +0800'
+updated: 'Sun Nov 24 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Go
@@ -457,8 +458,8 @@ for scanner.Scan() {}
 1. Go 社区提供的实现了令牌桶算法的限速包 [https://godoc.org/golang.org/x/time/rate](https://godoc.org/golang.org/x/time/rate)，一个简单的例子 [https://pliutau.com/rate-limit-http-requests/](https://pliutau.com/rate-limit-http-requests/) 。
 1. 一个创建和解压 zip 文件的库，在调用标准库 `archive/zip` 基础上做了些友好封装：[https://github.com/pierrre/archivefile](https://github.com/pierrre/archivefile)。
 1. 一个 Markdown 转 PDF 的库，只是不支持中文字符：[https://github.com/mandolyte/mdtopdf](https://github.com/mandolyte/mdtopdf)。
-<a name="8GqY0"></a>
-### 
+
+
 <a name="ymvvh"></a>
 ### 书籍
 
