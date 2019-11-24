@@ -1,24 +1,16 @@
-
 ---
-
 title: gRPC snippets
-
 urlname: xs66n7
-
-date: 2019-11-14 00:00:00 +0000
-
+date: '2019-11-14 00:00:00 +0800'
 layout: post
-
 comments: true
-
 categories: gRPC
-
-tags: [gRPC,Go]
-
+tags:
+  - gRPC
+  - Go
 keywords: gRPC
-
 description: gRPC 用法相关的知识和技巧以及代码片段汇总。
-
+abbrlink: ab759786
 ---
 
 <a name="d3l9E"></a>

@@ -1,24 +1,17 @@
-
 ---
-
 title: Qt 常见编译问题汇总
-
 urlname: feaklo
-
-date: 2017-04-07 00:00:00 +0000
-
+date: '2017-04-07 00:00:00 +0800'
 layout: post
-
 comments: true
-
 categories: Qt
-
-tags: [Qt,编译,C++]
-
-keywords: Qt, 编译问题
-
+tags:
+  - Qt
+  - 编译
+  - C++
+keywords: 'Qt, 编译问题'
 description: Qt编译过程中常见的问题及解决方法汇总。
-
+abbrlink: da23d674
 ---
 
 

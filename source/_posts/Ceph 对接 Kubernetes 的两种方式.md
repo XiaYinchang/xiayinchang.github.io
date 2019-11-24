@@ -1,24 +1,16 @@
-
 ---
-
 title: Ceph 对接 Kubernetes 的两种方式
-
 urlname: yek3gp
-
-date: 2019-09-11 00:00:00 +0000
-
+date: '2019-09-11 00:00:00 +0800'
 layout: post
-
 comments: true
-
 categories: Kubernetes
-
-tags: [Ceph,Kubernetes]
-
-keywords: Kubernetes,Ceph
-
+tags:
+  - Ceph
+  - Kubernetes
+keywords: 'Kubernetes,Ceph'
 description: 本文讲述Ceph 对接 Kubernetes 的两种方式。
-
+abbrlink: 466a6051
 ---
 
 <a name="hguEn"></a>

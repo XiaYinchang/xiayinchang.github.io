@@ -1,22 +1,15 @@
-
 ---
-
 title: Keepalived 和 Kubeadm 部署高可用 Kubernetes
-
 urlname: byko3z
-
-date: 2019-05-31 00:00:00 +0000
-
+date: '2019-05-31 00:00:00 +0800'
 layout: post
-
 categories: kubernetes
-
-tags: [kubernetes,云计算]
-
-keywords: kubernetes, kubeadm, keepalived
-
+tags:
+  - kubernetes
+  - 云计算
+keywords: 'kubernetes, kubeadm, keepalived'
 description: 离线使用 Keepalived 和 Kubeadm 部署高可用 K8S 集群。
-
+abbrlink: c9063311
 ---
 
 

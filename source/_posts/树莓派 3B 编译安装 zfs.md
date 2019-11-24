@@ -1,22 +1,16 @@
-
 ---
-
 title: 树莓派 3B 编译安装 zfs
-
 urlname: uv2afi
-
-date: 2019-06-21 00:00:00 +0000
-
+date: '2019-06-21 00:00:00 +0800'
 layout: post
-
 categories: Linux
-
-tags: [Linux,树莓派,存储]
-
-keywords: Linux, zfs
-
+tags:
+  - Linux
+  - 树莓派
+  - 存储
+keywords: 'Linux, zfs'
 description: 记录在树莓派官方系统上从源代码编译安装 zfs 的过程。
-
+abbrlink: 6adad945
 ---
 
 - 安装依赖

@@ -1,24 +1,18 @@
-
 ---
-
 title: 使用语雀、GitHub 和阿里云函数计算构建博客
-
 urlname: rg9lhf
-
-date: 2019-11-21 00:00:00 +0000
-
+date: '2019-11-21 00:00:00 +0800'
 layout: post
-
 comments: true
-
 categories: 云计算
-
-tags: [语雀,GitHub]
-
-keywords: 语雀, GitHub, Serverless
-
-description: 语雀，一款非常便捷友好的知识管理工具，很适合用来撰写博客。借助 yueque-hexo 可以将语雀与静态网站生成工具 Hexo 结合起来，再利用 GitHub 平台和阿里云函数计算服务可以实现博客更新与发布全流程的自动化。本文简单记录一下折腾过程。
-
+tags:
+  - 语雀
+  - GitHub
+keywords: '语雀, GitHub, Serverless'
+description: >-
+  语雀，一款非常便捷友好的知识管理工具，很适合用来撰写博客。借助 yueque-hexo 可以将语雀与静态网站生成工具 Hexo 结合起来，再利用
+  GitHub 平台和阿里云函数计算服务可以实现博客更新与发布全流程的自动化。本文简单记录一下折腾过程。
+abbrlink: b2362878
 ---
 
 

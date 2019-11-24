@@ -7,10 +7,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
 
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [13.x]
 
     steps:
       - uses: actions/checkout@master
@@ -26,9 +28,7 @@ jobs:
           sed -i "s/LIVERE_UID/$LIVERE_UID/g" themes/next/_config.yml
           npm run generate
           node relace-image.js
-          cp CNAME ./public/CNAME
         env:
-          CI: true
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
           LIVERE_UID: ${{ secrets.LIVERE_UID }}
       - name: Deploy

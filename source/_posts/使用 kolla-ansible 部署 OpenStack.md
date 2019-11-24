@@ -1,22 +1,15 @@
-
 ---
-
 title: 使用 kolla-ansible 部署 OpenStack
-
 urlname: hd3h5q
-
-date: 2019-05-26 00:00:00 +0000
-
+date: '2019-05-26 00:00:00 +0800'
 layout: post
-
 categories: OpenStack
-
-tags: [OpenStack, 云计算]
-
-keywords: OpenStack, Kolla, Ansible
-
+tags:
+  - OpenStack
+  - "\_云计算"
+keywords: 'OpenStack, Kolla, Ansible'
 description: 使用 kolla-ansible 部署一套具有三个控制节点和两个计算节点的 OpenStack 环境。
-
+abbrlink: '43354256'
 ---
 
 

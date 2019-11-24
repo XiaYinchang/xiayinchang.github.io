@@ -1,24 +1,16 @@
-
 ---
-
 title: Linux 实用命令集合
-
 urlname: qyggmq
-
-date: 2019-11-09 00:00:00 +0000
-
-updated: Sat Nov 23 2019 00:00:00 GMT+0000 (Coordinated Universal Time)
-
+date: '2019-11-09 00:00:00 +0800'
+updated: 'Sat Nov 23 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
-
 categories: Linux
-
-tags: [Linux, 云计算]
-
-keywords: Linux, Docker
-
+tags:
+  - Linux
+  - "\_云计算"
+keywords: 'Linux, Docker'
 description: 在云计算场景下常用的 Linux 命令记录。
-
+abbrlink: b489449e
 ---
 
 <a name="CYJKi"></a>

@@ -1,24 +1,16 @@
-
 ---
-
 title: ArchLinux 常用命令
-
 urlname: egtn5p
-
-date: 2019-09-04 00:00:00 +0000
-
+date: '2019-09-04 00:00:00 +0800'
 layout: post
-
 comments: true
-
 categories: Linux
-
-tags: [Linux,ArchLinux]
-
+tags:
+  - Linux
+  - ArchLinux
 keywords: ArchLInux
-
 description: 本文记录使用 ArchLinux 作为开发平台常用的命令和操作。
-
+abbrlink: bda105fe
 ---
 
 

@@ -1,24 +1,16 @@
-
 ---
-
 title: VMware Workstation 虚拟机 root 分区扩容
-
 urlname: vefh1k
-
-date: 2019-05-26 00:00:00 +0000
-
+date: '2019-05-26 00:00:00 +0800'
 layout: post
-
 comments: true
-
 categories: Virtualization
-
-tags: [Virtaulization,云计算]
-
-keywords: LVM, PV, LV
-
+tags:
+  - Virtaulization
+  - 云计算
+keywords: 'LVM, PV, LV'
 description: 在虚拟机创建完成后扩容根分区。
-
+abbrlink: eca5e5f3
 ---
 
 

@@ -1,24 +1,16 @@
-
 ---
-
 title: 关于K8S中Pod带宽限制的问题
-
 urlname: kb61zt
-
-date: 2019-01-13 00:00:00 +0000
-
+date: '2019-01-13 00:00:00 +0800'
 layout: post
-
 comments: true
-
 categories: Kubernetes
-
-tags: [Kubernetes,云计算]
-
-keywords: Kubernetes, OpenShift, CNI
-
+tags:
+  - Kubernetes
+  - 云计算
+keywords: 'Kubernetes, OpenShift, CNI'
 description: 尝试使用K8S的CNI网络插件限制Pod带宽。
-
+abbrlink: 2c3c5a80
 ---
 
 

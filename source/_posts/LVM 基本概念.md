@@ -1,24 +1,16 @@
-
 ---
-
 title: LVM 基本概念
-
 urlname: poq0bg
-
-date: 2019-09-08 16:08:50 +0000
-
+date: '2019-09-08 16:08:50 +0800'
 layout: post
-
 comments: true
-
 categories: 译文
-
-tags: [LVM,译文]
-
-keywords: LVM,CentOS
-
+tags:
+  - LVM
+  - 译文
+keywords: 'LVM,CentOS'
 description: LVM 初学者必知必会。
-
+abbrlink: '31e91381'
 ---
 
 

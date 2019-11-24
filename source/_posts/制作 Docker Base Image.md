@@ -1,24 +1,16 @@
-
 ---
-
 title: 基于 CentOS Minimal 镜像制作 Docker Base Image
-
 urlname: xgi2cb
-
-date: 2019-08-30 00:00:00 +0000
-
+date: '2019-08-30 00:00:00 +0800'
 layout: post
-
 comments: true
-
 categories: Docker
-
-tags: [Linux,Docker]
-
-keywords: Docker, Centos
-
+tags:
+  - Linux
+  - Docker
+keywords: 'Docker, Centos'
 description: 本文记录基于 CentOS Minimal 镜像制作 Docker Base Image。
-
+abbrlink: 8a546874
 ---
 
 

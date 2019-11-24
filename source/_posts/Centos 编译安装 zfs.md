@@ -1,22 +1,16 @@
-
 ---
-
 title: Centos 编译安装 zfs
-
 urlname: mr25kw
-
-date: 2019-06-21 00:00:00 +0000
-
+date: '2019-06-21 00:00:00 +0800'
 layout: post
-
 categories: Linux
-
-tags: [Linux,Centos,存储]
-
-keywords: Linux, zfs
-
+tags:
+  - Linux
+  - Centos
+  - 存储
+keywords: 'Linux, zfs'
 description: 记录在Centos 7.6 上从源代码编译安装 zfs 的过程。
-
+abbrlink: dc552b49
 ---
 
 - 安装依赖

@@ -234,6 +234,19 @@
         {{ partial('_partials/post/post-copyright.swig') }}
       {%- endif %}
 
+      <div>
+        {% if not is_index %}
+          {% include 'passage-end-tag.swig' %}
+        {% endif %}
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
       <footer class="post-footer">
         {%- if post.tags and post.tags.length %}
           {%- if theme.tag_icon %}
