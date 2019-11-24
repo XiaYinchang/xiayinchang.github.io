@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在云计算场景下常用的 Linux 命令记录。">
+<meta name="keywords" content="Linux, Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 实用命令集合">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;2019&#x2F;11&#x2F;09&#x2F;Linux%20%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88&#x2F;index.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="在云计算场景下常用的 Linux 命令记录。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&amp;display=inline&amp;height=230&amp;name=image.png&amp;originHeight=230&amp;originWidth=716&amp;search=&amp;size=13999&amp;status=done&amp;width=716">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&amp;display=inline&amp;height=25&amp;name=image.png&amp;originHeight=25&amp;originWidth=160&amp;search=&amp;size=2640&amp;status=done&amp;width=160">
+<meta property="og:updated_time" content="2019-11-22T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&amp;display=inline&amp;height=230&amp;name=image.png&amp;originHeight=230&amp;originWidth=716&amp;search=&amp;size=13999&amp;status=done&amp;width=716">
+
+<link rel="canonical" href="https://www.xiayinchang.top/2019/11/09/Linux%20%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Linux 实用命令集合 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/2019/11/09/Linux%20%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Linux 实用命令集合
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-09 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-09T00:00:00+08:00">2019-11-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-23 00:00:00" itemprop="dateModified" datetime="2019-11-23T00:00:00+08:00">2019-11-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+            <div class="post-description">在云计算场景下常用的 Linux 命令记录。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a name="CYJKi"></a></p><h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><ul>
+<li>按指定格式输出Images信息</li>
+</ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images --format <span class="string">"&#123;&#123;.ID&#125;&#125;: &#123;&#123;.Repository&#125;&#125;"</span></span><br></pre></td></tr></table></figure><table>
+<thead>
+<tr>
+<th align="left">Placeholder</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>.ID</code></td>
+<td align="left">Image ID</td>
+</tr>
+<tr>
+<td align="left"><code>.Repository</code></td>
+<td align="left">Image repository</td>
+</tr>
+<tr>
+<td align="left"><code>.Tag</code></td>
+<td align="left">Image tag</td>
+</tr>
+</tbody></table><a id="more"></a>
+
+
+
+<ul>
+<li>使用镜像下载 docker image</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker pull golang:1.13.0 =&gt; docker pull dockerhub.azk8s.cn/library/golang:1.13.0</span><br><span class="line">docker pull rook/ceph:v1.0.6 =&gt; docker pull dockerhub.azk8s.cn/rook/ceph:v1.0.6</span><br><span class="line">docker pull gcr.io/kubernetes-helm/tiller:v2.9.1 =&gt; docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.9.1</span><br><span class="line">docker pull k8s.gcr.io/kube-apiserver:v1.14.1 =&gt; docker pull gcr.azk8s.cn/google-containers/kube-apiserver:v1.14.1</span><br><span class="line">docker pull quay.io/k8scsi/csi-node-driver-registrar:v1.1.0 =&gt; docker pull quay.azk8s.cn/k8scsi/csi-node-driver-registrar:v1.1.0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>新建容器时加入已有容器网络</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name b2 -it --network container:b1 --rm busybox:latest</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>docker 容器的四种网络模型：Bridge, Host, Container, None</p>
+<p>   参考： <a href="https://juejin.im/post/5c3363bf6fb9a049e2322cdb" target="_blank" rel="noopener">Docker 的网络模式详解</a></p>
+</li>
+<li><p>查看 docker registry 中的镜像信息</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET https://myregistry:5000/v2/_catalog</span><br><span class="line">curl -X GET https://myregistry:5000/v2/ubuntu/tags/list</span><br></pre></td></tr></table></figure>
+
+<p><a name="LzPfH"></a></p>
+<h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h4><ul>
+<li><p>升级系统内核</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</span><br><span class="line">rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</span><br><span class="line">yum --enablerepo=elrepo-kernel install kernel-ml</span><br><span class="line">awk -F\<span class="string">' '</span><span class="variable">$1</span>==<span class="string">"menuentry "</span> &#123;<span class="built_in">print</span> i++ <span class="string">" : "</span> <span class="variable">$2</span>&#125;<span class="string">' /etc/grub2.cfg</span></span><br><span class="line"><span class="string">grub2-set-default 0</span></span><br><span class="line"><span class="string">grub2-mkconfig -o /boot/grub2/grub.cfg</span></span><br><span class="line"><span class="string">reboot</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装fish</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/yum.repos.d/</span><br><span class="line">wget https://download.opensuse.org/repositories/shells:fish:release:2/CentOS_7/shells:fish:release:2.repo</span><br><span class="line">yum install fish -y</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建网桥</p>
+</li>
+</ul>
+<p>可以直接在配置文件修改，如下创建网桥 br0：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-br0 </span></span><br><span class="line">TYPE=Bridge</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">NAME=br0</span><br><span class="line">DEVICE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.180.136</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.180.254</span><br><span class="line">DNS1=114.114.114.114</span><br></pre></td></tr></table></figure>
+
+
+<p>加入物理网卡 em1 到网桥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-em1</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=no</span><br><span class="line">NAME=em1</span><br><span class="line">DEVICE=em1</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BRIDGE=br0</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>创建 veth 并持久化</li>
+</ul>
+<p>创建两对 veth 并加入到网桥，脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /root/config_veth.sh </span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">ip link add dev veth0 <span class="built_in">type</span> veth peer name veth1</span><br><span class="line">ip link add dev veth2 <span class="built_in">type</span> veth peer name veth3</span><br><span class="line">ip link <span class="built_in">set</span> dev veth0 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth1 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth2 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth3 up</span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+<p>执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /usr/lib/systemd/system/veth.service </span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Create veths</span><br><span class="line">After=network-pre.target dbus.service</span><br><span class="line">Before=network.target network.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/root/config_veth.sh</span><br><span class="line">Restart=on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>创建完上述文件，不要忘了执行 systemctl enable –now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth0</span></span><br><span class="line">DEVICE=veth0</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth1</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth1</span></span><br><span class="line">DEVICE=veth1</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">IPADDR=192.168.180.211</span><br><span class="line">MTU=1500</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth2</span></span><br><span class="line">DEVICE=veth2</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth3</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth3</span></span><br><span class="line">DEVICE=veth3</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth2</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
+
+<p>现在，就算重启系统虚拟网卡也会被自动重建了。</p>
+<ul>
+<li>自动加载内核模块</li>
+</ul>
+<p>以下示例加载 ipvs 内核模块:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/modules-load.d/ipvs.conf</span><br><span class="line">ip_vs</span><br><span class="line">ip_vs_lc</span><br><span class="line">ip_vs_wlc</span><br><span class="line">ip_vs_rr</span><br><span class="line">ip_vs_wrr</span><br><span class="line">ip_vs_lblc</span><br><span class="line">ip_vs_lblcr</span><br><span class="line">ip_vs_dh</span><br><span class="line">ip_vs_sh</span><br><span class="line">ip_vs_nq</span><br><span class="line">ip_vs_sed</span><br><span class="line">ip_vs_ftp</span><br><span class="line">nf_conntrack</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>自动设置内核参数<br>以下示例启用 ipv4 转发功能：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/sysctl.conf</span><br><span class="line">net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables=1</span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">vm.swappiness=0</span><br><span class="line">net.core.somaxconn=32768</span><br><span class="line">net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.conf.all.rp_filter=1</span><br><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>磁盘性能测试</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install fio</span><br><span class="line">fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=<span class="built_in">test</span> --filename=<span class="built_in">test</span> --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75</span><br><span class="line"></span><br><span class="line">//latnecy</span><br><span class="line">yum install epel-release</span><br><span class="line">yum install ioping</span><br><span class="line">ioping -c 10 .</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装 MariaDB</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加 MariaDB 仓库</span></span><br><span class="line">cat /etc/yum.repos.d/MariaDB.repo</span><br><span class="line">[mariadb]</span><br><span class="line">name = MariaDB</span><br><span class="line">baseurl = http://yum.mariadb.org/10.4/centos7-amd64</span><br><span class="line">gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck=1</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 执行安装</span></span><br><span class="line">yum -y install MariaDB-server MariaDB-client</span><br><span class="line">systemctl <span class="built_in">enable</span> --now mariadb</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>在 grub 引导界面临时编辑内核启动参数</p>
+<p>   首先，选中要编辑的内核项，按 <strong>e</strong> 进入编辑页面，编辑完成后按 <strong>Ctrl + x</strong>  启动系统。下图为编辑内核参数直接进入救援模式。</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2019/11/24/tAQGbLHTNyPmWK8.png" alt="image.png"><br></p>
+<ul>
+<li>在操作系统中编辑内核启动参数并重新生成 grub 引导</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 修改 /etc/default/grub 中的参数设置</span><br><span class="line">[root@umstor03 ~]<span class="comment"># cat /etc/default/grub </span></span><br><span class="line">GRUB_TIMEOUT=5</span><br><span class="line">GRUB_DISTRIBUTOR=<span class="string">"<span class="variable">$(sed 's, release .*$,,g' /etc/system-release)</span>"</span></span><br><span class="line">GRUB_DEFAULT=saved</span><br><span class="line">GRUB_DISABLE_SUBMENU=<span class="literal">true</span></span><br><span class="line">GRUB_TERMINAL_OUTPUT=<span class="string">"console"</span></span><br><span class="line">GRUB_CMDLINE_LINUX=<span class="string">"crashkernel=auto rd.lvm.lv=centos_umstor03/root video=640x480 nomodeset"</span></span><br><span class="line">GRUB_DISABLE_RECOVERY=<span class="string">"true"</span></span><br><span class="line"></span><br><span class="line">// 执行以下命令生成新的 grub 引导文件</span><br><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br><span class="line">// 重启系统时参数生效</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>netinstall  centos 1804 可用如下镜像源</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 不要遗漏最后的反斜线</span><br><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.5.1804/os/x86_64/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>包版本降级</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum downgrade httpd-2.2.3-22.el5</span><br></pre></td></tr></table></figure>
+
+<p><a name="3HTPv"></a></p>
+<h4 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h4><ul>
+<li>替换空格为换行</li>
+</ul>
+<p><img src="/images/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png" alt="image.png"></p>
+<p><a name="FfBcn"></a></p>
+<h4 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h4><ul>
+<li><p>修改历史 commit 信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~2</span><br><span class="line">pick -&gt; edit</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改 commit 时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 设置为当前时间</span><br><span class="line">GIT_COMMITTER_DATE=&quot;$(date &apos;+%Y-%m-%d %H:%M:%S&apos;)&quot; git commit --amend --no-edit --date &quot;$(date)&quot;</span><br><span class="line"># 设置为指定时间</span><br><span class="line">GIT_COMMITTER_DATE=&quot;Mon 20 Aug 2018 20:19:19 BST&quot; git commit --amend --no-edit --date &quot;Mon 20 Aug 2018 20:19:19 BST&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较两个分支的不同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff branch_1..branch_2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>merge 时使用指定方代码解决冲突</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git merge -X theirs origin/dev</span><br><span class="line">git merge -X ours origin/dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看一个文件完整的修改历史</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --follow -p -- _config.yml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将当前分支下子目录内容提交至另一个分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git subtree push --prefix dist origin gh-pages</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除 submodule</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git submodule deinit &lt;path_to_submodule&gt;</span><br><span class="line">git rm &lt;path_to_submodule&gt;</span><br><span class="line">git commit -m &quot;Removed submodule &quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合并所有 commit 为一个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --root -i</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><a name="Qgmi6"></a></p>
+<h4 id="Ansible"><a href="#Ansible" class="headerlink" title="Ansible"></a>Ansible</h4><ul>
+<li>打印 Ansible 所有的变量 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- name: Print some debug information </span><br><span class="line">  vars: </span><br><span class="line">    msg: |</span><br><span class="line">        Module Variables (&quot;vars&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; vars | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">        Environment Variables (&quot;environment&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; environment | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">        GROUP NAMES Variables (&quot;group_names&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; group_names | to_nice_json &#125;&#125;</span><br><span class="line"> </span><br><span class="line">        GROUPS Variables (&quot;groups&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; groups | to_nice_json &#125;&#125;</span><br><span class="line"> </span><br><span class="line">        HOST Variables (&quot;hostvars&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; hostvars | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">  debug: </span><br><span class="line">    msg: &quot;&#123;&#123; msg.split(&apos;\n&apos;) &#125;&#125;&quot;       </span><br><span class="line">  tags: debug_info</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- name: Display all variables/facts known for a host</span><br><span class="line">  debug:</span><br><span class="line">    var: hostvars[inventory_hostname]</span><br><span class="line">  tags: debug_info</span><br></pre></td></tr></table></figure>
+
+<p><a name="gzyiV"></a></p>
+<h4 id="tcpdump-捕获-http-包"><a href="#tcpdump-捕获-http-包" class="headerlink" title="tcpdump 捕获 http 包"></a>tcpdump 捕获 http 包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -s 0 -A <span class="string">'tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x47455420'</span></span><br><span class="line">tcpdump -ni ens5f0 -A -s 10240 <span class="string">'tcp port 8056 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'</span> | egrep --line-buffered <span class="string">"^........(GET |HTTP\/|POST |HEAD )|^[A-Za-z0-9-]+: "</span> | sed -r <span class="string">'s/^........(GET |HTTP\/|POST |HEAD )/\n\1/g'</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="WZCnh"></a></p>
+<h4 id="mount-查看目录或分区挂载情况"><a href="#mount-查看目录或分区挂载情况" class="headerlink" title="mount 查看目录或分区挂载情况"></a>mount 查看目录或分区挂载情况</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/mounts</span><br><span class="line">// or</span><br><span class="line">cat /proc/self/mountinfo</span><br><span class="line">// or</span><br><span class="line">mount -l</span><br><span class="line">// or</span><br><span class="line">findmnt</span><br><span class="line">// or</span><br><span class="line">df -aTh</span><br></pre></td></tr></table></figure>
+
+<p><a name="1rSZC"></a></p>
+<h4 id="pgrep-进程检索与杀死"><a href="#pgrep-进程检索与杀死" class="headerlink" title="pgrep 进程检索与杀死"></a>pgrep 进程检索与杀死</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 按名称列出进程 ID</span><br><span class="line">pgrep chrome</span><br><span class="line">// 按名称杀死进程</span><br><span class="line">pkill -9 fish</span><br><span class="line">killall -9 fish</span><br><span class="line">// 杀死指定 ID 的进程</span><br><span class="line"><span class="built_in">kill</span> -9 3049</span><br><span class="line">// 列出进程树</span><br><span class="line">pstree -p</span><br></pre></td></tr></table></figure>
+
+<p><a name="e1tG9"></a></p>
+<h4 id="fuser-找到正在使用某个文件的进程"><a href="#fuser-找到正在使用某个文件的进程" class="headerlink" title="fuser 找到正在使用某个文件的进程"></a>fuser 找到正在使用某个文件的进程</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// fuser 是 file user 的缩写</span><br><span class="line">fuser -uv &lt;filename&gt;</span><br><span class="line">fuser -uvm /folder</span><br><span class="line">// 查看哪个程序在占用 8000 端口</span><br><span class="line">fuser -v -n tcp 8000</span><br></pre></td></tr></table></figure>
+
+<p><a name="lw5hk"></a></p>
+<h4 id="lsof-列出所有打开的文件"><a href="#lsof-列出所有打开的文件" class="headerlink" title="lsof 列出所有打开的文件"></a>lsof 列出所有打开的文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// lsof 是 list open files 的缩写</span><br><span class="line">// -i 代表列出正在打开的 IPV4[6] 文件； -n 表示不进行 DNS 反解； -P 表示不进行端口反解</span><br><span class="line">lsof -i -n -P</span><br><span class="line">// 查看当前目录下打开的文件</span><br><span class="line">lsof .</span><br></pre></td></tr></table></figure>
+
+<p><a name="70PLT"></a></p>
+<h4 id="strace-跟踪系统调用"><a href="#strace-跟踪系统调用" class="headerlink" title="strace 跟踪系统调用"></a>strace 跟踪系统调用</h4><p>strace 用法参考： <a href="https://www.howtoforge.com/linux-strace-command/" target="_blank" rel="noopener">https://www.howtoforge.com/linux-strace-command/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace -i ls</span><br></pre></td></tr></table></figure>
+
+<p><a name="6F4YX"></a></p>
+<h4 id="getent-获取系统用户信息"><a href="#getent-获取系统用户信息" class="headerlink" title="getent 获取系统用户信息"></a>getent 获取系统用户信息</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getent passwd</span><br></pre></td></tr></table></figure>
+
+<p><a name="zdvyH"></a></p>
+<h4 id="sed-删除所有以-开头的行"><a href="#sed-删除所有以-开头的行" class="headerlink" title="sed 删除所有以 # 开头的行"></a>sed 删除所有以 # 开头的行</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">'/^#/ d'</span></span><br></pre></td></tr></table></figure>
+<p>更多使用方法参考：<a href="https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html" target="_blank" rel="noopener">https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html</a></p>
+<p><a name="tZDa5"></a></p>
+<h4 id="生成-Linux-用户密码的哈希值"><a href="#生成-Linux-用户密码的哈希值" class="headerlink" title="生成 Linux 用户密码的哈希值"></a>生成 Linux 用户密码的哈希值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">python -c &quot;import crypt, getpass, pwd; print(crypt.crypt(&apos;password&apos;, &apos;\$6\$saltsalt\$&apos;))&quot;</span><br><span class="line">// 或者使用 go</span><br><span class="line">package main                                                </span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;github.com/tredoe/osutil/user/crypt/sha512_crypt&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">    c := sha512_crypt.New()</span><br><span class="line">    hash, err := c.Generate([]byte(&quot;rasmuslerdorf&quot;), []byte(&quot;$6$usesomesillystringforsalt&quot;))</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        panic(err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(hash)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="uvsm2"></a></p>
+<h4 id="允许使用-root-用户-ssh-登录"><a href="#允许使用-root-用户-ssh-登录" class="headerlink" title="允许使用 root 用户 ssh 登录"></a>允许使用 root 用户 ssh 登录</h4><p>先删除 <code>/root/.ssh/authorized_keys</code> 中的多余限制信息，之后在 <code>/etc/ssh/sshd_config</code> 中添加 <code>PermitRootLogin yes</code> 后重启 sshd 服务。</p>
+<p><a name="vwUdA"></a></p>
+<h4 id="解决”rtnetlink-answers-file-exists”"><a href="#解决”rtnetlink-answers-file-exists”" class="headerlink" title="解决”rtnetlink answers file exists”"></a>解决”rtnetlink answers file exists”</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip a flush dev eth0</span><br></pre></td></tr></table></figure>
+
+<p><a name="HPtZj"></a></p>
+<h4 id="ssh-取消-StrictHostKeyChecking-并从环境变量读取-ssh-key-到本地"><a href="#ssh-取消-StrictHostKeyChecking-并从环境变量读取-ssh-key-到本地" class="headerlink" title="ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地"></a>ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"Host *"</span> &gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"  StrictHostKeyChecking=no"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"  UserKnownHostsFile=/dev/null"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line">mkdir -p ~/.ssh</span><br><span class="line">chmod 700 ~/.ssh</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PRIVATE_KEY</span>"</span> | tr -d <span class="string">'\r'</span> &gt; ~/.ssh/id_rsa</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PUBLIC_KEY</span>"</span> &gt; ~/.ssh/id_rsa.pub</span><br><span class="line">chmod 600 ~/.ssh/id_rsa</span><br><span class="line">chmod 644 ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+<p><a name="Ey88A"></a></p>
+<h4 id="查看登录记录"><a href="#查看登录记录" class="headerlink" title="查看登录记录"></a>查看登录记录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前登录用户</span></span><br><span class="line">who</span><br><span class="line"><span class="comment"># 查看最近登录记录</span></span><br><span class="line">last -F</span><br><span class="line"><span class="comment"># 查看最近90天所有用户的最后登录时间</span></span><br><span class="line">lastlog --time 90</span><br></pre></td></tr></table></figure>
+
+<p><a name="g7NoE"></a></p>
+<h4 id="rsync-同步时需要-root-权限"><a href="#rsync-同步时需要-root-权限" class="headerlink" title="rsync 同步时需要 root 权限"></a>rsync 同步时需要 root 权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -aru -e <span class="string">"ssh"</span> --rsync-path=<span class="string">"sudo rsync"</span> 172.16.110.215:~/ ~/  --progress --exclude=.cache</span><br></pre></td></tr></table></figure>
+
+<p><a name="hU4cE"></a></p>
+<h4 id="expr-比较字符串大小"><a href="#expr-比较字符串大小" class="headerlink" title="expr 比较字符串大小"></a>expr 比较字符串大小</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str3=<span class="string">'v1.13'</span></span><br><span class="line">str2=<span class="string">'v1.14'</span></span><br><span class="line"><span class="keyword">if</span> [ $(expr <span class="variable">$&#123;str3&#125;</span> \&lt;= <span class="variable">$&#123;str2&#125;</span>) -eq 1 ]; <span class="keyword">then</span>    <span class="built_in">echo</span> <span class="string">"[<span class="variable">$&#123;str3&#125;</span>] &lt;= [<span class="variable">$&#123;str2&#125;</span>]"</span>; <span class="keyword">else</span>    <span class="built_in">echo</span> <span class="string">"[<span class="variable">$&#123;str3&#125;</span>] &gt; [<span class="variable">$&#123;str2&#125;</span>]"</span>; <span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="bjtsD"></a></p>
+<h4 id="tr-移除所有空格"><a href="#tr-移除所有空格" class="headerlink" title="tr 移除所有空格"></a>tr 移除所有空格</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 获取 kubernetes 版本</span><br><span class="line">kubectl version --short | tail -1 | cut -d<span class="string">':'</span> -f2 | tr -d <span class="string">'[:space:]'</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="fL7Yx"></a></p>
+<h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
+<li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="noopener">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
+<li>pandoc 可以借助第三方引擎实现各种文档格式之间的转换：<a href="https://pandoc.org/" target="_blank" rel="noopener">https://pandoc.org/</a>。</li>
+<li>MOBI 转 PDF 的在线网站：<a href="https://ebook2pdf.com/" target="_blank" rel="noopener">https://ebook2pdf.com/</a></li>
+<li>Github dispatch 使用示例：<a href="https://alejandroandr.eu/posts/manual-trigger-github-workflows/" target="_blank" rel="noopener">https://alejandroandr.eu/posts/manual-trigger-github-workflows/</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/08/14/为 Proxmox 制作包含 cloud-init 的虚拟机模板/" rel="bookmark">为 Proxmox 制作包含 cloud-init 的虚拟机模板</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/09/04/ArchLinux 常用命令/" rel="bookmark">ArchLinux 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/06/21/Centos 编译安装 zfs/" rel="bookmark">Centos 编译安装 zfs</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/09/03/Ceph 常用操作/" rel="bookmark">Ceph 常用操作</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/11/13/Kubernets 实践/" rel="bookmark">Kubernetes 实践</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">#  云计算</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/08/Linux%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="next" title="Linux 文件系统基础知识">
+                  <i class="fa fa-chevron-left"></i> Linux 文件系统基础知识
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/11/13/Kubernets%20%E5%AE%9E%E8%B7%B5/" rel="prev" title="Kubernetes 实践">
+                  Kubernetes 实践 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker"><span class="nav-number">1.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CentOS"><span class="nav-number">2.</span> <span class="nav-text">CentOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VIM"><span class="nav-number">3.</span> <span class="nav-text">VIM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git"><span class="nav-number">4.</span> <span class="nav-text">Git</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ansible"><span class="nav-number">5.</span> <span class="nav-text">Ansible</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tcpdump-捕获-http-包"><span class="nav-number">6.</span> <span class="nav-text">tcpdump 捕获 http 包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount-查看目录或分区挂载情况"><span class="nav-number">7.</span> <span class="nav-text">mount 查看目录或分区挂载情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pgrep-进程检索与杀死"><span class="nav-number">8.</span> <span class="nav-text">pgrep 进程检索与杀死</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fuser-找到正在使用某个文件的进程"><span class="nav-number">9.</span> <span class="nav-text">fuser 找到正在使用某个文件的进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lsof-列出所有打开的文件"><span class="nav-number">10.</span> <span class="nav-text">lsof 列出所有打开的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#strace-跟踪系统调用"><span class="nav-number">11.</span> <span class="nav-text">strace 跟踪系统调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getent-获取系统用户信息"><span class="nav-number">12.</span> <span class="nav-text">getent 获取系统用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sed-删除所有以-开头的行"><span class="nav-number">13.</span> <span class="nav-text">sed 删除所有以 # 开头的行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-Linux-用户密码的哈希值"><span class="nav-number">14.</span> <span class="nav-text">生成 Linux 用户密码的哈希值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#允许使用-root-用户-ssh-登录"><span class="nav-number">15.</span> <span class="nav-text">允许使用 root 用户 ssh 登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决”rtnetlink-answers-file-exists”"><span class="nav-number">16.</span> <span class="nav-text">解决”rtnetlink answers file exists”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh-取消-StrictHostKeyChecking-并从环境变量读取-ssh-key-到本地"><span class="nav-number">17.</span> <span class="nav-text">ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看登录记录"><span class="nav-number">18.</span> <span class="nav-text">查看登录记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rsync-同步时需要-root-权限"><span class="nav-number">19.</span> <span class="nav-text">rsync 同步时需要 root 权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#expr-比较字符串大小"><span class="nav-number">20.</span> <span class="nav-text">expr 比较字符串大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tr-移除所有空格"><span class="nav-number">21.</span> <span class="nav-text">tr 移除所有空格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实用工具"><span class="nav-number">22.</span> <span class="nav-text">实用工具</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">129k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:57</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;"z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='153,153,153' opacity='0.5' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>

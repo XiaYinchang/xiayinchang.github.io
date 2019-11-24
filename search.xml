@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Linux 实用命令集合</title>
-    <url>/2019/11/08/Linux%20%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/</url>
+    <url>/2019/11/09/Linux%20%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/</url>
     <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><ul>
 <li>按指定格式输出Images信息</li>
 </ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker images --format <span class="string">"&#123;&#123;.ID&#125;&#125;: &#123;&#123;.Repository&#125;&#125;"</span></span><br></pre></td></tr></table></figure><table>
@@ -229,7 +229,7 @@
   </entry>
   <entry>
     <title>使用语雀、GitHub 和阿里云函数计算构建博客</title>
-    <url>/2019/11/20/%E4%BD%BF%E7%94%A8%E8%AF%AD%E9%9B%80%E3%80%81GitHub%20%E5%92%8C%E9%98%BF%E9%87%8C%E4%BA%91%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97%E6%9E%84%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
+    <url>/2019/11/21/%E4%BD%BF%E7%94%A8%E8%AF%AD%E9%9B%80%E3%80%81GitHub%20%E5%92%8C%E9%98%BF%E9%87%8C%E4%BA%91%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97%E6%9E%84%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<p><a name="e6cefb85"></a></p><h3 id="使用语雀撰写博客"><a href="#使用语雀撰写博客" class="headerlink" title="使用语雀撰写博客"></a>使用语雀撰写博客</h3><p>最开始搭建自己的博客系统时，我会先写好 Markdown 文件，然后借助 Hexo 生成静态页面，之后部署到云主机上，配置好域名解析后就可以访问了。<br>虽然 Markdown 已经足够简明便捷，但语雀为我们提供了更友好的 Markdown 编辑器，使得撰写技术文档的体验有了质的提升，因此强烈推荐给大家使用。<br>语雀的使用也比较简单，首先登陆到<a href="https://yuque.com" target="_blank" rel="noopener">官网</a>使用手机号注册一个账号，然后创建一个知识库，在知识库就可以新建文档开始写文章了。撰写文档时，在快捷键 “/” 的帮助下可以快速插入代码、图片、视频、思维导图等，使用非常方便，更多的内容可以参考语雀官方的<a href="https://www.yuque.com/yuque/help" target="_blank" rel="noopener">使用文档</a>。<br>实际上，语雀本身也是一个文章发布平台，写好的文章只要被设置为可公开访问，别人就可以在语雀上订阅你的文章，但由于不能自定义域名等原因，目前仍然只是把它作为文档撰写工具，博客站点仍然借助其它平台实现。</p><a id="more"></a>
 
 <p><a name="729de1d0"></a></p>
@@ -267,7 +267,7 @@
   </entry>
   <entry>
     <title>gRPC snippets</title>
-    <url>/2019/11/13/gRPC%20snippets/</url>
+    <url>/2019/11/14/gRPC%20snippets/</url>
     <content><![CDATA[<p><a name="d3l9E"></a></p><h4 id="使用-gRPC-错误类型"><a href="#使用-gRPC-错误类型" class="headerlink" title="使用 gRPC 错误类型"></a>使用 gRPC 错误类型</h4><p>服务端返回 <code>codes.PermissionDenined</code> 错误：</p><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	...</span><br><span class="line">	<span class="string">"google.golang.org/grpc/codes"</span></span><br><span class="line">	<span class="string">"google.golang.org/grpc/status"</span></span><br><span class="line">)</span><br><span class="line">...</span><br><span class="line"><span class="keyword">return</span> <span class="literal">nil</span>, status.Error(codes.PermissionDenied, <span class="string">"PERMISSION_DENIED_TEXT"</span>)</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
@@ -304,7 +304,7 @@
   </entry>
   <entry>
     <title>前端知识点滴</title>
-    <url>/2019/11/13/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E7%82%B9%E6%BB%B4/</url>
+    <url>/2019/11/14/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E7%82%B9%E6%BB%B4/</url>
     <content><![CDATA[<p><a name="Cmvxj"></a></p><h4 id="swagger-client"><a href="#swagger-client" class="headerlink" title="swagger-client"></a>swagger-client</h4><p>swagger-client 是一个 js 包，可以读取并解析 Swagger 2.0 和 OpenAPI 3 的 json 文档并生成可以对文档中定义的 API 进行调用的 client，简化 api 请求过程。<br><a name="EWjMj"></a></p><h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><p>服务端响应的 Header 中可以设置 <code>Content-Disposition: attachment; filename=test.txt</code>  指定文件名称，一般设置 <code>Content-Type: application/octet-stream</code> 对于小的文本文件也可以设置为 <code>Content-Type: text/plain; charset=utf-8</code>  告诉浏览器可以直接在浏览器窗口打开。<br><a name="L7x3U"></a></p><a id="more"></a>
 
 
@@ -322,7 +322,7 @@
   </entry>
   <entry>
     <title>Kubernetes 实践</title>
-    <url>/2019/11/12/Kubernets%20%E5%AE%9E%E8%B7%B5/</url>
+    <url>/2019/11/13/Kubernets%20%E5%AE%9E%E8%B7%B5/</url>
     <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="taint"><a href="#taint" class="headerlink" title="taint"></a>taint</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 去除所有节点 mater taint 使之可调度</span></span><br><span class="line">kubectl taint nodes --all node-role.kubernetes.io/master-</span><br><span class="line"><span class="comment"># 为节点添加 taint</span></span><br><span class="line">kubectl taint nodes node1 node-role.kubernetes.io=master:NoSchedule</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
@@ -479,7 +479,7 @@
   </entry>
   <entry>
     <title>Linux 文件系统基础知识</title>
-    <url>/2019/11/07/Linux%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <url>/2019/11/08/Linux%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
     <content><![CDATA[<p><a name="d3l9E"></a></p><h4 id="软链接和硬链接的区别"><a href="#软链接和硬链接的区别" class="headerlink" title="软链接和硬链接的区别"></a>软链接和硬链接的区别</h4><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&name=image.png&originHeight=255&originWidth=514&search=&size=34517&status=done&width=514" alt="image.png"></p><ul>
 <li><p>参考：<a href="https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link" target="_blank" rel="noopener">https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link</a></p>
 </li>
@@ -524,7 +524,7 @@
   </entry>
   <entry>
     <title>VSCode 使用技巧</title>
-    <url>/2019/10/18/VSCode%20%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</url>
+    <url>/2019/10/19/VSCode%20%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</url>
     <content><![CDATA[<p><a name="XdU7U"></a></p><h4 id="Linux-下默认快捷键"><a href="#Linux-下默认快捷键" class="headerlink" title="Linux 下默认快捷键"></a>Linux 下默认快捷键</h4><ul>
 <li><code>Ctrl+Alt+-</code> 返回上一个位置</li>
 <li><code>Ctrl+Shift+-</code> 转到下一个位置<br><a name="nFG3l"></a><h4 id="将-n-字符替换为换行符"><a href="#将-n-字符替换为换行符" class="headerlink" title="将 /n 字符替换为换行符"></a>将 /n 字符替换为换行符</h4>在替换为一栏中输入 <code>Ctrl+Enter</code> 可以输入换行符。</li>
@@ -538,7 +538,7 @@
   </entry>
   <entry>
     <title>Envoy 知识汇总</title>
-    <url>/2019/10/17/Envoy%20%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB/</url>
+    <url>/2019/10/18/Envoy%20%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB/</url>
     <content><![CDATA[<p><a name="YEnn3"></a></p><h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><p><a name="SWRZB"></a></p><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p><a name="2qLn1"></a></p><h4 id="编写-Lua-脚本"><a href="#编写-Lua-脚本" class="headerlink" title="编写 Lua 脚本"></a>编写 Lua 脚本</h4><ul>
 <li>一个简单的案例，使用 Lua 脚本为 Http 请求添加了 Authorization 请求头：<a href="https://segmentfault.com/a/1190000020650955" target="_blank" rel="noopener">https://segmentfault.com/a/1190000020650955</a></li>
 </ul>]]></content>
@@ -551,7 +551,7 @@
   </entry>
   <entry>
     <title>Docker 卷和文件系统权限</title>
-    <url>/2019/10/16/Docker%20%E5%8D%B7%E5%92%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9D%83%E9%99%90/</url>
+    <url>/2019/10/17/Docker%20%E5%8D%B7%E5%92%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9D%83%E9%99%90/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -606,7 +606,7 @@
   </entry>
   <entry>
     <title>K8S PVC 在线扩容</title>
-    <url>/2019/10/15/K8S%20PVC%20%E5%9C%A8%E7%BA%BF%E6%89%A9%E5%AE%B9/</url>
+    <url>/2019/10/16/K8S%20PVC%20%E5%9C%A8%E7%BA%BF%E6%89%A9%E5%AE%B9/</url>
     <content><![CDATA[<ol>
 <li><p>创建storageclass 时加入 allowVolumeExpansion: true 参数。</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">storage.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">StorageClass</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">ceph-rbd</span></span><br><span class="line"><span class="attr">parameters:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="attr">provisioner:</span> <span class="string">kubernetes.io/rbd</span></span><br><span class="line"><span class="attr">allowVolumeExpansion:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">reclaimPolicy:</span> <span class="string">Delete</span></span><br><span class="line"><span class="attr">volumeBindingMode:</span> <span class="string">Immediate</span></span><br></pre></td></tr></table></figure>
@@ -648,7 +648,7 @@
   </entry>
   <entry>
     <title>Go 知识点汇总</title>
-    <url>/2019/10/11/Go%20%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/</url>
+    <url>/2019/10/12/Go%20%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/</url>
     <content><![CDATA[<p><a name="YEnn3"></a></p><h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
@@ -760,7 +760,7 @@
   </entry>
   <entry>
     <title>基础网络知识</title>
-    <url>/2019/10/08/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86/</url>
+    <url>/2019/10/09/%E5%9F%BA%E7%A1%80%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86/</url>
     <content><![CDATA[<ol>
 <li>NO-CARRIER 表示网络接口未检测到线路上的信号。通常是因为网络电缆已拔出或断开。在极少数情况下，也可能是硬件故障或驱动程序错误。</li>
 <li>所有客户端与 WebSocket Server 建立进行通信时，都需要先发送 Http Get 请求完成握手过程，该 Http 请求头中包含 Upgrade: websocket 等必要字段，WebSocket Server 端必须能够处理该 Http 请求并在接受建立 WebSocket 连接时返回一个状态码为 101 的 Http 响应告诉客户端从现在开始把协议切换为 WebSocket。这样设计的一个好处时可以让 WebSocket 服务与已经存在的 Http 服务复用同一个端口，只需要一个后端进程处理两种通信协议。当然，也可以搭建一个纯粹的 WebSocket Server，只是依然需要能够响应握手时客户端发出的用以协议升级的 Http 请求，只不过对于其它的 Http 请求不会响应，亦即纯粹的 WebSocket Server 处理且仅处理用以协议升级 Http Get 的请求，之后的通信过程将全部使用 WebSocket 协议。更多解释参考：<a href="https://stackoverflow.com/questions/47085281/do-websocket-implementations-use-http-protocol-internally" target="_blank" rel="noopener">https://stackoverflow.com/questions/47085281/do-websocket-implementations-use-http-protocol-internally</a></li>
@@ -808,7 +808,7 @@
   </entry>
   <entry>
     <title>限制单位时间请求次数</title>
-    <url>/2019/10/07/%E9%99%90%E5%88%B6%E5%8D%95%E4%BD%8D%E6%97%B6%E9%97%B4%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/</url>
+    <url>/2019/10/08/%E9%99%90%E5%88%B6%E5%8D%95%E4%BD%8D%E6%97%B6%E9%97%B4%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/</url>
     <content><![CDATA[<p><a name="z0hPi"></a></p><h4 id="Rate-Limit"><a href="#Rate-Limit" class="headerlink" title="Rate Limit"></a>Rate Limit</h4><p>在众多的反向代理服务器中，实现请求次数限制的功能往往称作 rate-limit。   Rate-limit 在公网环境下实际上主要是为了防止 DoS 攻击。Rate-limit 实现了对每个客户端单位时间内请求次数的限制，例如 5 r/s，就是限制每个客户端 1s 之内针对该服务端只能发起 5 个 Http 请求。其原理往往是基于客户端请求中的某些标志性信息（一般是 IP）使用某种限流算法在服务端做出相应处理：如果该客户端的单位时间请求次数超出限制，服务端直接返回状态码为 429 的响应，在 Http 规范中，状态码 429 含义为“请求次数过多”。<br><a name="38NLy"></a></p><a id="more"></a>
 
 <h4 id="限流算法"><a href="#限流算法" class="headerlink" title="限流算法"></a>限流算法</h4><p>常用的限流算法有两种：漏桶和令牌桶。<br>漏桶算法：请求先进入到漏桶中，漏桶以一定的速率将请求转给后端处理, 当请求速率过大会直接溢出即返回状态码为 429 的响应。漏桶对以不规则速率进入的请求进行了整形，使其以固定的速率被处理，往往被反向代理服务器用于保护真正的后端服务。<br>令牌桶算法：系统会按固定时间向桶中放入令牌, 如果桶已经满了就不再加了。新请求来临时，会各自拿走一个令牌并被转给后端服务处理, 如果没有令牌可拿就拒绝服务即返回状态码为 429 的响应。<br>假设漏桶和令牌桶均处于最佳状态（漏桶为空，令牌桶已满），当出现突发大流量时，对于漏桶，一部分请求被置于桶中，超出桶容量的请求被拒绝服务，而桶中的请求会以固定速率转给后端处理，因此必然存在排队情况，也就意味着请求可能存在较大的响应延时，这对后端服务来说是友好的，因为大流量经过漏桶已经被整形为平滑的请求序列，对后端压力较小，只不过压力较小可能意味着资源利用不充分；对于令牌桶来说，一部分请求立即获得令牌并且被立即转给服务后端处理，超出桶容量的请求一样被拒绝服务，转给后端服务的请求会被立即处理，因此响应延时会小很多，但是后端服务器会直接受到大流量的冲击，因此对后端服务不是很友好，不过这个问题并不严重，后端服务器的处理能力往往是很强的，只要设定的桶容量适宜，这些流量冲击一般不构成威胁，反而能够更充分的利用服务端资源。<br>除了应对突发流量时的较大差别，漏桶和令牌桶对于一般情况下的请求限速效果是类似的。<br>Nginx 的 Http 限速模块 <a href="http://nginx.org/en/docs/http/ngx_http_limit_req_module.html" target="_blank" rel="noopener">ngx_http_limit_req_module</a> 使用的是漏桶算法。OpenResty 的限速模块 <a href="https://github.com/openresty/lua-resty-limit-traffic" target="_blank" rel="noopener">lua-resty-limit-traffic</a> 支持配置使用漏桶或者令牌桶，配置方法可参考<a href="https://developpaper.com/gateway-rate-limit-network-rate-limitation-scheme/" target="_blank" rel="noopener">这篇文章</a>。<br><a name="j2z6C"></a></p>
@@ -830,7 +830,7 @@
   </entry>
   <entry>
     <title>从 RESTful 到 gRPC-Web 的平滑切换</title>
-    <url>/2019/09/16/%E4%BB%8E%20RESTful%20%E5%88%B0%20gRPC-Web%20%E7%9A%84%E5%B9%B3%E6%BB%91%E5%88%87%E6%8D%A2/</url>
+    <url>/2019/09/17/%E4%BB%8E%20RESTful%20%E5%88%B0%20gRPC-Web%20%E7%9A%84%E5%B9%B3%E6%BB%91%E5%88%87%E6%8D%A2/</url>
     <content><![CDATA[<p><a name="z0hPi"></a></p><h4 id="gRPC-Web"><a href="#gRPC-Web" class="headerlink" title="gRPC-Web"></a>gRPC-Web</h4><ul>
 <li>安装</li>
 </ul><p>参考<a href="https://grpc-ecosystem.github.io/grpc-gateway/docs/usage.html" target="_blank" rel="noopener">官方安装说明</a>，需要指出的是有可能如果出现以下报错：</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">protoc: error while loading shared libraries: libprotobuf.so.20: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -853,7 +853,7 @@
   </entry>
   <entry>
     <title>Ceph 对接 Kubernetes 的两种方式</title>
-    <url>/2019/09/10/Ceph%20%E5%AF%B9%E6%8E%A5%20Kubernetes%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
+    <url>/2019/09/11/Ceph%20%E5%AF%B9%E6%8E%A5%20Kubernetes%20%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<p><a name="hguEn"></a></p><h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ul>
 <li>创建 rbd 存储池</li>
 </ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ceph osd pool create rbd 128 128</span><br><span class="line">rbd pool init rbd</span><br></pre></td></tr></table></figure><ul>
@@ -914,7 +914,7 @@
   </entry>
   <entry>
     <title>统一认证中心方案调研</title>
-    <url>/2019/09/09/%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81%E4%B8%AD%E5%BF%83%E6%96%B9%E6%A1%88%E8%B0%83%E7%A0%94/</url>
+    <url>/2019/09/10/%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81%E4%B8%AD%E5%BF%83%E6%96%B9%E6%A1%88%E8%B0%83%E7%A0%94/</url>
     <content><![CDATA[<p><a name="QW5Ia"></a></p><h4 id="为什么需要认证中心"><a href="#为什么需要认证中心" class="headerlink" title="为什么需要认证中心"></a>为什么需要认证中心</h4><p>认证（Authentication）和授权（Athorization）是企业级服务的基本功能，企业级应用的开发必须考虑到如何使提供的产品与用户已有的认证和授权体系结合起来，更进一步能够基于该体系提供开发接口给其它应用调用。如下图所示，不同的用户可能已经有不同的认证体系，有的用户可能用的是<br> LDAP，这是种比较老的认证方式，SAML 新一些，最新的是<br>OpenID，这些不同的认证后端都应当可以接入到统一认证中心，从而能够更好地管理用户和进行授权。</p><a id="more"></a>
 
 <p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1568099807740-b6f23b9f-79f7-4f1e-8c5b-e7e6dcc812c7.png#align=left&display=inline&height=121&name=image.png&originHeight=121&originWidth=531&size=9511&status=done&width=531" alt="image.png"><br></p>
@@ -1277,7 +1277,7 @@
   </entry>
   <entry>
     <title>ArchLinux 常用命令</title>
-    <url>/2019/09/03/ArchLinux%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <url>/2019/09/04/ArchLinux%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="yay-使用相关"><a href="#yay-使用相关" class="headerlink" title="yay 使用相关"></a>yay 使用相关</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装包时覆盖本地已存在文件</span></span><br><span class="line">yay deluge --force</span><br><span class="line"><span class="comment"># 查看所有安装的文件及其路径</span></span><br><span class="line">yay -Ql deluge</span><br><span class="line"><span class="comment"># 查找时按照指定 filed 排序</span></span><br><span class="line">yay wechat --sortby &lt;votes|popularity|id|baseid|name|base|submitted|modified&gt;</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
@@ -1294,7 +1294,7 @@
   </entry>
   <entry>
     <title>Ceph 常用操作</title>
-    <url>/2019/09/02/Ceph%20%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
+    <url>/2019/09/03/Ceph%20%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="删除-rbd-image-时提示有-watcher"><a href="#删除-rbd-image-时提示有-watcher" class="headerlink" title="删除 rbd image 时提示有 watcher"></a>删除 rbd image 时提示有 watcher</h4><p>查看该 image 信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd info vm-109-cloudinit --pool cloud-disk</span></span><br><span class="line">rbd image <span class="string">'vm-109-cloudinit'</span>:</span><br><span class="line">        size 4 MiB <span class="keyword">in</span> 1 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: 85a71142d8c136</span><br><span class="line">        block_name_prefix: rbd_data.85a71142d8c136</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">        op_features: </span><br><span class="line">        flags: </span><br><span class="line">        create_timestamp: Wed Aug 28 10:04:09 2019</span><br><span class="line">        access_timestamp: Mon Sep  2 13:59:31 2019</span><br><span class="line">        modify_timestamp: Mon Sep  2 13:59:31 2019</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
@@ -1357,7 +1357,7 @@
   </entry>
   <entry>
     <title>Proxmox 使用拾遗</title>
-    <url>/2019/09/02/Proxmox%20%E4%BD%BF%E7%94%A8%E6%8B%BE%E9%81%97/</url>
+    <url>/2019/09/03/Proxmox%20%E4%BD%BF%E7%94%A8%E6%8B%BE%E9%81%97/</url>
     <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="zfs-destroy-提示-dataset-is-busy"><a href="#zfs-destroy-提示-dataset-is-busy" class="headerlink" title="zfs destroy 提示 dataset is busy"></a>zfs destroy 提示 dataset is busy</h4><p>报错如下：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor22:~<span class="comment"># zfs destroy -r umstor22-zfs</span></span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-0'</span>: dataset is busy</span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-2'</span>: dataset is busy</span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-1'</span>: dataset is busy</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
@@ -1388,7 +1388,7 @@
   </entry>
   <entry>
     <title>基于 CentOS Minimal 镜像制作 Docker Base Image</title>
-    <url>/2019/08/29/%E5%88%B6%E4%BD%9C%20Docker%20Base%20Image/</url>
+    <url>/2019/08/30/%E5%88%B6%E4%BD%9C%20Docker%20Base%20Image/</url>
     <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="使用镜像安装-centos-虚拟机"><a href="#使用镜像安装-centos-虚拟机" class="headerlink" title="使用镜像安装 centos 虚拟机"></a>使用镜像安装 centos 虚拟机</h4><p>使用 VirtualBox、VMware workstation 或者 Proxmox 等虚拟机管理平台创建虚拟机，在这里我使用 Proxmox 创建虚拟机。由于我们只是为了制作 Docker Base Image，虚拟机用完即删，给虚拟机分配的资源可随意配置。下图是我创建的虚拟机基本配置： </p><a id="more"></a>
 
 <p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1567131557233-c3e8da2b-10a6-495a-9805-fcb2f3683b77.png#align=left&display=inline&height=710&name=WX20190830-101825%402x.png&originHeight=710&originWidth=1438&size=138442&status=done&width=1438" alt="WX20190830-101825@2x.png"></p>
@@ -1433,7 +1433,7 @@
   </entry>
   <entry>
     <title>为 Proxmox 制作包含 cloud-init 的虚拟机模板</title>
-    <url>/2019/08/13/%E4%B8%BA%20Proxmox%20%E5%88%B6%E4%BD%9C%E5%8C%85%E5%90%AB%20cloud-init%20%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A8%A1%E6%9D%BF/</url>
+    <url>/2019/08/14/%E4%B8%BA%20Proxmox%20%E5%88%B6%E4%BD%9C%E5%8C%85%E5%90%AB%20cloud-init%20%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A8%A1%E6%9D%BF/</url>
     <content><![CDATA[<p><a name="WsMUi"></a></p><h4 id="安装-Centos"><a href="#安装-Centos" class="headerlink" title="安装 Centos"></a>安装 Centos</h4><p>在我搭建的 Proxmox 平台中使用了 Ceph 作为虚拟机的后端存储，为了提高虚拟机磁盘性能，在安装虚拟机的时候使用 LVM raid0 逻辑分区挂载根目录。</p><ul>
 <li>在 install destination 中选中三块盘并勾选自行分区选项</li>
 </ul><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&display=inline&height=690&name=image.png&originHeight=690&originWidth=1038&size=159786&status=done&width=1038" alt="image.png"></p><ul>
@@ -1521,7 +1521,7 @@
   </entry>
   <entry>
     <title>IPVS 模式下 NodePort 的工作过程浅析</title>
-    <url>/2019/07/06/IPVS%20%E6%A8%A1%E5%BC%8F%E4%B8%8B%20NodePort%20%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B%E6%B5%85%E6%9E%90/</url>
+    <url>/2019/07/07/IPVS%20%E6%A8%A1%E5%BC%8F%E4%B8%8B%20NodePort%20%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B%E6%B5%85%E6%9E%90/</url>
     <content><![CDATA[<p><a name="lfAlR"></a></p><h3 id><a href="#" class="headerlink" title></a></h3>]]></content>
       <categories>
         <category>Kubernetes</category>
@@ -1532,7 +1532,7 @@
   </entry>
   <entry>
     <title>Centos 编译安装 zfs</title>
-    <url>/2019/06/20/Centos%20%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%20zfs/</url>
+    <url>/2019/06/21/Centos%20%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%20zfs/</url>
     <content><![CDATA[<ul>
 <li><p>安装依赖</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum groupinstall <span class="string">"Development Tools"</span></span><br><span class="line">yum install zlib-devel libuuid-devel libattr-devel libblkid-devel libselinux-devel libudev-devel</span><br><span class="line">yum install parted lsscsi ksh openssl-devel elfutils-libelf-devel</span><br><span class="line">yum install kernel-devel-$(uname -r)</span><br></pre></td></tr></table></figure>
@@ -1557,7 +1557,7 @@
   </entry>
   <entry>
     <title>树莓派 3B 编译安装 zfs</title>
-    <url>/2019/06/20/%E6%A0%91%E8%8E%93%E6%B4%BE%203B%20%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%20zfs/</url>
+    <url>/2019/06/21/%E6%A0%91%E8%8E%93%E6%B4%BE%203B%20%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%20zfs/</url>
     <content><![CDATA[<ul>
 <li><p>安装依赖</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt remove 3.6-trunk-rpi</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install build-essential autoconf libtool gawk alien fakeroot</span><br><span class="line">sudo apt install dkms zlib1g-dev uuid-dev libattr1-dev libblkid-dev libselinux-dev libudev-dev libssl-dev parted lsscsi wget ksh</span><br><span class="line">sudo apt install python3-dev python3-setuptools python3-cffi</span><br></pre></td></tr></table></figure>
@@ -1585,7 +1585,7 @@
   </entry>
   <entry>
     <title>Keepalived 和 Kubeadm 部署高可用 Kubernetes</title>
-    <url>/2019/05/30/Keepalived%20%E5%92%8C%20Kubeadm%20%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20Kubernetes/</url>
+    <url>/2019/05/31/Keepalived%20%E5%92%8C%20Kubeadm%20%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20Kubernetes/</url>
     <content><![CDATA[<p><a name="df368884"></a></p><h3 id="准备-k8s-离线安装包"><a href="#准备-k8s-离线安装包" class="headerlink" title="准备 k8s 离线安装包"></a>准备 k8s 离线安装包</h3><p>在 k8s Github 仓库的 <a href="https://github.com/kubernetes/kubernetes/releases" target="_blank" rel="noopener">Release 页面</a> 找到最新稳定版本，点击对应的如  <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.14.md#downloads-for-v1142" target="_blank" rel="noopener">CHANGELOG-1.14.md</a> 链接进入该版本的安装包下载页面。分别下载 AMD64 版本的 Server 和 Node 安装包 <a href="https://dl.k8s.io/v1.14.2/kubernetes-server-linux-amd64.tar.gz" target="_blank" rel="noopener">kubernetes-server-linux-amd64.tar.gz</a> 与 <a href="https://dl.k8s.io/v1.14.2/kubernetes-node-linux-amd64.tar.gz" target="_blank" rel="noopener">kubernetes-node-linux-amd64.tar.gz</a>。然后使用 tar 命令解压缩并将所有文件汇总到一个集中的目录，如下，其中 coredns、etcd 和 pause 的镜像不包含在上述两个压缩包中，需要自行下载：</p><a id="more"></a>
 
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#tree -L 2 kubernetes-1.14.2</span></span><br><span class="line">kubernetes-1.14.2</span><br><span class="line">├── apiextensions-apiserver</span><br><span class="line">├── cloud-controller-manager</span><br><span class="line">├── hyperkube</span><br><span class="line">├── images</span><br><span class="line">│   ├── cloud-controller-manager.tar</span><br><span class="line">│   ├── coredns.tar</span><br><span class="line">│   ├── etcd.tar</span><br><span class="line">│   ├── kube-apiserver.tar</span><br><span class="line">│   ├── kube-controller-manager.tar</span><br><span class="line">│   ├── kube-proxy.tar</span><br><span class="line">│   ├── kube-scheduler.tar</span><br><span class="line">│   └── pause.tar</span><br><span class="line">├── kubeadm</span><br><span class="line">├── kube-apiserver</span><br><span class="line">├── kube-controller-manager</span><br><span class="line">├── kubectl</span><br><span class="line">├── kubelet</span><br><span class="line">├── kube-proxy</span><br><span class="line">├── kube-scheduler</span><br><span class="line">└── mounter</span><br></pre></td></tr></table></figure>
@@ -1602,7 +1602,7 @@
   </entry>
   <entry>
     <title>VMware Workstation 虚拟机 root 分区扩容</title>
-    <url>/2019/05/25/VMware%20Workstation%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%B9%E5%88%86%E5%8C%BA%E6%89%A9%E5%AE%B9/</url>
+    <url>/2019/05/26/VMware%20Workstation%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%B9%E5%88%86%E5%8C%BA%E6%89%A9%E5%AE%B9/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -1676,7 +1676,7 @@
   </entry>
   <entry>
     <title>使用 kolla-ansible 部署 OpenStack</title>
-    <url>/2019/05/25/%E4%BD%BF%E7%94%A8%20kolla-ansible%20%E9%83%A8%E7%BD%B2%20OpenStack/</url>
+    <url>/2019/05/26/%E4%BD%BF%E7%94%A8%20kolla-ansible%20%E9%83%A8%E7%BD%B2%20OpenStack/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -1800,7 +1800,7 @@
   </entry>
   <entry>
     <title>K8S集成Keystone认证</title>
-    <url>/2019/02/11/K8S%E9%9B%86%E6%88%90Keystone%E8%AE%A4%E8%AF%81/</url>
+    <url>/2019/02/12/K8S%E9%9B%86%E6%88%90Keystone%E8%AE%A4%E8%AF%81/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -1945,7 +1945,7 @@
   </entry>
   <entry>
     <title>关于K8S中Pod带宽限制的问题</title>
-    <url>/2019/01/12/%E5%85%B3%E4%BA%8EK8S%E4%B8%ADPod%E5%B8%A6%E5%AE%BD%E9%99%90%E5%88%B6%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <url>/2019/01/13/%E5%85%B3%E4%BA%8EK8S%E4%B8%ADPod%E5%B8%A6%E5%AE%BD%E9%99%90%E5%88%B6%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -2153,7 +2153,7 @@
   </entry>
   <entry>
     <title>Thanos基本功能总结</title>
-    <url>/2018/07/01/Thanos%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD%E6%80%BB%E7%BB%93/</url>
+    <url>/2018/07/02/Thanos%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -2195,7 +2195,7 @@
   </entry>
   <entry>
     <title>物联网导论-读书笔记</title>
-    <url>/2017/05/04/%E7%89%A9%E8%81%94%E7%BD%91%E5%AF%BC%E8%AE%BA_%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <url>/2017/05/05/%E7%89%A9%E8%81%94%E7%BD%91%E5%AF%BC%E8%AE%BA_%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -2242,7 +2242,7 @@
   </entry>
   <entry>
     <title>系统测试-学习笔记</title>
-    <url>/2017/05/03/%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95_%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <url>/2017/05/04/%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95_%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -2345,7 +2345,7 @@
   </entry>
   <entry>
     <title>喜欢的音乐</title>
-    <url>/2017/04/07/%E5%96%9C%E6%AC%A2%E7%9A%84%E9%9F%B3%E4%B9%90/</url>
+    <url>/2017/04/08/%E5%96%9C%E6%AC%A2%E7%9A%84%E9%9F%B3%E4%B9%90/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -2404,7 +2404,7 @@
   </entry>
   <entry>
     <title>Qt 常见编译问题汇总</title>
-    <url>/2017/04/06/Qt%E5%B8%B8%E8%A7%81%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/</url>
+    <url>/2017/04/07/Qt%E5%B8%B8%E8%A7%81%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -2478,7 +2478,7 @@
   </entry>
   <entry>
     <title>Qt 5.8 中的实用功能配置</title>
-    <url>/2017/03/26/Qt%205.8%20%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%94%A8%E9%85%8D%E7%BD%AE/</url>
+    <url>/2017/03/27/Qt%205.8%20%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%94%A8%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
