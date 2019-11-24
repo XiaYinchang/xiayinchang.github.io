@@ -310,7 +310,7 @@
 <h3 id="准备虚拟机"><a href="#准备虚拟机" class="headerlink" title="准备虚拟机"></a>准备虚拟机</h3><p>首先，新建 /infra 目录用于存放本次部署产生所有的数据信息，包括安装文件和虚拟机磁盘文件。基于 VMware Workstation 创建虚拟机， VMware Workstation 安装过程不再赘述。使用 CentOS 7.6 最小系统镜像安装操作系统，镜像地址：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso</span><br></pre></td></tr></table></figure>
 
-<p>三个控制节点配置相同，可以在创建完成一个虚拟机后使用 VMware 提供的 clone 功能直接复制出其余的（复制得到的虚拟机需要重新生成 MAC 地址，否则会造成地址冲突），配置详情如下：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align=left&display=inline&height=702&name=image.png&originHeight=702&originWidth=891&size=68225&status=done&width=891" alt="image.png"><br>两个计算节点在上图配置的基础上提升了内存、处理器和硬盘配置，这里硬盘容量设置较大是为了后续在 OpenStack 环境中部署 Kubernetes 等其它系统做准备，可根据个人需要缩减：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png#align=left&display=inline&height=696&name=image.png&originHeight=696&originWidth=885&size=68338&status=done&width=885" alt="image.png"><br>所有节点配置两张网卡：一张用于 OpenStack 管理网，通过 NAT 连接外网；一张用于 Neutron 网络，直接桥接到外部网络。可根据个人需求调整连接外部网络的方式，VMware 虚拟网络信息如下：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png#align=left&display=inline&height=614&name=image.png&originHeight=614&originWidth=617&size=55558&status=done&width=617" alt="image.png"><br>虚拟机创建完成后进入操作系统检查 IP 地址获取情况：</p>
+<p>三个控制节点配置相同，可以在创建完成一个虚拟机后使用 VMware 提供的 clone 功能直接复制出其余的（复制得到的虚拟机需要重新生成 MAC 地址，否则会造成地址冲突），配置详情如下：<br><img src="https://i.loli.net/2019/11/24/chCQRiNsam16xYk.png" alt="image.png"><br>两个计算节点在上图配置的基础上提升了内存、处理器和硬盘配置，这里硬盘容量设置较大是为了后续在 OpenStack 环境中部署 Kubernetes 等其它系统做准备，可根据个人需要缩减：<br><img src="/images/1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png" alt="image.png"><br>所有节点配置两张网卡：一张用于 OpenStack 管理网，通过 NAT 连接外网；一张用于 Neutron 网络，直接桥接到外部网络。可根据个人需求调整连接外部网络的方式，VMware 虚拟网络信息如下：<br><img src="/images/1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png" alt="image.png"><br>虚拟机创建完成后进入操作系统检查 IP 地址获取情况：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@controller_03 ~]<span class="comment"># ip a</span></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:32:8a:b7 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.16.192.131/24 brd 172.16.192.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::250:56ff:fe32:8ab7/64 scope link </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">3: ens36: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:34:89:62 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.1.10/24 brd 192.168.1.255 scope global noprefixroute dynamic ens36</span><br><span class="line">       valid_lft 82858sec preferred_lft 82858sec</span><br><span class="line">    inet6 fe80::91ef:7089:dc2e:d7f1/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
 
 <p>如果没有获取到 IP 可执行 dhclient 命令尝试获取 IP 地址，动态分配的 IP 地址只是为系统提供了临时连接外部网络的途径。为了后续的自动化部署，我们需要将每个节点连接管理网的网卡 IP 地址固定下来，并使用管理网网关为默认路由网关（一定要确认好网关地址），如下：</p>
@@ -323,7 +323,7 @@
 <p>为了管理方便，我们将三个控制节点和两个计算节点的 hostname 分别设置为（主机名不能带下划线，否则部署 OpenStack 时报错）:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">controller-01</span><br><span class="line">controller-02</span><br><span class="line">controller-03</span><br><span class="line">compute-01</span><br><span class="line">compute-02</span><br></pre></td></tr></table></figure>
 
-<p>为了方便命令行登录节点，可通过 ssh-copy-id 将宿主机 ssh public-key 拷贝到各虚拟节点，之后在 ssh 登录时无需再输入密码。<br>为了方便在所有虚拟机和宿主机之间共享文件，我们可以使用 VMware 的文件共享机制将宿主机目录挂载到虚拟机中。首先，在虚拟机的属性配置中添加要共享的文件夹，如下是将宿主机上的 /infra/vmshare 目录共享给虚拟机：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1558870518738-a48e46b4-d616-4a1b-9c17-f11fc2595b76.png#align=left&display=inline&height=590&name=image.png&originHeight=701&originWidth=886&size=70490&status=done&width=746" alt="image.png"></p>
+<p>为了方便命令行登录节点，可通过 ssh-copy-id 将宿主机 ssh public-key 拷贝到各虚拟节点，之后在 ssh 登录时无需再输入密码。<br>为了方便在所有虚拟机和宿主机之间共享文件，我们可以使用 VMware 的文件共享机制将宿主机目录挂载到虚拟机中。首先，在虚拟机的属性配置中添加要共享的文件夹，如下是将宿主机上的 /infra/vmshare 目录共享给虚拟机：<br><img src="/images/1558870518738-a48e46b4-d616-4a1b-9c17-f11fc2595b76.png" alt="image.png"></p>
 <p>只有上图的设置还不够，我们需要进入到虚拟机内部将共享的文件夹挂载到本地目录才能使用，如下，该命令的涵义是将名称为 vmshare 的共享挂载到本地 /vmshare 目录：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmhgfs-fuse .host:/vmshare /vmshare</span><br></pre></td></tr></table></figure>
 
@@ -406,10 +406,10 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/08/13/为 Proxmox 制作包含 cloud-init 的虚拟机模板/" rel="bookmark">为 Proxmox 制作包含 cloud-init 的虚拟机模板</a></div>
+      <div class="popular-posts-title"><a href="/2019/11/08/Linux 实用命令集合/" rel="bookmark">Linux 实用命令集合</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/11/08/Linux 实用命令集合/" rel="bookmark">Linux 实用命令集合</a></div>
+      <div class="popular-posts-title"><a href="/2019/08/13/为 Proxmox 制作包含 cloud-init 的虚拟机模板/" rel="bookmark">为 Proxmox 制作包含 cloud-init 的虚拟机模板</a></div>
     </li>
   </ul>
 
@@ -439,16 +439,16 @@
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/05/25/VMware%20Workstation%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%B9%E5%88%86%E5%8C%BA%E6%89%A9%E5%AE%B9/" rel="next" title="VMware Workstation 虚拟机 root 分区扩容">
-                  <i class="fa fa-chevron-left"></i> VMware Workstation 虚拟机 root 分区扩容
+                <a href="/2019/02/11/K8S%E9%9B%86%E6%88%90Keystone%E8%AE%A4%E8%AF%81/" rel="next" title="K8S集成Keystone认证">
+                  <i class="fa fa-chevron-left"></i> K8S集成Keystone认证
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/05/30/Keepalived%20%E5%92%8C%20Kubeadm%20%E9%83%A8%E7%BD%B2%E9%AB%98%E5%8F%AF%E7%94%A8%20Kubernetes/" rel="prev" title="Keepalived 和 Kubeadm 部署高可用 Kubernetes">
-                  Keepalived 和 Kubeadm 部署高可用 Kubernetes <i class="fa fa-chevron-right"></i>
+                <a href="/2019/05/25/VMware%20Workstation%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%B9%E5%88%86%E5%8C%BA%E6%89%A9%E5%AE%B9/" rel="prev" title="VMware Workstation 虚拟机 root 分区扩容">
+                  VMware Workstation 虚拟机 root 分区扩容 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

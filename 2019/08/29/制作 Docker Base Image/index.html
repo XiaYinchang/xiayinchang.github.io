@@ -284,7 +284,7 @@
       
         <p><a name="BdT88"></a></p><h4 id="使用镜像安装-centos-虚拟机"><a href="#使用镜像安装-centos-虚拟机" class="headerlink" title="使用镜像安装 centos 虚拟机"></a>使用镜像安装 centos 虚拟机</h4><p>使用 VirtualBox、VMware workstation 或者 Proxmox 等虚拟机管理平台创建虚拟机，在这里我使用 Proxmox 创建虚拟机。由于我们只是为了制作 Docker Base Image，虚拟机用完即删，给虚拟机分配的资源可随意配置。下图是我创建的虚拟机基本配置： </p><a id="more"></a>
 
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1567131557233-c3e8da2b-10a6-495a-9805-fcb2f3683b77.png#align=left&display=inline&height=710&name=WX20190830-101825%402x.png&originHeight=710&originWidth=1438&size=138442&status=done&width=1438" alt="WX20190830-101825@2x.png"></p>
+<p><img src="https://i.loli.net/2019/11/23/yJvnSxB7TKsOk62.png" alt="WX20190830-101825@2x.png"></p>
 <p>这里使用 CentOS 7 1804 的 ISO 镜像安装虚拟机操作系统，安装系统的过程不再赘述，按照正常安装步骤操作即可。这里使用这个版本的操作系统镜像是因为我们自己的软件包都是基于这个版本的 centos 制作的，我需要这个版本的基础镜像通过安装这些软件包制作最后的工作镜像。读者可以根据自己的需要选择不同操作系统不同的版本。<br><a name="r33Tf"></a></p>
 <h4 id="制作基础镜像"><a href="#制作基础镜像" class="headerlink" title="制作基础镜像"></a>制作基础镜像</h4><ul>
 <li>配置网络（按需）</li>
@@ -313,7 +313,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mkimage-yum.sh centos</span><br></pre></td></tr></table></figure>
 
 <p>制作完成后：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1567133343307-c8b7d86e-9a50-48ac-bfa8-d21c79e26c8c.png#align=left&display=inline&height=108&name=WX20190830-101825%402x.png&originHeight=108&originWidth=1662&size=30100&status=done&width=1662" alt="WX20190830-101825@2x.png"></p>
+<p><img src="https://i.loli.net/2019/11/24/U4RemvgV8uCX21L.png" alt="WX20190830-101825@2x.png"></p>
 <p>然后就可以推送到内部镜像仓库中，并作为基础镜像来使用。</p>
 
     </div>
@@ -325,19 +325,19 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/09/02/Ceph 常用操作/" rel="bookmark">Ceph 常用操作</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2019/09/03/ArchLinux 常用命令/" rel="bookmark">ArchLinux 常用命令</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/11/07/Linux 文件系统基础知识/" rel="bookmark">Linux 文件系统基础知识</a></div>
+      <div class="popular-posts-title"><a href="/2019/06/20/Centos 编译安装 zfs/" rel="bookmark">Centos 编译安装 zfs</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/09/02/Proxmox 使用拾遗/" rel="bookmark">Proxmox 使用拾遗</a></div>
+      <div class="popular-posts-title"><a href="/2019/09/02/Ceph 常用操作/" rel="bookmark">Ceph 常用操作</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2019/08/13/为 Proxmox 制作包含 cloud-init 的虚拟机模板/" rel="bookmark">为 Proxmox 制作包含 cloud-init 的虚拟机模板</a></div>
+      <div class="popular-posts-title"><a href="/2019/11/12/Kubernets 实践/" rel="bookmark">Kubernetes 实践</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2019/11/08/Linux 实用命令集合/" rel="bookmark">Linux 实用命令集合</a></div>
     </li>
   </ul>
 
@@ -375,8 +375,8 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/09/02/Ceph%20%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" rel="prev" title="Ceph 常用操作">
-                  Ceph 常用操作 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/09/02/Proxmox%20%E4%BD%BF%E7%94%A8%E6%8B%BE%E9%81%97/" rel="prev" title="Proxmox 使用拾遗">
+                  Proxmox 使用拾遗 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

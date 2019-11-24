@@ -312,7 +312,7 @@
 </ul>
 <p>Linux LVM 和 HP-UX LVM非常相似，但是提供了更多诸如磁盘快照、集群支持（GFS2、OCFS 和 Lustre）等高级功能。</p>
 <p><a name="mLNqS"></a></p>
-<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>LVM 包含几项概念上的分层：物理卷（PV）、逻辑卷（LV）和文件系统。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559006793676-717ab08e-f951-4f4c-b181-9167f797adb9.png#align=left&display=inline&height=316&name=image.png&originHeight=316&originWidth=260&size=21399&status=done&width=260" alt="image.png"><br>这些分层又由较小的单元组成，例如物理卷由一组PE（Physical Extents）组成、逻辑卷由一组LE（Logical Extents）组成。Extent 在这里指的是组成卷的最小逻辑单元。Extent 在磁盘管理中指的是一些连续的 block，一个 extent 由起始的 block 加上长度进行定义。 Extent 是 btrfs 管理磁盘空间的最小单位，由 extent tree 管理。 Btrfs 分配 data 或 metadata 都需要查询 extent tree 以便获得空闲空间的信息。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559008329932-64cc00c4-b926-40f1-be09-d0ab8e0f90d9.png#align=left&display=inline&height=179&name=image.png&originHeight=179&originWidth=563&size=39153&status=done&width=563" alt="image.png"><br><br><br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559007427978-1c2c017c-ab1a-4b34-a21a-55b313d17ac5.png#align=left&display=inline&height=258&name=image.png&originHeight=258&originWidth=671&size=23025&status=done&width=671" alt="image.png"><br></p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>LVM 包含几项概念上的分层：物理卷（PV）、逻辑卷（LV）和文件系统。<br><img src="https://i.loli.net/2019/11/24/RDfY6vatiLzc3ZH.png" alt="image.png"><br>这些分层又由较小的单元组成，例如物理卷由一组PE（Physical Extents）组成、逻辑卷由一组LE（Logical Extents）组成。Extent 在这里指的是组成卷的最小逻辑单元。Extent 在磁盘管理中指的是一些连续的 block，一个 extent 由起始的 block 加上长度进行定义。 Extent 是 btrfs 管理磁盘空间的最小单位，由 extent tree 管理。 Btrfs 分配 data 或 metadata 都需要查询 extent tree 以便获得空闲空间的信息。<br><img src="/images/1559008329932-64cc00c4-b926-40f1-be09-d0ab8e0f90d9.png" alt="image.png"><br><br><br><img src="/images/1559007427978-1c2c017c-ab1a-4b34-a21a-55b313d17ac5.png" alt="image.png"><br></p>
 <p><a name="BfIJI"></a></p>
 <h4 id="物理卷（PV）"><a href="#物理卷（PV）" class="headerlink" title="物理卷（PV）"></a>物理卷（PV）</h4><p>每个物理卷可以是磁盘分区，整个磁盘，元设备或回环文件。 使用命令 pvcreate 初始化存储空间以供 LVM 使用。 将块设备初始化为物理卷会在设备的开头放置标签。<br><a name="m0nfw"></a></p>
 <h4 id="卷组（VG）"><a href="#卷组（VG）" class="headerlink" title="卷组（VG）"></a>卷组（VG）</h4><p>一个卷组将一组逻辑卷和物理卷纳入到一个管理单元。卷组被切分成一组大小固定的 PE。vgcreate 命令使用先前 pvcreate 为 LVM 配置的物理卷路径创建一个卷组。</p>
@@ -421,7 +421,7 @@
 <p>执行以下命令启动：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">system-config-lvm</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559628183097-f4e684b1-2ab3-432d-b062-075ed84278f4.png#align=left&display=inline&height=568&name=image.png&originHeight=568&originWidth=970&size=83085&status=done&width=970" alt="image.png"><br></p>
+<p><img src="/images/1559628183097-f4e684b1-2ab3-432d-b062-075ed84278f4.png" alt="image.png"><br></p>
 <ul>
 <li>逻辑卷扩容</li>
 </ul>
