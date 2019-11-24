@@ -76,6 +76,72 @@ value: [0 0 0]   type: []int    len: 3    cap: 3    underlay: 0x4140a0
 value: [0 0 0]   type: []int    len: 3    cap: 8    underlay: 0x45e040
 ```
 
+<a name="J5JDU"></a>
+#### 切片拷贝
+以下代码：
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	arr := [20]int{}
+	slice1 := arr[2:5]
+	fmt.Printf("%+v\n", slice1)
+	slice2 := slice1
+	slice2[1] = 3
+
+	slice2 = append(slice2, []int{1}...)
+	fmt.Printf("%+v\n", slice1)
+	fmt.Printf("%+v\n", slice2)
+	slice2[2] = 5
+	fmt.Printf("%+v\n", slice1)
+	fmt.Printf("%+v\n", slice2)
+}
+```
+输出：
+```bash
+[0 0 0]
+[0 3 0]
+[0 3 0 1]
+[0 3 5]
+[0 3 5 1]
+```
+以上输出说明，整个过程中两个切片的底层数组仍然是同一个，这是因为切片复制完成的瞬间新切片和原切片的底层数组一定是同一个，之后随着 append 操作有可能会造成切片各自的底层数组发生变化，而这种变化并不是一定会出现，只有底层数组的容量不足以容纳新的元素时才会发生，而上面的输出结果表明，由于底层数组的容量仍然足以容纳新的元素，所以切片 append 操作后底层数组仍未变化，也就是说原切片和新切片之间仍然有可能相互影响。<br />下面的例子恰好是由于新切片 append 元素时底层数组不足以容纳新的元素造成底层数组的变化，之后两个切片再无关系：
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	slice1 := []int{1, 2, 3, 10: 0}
+	fmt.Printf("%+v\n", slice1)
+	slice2 := slice1
+	slice2[1] = 3
+
+	slice2 = append(slice2, []int{1}...)
+	fmt.Printf("%+v\n", slice1)
+	fmt.Printf("%+v\n", slice2)
+	slice2[3]=5
+	fmt.Printf("%+v\n", slice1)
+	fmt.Printf("%+v\n", slice2)
+}
+
+```
+输出：
+```go
+[1 2 3 0 0 0 0 0 0 0 0]
+[1 3 3 0 0 0 0 0 0 0 0]
+[1 3 3 0 0 0 0 0 0 0 0 1]
+[1 3 3 0 0 0 0 0 0 0 0]
+[1 3 3 5 0 0 0 0 0 0 0 1]
+```
+综上，我们不能依靠拷贝切片之间的联系来获取排序后的元素值，即不能像 C 语言使用指针一样，而应当每次返回一个新的切片存储排好序的值。
+
 <a name="IWVp8"></a>
 #### 包导入过程
 ![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&display=inline&height=424&name=image.png&originHeight=424&originWidth=953&search=&size=146883&status=done&width=953)
