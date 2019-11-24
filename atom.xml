@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2019-11-20T16:00:00.000Z</updated>
+  <updated>2019-11-23T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go 语言流式 IO</title>
+    <link href="https://www.xiayinchang.top/post/d2033f7a.html"/>
+    <id>https://www.xiayinchang.top/post/d2033f7a.html</id>
+    <published>2019-11-23T16:00:00.000Z</published>
+    <updated>2019-11-23T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Go 语言中 IO 的基本用法。
+    
+    </summary>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>使用语雀、GitHub 和阿里云函数计算构建博客</title>
@@ -440,29 +463,6 @@
       <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
     
       <category term="Ceph" scheme="https://www.xiayinchang.top/tags/Ceph/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Proxmox 使用拾遗</title>
-    <link href="https://www.xiayinchang.top/post/399a617a.html"/>
-    <id>https://www.xiayinchang.top/post/399a617a.html</id>
-    <published>2019-09-02T16:00:00.000Z</published>
-    <updated>2019-09-02T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      本文记录使用 Proxmox 过程中用到的操作。
-    
-    </summary>
-    
-    
-      <category term="Proxmox" scheme="https://www.xiayinchang.top/categories/Proxmox/"/>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
-    
-      <category term="Proxmox" scheme="https://www.xiayinchang.top/tags/Proxmox/"/>
     
   </entry>
   
