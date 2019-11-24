@@ -261,6 +261,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -318,7 +325,7 @@
 <p><a name="W6wLo"></a></p>
 <h4 id="基于阿里云函数计算的中间层实现"><a href="#基于阿里云函数计算的中间层实现" class="headerlink" title="基于阿里云函数计算的中间层实现"></a>基于阿里云函数计算的中间层实现</h4><p>后来发现阿里云函数计算有免费的额度可以使用，完全可以将我的虚拟机释放出来做其他事情，而且虚拟机两年后就到期了，这个函数计算至少坚挺几年问题不大，以下是阿里云官方文档关于函数计算的免费额度说明，前 100 万次调用免费，财大气粗的阿里云：</p>
 <p><img src="https://i.loli.net/2019/11/24/WVNm19qva4iF2TP.png" alt="image.png"></p>
-<p>根据我们的使用场景，需要部署一个函数能够处理语雀的 http post 请求，参考阿里云函数计算的<a href="https://help.aliyun.com/document_detail/74768.html?spm=a2c4g.11186623.6.604.233e68f4qM1FYl" target="_blank" rel="noopener">官方文档</a>，我创建了一个名为 sync_yuque 的函数，运行环境选择 Python 是因为使用 Nodejs 时发现阿里云的函数计算貌似只支持 Express 的一套 api，我之前写的 Nodejs 的代码都不好用了，然后发现根本不支持 Go 的环境，所以只好用 Python 的：<br><img src="https://i.loli.net/2019/11/24/pchbZt8SW6zqxQA.png" alt="image.png"><br>这个函数计算是可以在线编辑代码的，这个函数计算要求函数的命名有一定的规范，最后写的 Python 代码如下：<br><img src="https://i.loli.net/2019/11/24/qJvSohd9i81uYNn.png" alt="image.png"><br>还可以在线调试，点击执行手动触发了一波，看到 GitHub 那边果然被触发了，注意下图中的 Http 触发器有个点击复制的按钮，点击后复制的就是触发 Python 代码调用的 URL 地址，随后会将这个地址添加到语雀的 webhook 中：<br><img src="/images/1574348964801-b5f5e678-23bd-4af9-b3ad-2a8fdb3eb129.png" alt="image.png"><br>GitHub Action 触发自动构建如下，可以看到触发的事件源确实是 repository_dispatch ：<br><img src="/images/1574349095187-c0ee05f1-2140-4664-b999-fb46b18e5b1d.png" alt="image.png"><br>最后，将获取的 Http 函数调用地址添加到语雀的 webhook 中，如下：<br><img src="/images/1574349534969-cee1fcaf-2bbc-4eff-9c8a-dc44fa6363b8.png" alt="image.png"><br>现在，在语雀上对应知识库中更新任何一篇文章或者发布新的文章都会触发 GitHub 自动构建和部署，实现博客站点与语雀文章的同步更新，整个过程已经被自动化衔接起来，而你只需要关注写作本身。</p>
+<p>根据我们的使用场景，需要部署一个函数能够处理语雀的 http post 请求，参考阿里云函数计算的<a href="https://help.aliyun.com/document_detail/74768.html?spm=a2c4g.11186623.6.604.233e68f4qM1FYl" target="_blank" rel="noopener">官方文档</a>，我创建了一个名为 sync_yuque 的函数，运行环境选择 Python 是因为使用 Nodejs 时发现阿里云的函数计算貌似只支持 Express 的一套 api，我之前写的 Nodejs 的代码都不好用了，然后发现根本不支持 Go 的环境，所以只好用 Python 的：<br><img src="https://i.loli.net/2019/11/24/pchbZt8SW6zqxQA.png" alt="image.png"><br>这个函数计算是可以在线编辑代码的，这个函数计算要求函数的命名有一定的规范，最后写的 Python 代码如下：<br><img src="https://i.loli.net/2019/11/24/qJvSohd9i81uYNn.png" alt="image.png"><br>还可以在线调试，点击执行手动触发了一波，看到 GitHub 那边果然被触发了，注意下图中的 Http 触发器有个点击复制的按钮，点击后复制的就是触发 Python 代码调用的 URL 地址，随后会将这个地址添加到语雀的 webhook 中：<br><img src="https://i.loli.net/2019/11/24/wrdO9iKxZ43lQ6F.png" alt="image.png"><br>GitHub Action 触发自动构建如下，可以看到触发的事件源确实是 repository_dispatch ：<br><img src="/images/1574349095187-c0ee05f1-2140-4664-b999-fb46b18e5b1d.png" alt="image.png"><br>最后，将获取的 Http 函数调用地址添加到语雀的 webhook 中，如下：<br><img src="/images/1574349534969-cee1fcaf-2bbc-4eff-9c8a-dc44fa6363b8.png" alt="image.png"><br>现在，在语雀上对应知识库中更新任何一篇文章或者发布新的文章都会触发 GitHub 自动构建和部署，实现博客站点与语雀文章的同步更新，整个过程已经被自动化衔接起来，而你只需要关注写作本身。</p>
 
     </div>
 
@@ -493,13 +500,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">132k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
@@ -532,6 +539,78 @@
 
 
 
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey: 'AIzaSyCuNtyzSDVZsvu2bkJR6bntgV30WN3-z38',
+      projectId: 'blog-6fb14'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = true;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
 
 
 

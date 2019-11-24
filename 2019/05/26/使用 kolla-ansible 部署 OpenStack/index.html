@@ -257,6 +257,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -315,7 +322,7 @@
 <h3 id="准备虚拟机"><a href="#准备虚拟机" class="headerlink" title="准备虚拟机"></a>准备虚拟机</h3><p>首先，新建 /infra 目录用于存放本次部署产生所有的数据信息，包括安装文件和虚拟机磁盘文件。基于 VMware Workstation 创建虚拟机， VMware Workstation 安装过程不再赘述。使用 CentOS 7.6 最小系统镜像安装操作系统，镜像地址：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso</span><br></pre></td></tr></table></figure>
 
-<p>三个控制节点配置相同，可以在创建完成一个虚拟机后使用 VMware 提供的 clone 功能直接复制出其余的（复制得到的虚拟机需要重新生成 MAC 地址，否则会造成地址冲突），配置详情如下：<br><img src="https://i.loli.net/2019/11/24/CU4xPOMAQId25Zt.png" alt="image.png"><br>两个计算节点在上图配置的基础上提升了内存、处理器和硬盘配置，这里硬盘容量设置较大是为了后续在 OpenStack 环境中部署 Kubernetes 等其它系统做准备，可根据个人需要缩减：<br><img src="/images/1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png" alt="image.png"><br>所有节点配置两张网卡：一张用于 OpenStack 管理网，通过 NAT 连接外网；一张用于 Neutron 网络，直接桥接到外部网络。可根据个人需求调整连接外部网络的方式，VMware 虚拟网络信息如下：<br><img src="/images/1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png" alt="image.png"><br>虚拟机创建完成后进入操作系统检查 IP 地址获取情况：</p>
+<p>三个控制节点配置相同，可以在创建完成一个虚拟机后使用 VMware 提供的 clone 功能直接复制出其余的（复制得到的虚拟机需要重新生成 MAC 地址，否则会造成地址冲突），配置详情如下：<br><img src="https://i.loli.net/2019/11/24/t4uwV6vjpZdDQ2G.png" alt="image.png"><br>两个计算节点在上图配置的基础上提升了内存、处理器和硬盘配置，这里硬盘容量设置较大是为了后续在 OpenStack 环境中部署 Kubernetes 等其它系统做准备，可根据个人需要缩减：<br><img src="https://i.loli.net/2019/11/24/msTf21ljeWrNPnZ.png" alt="image.png"><br>所有节点配置两张网卡：一张用于 OpenStack 管理网，通过 NAT 连接外网；一张用于 Neutron 网络，直接桥接到外部网络。可根据个人需求调整连接外部网络的方式，VMware 虚拟网络信息如下：<br><img src="/images/1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png" alt="image.png"><br>虚拟机创建完成后进入操作系统检查 IP 地址获取情况：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@controller_03 ~]<span class="comment"># ip a</span></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:32:8a:b7 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.16.192.131/24 brd 172.16.192.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::250:56ff:fe32:8ab7/64 scope link </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">3: ens36: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:34:89:62 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.1.10/24 brd 192.168.1.255 scope global noprefixroute dynamic ens36</span><br><span class="line">       valid_lft 82858sec preferred_lft 82858sec</span><br><span class="line">    inet6 fe80::91ef:7089:dc2e:d7f1/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
 
 <p>如果没有获取到 IP 可执行 dhclient 命令尝试获取 IP 地址，动态分配的 IP 地址只是为系统提供了临时连接外部网络的途径。为了后续的自动化部署，我们需要将每个节点连接管理网的网卡 IP 地址固定下来，并使用管理网网关为默认路由网关（一定要确认好网关地址），如下：</p>
@@ -587,13 +594,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">132k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
@@ -626,6 +633,78 @@
 
 
 
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey: 'AIzaSyCuNtyzSDVZsvu2bkJR6bntgV30WN3-z38',
+      projectId: 'blog-6fb14'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = true;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
 
 
 

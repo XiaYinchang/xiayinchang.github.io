@@ -56,7 +56,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="开发过程中遇到的有趣及琐碎的前端知识。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-13T16:00:00.000Z">
+<meta property="og:updated_time" content="2019-11-23T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/2019/11/14/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86%E7%82%B9%E6%BB%B4/">
@@ -239,6 +239,13 @@
 
               <time title="创建时间：2019-11-14 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-14T00:00:00+08:00">2019-11-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-24 00:00:00" itemprop="dateModified" datetime="2019-11-24T00:00:00+08:00">2019-11-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -252,6 +259,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="firestore-visitors-count"></span>
+            </span>
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -264,14 +278,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>398</span>
+              <span>3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
             <div class="post-description">开发过程中遇到的有趣及琐碎的前端知识。</div>
 
@@ -289,8 +303,25 @@
 
 <h4 id="更新依赖"><a href="#更新依赖" class="headerlink" title="更新依赖"></a>更新依赖</h4><p>npm-check-updates 可以帮助更新 package.json 中的所有依赖，其仍是通过 npm update 实现。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i -g npm-check-updates</span><br><span class="line">npm-check-updates -u</span><br></pre></td></tr></table></figure>
+<p><a name="23FOJ"></a></p>
+<h4 id="Node-js-下载图片到本地"><a href="#Node-js-下载图片到本地" class="headerlink" title="Node.js 下载图片到本地"></a>Node.js 下载图片到本地</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">downloadPic</span>(<span class="params">src, dest</span>)</span>&#123;</span><br><span class="line">    request(src).pipe(fs.createWriteStream(dest)).on(<span class="string">'close'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'pic saved!'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 使用方式：</span></span><br><span class="line">downloadPic(imgList[<span class="number">0</span>],<span class="string">'./catpics/1.jpg'</span>);</span><br></pre></td></tr></table></figure>
+<p><a name="LhnIm"></a></p>
+<h4 id="Node-js-教程"><a href="#Node-js-教程" class="headerlink" title="Node.js 教程"></a>Node.js 教程</h4><ul>
+<li>Node.js TypeScript 15 篇：<a href="https://wanago.io/2019/03/18/node-js-typescript-6-sending-http-requests-understanding-multipart-form-data/" target="_blank" rel="noopener">https://wanago.io/2019/03/18/node-js-typescript-6-sending-http-requests-understanding-multipart-form-data/</a> 篇介绍了如何在 Node.js 中使用 multipart/form-data 流式上传文件。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> FormData <span class="keyword">from</span> <span class="string">'form-data'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; request &#125; <span class="keyword">from</span> <span class="string">'http'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; createReadStream &#125; <span class="keyword">from</span> <span class="string">'fs'</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> readStream = createReadStream(<span class="string">'./photo.jpg'</span>);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> form = <span class="keyword">new</span> FormData();</span><br><span class="line">form.append(<span class="string">'photo'</span>, readStream);</span><br><span class="line">form.append(<span class="string">'firstName'</span>, <span class="string">'Marcin'</span>);</span><br><span class="line">form.append(<span class="string">'lastName'</span>, <span class="string">'Wanago'</span>);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> req = request(</span><br><span class="line">  &#123;</span><br><span class="line">    host: <span class="string">'localhost'</span>,</span><br><span class="line">    port: <span class="string">'5000'</span>,</span><br><span class="line">    path: <span class="string">'/upload'</span>,</span><br><span class="line">    method: <span class="string">'POST'</span>,</span><br><span class="line">    headers: form.getHeaders(),</span><br><span class="line">  &#125;,</span><br><span class="line">  response =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(response.statusCode); <span class="comment">// 200</span></span><br><span class="line">  &#125;</span><br><span class="line">);</span><br><span class="line"> </span><br><span class="line">form.pipe(req);</span><br></pre></td></tr></table></figure>
+<a name="6xARQ"></a><h4 id="Node-js-流式转移图片"><a href="#Node-js-流式转移图片" class="headerlink" title="Node.js 流式转移图片"></a>Node.js 流式转移图片</h4>下载的同时开始上传到七牛云：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> qiniu <span class="keyword">from</span> <span class="string">'qiniu'</span>;</span><br><span class="line"><span class="keyword">const</span> config: any = <span class="keyword">new</span> qiniu.conf.Config();</span><br><span class="line">config.zone = qiniu.zone.Zone_z2;</span><br><span class="line"><span class="keyword">const</span> formUploader = <span class="keyword">new</span> qiniu.form_up.FormUploader(config);</span><br><span class="line"><span class="keyword">const</span> putExtra = <span class="keyword">new</span> qiniu.form_up.PutExtra();</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> uploadFiles(urls: any[], <span class="attr">type</span>: string, token?: string) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!token) &#123;</span><br><span class="line">    token = <span class="keyword">await</span> get_token();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> keys = &#123;&#125;;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> url <span class="keyword">of</span> urls) &#123;</span><br><span class="line">    <span class="keyword">let</span> requestUrl = url.url.trim();</span><br><span class="line">    <span class="keyword">if</span> (!requestUrl || !<span class="regexp">/(https?|ftp|file):\/\/\w+\.\w+/</span>.test(requestUrl)) &#123;</span><br><span class="line">      keys[url.id] = <span class="literal">null</span>;</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> uploadFunc = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> readableStream = request(requestUrl);</span><br><span class="line">        <span class="keyword">const</span> key = <span class="string">`images/xxx_<span class="subst">$&#123;<span class="built_in">Date</span>.now()&#125;</span>.jpg`</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          formUploader.putStream(</span><br><span class="line">            token,</span><br><span class="line">            key,</span><br><span class="line">            readableStream,</span><br><span class="line">            putExtra,</span><br><span class="line">            (respErr, respBody, respInfo) =&gt; &#123;</span><br><span class="line">              <span class="keyword">if</span> (respInfo.statusCode == <span class="number">200</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> resolve(respBody &amp;&amp; respBody.key);</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> resolve(<span class="literal">null</span>);</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          );</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">          <span class="keyword">return</span> resolve(<span class="literal">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> key = <span class="keyword">await</span> uploadFunc();</span><br><span class="line">    <span class="keyword">this</span>.app.logger.info(<span class="string">'key: '</span>, key);</span><br><span class="line">    keys[url.id] = key;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> keys;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a name="uhkxS"></a><h4 id="从-Html-文本中匹配所有-img-的地址"><a href="#从-Html-文本中匹配所有-img-的地址" class="headerlink" title="从 Html 文本中匹配所有 img 的地址"></a>从 Html 文本中匹配所有 img 的地址</h4></li>
+</ul>
+<ol>
+<li><p>从字符串中匹配出所有的 img 标签</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">"this is test string &lt;img src=\"http:baidu.com/test.jpg\" width='50' &gt; 1 and the end &lt;img src=\"所有地址也能匹配.jpg\" /&gt; 33! &lt;img src=\"/uploads/attached/image/20120426/20120426225658_92565.png\" alt=\"\" /&gt;"</span></span><br><span class="line"><span class="keyword">const</span> imgReg = <span class="regexp">/&lt;img.*?(?:&gt;|\/&gt;)/gi</span>;</span><br><span class="line"><span class="keyword">const</span> srcReg = <span class="regexp">/src=[\'\"]?([^\'\"]*)[\'\"]?/i</span>;</span><br><span class="line"><span class="keyword">const</span> arr = str.match(imgReg);  <span class="comment">// arr 为包含所有img标签的数组</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从数组中获取到所有的 src 地址</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line"> <span class="keyword">const</span> src = arr[i].match(srcReg);</span><br><span class="line"> <span class="comment">//获取图片地址</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'图片地址'</span>+(i+<span class="number">1</span>)+<span class="string">'：'</span>+src[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
+
+</li>
+</ol>
 
     </div>
 
@@ -388,7 +419,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#swagger-client"><span class="nav-number">1.</span> <span class="nav-text">swagger-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件下载"><span class="nav-number">2.</span> <span class="nav-text">文件下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新依赖"><span class="nav-number">3.</span> <span class="nav-text">更新依赖</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#swagger-client"><span class="nav-number">1.</span> <span class="nav-text">swagger-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件下载"><span class="nav-number">2.</span> <span class="nav-text">文件下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新依赖"><span class="nav-number">3.</span> <span class="nav-text">更新依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-下载图片到本地"><span class="nav-number">4.</span> <span class="nav-text">Node.js 下载图片到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-教程"><span class="nav-number">5.</span> <span class="nav-text">Node.js 教程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-流式转移图片"><span class="nav-number">6.</span> <span class="nav-text">Node.js 流式转移图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从-Html-文本中匹配所有-img-的地址"><span class="nav-number">7.</span> <span class="nav-text">从 Html 文本中匹配所有 img 的地址</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -467,13 +498,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">132k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
@@ -506,6 +537,78 @@
 
 
 
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey: 'AIzaSyCuNtyzSDVZsvu2bkJR6bntgV30WN3-z38',
+      projectId: 'blog-6fb14'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = true;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
 
 
 
