@@ -63,6 +63,27 @@
   </entry>
   
   <entry>
+    <title>前端知识点滴</title>
+    <link href="https://www.xiayinchang.top/post/a68ff6.html"/>
+    <id>https://www.xiayinchang.top/post/a68ff6.html</id>
+    <published>2019-11-13T16:00:00.000Z</published>
+    <updated>2019-11-23T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      开发过程中遇到的有趣及琐碎的前端知识。
+    
+    </summary>
+    
+    
+      <category term="前端" scheme="https://www.xiayinchang.top/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="前端" scheme="https://www.xiayinchang.top/tags/%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
     <title>gRPC snippets</title>
     <link href="https://www.xiayinchang.top/post/ab759786.html"/>
     <id>https://www.xiayinchang.top/post/ab759786.html</id>
@@ -440,29 +461,6 @@
       <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
     
       <category term="ArchLinux" scheme="https://www.xiayinchang.top/tags/ArchLinux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Ceph 常用操作</title>
-    <link href="https://www.xiayinchang.top/post/e8bac896.html"/>
-    <id>https://www.xiayinchang.top/post/e8bac896.html</id>
-    <published>2019-09-02T16:00:00.000Z</published>
-    <updated>2019-09-02T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      本文记录使用 Ceph 过程中常用的命令。
-    
-    </summary>
-    
-    
-      <category term="Ceph" scheme="https://www.xiayinchang.top/categories/Ceph/"/>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
-    
-      <category term="Ceph" scheme="https://www.xiayinchang.top/tags/Ceph/"/>
     
   </entry>
   
