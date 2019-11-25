@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Sun Nov 24 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon Nov 25 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -338,6 +338,11 @@ git commit -m "Removed submodule "
 - 合并所有 commit 为一个
 ```
 git rebase --root -i
+```
+
+- 删除所有没有远程分支的本地分支
+```
+git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d
 ```
 
 <a name="Qgmi6"></a>
