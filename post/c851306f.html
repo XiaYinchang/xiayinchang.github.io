@@ -477,7 +477,7 @@
 <ul>
 <li>引入 Keycloak 之后</li>
 </ul>
-<p>由于我们的服务都是基于 Kubernetes 部署的，我们使用了 ingress-nginx 作为 API 网关， ingress-nginx 可以视为 nginx 为 Kubernetes 定制的版本，功能受到 Kubernetes Ingress 定义的限制，虽然支持使用 OAuth 2.0 对接外部认证服务，但本身并不支持对接外部授权服务。如果使用 ingress-nginx 对接 Keycloak 认证，则总体架构变为下图所示，Ingress 负责进行认证，各个后端服务仍然需要自行去处理授权。<br><img src="/images/1568621100341-781dba8e-5d5d-4349-80d4-50449397caff.png" alt="image.png"><br>更进一步，使用 keycloak-gatekeeper 进行认证和授权，这样后端服务将完全和认证与授权解耦，只关注业务逻辑，这样解耦的一个好处是，更换认证提供方对于后端服务是无感的，更加灵活。<br><img src="/images/1568622013241-ade99ea1-a5b4-4da8-8c98-0c07cefd3044.png" alt="image.png"></p>
+<p>由于我们的服务都是基于 Kubernetes 部署的，我们使用了 ingress-nginx 作为 API 网关， ingress-nginx 可以视为 nginx 为 Kubernetes 定制的版本，功能受到 Kubernetes Ingress 定义的限制，虽然支持使用 OAuth 2.0 对接外部认证服务，但本身并不支持对接外部授权服务。如果使用 ingress-nginx 对接 Keycloak 认证，则总体架构变为下图所示，Ingress 负责进行认证，各个后端服务仍然需要自行去处理授权。<br><img src="https://i.loli.net/2019/11/25/ErH8S1IypOPncFL.png" alt="image.png"><br>更进一步，使用 keycloak-gatekeeper 进行认证和授权，这样后端服务将完全和认证与授权解耦，只关注业务逻辑，这样解耦的一个好处是，更换认证提供方对于后端服务是无感的，更加灵活。<br><img src="/images/1568622013241-ade99ea1-a5b4-4da8-8c98-0c07cefd3044.png" alt="image.png"></p>
 <ul>
 <li>keycloak-gatekeeper</li>
 </ul>
