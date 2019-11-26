@@ -564,6 +564,12 @@ zip -r complete/path/to/name.zip ./*
 popd
 ```
 
+<a name="KWEjv"></a>
+#### MySQL 执行单行命令
+```
+mysql --user="$user" --password="$password" --database="$database" --execute="DROP DATABASE $user; CREATE DATABASE $database;"
+```
+
 <a name="fL7Yx"></a>
 #### 实用工具
 
