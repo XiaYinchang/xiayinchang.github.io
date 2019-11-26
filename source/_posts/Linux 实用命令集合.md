@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Mon Nov 25 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Nov 26 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -554,6 +554,15 @@ echo "GET http://localhost:8080/cephcsi" | vegeta attack -rate=20000 -duration=6
 vegeta report result.bin
 ```
 更多内容参考：[https://www.scaleway.com/en/docs/vegeta-load-testing/](https://www.scaleway.com/en/docs/vegeta-load-testing/)
+
+<a name="DNQzt"></a>
+#### zip 压缩文件不带顶级目录
+```
+pushd /Users/me/development/something
+cd path/to/parent/dir/;
+zip -r complete/path/to/name.zip ./*
+popd
+```
 
 <a name="fL7Yx"></a>
 #### 实用工具
