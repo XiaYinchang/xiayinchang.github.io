@@ -290,7 +290,7 @@
 
 <p><a name="D5k3q"></a></p>
 <h3 id="io-Reader-接口"><a href="#io-Reader-接口" class="headerlink" title="io.Reader 接口"></a>io.Reader 接口</h3><p>reader 由 io.Reader 接口定义，可以从数据源读取数据到传输缓冲区，缓冲区中的数据可以继续被流式处理或者直接消费，如下图所示：</p>
-<p><img src="https://i.loli.net/2019/11/26/PY7otegia6uhcTz.png" alt="image.png"><br>如果要把一个 Go 语言类型作为 reader 来使用，这个类型必须实现 <code>io.Reader</code> 所定义的 <code>Read(p []byte)</code> 方法，如下所示：</p>
+<p><img src="https://i.loli.net/2019/11/26/UQtv9EFoOgkWG2y.png" alt="image.png"><br>如果要把一个 Go 语言类型作为 reader 来使用，这个类型必须实现 <code>io.Reader</code> 所定义的 <code>Read(p []byte)</code> 方法，如下所示：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Reader <span class="keyword">interface</span> &#123;</span><br><span class="line">    Read(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>Read()</code> 方法需要返回读取的字节数，如果发生错误则同时返回 error ，如果数据源的所有内容已被读取完毕，则 <code>Read()</code> 方法应当返回 <code>io.EOF</code> 错误。</p>
