@@ -217,6 +217,9 @@
 <p><a name="NBOFH"></a></p>
 <h4 id="vegeta-对-HTTP-服务进行性能测试"><a href="#vegeta-对-HTTP-服务进行性能测试" class="headerlink" title="vegeta 对 HTTP 服务进行性能测试"></a>vegeta 对 HTTP 服务进行性能测试</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">echo <span class="string">"GET http://localhost:8080/cephcsi"</span> | vegeta attack -rate=<span class="number">20000</span> -duration=<span class="number">60</span>s &gt; result.bin</span><br><span class="line">vegeta report result.bin</span><br></pre></td></tr></table></figure>
 <p>更多内容参考：<a href="https://www.scaleway.com/en/docs/vegeta-load-testing/" target="_blank" rel="external nofollow noopener noreferrer">https://www.scaleway.com/en/docs/vegeta-load-testing/</a></p>
+<p><a name="DNQzt"></a></p>
+<h4 id="zip-压缩文件不带顶级目录"><a href="#zip-压缩文件不带顶级目录" class="headerlink" title="zip 压缩文件不带顶级目录"></a>zip 压缩文件不带顶级目录</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pushd /Users/me/development/something</span><br><span class="line">cd path/to/parent/dir/;</span><br><span class="line">zip -r complete/path/to/name.zip ./*</span><br><span class="line">popd</span><br></pre></td></tr></table></figure>
+
 <p><a name="fL7Yx"></a></p>
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
