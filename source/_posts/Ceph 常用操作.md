@@ -2,6 +2,7 @@
 title: Ceph 常用操作
 urlname: asu9v3
 date: '2019-09-03 00:00:00 +0800'
+updated: 'Wed Nov 27 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Ceph
@@ -224,7 +225,7 @@ ceph mon remove openstack-compute-02
 // 移除 ceph.conf 中的相关信息
 ```
 <a name="HJ002"></a>
-#### Ceph-ansible 部署
+#### ceph-ansible 部署
 
 ```bash
 git clone https://github.com/ceph/ceph-ansible.git
@@ -292,12 +293,21 @@ devices:
   - /dev/vdc
   - /dev/vdd
 ```
-
 回到项目根目录执行安装:
-
 ```bash
 ansible-playbook -i hosts -v site.yml
 ```
+
+<a name="BMg3M"></a>
+#### ceph-ansible 添加 osd 
+```
+cd /opt/ceph-ansible
+cp infrastructure-playbooks/add-osd.yml ./
+// 修改 group_vars/all.yml 磁盘信息
+ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml
+// 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样
+```
+
 
 <a name="knNuf"></a>
 #### rbd image 使用
