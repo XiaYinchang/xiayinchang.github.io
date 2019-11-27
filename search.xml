@@ -223,6 +223,9 @@
 <p><a name="KWEjv"></a></p>
 <h4 id="MySQL-执行单行命令"><a href="#MySQL-执行单行命令" class="headerlink" title="MySQL 执行单行命令"></a>MySQL 执行单行命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql --user=&quot;$user&quot; --password=&quot;$password&quot; --database=&quot;$database&quot; --execute=&quot;DROP DATABASE $user; CREATE DATABASE $database;&quot;</span><br></pre></td></tr></table></figure>
 
+<p><a name="bIf97"></a></p>
+<h4 id="MySQL-导出数据库"><a href="#MySQL-导出数据库" class="headerlink" title="MySQL 导出数据库"></a>MySQL 导出数据库</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 导出</span><br><span class="line">mysqldump -P 3306 -u root --password=password -h 172.30.100.43  keycloak &gt; keycloak-3.sql</span><br><span class="line">// 导入</span><br><span class="line">mysql -P 3306 -u root --password=password -h 172.30.100.43  keycloak &lt; keycloak.sql</span><br></pre></td></tr></table></figure>
+
 <p><a name="fL7Yx"></a></p>
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
