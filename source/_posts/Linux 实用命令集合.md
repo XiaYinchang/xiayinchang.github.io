@@ -570,6 +570,15 @@ popd
 mysql --user="$user" --password="$password" --database="$database" --execute="DROP DATABASE $user; CREATE DATABASE $database;"
 ```
 
+<a name="bIf97"></a>
+#### MySQL 导出数据库
+```
+// 导出
+mysqldump -P 3306 -u root --password=password -h 172.30.100.43  keycloak > keycloak-3.sql
+// 导入
+mysql -P 3306 -u root --password=password -h 172.30.100.43  keycloak < keycloak.sql
+```
+
 <a name="fL7Yx"></a>
 #### 实用工具
 
