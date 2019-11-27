@@ -218,15 +218,14 @@ ceph pg repair <pg_id>
 
 <a name="RAYxC"></a>
 #### 删除 Monitor
-
 ```
 systemctl stop ceph-mon@openstack-compute-02.service
 ceph mon remove openstack-compute-02
 // 移除 ceph.conf 中的相关信息
 ```
-<a name="HJ002"></a>
-#### ceph-ansible 部署
 
+<a name="0zXsv"></a>
+#### ceph-ansible 部署
 ```bash
 git clone https://github.com/ceph/ceph-ansible.git
 git checkout v4.0.0
@@ -236,9 +235,7 @@ rpm -i http://download-ib01.fedoraproject.org/pub/epel/testing/7/x86_64/Packages
 // 在所有节点安装
 yum install -y python-netaddr 
 ```
-
 cd  到 ceph-ansible ， 创建 hosts 文件如下：
-
 ```bash
 [CephGroup:children]
 mons
@@ -273,9 +270,7 @@ ceph-csi-01
 ceph-csi-02
 ceph-csi-03
 ```
-
 cd 到 group_vars 目录：
-
 ```bash
 cp all.yml.sample all.yml
 // 取消注释并修改以下字段
@@ -306,12 +301,12 @@ cp infrastructure-playbooks/add-osd.yml ./
 // 修改 group_vars/all.yml 磁盘信息
 ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml
 // 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样
+// 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决
+ceph osd unset noup
 ```
-
 
 <a name="knNuf"></a>
 #### rbd image 使用
-
 ```
 // 创建大小为 1G 的 image
 rbd create rbd/myimage --size 1024
