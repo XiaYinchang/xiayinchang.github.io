@@ -259,7 +259,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -298,14 +298,14 @@
 <p>本文汇总了在Qt  5.8中使用C++进行开发时遇到的编译错误和警告及其解决方法，基于C++11标准。</p>
 <p><a name="eca07263"></a></p>
 <h3 id="constant-string-to-char"><a href="#constant-string-to-char" class="headerlink" title="constant string to char *"></a>constant string to char *</h3><p>初始代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char *p = &quot;Hello&quot;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">char *p &#x3D; &quot;Hello&quot;;</span></pre></td></tr></table></figure>
 
 <p>编译输出：</p>
 <blockquote>
 <p>ISO C++ forbids conversion from constant string to char *.</p>
 </blockquote>
 <p>修改代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char const *p = &quot;Hello&quot;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">char const *p &#x3D; &quot;Hello&quot;;</span></pre></td></tr></table></figure>
 
 <p>参考资料：</p>
 <ol>
@@ -313,14 +313,14 @@
 </ol>
 <p><a name="0fd228ba"></a></p>
 <h3 id="comparison-between-signed-and-unsigned"><a href="#comparison-between-signed-and-unsigned" class="headerlink" title="comparison between signed and unsigned"></a>comparison between signed and unsigned</h3><p>初始代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (int i = 0, max = vec.size(); i != max; ++i)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">for (int i &#x3D; 0, max &#x3D; vec.size(); i !&#x3D; max; ++i)</span></pre></td></tr></table></figure>
 
 <p>编译输出：</p>
 <blockquote>
 <p>warning: comparison between signed and unsigned integer expressions [-Wsign-compare]</p>
 </blockquote>
 <p>修改代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (std::size_t i = 0, max = vec.size(); i != max; ++i)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">for (std::size_t i &#x3D; 0, max &#x3D; vec.size(); i !&#x3D; max; ++i)</span></pre></td></tr></table></figure>
 
 <p>附加注释：</p>
 <blockquote>
@@ -495,7 +495,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -530,13 +530,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">145k</span>
+    <span title="站点总字数">146k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:12</span>
+    <span title="站点阅读时长">2:13</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>

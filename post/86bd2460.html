@@ -307,19 +307,19 @@
 <p>如果你牢记上述事实，则应该能够正确配置容器和卷，并不会对文件读写权限的各种情况感到意外。如果你不熟悉 UNIX 文件权限，可以阅读该<a href="https://help.ubuntu.com/community/FilePermissions" target="_blank" rel="external nofollow noopener noreferrer">页面</a>关于文件权限的描述。</p>
 <p>下面举例说明本地开发时如何快速配置文件权限：</p>
 <p>在宿主机上将要用作卷的目录的归属组设置为未被任何已存在的组使用的 GID（此例中设置为 1024）</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown :<span class="number">1024</span> /data/myvolume</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">chown :<span class="number">1024</span> /data/myvolume</span></pre></td></tr></table></figure>
 
 <p>更改目录权限以授予组成员完全访问权限（读 + 写 + 执行）</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod <span class="number">775</span> /data/myvolume</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">chmod <span class="number">775</span> /data/myvolume</span></pre></td></tr></table></figure>
 
 <p>确保文件夹中所有新建内容都将继承归属组</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod g+s /data/myvolume</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">chmod g+s /data/myvolume</span></pre></td></tr></table></figure>
 
 <p>在 Dockerfile 中创建一个用户，该用户是 1024 组的成员</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RUN addgroup --gid <span class="number">1024</span> mygroup</span><br><span class="line">RUN adduser --disabled-password --gecos <span class="string">""</span> --force-badname --ingroup <span class="number">1024</span> myuser </span><br><span class="line">USER myuser</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">RUN addgroup --gid <span class="number">1024</span> mygroup</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">RUN adduser --disabled-password --gecos <span class="string">""</span> --force-badname --ingroup <span class="number">1024</span> myuser </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">USER myuser</span></pre></td></tr></table></figure>
 
 <p>（可选）在宿主机将当前用户添加到 1024 组中，从而可以方便地在宿主机上操作挂载为容器卷的目录的内容</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adduser ubuntu <span class="number">1024</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">adduser ubuntu <span class="number">1024</span></span></pre></td></tr></table></figure>
 
 <p>上面的示例是一个很简单的配置，可以使得不需要使用 root 用户在容器内运行程序，也可以在主机上操作挂载为容器卷的目录的内容而无需使用主机 root 用户。这些设置过程硬编码到 Docker 镜像打包过程中使得无法在容器运行时调整 GID。如果调整，则需将 GID 作为环境变量传递到容器内，并编写一个通用的初始化脚本在容器启动时进行权限配置。DeniBertović 的这篇博客 <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/" target="_blank" rel="external nofollow noopener noreferrer">https://denibertovic.com/posts/handling-permissions-with-docker-volumes/</a> 提供了完成此类设置的指南。</p>
 
@@ -485,7 +485,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -520,13 +520,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">145k</span>
+    <span title="站点总字数">146k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:12</span>
+    <span title="站点阅读时长">2:13</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>

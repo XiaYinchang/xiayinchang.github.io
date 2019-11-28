@@ -58,17 +58,17 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="为了方便基于 Proxmox 平台创建虚拟机，本文描述了制作包含 cloud-init 的虚拟机模板。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&amp;display=inline&amp;height=690&amp;name=image.png&amp;originHeight=690&amp;originWidth=1038&amp;size=159786&amp;status=done&amp;width=1038">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png#align=left&amp;display=inline&amp;height=751&amp;name=image.png&amp;originHeight=751&amp;originWidth=1043&amp;size=125930&amp;status=done&amp;width=1043">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png#align=left&amp;display=inline&amp;height=769&amp;name=image.png&amp;originHeight=769&amp;originWidth=1026&amp;size=121666&amp;status=done&amp;width=1026">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png#align=left&amp;display=inline&amp;height=769&amp;name=image.png&amp;originHeight=769&amp;originWidth=1041&amp;size=165004&amp;status=done&amp;width=1041">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png#align=left&amp;display=inline&amp;height=733&amp;name=image.png&amp;originHeight=733&amp;originWidth=1020&amp;size=132613&amp;status=done&amp;width=1020">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align=left&amp;display=inline&amp;height=633&amp;name=image.png&amp;originHeight=633&amp;originWidth=719&amp;size=92450&amp;status=done&amp;width=719">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765613783-81f32306-e298-4d18-a553-128415466232.png#align=left&amp;display=inline&amp;height=388&amp;name=image.png&amp;originHeight=388&amp;originWidth=533&amp;size=35717&amp;status=done&amp;width=533">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align=left&amp;display=inline&amp;height=645&amp;name=image.png&amp;originHeight=645&amp;originWidth=720&amp;size=68736&amp;status=done&amp;width=720">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;690&amp;name&#x3D;image.png&amp;originHeight&#x3D;690&amp;originWidth&#x3D;1038&amp;size&#x3D;159786&amp;status&#x3D;done&amp;width&#x3D;1038">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;751&amp;name&#x3D;image.png&amp;originHeight&#x3D;751&amp;originWidth&#x3D;1043&amp;size&#x3D;125930&amp;status&#x3D;done&amp;width&#x3D;1043">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;769&amp;name&#x3D;image.png&amp;originHeight&#x3D;769&amp;originWidth&#x3D;1026&amp;size&#x3D;121666&amp;status&#x3D;done&amp;width&#x3D;1026">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;769&amp;name&#x3D;image.png&amp;originHeight&#x3D;769&amp;originWidth&#x3D;1041&amp;size&#x3D;165004&amp;status&#x3D;done&amp;width&#x3D;1041">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;733&amp;name&#x3D;image.png&amp;originHeight&#x3D;733&amp;originWidth&#x3D;1020&amp;size&#x3D;132613&amp;status&#x3D;done&amp;width&#x3D;1020">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;633&amp;name&#x3D;image.png&amp;originHeight&#x3D;633&amp;originWidth&#x3D;719&amp;size&#x3D;92450&amp;status&#x3D;done&amp;width&#x3D;719">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765613783-81f32306-e298-4d18-a553-128415466232.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;388&amp;name&#x3D;image.png&amp;originHeight&#x3D;388&amp;originWidth&#x3D;533&amp;size&#x3D;35717&amp;status&#x3D;done&amp;width&#x3D;533">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;645&amp;name&#x3D;image.png&amp;originHeight&#x3D;645&amp;originWidth&#x3D;720&amp;size&#x3D;68736&amp;status&#x3D;done&amp;width&#x3D;720">
 <meta property="og:updated_time" content="2019-08-13T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&amp;display=inline&amp;height=690&amp;name=image.png&amp;originHeight=690&amp;originWidth=1038&amp;size=159786&amp;status=done&amp;width=1038">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;690&amp;name&#x3D;image.png&amp;originHeight&#x3D;690&amp;originWidth&#x3D;1038&amp;size&#x3D;159786&amp;status&#x3D;done&amp;width&#x3D;1038">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/6c44975c.html">
 
@@ -314,37 +314,37 @@
 <h4 id="调整安装好的操作系统"><a href="#调整安装好的操作系统" class="headerlink" title="调整安装好的操作系统"></a>调整安装好的操作系统</h4><ul>
 <li>进入操作系统，首先关闭 selinux、firewalld 和 NetworkManager。</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> --now firewalld NetworkManager</span><br><span class="line">setenforce 0</span><br><span class="line">sed -ri <span class="string">'/^[^#]*SELINUX=/s#=.+$#=disabled#'</span> /etc/selinux/config</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> --now firewalld NetworkManager</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">setenforce 0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/^[^#]*SELINUX=/s#=.+$#=disabled#'</span> /etc/selinux/config</span></pre></td></tr></table></figure>
 
 <ul>
 <li>安装acpid cloud-init cloud-utils-growpart</li>
 </ul>
 <p>apcid 是为了可以使 kvm 可以关闭和重启虚拟机，qemu-guest-agent 使得 Proxmox 可以获取虚拟机的 IP 等信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y acpid cloud-init cloud-utils-growpart qemu-guest-agent</span><br><span class="line">systemctl <span class="built_in">enable</span> acpid </span><br><span class="line">systemctl <span class="built_in">enable</span> qemu-guest-agent</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">yum install -y acpid cloud-init cloud-utils-growpart qemu-guest-agent</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> acpid </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> qemu-guest-agent</span></pre></td></tr></table></figure>
 
 
 <ul>
 <li>禁用默认zeroconf路线</li>
 </ul>
 <p>当系统无法连接DHCP server的时候，就会尝试通过ZEROCONF来获取IP,并添加一条169.254.0.0/16的路由条目。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"NOZEROCONF=yes"</span> &gt;&gt; /etc/sysconfig/network</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"NOZEROCONF=yes"</span> &gt;&gt; /etc/sysconfig/network</span></pre></td></tr></table></figure>
 
 <ul>
 <li>修改sshd不使用dns防止ssh连接慢</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/UseDNS/&#123;s@#@@;s@\s+.+@ no@&#125;'</span> /etc/ssh/sshd_config</span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/UseDNS/&#123;s@#@@;s@\s+.+@ no@&#125;'</span> /etc/ssh/sshd_config</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">systemctl restart sshd</span></pre></td></tr></table></figure>
 
 <ul>
 <li>修改 cloud-init 配置</li>
 </ul>
 <p>分别是允许 root 登录，允许使用 password 登录，禁止第一次开机自动更新系统。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/disable_root/&#123;s#\S$#0#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/ssh_pwauth/&#123;s#\S$#1#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/package-update/s@^@#@'</span> /etc/cloud/cloud.cfg</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/disable_root/&#123;s#\S$#0#&#125;'</span> /etc/cloud/cloud.cfg</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/ssh_pwauth/&#123;s#\S$#1#&#125;'</span> /etc/cloud/cloud.cfg</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/package-update/s@^@#@'</span> /etc/cloud/cloud.cfg</span></pre></td></tr></table></figure>
 
 <ul>
 <li>如有需要可以自行添加一些额外的配置</li>
 </ul>
 <p>我在 /sbin/ifup-local 中添加了如下配置用于配置特殊的路由以适应办公室网络环境。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">touch /sbin/ifup-local</span><br><span class="line">chmod +x /sbin/ifup-local</span><br><span class="line">cat /sbin/ifup-local</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">ip r add 192.168.76.0/24 via 192.168.180.254</span><br><span class="line">ip r add 192.168.77.0/24 via 192.168.180.254</span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">touch /sbin/ifup-local</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">chmod +x /sbin/ifup-local</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">cat /sbin/ifup-local</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">ip r add 192.168.76.0/24 via 192.168.180.254</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">ip r add 192.168.77.0/24 via 192.168.180.254</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="built_in">exit</span> 0</span></pre></td></tr></table></figure>
 
 
 <ul>
@@ -358,7 +358,7 @@
 <ul>
 <li>启用 qemu-agent</li>
 </ul>
-<p><img src="https://i.loli.net/2019/11/27/8td61KkAg4Oivmw.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2019/11/28/2DcwEOJeKIZ1Rhl.png" alt="image.png"></p>
 <ul>
 <li>将虚拟机转为模板，之后就可以以此为基础创建新的虚拟机。<br><a name="btgSa"></a><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><a href="https://zhangguanzhang.github.io/2019/01/22/proxmox-cloud-init/" target="_blank" rel="external nofollow noopener noreferrer">proxmox里使用cloud-init和一些笔记</a></li>
 </ul>
@@ -530,7 +530,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -565,13 +565,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">145k</span>
+    <span title="站点总字数">146k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:12</span>
+    <span title="站点阅读时长">2:13</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
