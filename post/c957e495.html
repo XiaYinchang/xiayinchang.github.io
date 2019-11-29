@@ -58,10 +58,10 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="Linux 文件系统基础知识。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;255&amp;name&#x3D;image.png&amp;originHeight&#x3D;255&amp;originWidth&#x3D;514&amp;search&#x3D;&amp;size&#x3D;34517&amp;status&#x3D;done&amp;width&#x3D;514">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;255&amp;name&#x3D;image.png&amp;originHeight&#x3D;255&amp;originWidth&#x3D;514&amp;size&#x3D;34517&amp;status&#x3D;done&amp;width&#x3D;514">
 <meta property="og:updated_time" content="2019-11-07T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;255&amp;name&#x3D;image.png&amp;originHeight&#x3D;255&amp;originWidth&#x3D;514&amp;search&#x3D;&amp;size&#x3D;34517&amp;status&#x3D;done&amp;width&#x3D;514">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;255&amp;name&#x3D;image.png&amp;originHeight&#x3D;255&amp;originWidth&#x3D;514&amp;size&#x3D;34517&amp;status&#x3D;done&amp;width&#x3D;514">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/c957e495.html">
 
@@ -281,7 +281,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="d3l9E"></a></p><h4 id="软链接和硬链接的区别"><a href="#软链接和硬链接的区别" class="headerlink" title="软链接和硬链接的区别"></a>软链接和硬链接的区别</h4><p><img src="https://i.loli.net/2019/11/28/n9TUw8CLOgNzRE1.png" alt="image.png"></p><ul>
+        <p><a name="d3l9E"></a></p><h4 id="软链接和硬链接的区别"><a href="#软链接和硬链接的区别" class="headerlink" title="软链接和硬链接的区别"></a>软链接和硬链接的区别</h4><p><img src="https://i.loli.net/2019/11/29/OSHgk46tPYC8qJA.png" alt="image.png"></p><ul>
 <li><p>参考：<a href="https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link</a></p>
 </li>
 <li><p>硬链接是对 inode 的引用，只有所有引用都删除后 inode 才会被删除，删除源文件，通过硬链接创建的文件仍然能够访问之前保存的数据；软链接指向源文件，源文件被删除后，访问软链接会提示文件不存在， inode 一般在源文件删除后即被删除（除非有硬链接指向该 inode）。</p>
