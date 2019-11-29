@@ -248,7 +248,7 @@ systemctl enable --now mariadb
 
      首先，选中要编辑的内核项，按 **e** 进入编辑页面，编辑完成后按 **Ctrl + x**  启动系统。下图为编辑内核参数直接进入救援模式。
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&display=inline&height=230&name=image.png&originHeight=230&originWidth=716&search=&size=13999&status=done&width=716)<br />
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&display=inline&height=230&name=image.png&originHeight=230&originWidth=716&size=13999&status=done&width=716)<br />
 
 - 在操作系统中编辑内核启动参数并重新生成 grub 引导
 
@@ -286,7 +286,7 @@ yum downgrade httpd-2.2.3-22.el5
 
 - 替换空格为换行
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&name=image.png&originHeight=25&originWidth=160&search=&size=2640&status=done&width=160)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&width=160)
 
 <a name="FfBcn"></a>
 #### Git

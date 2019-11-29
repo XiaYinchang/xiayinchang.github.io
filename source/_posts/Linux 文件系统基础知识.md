@@ -14,7 +14,7 @@ abbrlink: c957e495
 
 <a name="d3l9E"></a>
 #### 软链接和硬链接的区别
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&name=image.png&originHeight=255&originWidth=514&search=&size=34517&status=done&width=514)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&name=image.png&originHeight=255&originWidth=514&size=34517&status=done&width=514)
 
 - 参考：[https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link](https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link)
 - 硬链接是对 inode 的引用，只有所有引用都删除后 inode 才会被删除，删除源文件，通过硬链接创建的文件仍然能够访问之前保存的数据；软链接指向源文件，源文件被删除后，访问软链接会提示文件不存在， inode 一般在源文件删除后即被删除（除非有硬链接指向该 inode）。

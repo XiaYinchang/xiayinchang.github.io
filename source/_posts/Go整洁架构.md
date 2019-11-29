@@ -65,7 +65,7 @@ abbrlink: '35963400'
 - vendor ：第三方包目录
 
 整洁架构的概念分层如下图所示：<br />
-![](http://wx2.sinaimg.cn/large/007jQb2Zgy1fvcxzs3hsvj30lg0fr76n.jpg#align=left&display=inline&height=567&originHeight=567&originWidth=772&search=&status=done&width=772)
+![](http://wx2.sinaimg.cn/large/007jQb2Zgy1fvcxzs3hsvj30lg0fr76n.jpg#align=left&display=inline&height=567&originHeight=567&originWidth=772&status=done&width=772)
 
 整个架构共有四层，从外到内依次为蓝绿红黄层，除了作为应用目录的蓝色层，其余各层分别表示了：
 
