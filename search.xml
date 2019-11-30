@@ -50,6 +50,18 @@
 <li><p>使用 cookie 不是必须的，也可以将信息存在 localStorage 并通过 url 或 formdata 传输也是可行的，cookie 只不过因为是在协议层面支持因而使用起来可以更方便一些（自动设置和发送）。</p>
 </li>
 </ol>
+<p><a name="XMjkR"></a></p>
+<h4 id="前端的各种存储"><a href="#前端的各种存储" class="headerlink" title="前端的各种存储"></a>前端的各种存储</h4><ol>
+<li>cookie 能够携带的数据较少，容量在 4KB 左右，在 HTTP Header 中携带太多数据会对性能有一定影响，因此引入了各种 storage，所以现在的 Web 程序中 cookie 的使用已经少了很多。</li>
+<li>localStorage 和 sessionStorage 的大小均在 5M 左右，均有同源策略，仅在客户端保存，不像 cookie 通过协议的支持自动在客户端和服务端之间传输，需要编程人员自行通过 URL 或者请求体（响应体）进行传输并解析。</li>
+<li>localStorage 的存储是永久的，除非人为删除否则一直存在；sessionStorage 与存储数据的脚本所在的标签页的有效期是相同的，一旦窗口或者标签页被关闭，那么所有通过 sessionStorage 存储的数据也会被删除。</li>
+<li>localStorage: 在同一个浏览器内，同源文档之间共享 localStorage 数据，可以互相读取、覆盖。</li>
+<li>sessionStorage: 与 localStorage 一样需要同一浏览器同源文档这一条件。不仅如此，sessionStorage 的作用域还被限定在了窗口中，也就是说，只有同一浏览器、同一窗口的同源文档（如同源的 iframe）才能共享数据。例如你在浏览器中打开了两个相同地址的页面 A、B, 虽然这两个页面的源完全相同，但是他们还是不能共享数据，因为他们是不同窗口中的。但是如果是一个窗口中，有两个同源的 iframe 元素的话，这两个 iframe 的 sessionStorage 是可以互通的</li>
+<li>IndexedDB 是相比 localStorage 和 sessionStorage 除了提供了更大的存储空间（一般来说不少于 250MB，甚至没有上限），还提供查找接口，还能建立索引，支持事务。</li>
+<li>IndexedDB 操作时不会锁死浏览器，用户依然可以进行其他操作，这与 LocalStorage 形成对比，后者的操作是同步的。异步设计是为了防止大量数据的读写，拖慢网页的表现。</li>
+<li>就数据库类型而言，IndexedDB 不属于关系型数据库（不支持 SQL 查询语句），更接近 NoSQL 数据库。</li>
+<li>WebSQL 相比 IndexedDB 支持 SQL 查询，但是目前只有谷歌浏览器支持，火狐不支持。</li>
+</ol>
 ]]></content>
       <categories>
         <category>前端</category>
