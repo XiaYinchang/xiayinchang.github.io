@@ -61,6 +61,7 @@
 <li>IndexedDB 操作时不会锁死浏览器，用户依然可以进行其他操作，这与 LocalStorage 形成对比，后者的操作是同步的。异步设计是为了防止大量数据的读写，拖慢网页的表现。</li>
 <li>就数据库类型而言，IndexedDB 不属于关系型数据库（不支持 SQL 查询语句），更接近 NoSQL 数据库。</li>
 <li>WebSQL 相比 IndexedDB 支持 SQL 查询，但是目前只有谷歌浏览器支持，火狐不支持。</li>
+<li>cache storage 是配合 PWA 使用的。</li>
 </ol>
 ]]></content>
       <categories>
