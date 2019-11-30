@@ -335,3 +335,28 @@ rbd bench-write test
 #### Cinder 创建 Volume 副本并 Boot with it
 OpenStack: import existing Ceph volumes in Cinder：[https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/](https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/)
 
+<a name="xGnOB"></a>
+#### 查看并修改 crushmap
+```
+1. 获取集群 crushmap
+ceph osd getcrushmap -o {file1}
+{file1} 为自定义的文件名，该文件为二进制文件，不可编辑。要想编辑此文件，需要用工具将其反编译解析，如 crushtool 工具。
+
+2 反编译 crushmap
+crushtool -d {file1} -o {file2}
+反编译二进制文件 {file1} 得到可编辑文件 {file2}
+
+3. 编辑 crushmap
+按自我需求修改可编辑文件 {file2}
+
+4. 编译 crushmap
+要想编辑后的文件机器能够识别，必须用工具编译它生成二进制文件。
+crushtool -c {file2} -o {file3}
+
+5. 注入 crushmap
+要想新的 crushmap 在集群中生效，必须将其注入要集群。
+ceph osd setcrushmap -i {file3}
+```
+基本理解：[深入理解 ceph crush (1)—- 理解 crush map 文件](https://www.dovefi.com/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3crush1%E7%90%86%E8%A7%A3crush_map%E6%96%87%E4%BB%B6/)／Crush算法：[大话 Ceph--CRUSH 那点事儿](http://www.xuxiaopang.com/2016/11/08/easy-ceph-CRUSH/)／Crush 查看：[Ceph 实践之 Crushmap 相关](https://www.jianshu.com/p/2355701459e9)。
+
+
