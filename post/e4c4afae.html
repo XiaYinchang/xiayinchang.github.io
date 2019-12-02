@@ -50,16 +50,17 @@
   };
 </script>
 
-  <meta name="description" content="云计算从业者，全栈攻城狮">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Better">
-<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;archives&#x2F;page&#x2F;3&#x2F;index.html">
+  <meta name="description" content="title: Keycloak 使用过程记录date: 2019-12-02updated: 2019-12-02layout: postcomments: truecategories: 认证tags: [ 认证 ]keywords: Keycloak, 认证description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keycloak 使用过程记录">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;e4c4afae.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="云计算从业者，全栈攻城狮">
+<meta property="og:description" content="title: Keycloak 使用过程记录date: 2019-12-02updated: 2019-12-02layout: postcomments: truecategories: 认证tags: [ 认证 ]keywords: Keycloak, 认证description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-02T13:14:38.000Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.xiayinchang.top/archives/page/3/">
+<link rel="canonical" href="https://www.xiayinchang.top/post/e4c4afae.html">
 
 
 <script id="page-configurations">
@@ -67,13 +68,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
-    isArchive: true
+    isArchive: false
   };
 </script>
 
-  <title>归档 | Better</title>
+  <title>Keycloak 使用过程记录 | Better</title>
   
 
 
@@ -202,217 +203,150 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">还行! 目前共计 40 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/e4c4afae.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Keycloak 使用过程记录
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-02 21:14:38" itemprop="dateCreated datePublished" datetime="2019-12-02T21:14:38+08:00">2019-12-02</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>489</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h2 class="collection-header">2019</h2>
-    </div>
+        <p>title: Keycloak 使用过程记录<br>date: 2019-12-02<br>updated: 2019-12-02<br>layout: post<br>comments: true<br>categories: 认证<br>tags: [ 认证 ]<br>keywords: Keycloak, 认证<br>description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。</p><a id="more"></a>
+<hr>
+<p><a name="Cmvxj"></a></p>
+<h4 id="keycloak-js-sdk"><a href="#keycloak-js-sdk" class="headerlink" title="keycloak js sdk"></a>keycloak js sdk</h4><p>Angular 版本的 SDK ：<a href="https://www.npmjs.com/package/keycloak-angular" target="_blank" rel="external nofollow noopener noreferrer">https://www.npmjs.com/package/keycloak-angular</a>。为了实现 Token 刷新可以采用以下方式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">keycloak.onTokenExpired = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">console</span>.log(<span class="string">'token expired'</span>, keycloak.token);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    keycloak.updateToken(<span class="number">30</span>).success(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">console</span>.log(<span class="string">'successfully get a new token'</span>, keycloak.token);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">        ...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    &#125;).error(<span class="function"><span class="params">()</span> =&gt;</span> &#123;...&#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-09-04T00:00:00+08:00" content="2019-09-04">
-          09-04
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/bda105fe.html" itemprop="url">
-            <span itemprop="name">ArchLinux 常用命令</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-09-03T00:00:00+08:00" content="2019-09-03">
-          09-03
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/e8bac896.html" itemprop="url">
-            <span itemprop="name">Ceph 常用操作</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-09-03T00:00:00+08:00" content="2019-09-03">
-          09-03
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/399a617a.html" itemprop="url">
-            <span itemprop="name">Proxmox 使用拾遗</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-08-30T00:00:00+08:00" content="2019-08-30">
-          08-30
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/8a546874.html" itemprop="url">
-            <span itemprop="name">基于 CentOS Minimal 镜像制作 Docker Base Image</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-08-14T00:00:00+08:00" content="2019-08-14">
-          08-14
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/6c44975c.html" itemprop="url">
-            <span itemprop="name">为 Proxmox 制作包含 cloud-init 的虚拟机模板</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-07-07T00:00:00+08:00" content="2019-07-07">
-          07-07
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/4c49613e.html" itemprop="url">
-            <span itemprop="name">IPVS 模式下 NodePort 的工作过程浅析</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-06-21T00:00:00+08:00" content="2019-06-21">
-          06-21
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/dc552b49.html" itemprop="url">
-            <span itemprop="name">Centos 编译安装 zfs</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-06-21T00:00:00+08:00" content="2019-06-21">
-          06-21
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/6adad945.html" itemprop="url">
-            <span itemprop="name">树莓派 3B 编译安装 zfs</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-05-31T00:00:00+08:00" content="2019-05-31">
-          05-31
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/c9063311.html" itemprop="url">
-            <span itemprop="name">Keepalived 和 Kubeadm 部署高可用 Kubernetes</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-05-26T00:00:00+08:00" content="2019-05-26">
-          05-26
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/eca5e5f3.html" itemprop="url">
-            <span itemprop="name">VMware Workstation 虚拟机 root 分区扩容</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
 
 
     </div>
+
+    
+    
+    
+      
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
   </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/d2033f7a.html" rel="next" title="Go 语言流式 IO">
+                  <i class="fa fa-chevron-left"></i> Go 语言流式 IO
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
   
   
   
 
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
-
+  </div>
 
 
           </div>
           
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
 
         </div>
           
@@ -437,6 +371,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#keycloak-js-sdk"><span class="nav-number">1.</span> <span class="nav-text">keycloak js sdk</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -612,6 +547,19 @@
 
   
 
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
 
 </body>
 </html>
