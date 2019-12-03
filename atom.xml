@@ -50,9 +50,32 @@
       <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
     
     
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
       <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
     
+  </entry>
+  
+  <entry>
+    <title>Go 语言流式 IO</title>
+    <link href="https://www.xiayinchang.top/post/d2033f7a.html"/>
+    <id>https://www.xiayinchang.top/post/d2033f7a.html</id>
+    <published>2019-11-23T16:00:00.000Z</published>
+    <updated>2019-11-23T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Go 语言中 IO 的基本用法。
+    
+    </summary>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
+    
+    
       <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
     
   </entry>
   
@@ -272,9 +295,9 @@
       <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
     
     
-      <category term="Docker" scheme="https://www.xiayinchang.top/tags/Docker/"/>
-    
       <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
+    
+      <category term="Docker" scheme="https://www.xiayinchang.top/tags/Docker/"/>
     
   </entry>
   
@@ -434,29 +457,6 @@
       <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
     
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LVM 基本概念</title>
-    <link href="https://www.xiayinchang.top/post/31e91381.html"/>
-    <id>https://www.xiayinchang.top/post/31e91381.html</id>
-    <published>2019-09-08T08:08:50.000Z</published>
-    <updated>2019-09-08T08:08:50.000Z</updated>
-    
-    <summary type="html">
-    
-      LVM 初学者必知必会。
-    
-    </summary>
-    
-    
-      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
-    
-    
-      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
-    
-      <category term="LVM" scheme="https://www.xiayinchang.top/tags/LVM/"/>
     
   </entry>
   

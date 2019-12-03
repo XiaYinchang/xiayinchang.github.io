@@ -290,7 +290,7 @@
 
 <p><a name="D5k3q"></a></p>
 <h3 id="io-Reader-接口"><a href="#io-Reader-接口" class="headerlink" title="io.Reader 接口"></a>io.Reader 接口</h3><p>reader 由 io.Reader 接口定义，可以从数据源读取数据到传输缓冲区，缓冲区中的数据可以继续被流式处理或者直接消费，如下图所示：</p>
-<p><img src="https://i.loli.net/2019/12/03/SIK3woPXBDQdagy.png" alt="image.png"><br>如果要把一个 Go 语言类型作为 reader 来使用，这个类型必须实现 <code>io.Reader</code> 所定义的 <code>Read(p []byte)</code> 方法，如下所示：</p>
+<p><img src="https://i.loli.net/2019/12/03/GDh2NaQIkASFpuZ.png" alt="image.png"><br>如果要把一个 Go 语言类型作为 reader 来使用，这个类型必须实现 <code>io.Reader</code> 所定义的 <code>Read(p []byte)</code> 方法，如下所示：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Reader <span class="keyword">interface</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    Read(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
 
 <p><code>Read()</code> 方法需要返回读取的字节数，如果发生错误则同时返回 error ，如果数据源的所有内容已被读取完毕，则 <code>Read()</code> 方法应当返回 <code>io.EOF</code> 错误。</p>
@@ -379,16 +379,16 @@
       <div class="popular-posts-title"><a href="/post/35963400.html" rel="bookmark">Go整洁架构实践</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/86bd2460.html" rel="bookmark">Docker 卷和文件系统权限</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/31e91381.html" rel="bookmark">LVM 基本概念</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/post/defe85e8.html" rel="bookmark">Go 知识点汇总</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/post/ab759786.html" rel="bookmark">gRPC snippets</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/75bf7760.html" rel="bookmark">数据结构-绪论</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/86bd2460.html" rel="bookmark">Docker 卷和文件系统权限</a></div>
     </li>
   </ul>
 
@@ -427,8 +427,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E8%AF%91%E6%96%87/" rel="tag"># 译文</a>
               <a href="/tags/Go/" rel="tag"># Go</a>
+              <a href="/tags/%E8%AF%91%E6%96%87/" rel="tag"># 译文</a>
           </div>
 
         
@@ -443,8 +443,8 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/post/e4c4afae.html" rel="prev" title="Keycloak 使用过程记录">
-                  Keycloak 使用过程记录 <i class="fa fa-chevron-right"></i>
+                <a href="/post/d2033f7a.html" rel="prev" title="Go 语言流式 IO">
+                  Go 语言流式 IO <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -504,7 +504,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -567,13 +567,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">150k</span>
+    <span title="站点总字数">160k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:16</span>
+    <span title="站点阅读时长">2:25</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
