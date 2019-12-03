@@ -3,11 +3,9 @@
   <entry>
     <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
     <url>/post/f901e5ff.html</url>
-    <content><![CDATA[<p>title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证<br>date: 2019-12-3<br>layout: post<br>comments: true<br>categories: 译文<br>tags: [ Go, 译文 ]<br>keywords: Go, Auth, 认证<br>description: 在 Kubernetes 中使用 Nginx-Ingress 作为 API 网关时可以使用独立的认证服务将认证逻辑从业务代码中解耦出来。</p><a id="more"></a>
-<hr>
-<p><a name="2PGKt"></a></p>
-<h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p>
-<p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p>
+    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
+
+
 <p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
 <p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
 <p><a name="kEL2C"></a></p>
@@ -42,6 +40,13 @@
 <li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
 </ol>
 ]]></content>
+      <categories>
+        <category>译文</category>
+      </categories>
+      <tags>
+        <tag>译文</tag>
+        <tag>Go</tag>
+      </tags>
   </entry>
   <entry>
     <title>Kubernetes 实践</title>
