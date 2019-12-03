@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录使用 ArchLinux 作为开发平台常用的命令和操作。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-03T16:00:00.000Z">
+<meta property="og:updated_time" content="2019-12-02T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/bda105fe.html">
@@ -234,6 +234,13 @@
 
               <time title="创建时间：2019-09-04 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-04T00:00:00+08:00">2019-09-04</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-03 00:00:00" itemprop="dateModified" datetime="2019-12-03T00:00:00+08:00">2019-12-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -259,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>217</span>
+              <span>796</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -284,6 +291,16 @@
 
 <p><a name="aQrbN"></a></p>
 <h4 id="Network-Manage-使用-SSTP-VPN"><a href="#Network-Manage-使用-SSTP-VPN" class="headerlink" title="Network-Manage 使用 SSTP VPN"></a>Network-Manage 使用 SSTP VPN</h4><p>需要安装客户端软件： <code>network-manager-sstp</code></p>
+<p><a name="xaHEP"></a></p>
+<h4 id="配置-javaws-Web-端访问物理服务器终端"><a href="#配置-javaws-Web-端访问物理服务器终端" class="headerlink" title="配置 javaws Web 端访问物理服务器终端"></a>配置 javaws Web 端访问物理服务器终端</h4><p>到<a href="https://github.com/frekele/oracle-java/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载 Oracle JDK 并解压，将解压得到的文件夹移动至 jvm 目录，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">wget https:<span class="comment">//github.com/frekele/oracle-java/releases/download/8u212-b10/jre-8u212-linux-x64.tar.gz</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">tar zxvf jre<span class="number">-8</span>u212-linux-x64.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sudo mv /home/xyc/Downloads/jre1<span class="number">.8</span><span class="number">.0</span>_212 /usr/lib/jvm/</span></pre></td></tr></table></figure>
+<p>查看已有的 JDK：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">➜  Downloads archlinux-java status                                                                             </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Available Java environments:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  java<span class="number">-13</span>-openjdk</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">  java<span class="number">-8</span>-openjdk/jre</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">  jre1<span class="number">.8</span><span class="number">.0</span>_212 (<span class="keyword">default</span>)</span></pre></td></tr></table></figure>
+<p>设置默认 Java 环境为新添加的 JDK：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo archlinux-java <span class="keyword">set</span> jre1.8.0_212</span></pre></td></tr></table></figure>
+<p>修改 <code>/usr/lib/jvm/jre1.8.0_212/lib/security/java.security</code> 文件调整设置为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">jdk.tls.disabledAlgorithms=NULL</span></pre></td></tr></table></figure>
+<p>打开 <code>jcontrol</code> 程序将物理机终端地址加入白名单，如：<code>http://192.168.181.134:80</code>。<br>重新打开浏览器即可。</p>
 
     </div>
 
@@ -407,7 +424,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#yay-使用相关"><span class="nav-number">1.</span> <span class="nav-text">yay 使用相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Network-Manage-使用-SSTP-VPN"><span class="nav-number">2.</span> <span class="nav-text">Network-Manage 使用 SSTP VPN</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#yay-使用相关"><span class="nav-number">1.</span> <span class="nav-text">yay 使用相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Network-Manage-使用-SSTP-VPN"><span class="nav-number">2.</span> <span class="nav-text">Network-Manage 使用 SSTP VPN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-javaws-Web-端访问物理服务器终端"><span class="nav-number">3.</span> <span class="nav-text">配置 javaws Web 端访问物理服务器终端</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -485,7 +502,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">152k</span>
+    <span title="站点总字数">153k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
