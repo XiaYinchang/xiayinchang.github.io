@@ -320,7 +320,7 @@
 
 <p><a name="laIBP"></a></p>
 <h3 id="io-Writer-接口"><a href="#io-Writer-接口" class="headerlink" title="io.Writer 接口"></a>io.Writer 接口</h3><p>writer 由 <code>io.Writer</code> 接口定义，实现流式地将数据从缓冲区写入到目标资源中，如下图所示：</p>
-<p><img src="https://i.loli.net/2019/12/03/Yo78rCfk4J5yBdu.png" alt="image.png"><br>writer 必须实现 <code>io.Write</code>r 接口的 <code>Write(p []byte)</code> 方法。<code>Wirte()</code>)方法被设计为从缓冲区 p 中读取数据并将其写入到指定的目标资源中。</p>
+<p><img src="https://i.loli.net/2019/12/03/6Z957ihoY2Qy8Js.png" alt="image.png"><br>writer 必须实现 <code>io.Write</code>r 接口的 <code>Write(p []byte)</code> 方法。<code>Wirte()</code>)方法被设计为从缓冲区 p 中读取数据并将其写入到指定的目标资源中。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Writer <span class="keyword">interface</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    Write(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
 <p><code>Write()</code> 方法的实现应该返回写入的字节数，发生错误时返回 <code>error</code>。</p>
 <p><a name="VWQLr"></a></p>
