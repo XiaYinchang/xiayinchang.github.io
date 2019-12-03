@@ -164,7 +164,7 @@
   <entry>
     <title>Keycloak 使用过程记录</title>
     <url>/post/e4c4afae.html</url>
-    <content><![CDATA[<p>title: Keycloak 使用过程记录<br>date: 2019-12-02<br>updated: 2019-12-02<br>layout: post<br>comments: true<br>categories: 认证<br>tags: [ 认证 ]<br>keywords: Keycloak, 认证<br>description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。</p><a id="more"></a>
+    <content><![CDATA[<p>title: Keycloak 使用过程记录<br>date: 2019-12-02<br>updated: 2019-12-02<br>layout: post<br>comments: true<br>categories: 认证<br>tags: [ 认证 ]<br>keywords: Keycloak,认证<br>description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。</p><a id="more"></a>
 <hr>
 <p><a name="Cmvxj"></a></p>
 <h4 id="keycloak-js-sdk"><a href="#keycloak-js-sdk" class="headerlink" title="keycloak js sdk"></a>keycloak js sdk</h4><p>Angular 版本的 SDK ：<a href="https://www.npmjs.com/package/keycloak-angular" target="_blank" rel="external nofollow noopener noreferrer">https://www.npmjs.com/package/keycloak-angular</a>。为了实现 Token 刷新可以采用以下方式：</p>
