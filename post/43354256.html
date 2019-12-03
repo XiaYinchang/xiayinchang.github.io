@@ -323,7 +323,7 @@
 <p>为了管理方便，我们将三个控制节点和两个计算节点的 hostname 分别设置为（主机名不能带下划线，否则部署 OpenStack 时报错）:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">controller-01</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">controller-02</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">controller-03</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">compute-01</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">compute-02</span></pre></td></tr></table></figure>
 
-<p>为了方便命令行登录节点，可通过 ssh-copy-id 将宿主机 ssh public-key 拷贝到各虚拟节点，之后在 ssh 登录时无需再输入密码。<br>为了方便在所有虚拟机和宿主机之间共享文件，我们可以使用 VMware 的文件共享机制将宿主机目录挂载到虚拟机中。首先，在虚拟机的属性配置中添加要共享的文件夹，如下是将宿主机上的 /infra/vmshare 目录共享给虚拟机：<br><img src="https://i.loli.net/2019/12/03/qrgbynOjZdJuWaR.png" alt="image.png"></p>
+<p>为了方便命令行登录节点，可通过 ssh-copy-id 将宿主机 ssh public-key 拷贝到各虚拟节点，之后在 ssh 登录时无需再输入密码。<br>为了方便在所有虚拟机和宿主机之间共享文件，我们可以使用 VMware 的文件共享机制将宿主机目录挂载到虚拟机中。首先，在虚拟机的属性配置中添加要共享的文件夹，如下是将宿主机上的 /infra/vmshare 目录共享给虚拟机：<br><img src="https://i.loli.net/2019/12/03/rzkCjLfoZhEv5b4.png" alt="image.png"></p>
 <p>只有上图的设置还不够，我们需要进入到虚拟机内部将共享的文件夹挂载到本地目录才能使用，如下，该命令的涵义是将名称为 vmshare 的共享挂载到本地 /vmshare 目录：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">vmhgfs-fuse .host:/vmshare /vmshare</span></pre></td></tr></table></figure>
 
