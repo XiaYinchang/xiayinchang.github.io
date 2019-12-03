@@ -42,7 +42,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;title: Keycloak 使用过程记录&lt;br&gt;date: 2019-12-02&lt;br&gt;updated: 2019-12-02&lt;br&gt;layout: post&lt;br&gt;comments: true&lt;br&gt;categories: 认证&lt;br&gt;tags: [ 认证 ]&lt;br&gt;keywords: Keycloak, 认证&lt;br&gt;description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。&lt;/p&gt;
+      &lt;p&gt;title: Keycloak 使用过程记录&lt;br&gt;date: 2019-12-02&lt;br&gt;updated: 2019-12-02&lt;br&gt;layout: post&lt;br&gt;comments: true&lt;br&gt;description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;a name=&quot;Cmvxj&quot;&gt;&lt;/a&gt;&lt;/p&gt;&lt;h4 id=&quot;keycloak-js-sdk&quot;&gt;&lt;a href=&quot;#keycloak-js-sdk&quot; class=&quot;headerlink&quot; title=&quot;keycloak js sdk&quot;&gt;&lt;/a&gt;keycloak js sdk&lt;/h4&gt;&lt;p&gt;Angular 版本的 SDK ：&lt;a href=&quot;https://www.npmjs.com/package/keycloak-angular&quot; target=&quot;_blank&quot; rel=&quot;external nofollow noopener noreferrer&quot;&gt;https://www.npmjs.com/package/keycloak-angular&lt;/a&gt;。为了实现 Token 刷新可以采用以下方式：&lt;/p&gt;
     
     </summary>
     
