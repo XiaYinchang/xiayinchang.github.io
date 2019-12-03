@@ -50,13 +50,12 @@
   };
 </script>
 
-  <meta name="description" content="使用 Keycloak 实现统一认证中心过程需要记录的知识点。">
-<meta name="keywords" content="Keycloak, 认证">
+  <meta name="description" content="title: Keycloak 使用过程记录date: 2019-12-02layout: postcomments: truecategories: 认证tags: [ 认证 ]keywords: Keycloak, 认证description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Keycloak 使用过程记录">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;e4c4afae.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="使用 Keycloak 实现统一认证中心过程需要记录的知识点。">
+<meta property="og:description" content="title: Keycloak 使用过程记录date: 2019-12-02layout: postcomments: truecategories: 认证tags: [ 认证 ]keywords: Keycloak, 认证description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-12-02T13:14:38.000Z">
 <meta name="twitter:card" content="summary">
@@ -234,17 +233,6 @@
 
               <time title="创建时间：2019-12-02 21:14:38" itemprop="dateCreated datePublished" datetime="2019-12-02T21:14:38+08:00">2019-12-02</time>
             </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%A4%E8%AF%81/" itemprop="url" rel="index">
-                    <span itemprop="name">认证</span>
-                  </a>
-                </span>
-            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -259,7 +247,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>329</span>
+              <span>471</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -268,7 +256,6 @@
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>1 分钟</span>
             </span>
-            <div class="post-description">使用 Keycloak 实现统一认证中心过程需要记录的知识点。</div>
 
         </div>
       </header>
@@ -279,7 +266,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="Cmvxj"></a></p><h4 id="keycloak-js-sdk"><a href="#keycloak-js-sdk" class="headerlink" title="keycloak js sdk"></a>keycloak js sdk</h4><p>Angular 版本的 SDK ：<a href="https://www.npmjs.com/package/keycloak-angular" target="_blank" rel="external nofollow noopener noreferrer">https://www.npmjs.com/package/keycloak-angular</a>。为了实现 Token 刷新可以采用以下方式：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">keycloak.onTokenExpired = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">console</span>.log(<span class="string">'token expired'</span>, keycloak.token);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    keycloak.updateToken(<span class="number">30</span>).success(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">console</span>.log(<span class="string">'successfully get a new token'</span>, keycloak.token);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">        ...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    &#125;).error(<span class="function"><span class="params">()</span> =&gt;</span> &#123;...&#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+        <p>title: Keycloak 使用过程记录<br>date: 2019-12-02<br>layout: post<br>comments: true<br>categories: 认证<br>tags: [ 认证 ]<br>keywords: Keycloak, 认证<br>description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。</p><a id="more"></a>
+<hr>
+<p><a name="Cmvxj"></a></p>
+<h4 id="keycloak-js-sdk"><a href="#keycloak-js-sdk" class="headerlink" title="keycloak js sdk"></a>keycloak js sdk</h4><p>Angular 版本的 SDK ：<a href="https://www.npmjs.com/package/keycloak-angular" target="_blank" rel="external nofollow noopener noreferrer">https://www.npmjs.com/package/keycloak-angular</a>。为了实现 Token 刷新可以采用以下方式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">keycloak.onTokenExpired = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="built_in">console</span>.log(<span class="string">'token expired'</span>, keycloak.token);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    keycloak.updateToken(<span class="number">30</span>).success(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">        <span class="built_in">console</span>.log(<span class="string">'successfully get a new token'</span>, keycloak.token);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">        ...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    &#125;).error(<span class="function"><span class="params">()</span> =&gt;</span> &#123;...&#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+
+
+
     </div>
 
     
@@ -321,9 +315,6 @@
       </script>
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E8%AE%A4%E8%AF%81/" rel="tag"># 认证</a>
-          </div>
 
         
 
@@ -405,13 +396,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
