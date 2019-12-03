@@ -50,12 +50,12 @@
   };
 </script>
 
-  <meta name="description" content="title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证date: 2019-12-03updated: 2019-12-03layout: postcomments: truecategories: 译文tags: [Go, 译文]keywords: Go,Auth,认证description: 在 Kubernetes 中使用 Nginx-Ingress 作为">
+  <meta name="description" content="title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证date: 2019-12-03updated: 2019-12-03layout: postcomments: truecategories: 译文tags: [ Go, 译文 ]keywords: Go, Auth, 认证description: 在 Kubernetes 中使用 Nginx-Ingres">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;f901e5ff.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证date: 2019-12-03updated: 2019-12-03layout: postcomments: truecategories: 译文tags: [Go, 译文]keywords: Go,Auth,认证description: 在 Kubernetes 中使用 Nginx-Ingress 作为">
+<meta property="og:description" content="title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证date: 2019-12-03updated: 2019-12-03layout: postcomments: truecategories: 译文tags: [ Go, 译文 ]keywords: Go, Auth, 认证description: 在 Kubernetes 中使用 Nginx-Ingres">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;1058&amp;name&#x3D;image.png&amp;originHeight&#x3D;1058&amp;originWidth&#x3D;1246&amp;size&#x3D;76582&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1246">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;1064&amp;name&#x3D;image.png&amp;originHeight&#x3D;1064&amp;originWidth&#x3D;1248&amp;size&#x3D;81349&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1248">
@@ -269,7 +269,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证<br>date: 2019-12-03<br>updated: 2019-12-03<br>layout: post<br>comments: true<br>categories: 译文<br>tags: [Go, 译文]<br>keywords: Go,Auth,认证<br>description: 在 Kubernetes 中使用 Nginx-Ingress 作为 API 网关时可以使用独立的认证服务将认证逻辑从业务代码中解耦出来。</p><a id="more"></a>
+        <p>title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证<br>date: 2019-12-03<br>updated: 2019-12-03<br>layout: post<br>comments: true<br>categories: 译文<br>tags: [ Go, 译文 ]<br>keywords: Go, Auth, 认证<br>description: 在 Kubernetes 中使用 Nginx-Ingress 作为 API 网关时可以使用独立的认证服务将认证逻辑从业务代码中解耦出来。</p><a id="more"></a>
 <hr>
 <p><a name="2PGKt"></a></p>
 <h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p>
@@ -298,7 +298,7 @@
 <li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
 <li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
 </ol>
-<p><img src="https://i.loli.net/2019/12/03/OhXZHmRM7AjpyKw.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2019/12/03/M4ES8qvp5QuYK2O.png" alt="image.png"></p>
 <p><a name="xK7hi"></a></p>
 <h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
 <ol>
