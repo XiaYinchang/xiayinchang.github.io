@@ -2,6 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
+updated: 'Tue Dec 03 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -150,6 +151,20 @@ yum instal ntp
 mkdir yamls
 helm fetch --untar --untardir . 'stable/redis' #makes a directory called redis 
 helm template --output-dir './yamls' './redis' #redis dir (local helm chart), export to yamls dir
+```
+
+<a name="O0gNe"></a>
+#### ingress-nginx
+为转向上游的请求添加 header：
+```javascript
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/configuration-snippet: |-
+      set $best_http_host "usergate.dev.choicesaas.cn";
+      proxy_set_header Host                   $best_http_host;
+...
 ```
 
 <a name="aFRRf"></a>
