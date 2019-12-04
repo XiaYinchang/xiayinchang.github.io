@@ -117,7 +117,7 @@ func authorize(ctx context.Context) error {
 
 <a name="fbI01"></a>
 #### grpc-gateway 实现 gRPC server 提供 RESTful
-实现在同一服务端的同一端口同时提供 gRPC 和 RESTful 服务，用于向后兼容及技术栈的平滑迁移。其基本原理是创建一个HTTP 反向代理服务，将客户端的 HTTP 请求转换为 gRPC 客户端请求并向 gRPC 服务端发起调用。辅助命令工具的部署安装参考：[https://grpc-ecosystem.github.io/grpc-gateway/docs/usage.html](https://grpc-ecosystem.github.io/grpc-gateway/docs/usage.html)。<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1573718382911-c19287bb-bfb6-4d82-8970-00489693b8ad.png#align=left&display=inline&height=369&name=image.png&originHeight=369&originWidth=749&size=52841&status=done&width=749)<br />会使用到以下命令：
+实现在同一服务端的同一端口同时提供 gRPC 和 RESTful 服务，用于向后兼容及技术栈的平滑迁移。其基本原理是创建一个HTTP 反向代理服务，将客户端的 HTTP 请求转换为 gRPC 客户端请求并向 gRPC 服务端发起调用。辅助命令工具的部署安装参考：[https://grpc-ecosystem.github.io/grpc-gateway/docs/usage.html](https://grpc-ecosystem.github.io/grpc-gateway/docs/usage.html)。<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1573718382911-c19287bb-bfb6-4d82-8970-00489693b8ad.png#align=left&display=inline&height=369&name=image.png&originHeight=369&originWidth=749&size=52841&status=done&style=none&width=749)<br />会使用到以下命令：
 ```go
 // 基于 proto 生成 go 代码，使用到 protoc-gen-go 可执行文件
 // -I 参数用于指定 proto 文件中导入的外部 proto 文件的搜索路径
@@ -133,8 +133,7 @@ protoc -I/usr/local/include -I. -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecos
 
 - [https://medium.com/swlh/rest-over-grpc-with-grpc-gateway-for-go-9584bfcbb835](https://medium.com/swlh/rest-over-grpc-with-grpc-gateway-for-go-9584bfcbb835)
 - [https://forum.golangbridge.org/t/go-rest-grpc-api/13072/5](https://forum.golangbridge.org/t/go-rest-grpc-api/13072/5)
-<a name="YWS6q"></a>
-#### 
+
 <a name="5XZZz"></a>
 #### 使用 Empty 类型
 在 gRPC 中要求每个函数调用都有返回值，如果确实不需要返回值，则为了统一规范与重用，我们可以使用 google  提供的 Empty 类型，Empty 类型的对象在序列化和反序列化时会被视为空对象，其 JSON 形式表示为 `{}` ，使用方法：
