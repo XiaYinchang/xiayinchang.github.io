@@ -50,7 +50,6 @@ abbrlink: 699b195d
 
 在以上步骤中，部署 K8S 相对资料比较齐全，不再赘述，下面主要介绍剩余步骤。
 
-
 <a name="fb370aed"></a>
 ### 部署 Keystone
 
@@ -63,7 +62,6 @@ abbrlink: 699b195d
 - 在 K8S 集群中部署。
 
 这里在 K8S 集群中部署 Keystone 服务。
-
 
 <a name="6b097826"></a>
 #### Keystone 镜像的构建
@@ -79,7 +77,6 @@ OpenStack 容器化部署一直是社区想要解决的问题，Kolla 项目就�
 把文档读了一遍，开始动手，看到可以设置 Keystone 版本信息，本着不用最新版的程序员不是一个好极客的理念，果断使用 Keystone 最新发布版本 14.0.1。
 
 另外数据库决定使用已经部署在集群中的 TiDB 分布式数据库，因为默认端口是 4000 这个莫名其妙的数字，所以需要改一下该项目中使用到数据库的代码，并在数据库中创建 keystone 用户。之后开始打包镜像，过程很顺利，打包好的镜像上传到了 dockerhub 上 xyc11223344/keystone.
-
 
 <a name="bb27f7bd"></a>
 #### Keystone 部署
@@ -186,10 +183,9 @@ keystone-manage credential_setup --keystone-user keystone --keystone-group keyst
 ```
 
 再次重新打包镜像，重新部署，部署成功。curl 访问一下，结果如下：<br />
-![](https://ws2.sinaimg.cn/large/007jQb2Zgy1g03rhums9aj30v80lowgm.jpg#align=left&display=inline&height=780&originHeight=780&originWidth=1124&status=done&width=1124)
+![](https://ws2.sinaimg.cn/large/007jQb2Zgy1g03rhums9aj30v80lowgm.jpg#align=left&display=inline&height=780&originHeight=780&originWidth=1124&status=done&style=none&width=1124)
 
 因为做了一些改动，所以将原来的 keystone 容器化部署开源项目做了一些修改，并提交到了[这里](https://github.com/XiaYinchang/keystone).
-
 
 <a name="fb97588f"></a>
 ### 部署 K8S 与 Keystone 集成的支持插件
@@ -198,7 +194,6 @@ keystone-manage credential_setup --keystone-user keystone --keystone-group keyst
 
 - k8s-keystone-auth: 实现了Kubernetes webhook authentication 插件接口，将 Keystone 以 webhook 的形式接入到 K8S 认证过程。
 - client-keystone-auth: 用于在如 kubectl 等命令行工具端接入 Keystone 认证。
-
 
 <a name="9bbac6d4"></a>
 #### k8s-keystone-auth 的部署
@@ -334,8 +329,7 @@ current-context: webhook
 --authentication-token-webhook-config-file=/etc/kubernetes/pki/webhookconfig.yaml
 ```
 
-![](https://ws4.sinaimg.cn/large/007jQb2Zgy1g03tjttnmrj30z80vc79y.jpg#align=left&display=inline&height=1128&originHeight=1128&originWidth=1268&status=done&width=1268)
-
+![](https://ws4.sinaimg.cn/large/007jQb2Zgy1g03tjttnmrj30z80vc79y.jpg#align=left&display=inline&height=1128&originHeight=1128&originWidth=1268&status=done&style=none&width=1268)
 
 <a name="fd1817a9"></a>
 #### client-keystone-auth 的部署
@@ -390,16 +384,15 @@ kubectl config use-context kubernetes-admin@kubernetes
 ```
 
 此时执行 kubectl get ns 可以发现，keystone 中的项目已经同步过来了，列表中第一个命名空间就是从 Keystone 同步过来的项目，命名规则和我们设置的一致，即项目名-项目ID：<br />
-![](https://wx2.sinaimg.cn/large/007jQb2Zgy1g03v1qlgnij30m005o3z5.jpg#align=left&display=inline&height=204&originHeight=204&originWidth=792&status=done&width=792)
+![](https://wx2.sinaimg.cn/large/007jQb2Zgy1g03v1qlgnij30m005o3z5.jpg#align=left&display=inline&height=204&originHeight=204&originWidth=792&status=done&style=none&width=792)
 
 刚刚我们说到 keystone-admin[@kubernetes ]() context 只有权限访问从 Keystone 同步过来的项目，也就是这个列表中的第一个命名空间，其它命名空间都是无权限访问的。
 
 另外 kubernetes 中默认已经有 admin 、 edit 和 view 三个clusterrole，而 keystone 默认的三种角色是 admin、 member 和 reader， 为了同步时的一致性，这里将 keystone 中的角色改为和 kubernetes 中一致，如下：<br />
-![](https://wx1.sinaimg.cn/large/007jQb2Zgy1g03vpobj52j30lm0h2wgf.jpg#align=left&display=inline&height=614&originHeight=614&originWidth=778&status=done&width=778)
+![](https://wx1.sinaimg.cn/large/007jQb2Zgy1g03vpobj52j30lm0h2wgf.jpg#align=left&display=inline&height=614&originHeight=614&originWidth=778&status=done&style=none&width=778)
 
 之后，到 admin-b97a1f63205743ce8e33356243774fbc 中查看 rolebinding ：<br />
-![](https://ws4.sinaimg.cn/large/007jQb2Zgy1g03vscreo4j310k04s3zl.jpg#align=left&display=inline&height=172&originHeight=172&originWidth=1316&status=done&width=1316)
-
+![](https://ws4.sinaimg.cn/large/007jQb2Zgy1g03vscreo4j310k04s3zl.jpg#align=left&display=inline&height=172&originHeight=172&originWidth=1316&status=done&style=none&width=1316)
 
 <a name="9bf2bca6"></a>
 ### 如何解决了问题
