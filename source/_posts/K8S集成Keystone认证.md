@@ -182,8 +182,7 @@ keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
 keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
 ```
 
-再次重新打包镜像，重新部署，部署成功。curl 访问一下，结果如下：<br />
-![](https://ws2.sinaimg.cn/large/007jQb2Zgy1g03rhums9aj30v80lowgm.jpg#align=left&display=inline&height=780&originHeight=780&originWidth=1124&status=done&style=none&width=1124)
+再次重新打包镜像，重新部署，部署成功。curl 访问一下，结果如下：<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png#align=left&display=inline&height=780&name=image.png&originHeight=780&originWidth=1124&size=108671&status=done&style=none&width=1124)
 
 因为做了一些改动，所以将原来的 keystone 容器化部署开源项目做了一些修改，并提交到了[这里](https://github.com/XiaYinchang/keystone).
 
@@ -329,7 +328,7 @@ current-context: webhook
 --authentication-token-webhook-config-file=/etc/kubernetes/pki/webhookconfig.yaml
 ```
 
-![](https://ws4.sinaimg.cn/large/007jQb2Zgy1g03tjttnmrj30z80vc79y.jpg#align=left&display=inline&height=1128&originHeight=1128&originWidth=1268&status=done&style=none&width=1268)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575441117777-1a84f269-f9cb-4f21-b149-f3a9979f981d.png#align=left&display=inline&height=1128&name=image.png&originHeight=1128&originWidth=1268&size=287983&status=done&style=none&width=1268)
 
 <a name="fd1817a9"></a>
 #### client-keystone-auth 的部署
@@ -383,16 +382,19 @@ export OS_IDENTITY_API_VERSION=3
 kubectl config use-context kubernetes-admin@kubernetes
 ```
 
-此时执行 kubectl get ns 可以发现，keystone 中的项目已经同步过来了，列表中第一个命名空间就是从 Keystone 同步过来的项目，命名规则和我们设置的一致，即项目名-项目ID：<br />
-![](https://wx2.sinaimg.cn/large/007jQb2Zgy1g03v1qlgnij30m005o3z5.jpg#align=left&display=inline&height=204&originHeight=204&originWidth=792&status=done&style=none&width=792)
+此时执行 kubectl get ns 可以发现，keystone 中的项目已经同步过来了，列表中第一个命名空间就是从 Keystone 同步过来的项目，命名规则和我们设置的一致，即项目名-项目ID：
+
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575441145645-fc76fed8-5251-442c-897c-ec854e8fbdf8.png#align=left&display=inline&height=204&name=image.png&originHeight=204&originWidth=792&size=37633&status=done&style=none&width=792)
 
 刚刚我们说到 keystone-admin[@kubernetes ]() context 只有权限访问从 Keystone 同步过来的项目，也就是这个列表中的第一个命名空间，其它命名空间都是无权限访问的。
 
-另外 kubernetes 中默认已经有 admin 、 edit 和 view 三个clusterrole，而 keystone 默认的三种角色是 admin、 member 和 reader， 为了同步时的一致性，这里将 keystone 中的角色改为和 kubernetes 中一致，如下：<br />
-![](https://wx1.sinaimg.cn/large/007jQb2Zgy1g03vpobj52j30lm0h2wgf.jpg#align=left&display=inline&height=614&originHeight=614&originWidth=778&status=done&style=none&width=778)
+另外 kubernetes 中默认已经有 admin 、 edit 和 view 三个clusterrole，而 keystone 默认的三种角色是 admin、 member 和 reader， 为了同步时的一致性，这里将 keystone 中的角色改为和 kubernetes 中一致，如下：
 
-之后，到 admin-b97a1f63205743ce8e33356243774fbc 中查看 rolebinding ：<br />
-![](https://ws4.sinaimg.cn/large/007jQb2Zgy1g03vscreo4j310k04s3zl.jpg#align=left&display=inline&height=172&originHeight=172&originWidth=1316&status=done&style=none&width=1316)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575441171154-0092ca7c-9d67-46e0-8d07-752a98a02951.png#align=left&display=inline&height=614&name=image.png&originHeight=614&originWidth=778&size=107346&status=done&style=none&width=778)
+
+之后，到 admin-b97a1f63205743ce8e33356243774fbc 中查看 rolebinding ：
+
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575441193681-709aa70d-5835-46dc-a67a-57b10339e0da.png#align=left&display=inline&height=172&name=image.png&originHeight=172&originWidth=1316&size=66169&status=done&style=none&width=1316)
 
 <a name="9bf2bca6"></a>
 ### 如何解决了问题
