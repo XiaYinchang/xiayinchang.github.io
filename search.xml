@@ -2767,17 +2767,27 @@
 <h3 id="下载并安装SVN命令行客户端"><a href="#下载并安装SVN命令行客户端" class="headerlink" title="下载并安装SVN命令行客户端"></a>下载并安装SVN命令行客户端</h3><p>推荐使用<a href="https://sliksvn.com/download/" target="_blank" rel="external nofollow noopener noreferrer">SlikSVN</a>。下载后按照提示正常安装即可。</p>
 <p><a name="79262238"></a></p>
 <h3 id="打开-Qt-进行设置"><a href="#打开-Qt-进行设置" class="headerlink" title="打开 Qt 进行设置"></a>打开 Qt 进行设置</h3><ol>
-<li>打开Qt，点击菜单栏”Tools”下的”Options”选项，弹出如下图所示的设置窗口。<br><br><img src="http://i.imgur.com/yBYxwpG.png#align=left&display=inline&height=677&originHeight=677&originWidth=1178&status=done&width=1178" alt></li>
+<li>打开Qt，点击菜单栏”Tools”下的”Options”选项，弹出如下图所示的设置窗口。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575440239388-be68ae19-ccea-4767-a0aa-66d7d99af9da.png#align=left&display=inline&height=677&name=image.png&originHeight=677&originWidth=1178&size=105310&status=done&style=none&width=1178" alt="image.png"><br></p>
+<ol start="2">
 <li>在窗口左侧导航栏中，选择”Version Control”,然后点击”Subversion”选项卡，设置”Subversion command”路径-上一步中安装的SlikSvn路径，”Username”和”Password”,然后保存并退出。</li>
 </ol>
 <p><a name="2109a010"></a></p>
 <h3 id="通过-Qt-导入SVN中的工程"><a href="#通过-Qt-导入SVN中的工程" class="headerlink" title="通过 Qt 导入SVN中的工程"></a>通过 Qt 导入SVN中的工程</h3><ol>
-<li>点击菜单栏”File”，选择”New File or Project”，弹出如下窗口。<br><br><img src="http://i.imgur.com/HJ1JAP3.png#align=left&display=inline&height=629&originHeight=629&originWidth=962&status=done&width=962" alt></li>
-<li>依次选择”Import Project”，”Subversion Checkout”，然后点击”Choose”选项，弹出如下窗口。<br><br><img src="http://i.imgur.com/BwaYgxG.png#align=left&display=inline&height=573&originHeight=573&originWidth=882&status=done&width=882" alt></li>
+<li>点击菜单栏”File”，选择”New File or Project”，弹出如下窗口。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575440346832-96128373-e3af-42e9-877c-0341b124c797.png#align=left&display=inline&height=629&name=image.png&originHeight=629&originWidth=962&size=85193&status=done&style=none&width=962" alt="image.png"></p>
+<ol start="2">
+<li>依次选择”Import Project”，”Subversion Checkout”，然后点击”Choose”选项，弹出如下窗口。<br></li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575440378311-0ced6759-7122-4060-92cb-a21d594e9f44.png#align=left&display=inline&height=573&name=image.png&originHeight=573&originWidth=882&size=80786&status=done&style=none&width=882" alt="image.png"></p>
+<ol start="3">
 <li>在窗体中分别设置”Repository”-要导入的已经保存在SVN中的工程的路径，”Path”-本地保存路径，”Directory”-本地工程目录名（建议使用默认），然后点击”Next”开始自动Checkout，等Checkout完成，打开当前工程，即可开始开发工作。</li>
 </ol>
 <p><a name="64eed538"></a></p>
-<h3 id="在-Qt-中进行SVN常用操作"><a href="#在-Qt-中进行SVN常用操作" class="headerlink" title="在 Qt 中进行SVN常用操作"></a>在 Qt 中进行SVN常用操作</h3><p>对工程代码文件修改后，可在菜单栏”Tools”下找到SVN常用的”Add”,”Commit”等指令，如下图。<br><br><img src="http://i.imgur.com/8lmetjw.png#align=left&display=inline&height=781&originHeight=781&originWidth=977&status=done&width=977" alt></p>
+<h3 id="在-Qt-中进行SVN常用操作"><a href="#在-Qt-中进行SVN常用操作" class="headerlink" title="在 Qt 中进行SVN常用操作"></a>在 Qt 中进行SVN常用操作</h3><p>对工程代码文件修改后，可在菜单栏”Tools”下找到SVN常用的”Add”,”Commit”等指令，如下图。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575440398604-6260a817-8f50-416b-ac37-d3bb7f06f34c.png#align=left&display=inline&height=781&name=image.png&originHeight=781&originWidth=977&size=210113&status=done&style=none&width=977" alt="image.png"></p>
 <p><a name="3da7a94e"></a></p>
 <h2 id="使用第三方代码格式化工具"><a href="#使用第三方代码格式化工具" class="headerlink" title="使用第三方代码格式化工具"></a>使用第三方代码格式化工具</h2><p>Qt 中内置了代码格式化工具，其默认快捷键是Ctrl + i，使用很方便，但是无法对赋值操作”=”两侧自动添加空格，这很不爽，我尝试修改配置文件，却仍然毫无效果，于是决定使用第三方格式化工具。<br><br>这个配置过程主要参考的是Qt Creator的<a href="http://doc.qt.io/qtcreator/creator-beautifier.html" target="_blank" rel="external nofollow noopener noreferrer">官方手册</a>，这里只是稍作翻译。</p>
 <p><a name="316d92d0"></a></p>
@@ -2786,12 +2796,17 @@
 <h3 id="下载安装第三方代码格式化工具"><a href="#下载安装第三方代码格式化工具" class="headerlink" title="下载安装第三方代码格式化工具"></a>下载安装第三方代码格式化工具</h3><p>Beautifier 支持 Artistic Style, ClangFormat, Uncrustify 三种工具，我都进行了尝试，Artistic Style 没有配置成功，Uncrustify 自带的代码格式化风格没有合适的，最后使用了 ClangFormat，这本是我最不想用的，因为获取其安装包的两种方式都很不爽，一种是自行编译-相当麻烦，一种是下载官方编译好的安装包 LLVM-包含了很多其它工具，非常臃肿。<br><br>其实 LLVM 是一款很强大的工具，只是在这里只用到了其中的 ClangFormat 功能，打开<a href="http://releases.llvm.org/download.html" target="_blank" rel="external nofollow noopener noreferrer">LLVM</a>页面，选择<br><br>Clang for Windows 32位或64位下载官方编译好的安装包，正常安装即可。</p>
 <p><a name="ab8a866d"></a></p>
 <h3 id="在-Qt-中配置-ClangFormat"><a href="#在-Qt-中配置-ClangFormat" class="headerlink" title="在 Qt 中配置 ClangFormat"></a>在 Qt 中配置 ClangFormat</h3><ol>
-<li>打开Qt，点击菜单栏”Tools”下的”Options”选项，弹出如下图所示的设置窗口。<br><br><img src="http://i.imgur.com/xfOL9Mt.png#align=left&display=inline&height=677&originHeight=677&originWidth=1178&status=done&width=1178" alt></li>
-<li>在窗口左侧导航栏中，选择”Beautifier”,然后在”General”选项卡下勾选”Enable auto format on file save”使得文件在保存时自动格式化，并选择”Tool”为ClangFormat。</li>
-<li>选择”Clang Format”选项卡，设置”Clang Format command”为ClangFormat安装路径，选择”Use predefined style”为你需要的代码风格，如下图，之后保存并退出。<br><br><img src="http://i.imgur.com/virAgOZ.png#align=left&display=inline&height=677&originHeight=677&originWidth=1178&status=done&width=1178" alt></li>
+<li>打开Qt，点击菜单栏”Tools”下的”Options”选项，弹出如下图所示的设置窗口。<br></li>
 </ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575440424321-012b41a0-fc18-4ffe-8e55-920b51fd416b.png#align=left&display=inline&height=677&name=image.png&originHeight=677&originWidth=1178&size=95656&status=done&style=none&width=1178" alt="image.png"></p>
+<ol start="2">
+<li>在窗口左侧导航栏中，选择”Beautifier”,然后在”General”选项卡下勾选”Enable auto format on file save”使得文件在保存时自动格式化，并选择”Tool”为ClangFormat。</li>
+<li>选择”Clang Format”选项卡，设置”Clang Format command”为ClangFormat安装路径，选择”Use predefined style”为你需要的代码风格，如下图，之后保存并退出。<br></li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575440448145-ed66c2da-2ece-4773-b1f3-0bedc3286748.png#align=left&display=inline&height=677&name=image.png&originHeight=677&originWidth=1178&size=108392&status=done&style=none&width=1178" alt="image.png"></p>
 <p><a name="386a789b"></a></p>
-<h3 id="设置格式化快捷键"><a href="#设置格式化快捷键" class="headerlink" title="设置格式化快捷键"></a>设置格式化快捷键</h3><p>已经习惯了使用Ctrl + i 作为格式化快捷键，因此需要重新设置一下。<br><br>选择Tools &gt; Options &gt; Environment &gt; Keyboard，首先去掉默认的 AutoIndentSelection 的快捷键Ctrl + i，再为 ClangFormat 的 FormatSelectedText 添加快捷键Ctrl + i，保存并关闭又可以愉快地使用Ctrl + i了，如下图所示。<br><br><img src="http://i.imgur.com/WmkAHC7.png#align=left&display=inline&height=677&originHeight=677&originWidth=1178&status=done&width=1178" alt></p>
+<h3 id="设置格式化快捷键"><a href="#设置格式化快捷键" class="headerlink" title="设置格式化快捷键"></a>设置格式化快捷键</h3><p>已经习惯了使用Ctrl + i 作为格式化快捷键，因此需要重新设置一下。<br><br>选择Tools &gt; Options &gt; Environment &gt; Keyboard，首先去掉默认的 AutoIndentSelection 的快捷键Ctrl + i，再为 ClangFormat 的 FormatSelectedText 添加快捷键Ctrl + i，保存并关闭又可以愉快地使用Ctrl + i了，如下图所示。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575440471310-0ee910d2-b3e5-4747-adc6-a710d582a4b5.png#align=left&display=inline&height=677&name=image.png&originHeight=677&originWidth=1178&size=113437&status=done&style=none&width=1178" alt="image.png"></p>
 ]]></content>
       <categories>
         <category>Qt</category>
