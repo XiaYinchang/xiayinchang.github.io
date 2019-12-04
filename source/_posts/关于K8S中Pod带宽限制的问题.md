@@ -193,8 +193,8 @@ cd plugins
 ./build_linux.sh
 ```
 
-很快编译完了，在项目目录下出现了 bin 文件夹， ls 查看一下，有了：<br />
-![](https://wx4.sinaimg.cn/large/007jQb2Zgy1fz58pj112dj30we0123yg.jpg#align=left&display=inline&height=38&originHeight=38&originWidth=1166&status=done&width=1166)<br />
+很快编译完了，在项目目录下出现了 bin 文件夹， ls 查看一下，有了：<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png#align=left&display=inline&height=38&name=image.png&originHeight=38&originWidth=1166&size=27284&status=done&style=none&width=1166)<br />
+<br />
 scp 到 master 节点，放到/opt/cni/bin 目录下。<br />
 重启 kubelet，又报错...说是 config version is 0.1.0， plugin supports only [0.3.0, 0.3.1, 0.4.0]<br />
 完全摸不着头脑，只能靠猜了...<br />
@@ -276,8 +276,7 @@ ls
 }
 ```
 
-重启 kubelet， 呵呵。Pod 终于 Running 了。<br />
-![](https://ws4.sinaimg.cn/large/007jQb2Zgy1fz5a8av6tpj30xu022jrr.jpg#align=left&display=inline&height=74&originHeight=74&originWidth=1218&status=done&width=1218)
+重启 kubelet， 呵呵。Pod 终于 Running 了。<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575442988039-9762993b-8113-4dae-b114-b305332405bd.png#align=left&display=inline&height=74&name=image.png&originHeight=74&originWidth=1218&size=63427&status=done&style=none&width=1218)<br />
 
 ```bash
 # 执行以下命令进入Pod
@@ -291,10 +290,11 @@ iperf -c iperf -c 10.244.1.6 -t 10
 ```
 
 数据如下:<br />
-限速前：<br />
-![](https://wx1.sinaimg.cn/large/007jQb2Zgy1fz5akc0c1pj30hi03jglt.jpg#align=left&display=inline&height=127&originHeight=127&originWidth=630&status=done&width=630)<br />
+限速前：
+
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575443012295-d2bc2306-a82c-4223-95a1-7ca0567eaa11.png#align=left&display=inline&height=127&name=image.png&originHeight=127&originWidth=630&size=45608&status=done&style=none&width=630)<br />
 限速后：<br />
-![](https://wx3.sinaimg.cn/large/007jQb2Zgy1fz5alegkc4j30ic03i3yo.jpg#align=left&display=inline&height=126&originHeight=126&originWidth=660&status=done&width=660)<br />
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575443032242-0bc4e6c4-f824-4821-b254-2d16eee44ce5.png#align=left&display=inline&height=126&name=image.png&originHeight=126&originWidth=660&size=49857&status=done&style=none&width=660)<br />
 啊！真的限速了呢！可这限的什么鬼...<br />
 明明说好的10M，怎么变成了301K...<br />
 难道又是姿势不对？换了好多姿势，可每次数据都是不一样的吊诡...<br />
@@ -326,7 +326,8 @@ kubeadm upgrade plan 1.13.2
 tc qdisc show
 ```
 
-![](https://ws4.sinaimg.cn/large/007jQb2Zgy1fz5b9v3j0qj30mv07mjsj.jpg#align=left&display=inline&height=274&originHeight=274&originWidth=823&status=done&width=823)<br />
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575443051065-4bc1bc1a-0b5a-4591-b3df-f57802fc1ff4.png#align=left&display=inline&height=274&name=image.png&originHeight=274&originWidth=823&size=150326&status=done&style=none&width=823)<br />
+
 仔细看最后几行，10M变成了10K，和上述70014描述的bug一致，不过burst默认是214747b有点吊诡...<br />
 好吧，总结一下，功能是有的，只不过还有bug。<br />
 折腾到这里，突然有点怀念 OpenShift ，那就测一下吧。
@@ -334,12 +335,9 @@ tc qdisc show
 <a name="6c797bc4"></a>
 #### 基于OpenShift-SDN的测试
 
-先看一下openshift的零件，竟然也是标准CNI：<br />
-![](https://ws1.sinaimg.cn/large/007jQb2Zgy1fz5bh0y5ywj30ga064jrv.jpg#align=left&display=inline&height=220&originHeight=220&originWidth=586&status=done&width=586)<br />
-而且据说不用任何额外配置，直接支持带宽限制。所以，把上面的两个deployment直接部署，过了一会儿Pod就起来了。<br />
-![](https://wx1.sinaimg.cn/large/007jQb2Zgy1fz5bkwbb08j30j002274i.jpg#align=left&display=inline&height=74&originHeight=74&originWidth=684&status=done&width=684)<br />
-然后跑一下iperf试试，数据如下：<br />
-![](https://wx2.sinaimg.cn/large/007jQb2Zgy1fz5bq2r7ztj30ii03jjs3.jpg#align=left&display=inline&height=127&originHeight=127&originWidth=666&status=done&width=666)<br />
+先看一下openshift的零件，竟然也是标准CNI：<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575443067485-64bda488-ce15-45e7-9208-97030040af11.png#align=left&display=inline&height=220&name=image.png&originHeight=220&originWidth=586&size=68560&status=done&style=none&width=586)<br />
+而且据说不用任何额外配置，直接支持带宽限制。所以，把上面的两个deployment直接部署，过了一会儿Pod就起来了。<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575443083763-bea1fe29-ae77-4322-bf1f-0d955d4780a8.png#align=left&display=inline&height=74&name=image.png&originHeight=74&originWidth=684&size=42546&status=done&style=none&width=684)<br />
+然后跑一下iperf试试，数据如下：<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575443097570-ef5d3d03-4755-497c-8bbe-6ee3bbb73d03.png#align=left&display=inline&height=127&name=image.png&originHeight=127&originWidth=666&size=79395&status=done&style=none&width=666)<br />
 看看这数据，真是相当整齐了，10M就是10M。<br />
 说到底，还是 OpenShift 好用啊。
 
