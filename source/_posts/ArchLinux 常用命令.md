@@ -2,7 +2,7 @@
 title: ArchLinux 常用命令
 urlname: egtn5p
 date: '2019-09-04 00:00:00 +0800'
-updated: 'Tue Dec 03 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Dec 05 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Linux
@@ -17,7 +17,6 @@ abbrlink: bda105fe
 
 <a name="BdT88"></a>
 #### yay 使用相关
-
 ```bash
 # 安装包时覆盖本地已存在文件
 yay deluge --force
@@ -56,4 +55,15 @@ sudo archlinux-java set jre1.8.0_212
 jdk.tls.disabledAlgorithms=NULL
 ```
 打开 `jcontrol` 程序将物理机终端地址加入白名单，如：`http://192.168.181.134:80`。<br />重新打开浏览器即可。
+
+<a name="AM6Pq"></a>
+#### pacman 查看软件包安装的文件
+```
+bin sudo pacman -Ql cni-plugins
+cni-plugins /usr/
+cni-plugins /usr/lib/
+cni-plugins /usr/lib/cni/
+...
+```
+
 
