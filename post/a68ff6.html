@@ -268,14 +268,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6k</span>
+              <span>6.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
             <div class="post-description">开发过程中遇到的有趣及琐碎的前端知识。</div>
 
@@ -363,6 +363,14 @@
 </ul>
 <p><a name="qpaVf"></a></p>
 <h4 id="OAtuh-与-OpenID"><a href="#OAtuh-与-OpenID" class="headerlink" title="OAtuh 与 OpenID"></a>OAtuh 与 OpenID</h4><p>OAuth 的本意是一个应用允许另一个应用在用户授权的情况下访问自己的数据，OAuth 的设计本意更倾向于授权而非认证（当然授权用户信息就间接实现了认证）。OpenID 用于身份认证，允许你以同一个账户在多个网站登陆。它仅仅是为你的合法身份背书，当你以 Facebook 账号登陆某个站点之后，该站点无权访问你的在 Facebook 上的数据。OAuth 用于授权，允许被授权方访问授权方的用户数据。两者往往一起使用，实现认证和授权过程。</p>
+<p><a name="51Wxa"></a></p>
+<h4 id="单点登录的实现方式"><a href="#单点登录的实现方式" class="headerlink" title="单点登录的实现方式"></a>单点登录的实现方式</h4><ul>
+<li>同域下不同站点的 SSO（跨站点）：两个站点如果在同域下，那么它们之间是可以共享 cookie 的。简单的说就是这种同域下不同站点的 sso 实现可以通过 cookie 来实现，当用户访问这个域下面的任意站点时，浏览器都会将这个 cookie 发送给站点对应的系统。</li>
+<li>同域但不同子域名的 SSO（跨子域）： 通过在设置 cookie 时指定 domain，设置 domain 为顶级域名时可以在各子域名之间共享 cookie，如 Set-Cookie: name=value; domain=mydomain.com。</li>
+<li>不同域的 SSO（跨域）：一种是简单的笨方法，使用 cookie，在各个应用之间重定向；一种是使用单独的 SSO 服务器。</li>
+<li>使用单独的认证服务器已经是较为通用的方式。</li>
+<li>参考：<a href="https://www.jianshu.com/p/8401582c0ef1" target="_blank" rel="external nofollow noopener noreferrer">SSO 三种情况的实现方式</a>。</li>
+</ul>
 
     </div>
 
@@ -467,7 +475,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#swagger-client"><span class="nav-number">1.</span> <span class="nav-text">swagger-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件下载"><span class="nav-number">2.</span> <span class="nav-text">文件下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新依赖"><span class="nav-number">3.</span> <span class="nav-text">更新依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-下载图片到本地"><span class="nav-number">4.</span> <span class="nav-text">Node.js 下载图片到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-教程"><span class="nav-number">5.</span> <span class="nav-text">Node.js 教程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-流式转存图片"><span class="nav-number">6.</span> <span class="nav-text">Node.js 流式转存图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从-Html-文本中匹配所有-img-的地址"><span class="nav-number">7.</span> <span class="nav-text">从 Html 文本中匹配所有 img 的地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie-的工作原理"><span class="nav-number">8.</span> <span class="nav-text">cookie 的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前端的各种存储"><span class="nav-number">9.</span> <span class="nav-text">前端的各种存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chrome-控制台记录-XMLHttpRequest-请求"><span class="nav-number">10.</span> <span class="nav-text">Chrome 控制台记录 XMLHttpRequest 请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-Token-的认识"><span class="nav-number">11.</span> <span class="nav-text">关于 Token 的认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OAtuh-与-OpenID"><span class="nav-number">12.</span> <span class="nav-text">OAtuh 与 OpenID</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#swagger-client"><span class="nav-number">1.</span> <span class="nav-text">swagger-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件下载"><span class="nav-number">2.</span> <span class="nav-text">文件下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新依赖"><span class="nav-number">3.</span> <span class="nav-text">更新依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-下载图片到本地"><span class="nav-number">4.</span> <span class="nav-text">Node.js 下载图片到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-教程"><span class="nav-number">5.</span> <span class="nav-text">Node.js 教程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-流式转存图片"><span class="nav-number">6.</span> <span class="nav-text">Node.js 流式转存图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从-Html-文本中匹配所有-img-的地址"><span class="nav-number">7.</span> <span class="nav-text">从 Html 文本中匹配所有 img 的地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie-的工作原理"><span class="nav-number">8.</span> <span class="nav-text">cookie 的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前端的各种存储"><span class="nav-number">9.</span> <span class="nav-text">前端的各种存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chrome-控制台记录-XMLHttpRequest-请求"><span class="nav-number">10.</span> <span class="nav-text">Chrome 控制台记录 XMLHttpRequest 请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-Token-的认识"><span class="nav-number">11.</span> <span class="nav-text">关于 Token 的认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OAtuh-与-OpenID"><span class="nav-number">12.</span> <span class="nav-text">OAtuh 与 OpenID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单点登录的实现方式"><span class="nav-number">13.</span> <span class="nav-text">单点登录的实现方式</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
