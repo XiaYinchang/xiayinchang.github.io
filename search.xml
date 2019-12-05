@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ArchLinux 常用命令</title>
+    <url>/post/bda105fe.html</url>
+    <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="yay-使用相关"><a href="#yay-使用相关" class="headerlink" title="yay 使用相关"></a>yay 使用相关</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装包时覆盖本地已存在文件</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">yay deluge --force</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment"># 查看所有安装的文件及其路径</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">yay -Ql deluge</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment"># 查找时按照指定 filed 排序</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">yay wechat --sortby &lt;votes|popularity|id|baseid|name|base|submitted|modified&gt;</span></pre></td></tr></table></figure><a id="more"></a>
+
+
+<p><a name="aQrbN"></a></p>
+<h4 id="Network-Manage-使用-SSTP-VPN"><a href="#Network-Manage-使用-SSTP-VPN" class="headerlink" title="Network-Manage 使用 SSTP VPN"></a>Network-Manage 使用 SSTP VPN</h4><p>需要安装客户端软件： <code>network-manager-sstp</code></p>
+<p><a name="xaHEP"></a></p>
+<h4 id="配置-javaws-Web-端访问物理服务器终端"><a href="#配置-javaws-Web-端访问物理服务器终端" class="headerlink" title="配置 javaws Web 端访问物理服务器终端"></a>配置 javaws Web 端访问物理服务器终端</h4><p>到<a href="https://github.com/frekele/oracle-java/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载 Oracle JDK 并解压，将解压得到的文件夹移动至 jvm 目录，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">wget https:<span class="comment">//github.com/frekele/oracle-java/releases/download/8u212-b10/jre-8u212-linux-x64.tar.gz</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">tar zxvf jre<span class="number">-8</span>u212-linux-x64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo mv /home/xyc/Downloads/jre1<span class="number">.8</span><span class="number">.0</span>_212 /usr/lib/jvm/</span></pre></td></tr></table></figure>
+<p>查看已有的 JDK：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">➜  Downloads archlinux-java status                                                                             </span></pre></td></tr><tr><td class="code"><pre><span class="line">Available Java environments:</span></pre></td></tr><tr><td class="code"><pre><span class="line">  java<span class="number">-13</span>-openjdk</span></pre></td></tr><tr><td class="code"><pre><span class="line">  java<span class="number">-8</span>-openjdk/jre</span></pre></td></tr><tr><td class="code"><pre><span class="line">  jre1<span class="number">.8</span><span class="number">.0</span>_212 (<span class="keyword">default</span>)</span></pre></td></tr></table></figure>
+<p>设置默认 Java 环境为新添加的 JDK：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">sudo archlinux-java <span class="keyword">set</span> jre1.8.0_212</span></pre></td></tr></table></figure>
+<p>修改 <code>/usr/lib/jvm/jre1.8.0_212/lib/security/java.security</code> 文件调整设置为：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">jdk.tls.disabledAlgorithms=NULL</span></pre></td></tr></table></figure>
+<p>打开 <code>jcontrol</code> 程序将物理机终端地址加入白名单，如：<code>http://192.168.181.134:80</code>。<br>重新打开浏览器即可。</p>
+<p><a name="AM6Pq"></a></p>
+<h4 id="pacman-查看软件包安装的文件"><a href="#pacman-查看软件包安装的文件" class="headerlink" title="pacman 查看软件包安装的文件"></a>pacman 查看软件包安装的文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin sudo pacman -Ql cni-plugins</span></pre></td></tr><tr><td class="code"><pre><span class="line">cni-plugins &#x2F;usr&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">cni-plugins &#x2F;usr&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">cni-plugins &#x2F;usr&#x2F;lib&#x2F;cni&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>ArchLinux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>前端知识点滴</title>
     <url>/post/a68ff6.html</url>
     <content><![CDATA[<p><a name="Cmvxj"></a></p><h4 id="swagger-client"><a href="#swagger-client" class="headerlink" title="swagger-client"></a>swagger-client</h4><p>swagger-client 是一个 js 包，可以读取并解析 Swagger 2.0 和 OpenAPI 3 的 json 文档并生成可以对文档中定义的 API 进行调用的 client，简化 api 请求过程。</p><p><a name="ZYwuU"></a></p><h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><p>服务端响应的 Header 中可以设置 <code>Content-Disposition: attachment; filename=test.txt</code>  指定文件名称，一般设置 <code>Content-Type: application/octet-stream</code> 对于小的文本文件也可以设置为 <code>Content-Type: text/plain; charset=utf-8</code>  告诉浏览器可以直接在浏览器窗口打开。 </p><a id="more"></a>
@@ -403,33 +434,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ArchLinux 常用命令</title>
-    <url>/post/bda105fe.html</url>
-    <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="yay-使用相关"><a href="#yay-使用相关" class="headerlink" title="yay 使用相关"></a>yay 使用相关</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装包时覆盖本地已存在文件</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">yay deluge --force</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment"># 查看所有安装的文件及其路径</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">yay -Ql deluge</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment"># 查找时按照指定 filed 排序</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">yay wechat --sortby &lt;votes|popularity|id|baseid|name|base|submitted|modified&gt;</span></pre></td></tr></table></figure><a id="more"></a>
-
-
-<p><a name="aQrbN"></a></p>
-<h4 id="Network-Manage-使用-SSTP-VPN"><a href="#Network-Manage-使用-SSTP-VPN" class="headerlink" title="Network-Manage 使用 SSTP VPN"></a>Network-Manage 使用 SSTP VPN</h4><p>需要安装客户端软件： <code>network-manager-sstp</code></p>
-<p><a name="xaHEP"></a></p>
-<h4 id="配置-javaws-Web-端访问物理服务器终端"><a href="#配置-javaws-Web-端访问物理服务器终端" class="headerlink" title="配置 javaws Web 端访问物理服务器终端"></a>配置 javaws Web 端访问物理服务器终端</h4><p>到<a href="https://github.com/frekele/oracle-java/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载 Oracle JDK 并解压，将解压得到的文件夹移动至 jvm 目录，例如：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">wget https:<span class="comment">//github.com/frekele/oracle-java/releases/download/8u212-b10/jre-8u212-linux-x64.tar.gz</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">tar zxvf jre<span class="number">-8</span>u212-linux-x64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo mv /home/xyc/Downloads/jre1<span class="number">.8</span><span class="number">.0</span>_212 /usr/lib/jvm/</span></pre></td></tr></table></figure>
-<p>查看已有的 JDK：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">➜  Downloads archlinux-java status                                                                             </span></pre></td></tr><tr><td class="code"><pre><span class="line">Available Java environments:</span></pre></td></tr><tr><td class="code"><pre><span class="line">  java<span class="number">-13</span>-openjdk</span></pre></td></tr><tr><td class="code"><pre><span class="line">  java<span class="number">-8</span>-openjdk/jre</span></pre></td></tr><tr><td class="code"><pre><span class="line">  jre1<span class="number">.8</span><span class="number">.0</span>_212 (<span class="keyword">default</span>)</span></pre></td></tr></table></figure>
-<p>设置默认 Java 环境为新添加的 JDK：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">sudo archlinux-java <span class="keyword">set</span> jre1.8.0_212</span></pre></td></tr></table></figure>
-<p>修改 <code>/usr/lib/jvm/jre1.8.0_212/lib/security/java.security</code> 文件调整设置为：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">jdk.tls.disabledAlgorithms=NULL</span></pre></td></tr></table></figure>
-<p>打开 <code>jcontrol</code> 程序将物理机终端地址加入白名单，如：<code>http://192.168.181.134:80</code>。<br>重新打开浏览器即可。</p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>ArchLinux</tag>
       </tags>
   </entry>
   <entry>
