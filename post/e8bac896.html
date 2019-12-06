@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录使用 Ceph 过程中常用的命令。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-26T16:00:00.000Z">
+<meta property="og:updated_time" content="2019-12-05T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/e8bac896.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-27 00:00:00" itemprop="dateModified" datetime="2019-11-27T00:00:00+08:00">2019-11-27</time>
+                <time title="修改时间：2019-12-06 00:00:00" itemprop="dateModified" datetime="2019-12-06T00:00:00+08:00">2019-12-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>14k</span>
+              <span>15k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -341,6 +341,13 @@
 <p><a name="xGnOB"></a></p>
 <h4 id="查看并修改-crushmap"><a href="#查看并修改-crushmap" class="headerlink" title="查看并修改 crushmap"></a>查看并修改 crushmap</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">1. 获取集群 crushmap</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">ceph osd getcrushmap -o &#123;file1&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#123;file1&#125; 为自定义的文件名，该文件为二进制文件，不可编辑。要想编辑此文件，需要用工具将其反编译解析，如 crushtool 工具。</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">2 反编译 crushmap</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">crushtool -d &#123;file1&#125; -o &#123;file2&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">反编译二进制文件 &#123;file1&#125; 得到可编辑文件 &#123;file2&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">3. 编辑 crushmap</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">按自我需求修改可编辑文件 &#123;file2&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">4. 编译 crushmap</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">要想编辑后的文件机器能够识别，必须用工具编译它生成二进制文件。</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">crushtool -c &#123;file2&#125; -o &#123;file3&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">5. 注入 crushmap</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">要想新的 crushmap 在集群中生效，必须将其注入要集群。</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">ceph osd setcrushmap -i &#123;file3&#125;</span></pre></td></tr></table></figure>
 <p>基本理解：<a href="https://www.dovefi.com/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3crush1%E7%90%86%E8%A7%A3crush_map%E6%96%87%E4%BB%B6/" target="_blank" rel="external nofollow noopener noreferrer">深入理解 ceph crush (1)—- 理解 crush map 文件</a>／Crush算法：<a href="http://www.xuxiaopang.com/2016/11/08/easy-ceph-CRUSH/" target="_blank" rel="external nofollow noopener noreferrer">大话 Ceph–CRUSH 那点事儿</a>／Crush 查看：<a href="https://www.jianshu.com/p/2355701459e9" target="_blank" rel="external nofollow noopener noreferrer">Ceph 实践之 Crushmap 相关</a>。</p>
+<p><a name="7Rb6C"></a></p>
+<h4 id="OSD-过度使用内存"><a href="#OSD-过度使用内存" class="headerlink" title="OSD 过度使用内存"></a>OSD 过度使用内存</h4><p>在使用 Bluestore 时，bluestore_cache_autotune 默认已经启用，Bluestore 会将 OSD 堆内存使用量保持在指定的大小之下，通过配置选项 osd_memory_target 来控制，默认为 4G。对于内存较少但 OSD 节点较多的情况，仍然会可能造成内存几乎全部被 OSD 所用，最终致使宿主机死机。可以通过两种方式来缓解这种情况，一种是在启用自动配置时调小 osd_memory_target 值，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">[osd]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">osd memory target &#x3D; 2147483648</span></pre></td></tr></table></figure>
+<p>另一种是禁用自动配置并手动指定缓存大小：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">[osd]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">bluestore_cache_autotune &#x3D; False</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">bluestore_min_alloc_size_ssd &#x3D; 32768</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">bluestore_min_alloc_size_hdd &#x3D; 32768</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">bluestore_min_alloc_size &#x3D; 32768</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">bluestore_cache_kv_max &#x3D; 6442450944</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">bluestore_cache_kv_ratio &#x3D; 0.990000</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">bluestore_cache_meta_ratio &#x3D; 0.010000</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">bluestore_cache_size &#x3D; 12884901888</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">bluestore_cache_size_hdd &#x3D; 12884901888</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">bluestore_cache_size_ssd &#x3D; 12884901888</span></pre></td></tr></table></figure>
+
+
 
     </div>
 
@@ -464,7 +471,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-rbd-image-时提示有-watcher"><span class="nav-number">1.</span> <span class="nav-text">删除 rbd image 时提示有 watcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrub-errors-修复"><span class="nav-number">2.</span> <span class="nav-text">scrub errors 修复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-Monitor"><span class="nav-number">3.</span> <span class="nav-text">删除 Monitor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-部署"><span class="nav-number">4.</span> <span class="nav-text">ceph-ansible 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-添加-osd"><span class="nav-number">5.</span> <span class="nav-text">ceph-ansible 添加 osd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rbd-image-使用"><span class="nav-number">6.</span> <span class="nav-text">rbd image 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cinder-创建-Volume-副本并-Boot-with-it"><span class="nav-number">7.</span> <span class="nav-text">Cinder 创建 Volume 副本并 Boot with it</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看并修改-crushmap"><span class="nav-number">8.</span> <span class="nav-text">查看并修改 crushmap</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-rbd-image-时提示有-watcher"><span class="nav-number">1.</span> <span class="nav-text">删除 rbd image 时提示有 watcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrub-errors-修复"><span class="nav-number">2.</span> <span class="nav-text">scrub errors 修复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-Monitor"><span class="nav-number">3.</span> <span class="nav-text">删除 Monitor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-部署"><span class="nav-number">4.</span> <span class="nav-text">ceph-ansible 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-添加-osd"><span class="nav-number">5.</span> <span class="nav-text">ceph-ansible 添加 osd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rbd-image-使用"><span class="nav-number">6.</span> <span class="nav-text">rbd image 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cinder-创建-Volume-副本并-Boot-with-it"><span class="nav-number">7.</span> <span class="nav-text">Cinder 创建 Volume 副本并 Boot with it</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看并修改-crushmap"><span class="nav-number">8.</span> <span class="nav-text">查看并修改 crushmap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSD-过度使用内存"><span class="nav-number">9.</span> <span class="nav-text">OSD 过度使用内存</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -542,13 +549,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">157k</span>
+    <span title="站点总字数">158k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:23</span>
+    <span title="站点阅读时长">2:24</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
