@@ -145,7 +145,7 @@ yum instal ntp
 
 - kubeadm 部署时 config 文件
 
-参考：[https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2](https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2)<br />一个单 master 节点集群配置参考：
+参考：[https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2](https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2)，kubelet 自定义配置参考：[https://godoc.org/k8s.io/kubelet/config/v1beta1#KubeletConfiguration](https://godoc.org/k8s.io/kubelet/config/v1beta1#KubeletConfiguration)。<br />一个单 master 节点集群配置参考：
 ```bash
 apiVersion: kubeadm.k8s.io/v1beta2
 imageRepository: gcr.azk8s.cn/google-containers
