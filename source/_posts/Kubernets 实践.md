@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Tue Dec 03 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Dec 06 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -167,6 +167,47 @@ metadata:
 ...
 ```
 
+<a name="sM7pt"></a>
+#### 使用 subPath 挂载 Volume
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-configmap-volume
+          mountPath: /etc/mysql/conf.d/binlog_format.cnf
+          subPath: binlog_format.cnf
+      volumes:
+      - name: mysql-configmap-volume
+        configMap:
+          name: mysql-configmap
+          items:
+          - key: mysql_binlog_format.cnf
+            path: binlog_format.cnf
+```
+
 <a name="aFRRf"></a>
 #### 部署
 
@@ -194,7 +235,8 @@ metadata:
 | Logs<br />日志 | Treat logs as event streams<br />把日志当作事件流 |
 | Admin processes<br />管理进程 | Run admin/management tasks as one-off processes<br />后台管理任务当作一次性进程运行 |
 
-<a name="USMKa"></a>
+
+<a name="COum0"></a>
 #### 常用操作
 
 - helm init 使用 azure 镜像
