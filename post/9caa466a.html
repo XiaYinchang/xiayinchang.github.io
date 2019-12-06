@@ -266,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.5k</span>
+              <span>6.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -342,6 +342,10 @@
 <p>错误表明 kubeadm 已经成功从 kube-public 命名空间下的 cluster-info confgimap 中获取到了集群信息，然后在验证集群证书的有效性时出错。<code>x509: certificate has expired or is not yet valid</code> 一般是由于系统时间错误导致，可以先用 date 命令确定本地时间是否正确。如果本地时间错误，可以尝试使用 ntp 同步系统时间。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">ntpdate cn.pool.ntp.org</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">// 如果找不到 ntp 命令，可以使用如下的命令进行安装</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">yum instal ntp</span></pre></td></tr></table></figure>
 
+<ul>
+<li>kubeadm 部署时 config 文件</li>
+</ul>
+<p>参考：<a href="https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2" target="_blank" rel="external nofollow noopener noreferrer">https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2</a></p>
 <p><a name="UYIkL"></a></p>
 <h4 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h4><ul>
 <li>从模板生成本地文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">mkdir yamls</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">helm fetch --untar --untardir . &#39;stable&#x2F;redis&#39; #makes a directory called redis </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">helm template --output-dir &#39;.&#x2F;yamls&#39; &#39;.&#x2F;redis&#39; #redis dir (local helm chart), export to yamls dir</span></pre></td></tr></table></figure>
