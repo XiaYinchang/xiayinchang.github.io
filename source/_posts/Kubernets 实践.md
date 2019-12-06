@@ -145,7 +145,7 @@ yum instal ntp
 
 - kubeadm 部署时 config 文件
 
-参考：[https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2](https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2)，kubelet 自定义配置参考：[https://godoc.org/k8s.io/kubelet/config/v1beta1#KubeletConfiguration](https://godoc.org/k8s.io/kubelet/config/v1beta1#KubeletConfiguration)。<br />一个单 master 节点集群配置参考：
+参考：[https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2](https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2)，kubelet 自定义配置参考：[https://godoc.org/k8s.io/kubelet/config/v1beta1#KubeletConfiguration](https://godoc.org/k8s.io/kubelet/config/v1beta1#KubeletConfiguration)。一个需要注意的地方是<br />一个单 master 节点集群配置参考，需要注意的是虽然在下面的配置中已经设置了 failSwapOn 为 false，但是 kubeadm 并不会去检测该配置，仍然会报错，不过该报错可以被忽略，因为这个设置随后确实会被添加到 kubelet 的配置中并生效，因此 init 时执行 `sudo kubeadm init --config kubeadm.yml --ignore-preflight-errors=all` 即可：
 ```bash
 apiVersion: kubeadm.k8s.io/v1beta2
 imageRepository: gcr.azk8s.cn/google-containers
