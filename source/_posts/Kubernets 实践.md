@@ -145,7 +145,101 @@ yum instal ntp
 
 - kubeadm 部署时 config 文件
 
-参考：[https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2](https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2)
+参考：[https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2](https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2)<br />一个单 master 节点集群配置参考：
+```bash
+apiVersion: kubeadm.k8s.io/v1beta2
+imageRepository: gcr.azk8s.cn/google-containers
+kind: ClusterConfiguration
+kubernetesVersion: v1.16.0
+networking:
+  serviceSubnet: 10.96.0.0/12
+  podSubnet: 10.244.0.0/16
+apiServer:
+  extraArgs:
+    bind-address: 0.0.0.0
+    feature-gates: "EphemeralContainers=true"
+  extraVolumes:
+  - name: "timezone"
+    hostPath: "/etc/localtime"
+    mountPath: "/etc/localtime"
+    readOnly: true
+    pathType: File
+controllerManager:
+  extraArgs:
+    bind-address: 0.0.0.0
+    feature-gates: "EphemeralContainers=true"
+  extraVolumes:
+  - name: "timezone"
+    hostPath: "/etc/localtime"
+    mountPath: "/etc/localtime"
+    readOnly: true
+    pathType: File
+scheduler:
+  extraArgs:
+    address: 0.0.0.0
+    feature-gates: "EphemeralContainers=true"
+  extraVolumes:
+  - name: "timezone"
+    hostPath: "/etc/localtime"
+    mountPath: "/etc/localtime"
+    readOnly: true
+    pathType: File
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+clusterCIDR: 10.244.0.0/16
+iptables:
+  masqueradeAll: false
+  minSyncPeriod: 0s
+  syncPeriod: 30s
+ipvs:
+  excludeCIDRs: null
+  minSyncPeriod: 0s
+  scheduler: rr
+  syncPeriod: 30s
+kind: KubeProxyConfiguration
+mode: ipvs
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+cgroupDriver: systemd
+failSwapOn: false
+kind: KubeletConfiguration
+```
+
+- 内核配置参考
+```bash
+[xyc-pc ~]# cat /etc/modules-load.d/ipvs.conf 
+ip_vs
+ip_vs_lc
+ip_vs_wlc
+ip_vs_rr
+ip_vs_wrr
+ip_vs_lblc
+ip_vs_lblcr
+ip_vs_dh
+ip_vs_sh
+ip_vs_nq
+ip_vs_sed
+ip_vs_ftp
+nf_conntrack
+br_netfilter
+
+//使其临时生效
+ipvs_modules="ip_vs ip_vs_lc ip_vs_wlc ip_vs_rr ip_vs_wrr ip_vs_lblc ip_vs_lblcr ip_vs_dh ip_vs_sh ip_vs_nq ip_vs_sed ip_vs_ftp nf_conntrack br_netfilter";
+for kernel_module in ${ipvs_modules}; do modprobe ${kernel_module} > /dev/null 2>&1;done
+
+[xyc-pc ~]# cat /etc/sysctl.conf 
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+vm.max_map_count=262144
+vm.swappiness=0
+net.core.somaxconn=32768
+net.ipv4.tcp_syncookies=0
+net.ipv4.conf.all.rp_filter=1
+net.ipv4.ip_forward=1
+net.core.default_qdisc=fq_codel
+//使其临时生效
+sysctl -p /etc/sysctl.conf
+```
 
 <a name="UYIkL"></a>
 #### Helm
