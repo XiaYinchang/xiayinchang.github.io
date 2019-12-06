@@ -2,7 +2,7 @@
 title: Ceph 常用操作
 urlname: asu9v3
 date: '2019-09-03 00:00:00 +0800'
-updated: 'Wed Nov 27 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Dec 06 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Ceph
@@ -358,5 +358,27 @@ crushtool -c {file2} -o {file3}
 ceph osd setcrushmap -i {file3}
 ```
 基本理解：[深入理解 ceph crush (1)—- 理解 crush map 文件](https://www.dovefi.com/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3crush1%E7%90%86%E8%A7%A3crush_map%E6%96%87%E4%BB%B6/)／Crush算法：[大话 Ceph--CRUSH 那点事儿](http://www.xuxiaopang.com/2016/11/08/easy-ceph-CRUSH/)／Crush 查看：[Ceph 实践之 Crushmap 相关](https://www.jianshu.com/p/2355701459e9)。
+
+<a name="7Rb6C"></a>
+#### OSD 过度使用内存
+在使用 Bluestore 时，bluestore_cache_autotune 默认已经启用，Bluestore 会将 OSD 堆内存使用量保持在指定的大小之下，通过配置选项 osd_memory_target 来控制，默认为 4G。对于内存较少但 OSD 节点较多的情况，仍然会可能造成内存几乎全部被 OSD 所用，最终致使宿主机死机。可以通过两种方式来缓解这种情况，一种是在启用自动配置时调小 osd_memory_target 值，例如：
+```
+[osd]
+osd memory target = 2147483648
+```
+另一种是禁用自动配置并手动指定缓存大小：
+```
+[osd]
+bluestore_cache_autotune = False
+bluestore_min_alloc_size_ssd = 32768
+bluestore_min_alloc_size_hdd = 32768
+bluestore_min_alloc_size = 32768
+bluestore_cache_kv_max = 6442450944
+bluestore_cache_kv_ratio = 0.990000
+bluestore_cache_meta_ratio = 0.010000
+bluestore_cache_size = 12884901888
+bluestore_cache_size_hdd = 12884901888
+bluestore_cache_size_ssd = 12884901888
+```
 
 
