@@ -143,6 +143,10 @@ ntpdate cn.pool.ntp.org
 yum instal ntp
 ```
 
+- kubeadm 部署时 config 文件
+
+参考：[https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2](https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm/v1beta2)
+
 <a name="UYIkL"></a>
 #### Helm
 
