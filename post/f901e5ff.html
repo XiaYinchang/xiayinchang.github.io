@@ -60,7 +60,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;1058&amp;name&#x3D;image.png&amp;originHeight&#x3D;1058&amp;originWidth&#x3D;1246&amp;size&#x3D;76582&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1246">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;1064&amp;name&#x3D;image.png&amp;originHeight&#x3D;1064&amp;originWidth&#x3D;1248&amp;size&#x3D;81349&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1248">
-<meta property="og:updated_time" content="2019-12-02T16:00:00.000Z">
+<meta property="og:updated_time" content="2019-12-06T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;1058&amp;name&#x3D;image.png&amp;originHeight&#x3D;1058&amp;originWidth&#x3D;1246&amp;size&#x3D;76582&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1246">
 
@@ -237,6 +237,13 @@
 
               <time title="创建时间：2019-12-03 00:00:00" itemprop="dateCreated datePublished" datetime="2019-12-03T00:00:00+08:00">2019-12-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-07 00:00:00" itemprop="dateModified" datetime="2019-12-07T00:00:00+08:00">2019-12-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -262,14 +269,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.6k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
             <div class="post-description">在 Kubernetes 中使用 Nginx-Ingress 作为 API 网关时可以使用独立的认证服务将认证逻辑从业务代码中解耦出来。</div>
 
@@ -311,13 +318,20 @@
 </ol>
 <p><img src="https://i.loli.net/2019/12/03/FAontkXCLsMweyI.png" alt="image.png"></p>
 <p><a name="xK7hi"></a></p>
-<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
+<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
+<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
 <ol>
 <li>移除反向代理相关代码。</li>
 <li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
 <li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
 <li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
 </ol>
+<p><a name="pWbqx"></a></p>
+<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
+<p><a name="elPJY"></a></p>
+<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
+<p><a name="dh0i1"></a></p>
+<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
 
     </div>
 
@@ -438,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原文"><span class="nav-number">1.</span> <span class="nav-text">原文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Authentication-Annotations"><span class="nav-number">2.</span> <span class="nav-text">Authentication Annotations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#auth-url"><span class="nav-number">2.1.</span> <span class="nav-text">auth-url</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#auth-response-headers"><span class="nav-number">2.2.</span> <span class="nav-text">auth-response-headers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#译者补充"><span class="nav-number">3.</span> <span class="nav-text">译者补充</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原文"><span class="nav-number">1.</span> <span class="nav-text">原文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Authentication-Annotations"><span class="nav-number">2.</span> <span class="nav-text">Authentication Annotations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#auth-url"><span class="nav-number">2.1.</span> <span class="nav-text">auth-url</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#auth-response-headers"><span class="nav-number">2.2.</span> <span class="nav-text">auth-response-headers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#译者补充"><span class="nav-number">3.</span> <span class="nav-text">译者补充</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#keycloak-auth"><span class="nav-number">3.1.</span> <span class="nav-text">keycloak-auth</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LDAP-对接-ingress-nginx"><span class="nav-number">3.2.</span> <span class="nav-text">LDAP 对接 ingress-nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ingress-nginx-生成配置的模板"><span class="nav-number">3.3.</span> <span class="nav-text">ingress-nginx 生成配置的模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go-实现的一个-JWT-Validator"><span class="nav-number">3.4.</span> <span class="nav-text">Go 实现的一个 JWT Validator</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -522,7 +536,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:26</span>
+    <span title="站点阅读时长">2:27</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
