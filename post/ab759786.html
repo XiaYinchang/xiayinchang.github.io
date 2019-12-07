@@ -314,7 +314,8 @@
 <h4 id="使用-Empty-类型"><a href="#使用-Empty-类型" class="headerlink" title="使用 Empty 类型"></a>使用 Empty 类型</h4><p>在 gRPC 中要求每个函数调用都有返回值，如果确实不需要返回值，则为了统一规范与重用，我们可以使用 google  提供的 Empty 类型，Empty 类型的对象在序列化和反序列化时会被视为空对象，其 JSON 形式表示为 <code>{}</code> ，使用方法：</p>
 <figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"google/protobuf/empty.proto"</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">Foo</span> </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">rpc</span> Bar(google.protobuf.Empty) <span class="keyword">returns</span> (google.protobuf.Empty)</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
 
-
+<p><a name="CgG5k"></a></p>
+<h4 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h4><p><a href="https://ops.tips/blog/sending-files-via-grpc/" target="_blank" rel="external nofollow noopener noreferrer">https://ops.tips/blog/sending-files-via-grpc/</a></p>
 
     </div>
 
@@ -438,7 +439,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-gRPC-错误类型"><span class="nav-number">1.</span> <span class="nav-text">使用 gRPC 错误类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-metadata-进行用户认证"><span class="nav-number">2.</span> <span class="nav-text">使用 metadata 进行用户认证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grpc-gateway-实现-gRPC-server-提供-RESTful"><span class="nav-number">3.</span> <span class="nav-text">grpc-gateway 实现 gRPC server 提供 RESTful</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Empty-类型"><span class="nav-number">4.</span> <span class="nav-text">使用 Empty 类型</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-gRPC-错误类型"><span class="nav-number">1.</span> <span class="nav-text">使用 gRPC 错误类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-metadata-进行用户认证"><span class="nav-number">2.</span> <span class="nav-text">使用 metadata 进行用户认证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grpc-gateway-实现-gRPC-server-提供-RESTful"><span class="nav-number">3.</span> <span class="nav-text">grpc-gateway 实现 gRPC server 提供 RESTful</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Empty-类型"><span class="nav-number">4.</span> <span class="nav-text">使用 Empty 类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#传输文件"><span class="nav-number">5.</span> <span class="nav-text">传输文件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

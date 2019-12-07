@@ -1058,7 +1058,8 @@
 <h4 id="使用-Empty-类型"><a href="#使用-Empty-类型" class="headerlink" title="使用 Empty 类型"></a>使用 Empty 类型</h4><p>在 gRPC 中要求每个函数调用都有返回值，如果确实不需要返回值，则为了统一规范与重用，我们可以使用 google  提供的 Empty 类型，Empty 类型的对象在序列化和反序列化时会被视为空对象，其 JSON 形式表示为 <code>{}</code> ，使用方法：</p>
 <figure class="highlight protobuf"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"google/protobuf/empty.proto"</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">service</span> <span class="title">Foo</span> </span>&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">  <span class="function"><span class="keyword">rpc</span> Bar(google.protobuf.Empty) <span class="keyword">returns</span> (google.protobuf.Empty)</span>;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
 
-
+<p><a name="CgG5k"></a></p>
+<h4 id="传输文件"><a href="#传输文件" class="headerlink" title="传输文件"></a>传输文件</h4><p><a href="https://ops.tips/blog/sending-files-via-grpc/" target="_blank" rel="external nofollow noopener noreferrer">https://ops.tips/blog/sending-files-via-grpc/</a></p>
 ]]></content>
       <categories>
         <category>gRPC</category>
