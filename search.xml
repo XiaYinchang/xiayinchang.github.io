@@ -56,6 +56,8 @@
 <ul>
 <li>GetPluginCapabilities：返回 rbd Driver 的能力信息，这里返回 PluginCapability_Service_CONTROLLER_SERVICE，表明实现了 Controller Service，特别说明实现了 Controller Service 是因为 Node service 是必须的，而 Controller Service 被设计为可选的。</li>
 </ul>
+<p><a name="a7snF"></a></p>
+<h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4><p>csi 社区文档：<a href="https://kubernetes-csi.github.io/docs/" target="_blank" rel="external nofollow noopener noreferrer">https://kubernetes-csi.github.io/docs/</a><br>csi 标准文档： <a href="https://github.com/container-storage-interface/spec/blob/master/spec.md" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/container-storage-interface/spec/blob/master/spec.md</a></p>
 ]]></content>
       <categories>
         <category>Kubernetes</category>
