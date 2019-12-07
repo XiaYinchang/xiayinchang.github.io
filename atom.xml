@@ -17,6 +17,29 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Kubernetes CSI</title>
+    <link href="https://www.xiayinchang.top/post/d1098827.html"/>
+    <id>https://www.xiayinchang.top/post/d1098827.html</id>
+    <published>2019-12-06T16:00:00.000Z</published>
+    <updated>2019-12-06T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      CSI 是 Kubernetes 对接外部存储的最新规范。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+      <category term="云计算" scheme="https://www.xiayinchang.top/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
     <link href="https://www.xiayinchang.top/post/f901e5ff.html"/>
     <id>https://www.xiayinchang.top/post/f901e5ff.html</id>
@@ -436,29 +459,6 @@
     
     
       <category term="Ceph" scheme="https://www.xiayinchang.top/tags/Ceph/"/>
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>统一认证中心方案调研</title>
-    <link href="https://www.xiayinchang.top/post/c851306f.html"/>
-    <id>https://www.xiayinchang.top/post/c851306f.html</id>
-    <published>2019-09-09T16:00:00.000Z</published>
-    <updated>2019-09-09T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      通过对 Keystone 与 Keycloak 两种认证中心方案的对比分析确定合适的系统方案。
-    
-    </summary>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
     
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
     
