@@ -144,4 +144,7 @@ service Foo {
 }
 ```
 
+<a name="CgG5k"></a>
+#### 传输文件
+[https://ops.tips/blog/sending-files-via-grpc/](https://ops.tips/blog/sending-files-via-grpc/)
 
