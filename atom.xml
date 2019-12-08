@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2019-12-06T16:00:00.000Z</updated>
+  <updated>2019-12-07T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go 实现长轮询：一个服务端超时设置的故事</title>
+    <link href="https://www.xiayinchang.top/post/46e95013.html"/>
+    <id>https://www.xiayinchang.top/post/46e95013.html</id>
+    <published>2019-12-07T16:00:00.000Z</published>
+    <updated>2019-12-07T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP/1.1 API 添加实时获取数据的特性，则使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时遇到的服务端超时时间设置的问题的讨论。
+    
+    </summary>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>Kubernetes CSI</title>
@@ -438,29 +461,6 @@
       <category term="RateLimit" scheme="https://www.xiayinchang.top/tags/RateLimit/"/>
     
       <category term="S3" scheme="https://www.xiayinchang.top/tags/S3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>从 RESTful 到 gRPC-Web 的平滑切换</title>
-    <link href="https://www.xiayinchang.top/post/bd5bd15.html"/>
-    <id>https://www.xiayinchang.top/post/bd5bd15.html</id>
-    <published>2019-09-16T16:00:00.000Z</published>
-    <updated>2019-09-16T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      在分布式系统架构中，后端服务较多使用 gRPC 进行通信，当需要暴露服务给前端时往往需要增加一层 Http Server 将 gRPC-Web 转换为 RESTful 接口，这会增加额外的工作量，而 gRPC-Web 项目可以帮助我们避免这些工作，实现在前端直接调用 gRPC 服务。对于已经存在大量 RESTful 调用的系统中，立即全部迁移至 gRPC-Web 是不现实的，因此我们需要一种平滑迁移的方案能够实现：对于同一个资源的请求旧的前端调用仍然使用 RESTful，同时新的前端调用可以使用 gRPC-Web，而对于新增资源则直接使用 gRPC-Web 调用，同时也兼容  RESTful，为了实现这种兼容性不能增加额外的服务端，即 gRPC-Web 和 RESTful 的服务监听在同一地址的同一端口。
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
-    
-    
-      <category term="RESTful" scheme="https://www.xiayinchang.top/tags/RESTful/"/>
-    
-      <category term="gRPC-Web" scheme="https://www.xiayinchang.top/tags/gRPC-Web/"/>
     
   </entry>
   
