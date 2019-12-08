@@ -50,13 +50,13 @@
   };
 </script>
 
-  <meta name="description" content="前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP&#x2F;1.1 API 添加实时获取数据的特性，则使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时遇到的服务端超时时间设置的问题的讨论。">
+  <meta name="description" content="前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP&#x2F;1.1 API 添加实时获取数据的特性，使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时遇到的服务端超时时间设置的问题的讨论。">
 <meta name="keywords" content="Go, 长轮询, timeout">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go 实现长轮询：一个服务端超时设置的故事">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;46e95013.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP&#x2F;1.1 API 添加实时获取数据的特性，则使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时遇到的服务端超时时间设置的问题的讨论。">
+<meta property="og:description" content="前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP&#x2F;1.1 API 添加实时获取数据的特性，使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时遇到的服务端超时时间设置的问题的讨论。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575783155078-b299a29e-2114-4667-ad30-947580207315.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;526&amp;name&#x3D;image.png&amp;originHeight&#x3D;526&amp;originWidth&#x3D;579&amp;size&#x3D;95727&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;579">
 <meta property="og:updated_time" content="2019-12-07T16:00:00.000Z">
@@ -270,7 +270,7 @@
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>3 分钟</span>
             </span>
-            <div class="post-description">前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP/1.1 API 添加实时获取数据的特性，则使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时遇到的服务端超时时间设置的问题的讨论。</div>
+            <div class="post-description">前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP/1.1 API 添加实时获取数据的特性，使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时遇到的服务端超时时间设置的问题的讨论。</div>
 
         </div>
       </header>
