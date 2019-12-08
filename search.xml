@@ -19,7 +19,7 @@
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line">ts.Config.WriteTimeout = <span class="number">10</span> * time.Second</span></pre></td></tr></table></figure>
 <p>在我们最初的 API 的实现中，我们将服务端超时时间设置为了 10 秒，但是在我实现长轮询的时候我把超时时间设置为了 15 秒。这导致了 Nginx 偶发性地返回 502 错误。Nginx 会报出如下错误：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">upstream prematurely closed connection while reading response header from upstream</span></pre></td></tr></table></figure>
-<p>最终发现，这个错误消息是准确的并且指向了确切的问题（go 由于超时时间到达关闭了请求，但是我的处理函数仍然在请求关闭后尝试去写入内容），但是在网上搜索的结果并没有提供太多帮助。最后，我断断续续花了一周时间跟踪调试直到确定是配置问题。WriteTimeout 最短也需要设置为与允许的长轮询等待时间一样长，在我们的场景中是 60 秒。<br>但愿其他陷入同样 Nginx 错误的人能够先再次检查他们的服务端超时时间设置。另外，可以查阅<a href="https://lucasroesler.com/2018/07/golang-long-polling-a-tale-of-server-timeouts/" target="_blank" rel="external nofollow noopener noreferrer">这篇文章</a>关于 go 中各种服务端超时的详情。</p>
+<p>最终发现，这个错误消息是准确的并且指向了确切的问题（go 由于超时时间到达关闭了请求，但是我的处理函数仍然在请求关闭后尝试去写入内容），但是在网上搜索的结果并没有提供太多帮助。最后，我断断续续花了一周时间跟踪调试直到确定是配置问题。WriteTimeout 最短也需要设置为与允许的长轮询等待时间一样长，在我们的场景中是 60 秒。<br>但愿其他陷入同样 Nginx 错误的人能够先再次检查他们的服务端超时时间设置。另外，可以查阅<a href="https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/" target="_blank" rel="external nofollow noopener noreferrer">这篇文章</a>关于 go 中各种服务端超时的详情。</p>
 ]]></content>
       <categories>
         <category>译文</category>
