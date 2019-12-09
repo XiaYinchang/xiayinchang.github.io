@@ -423,6 +423,9 @@
 <p>另一种是禁用自动配置并手动指定缓存大小：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[osd]</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_cache_autotune &#x3D; False</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_min_alloc_size_ssd &#x3D; 32768</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_min_alloc_size_hdd &#x3D; 32768</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_min_alloc_size &#x3D; 32768</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_cache_kv_max &#x3D; 6442450944</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_cache_kv_ratio &#x3D; 0.990000</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_cache_meta_ratio &#x3D; 0.010000</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_cache_size &#x3D; 12884901888</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_cache_size_hdd &#x3D; 12884901888</span></pre></td></tr><tr><td class="code"><pre><span class="line">bluestore_cache_size_ssd &#x3D; 12884901888</span></pre></td></tr></table></figure>
 
+<p><a name="SnsuP"></a></p>
+<h4 id="ceph-查看存储池-IO"><a href="#ceph-查看存储池-IO" class="headerlink" title="ceph 查看存储池 IO"></a>ceph 查看存储池 IO</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool stats</span></pre></td></tr></table></figure>
+
 
 ]]></content>
       <categories>
