@@ -426,6 +426,9 @@
 <p><a name="SnsuP"></a></p>
 <h4 id="ceph-查看存储池-IO"><a href="#ceph-查看存储池-IO" class="headerlink" title="ceph 查看存储池 IO"></a>ceph 查看存储池 IO</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool stats</span></pre></td></tr></table></figure>
 
+<p><a name="x0FF4"></a></p>
+<h4 id="ceph-usage"><a href="#ceph-usage" class="headerlink" title="ceph  usage"></a>ceph  usage</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph df</span></pre></td></tr></table></figure>
+
 
 ]]></content>
       <categories>

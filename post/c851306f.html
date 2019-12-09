@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 4.1.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,13 +51,12 @@
 </script>
 
   <meta name="description" content="通过对 Keystone 与 Keycloak 两种认证中心方案的对比分析确定合适的系统方案。">
-<meta name="keywords" content="OAuth 2.0,OpenID,Athorization,Authentication,Keystone,Keycloak">
 <meta property="og:type" content="article">
 <meta property="og:title" content="统一认证中心方案调研">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;c851306f.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="通过对 Keystone 与 Keycloak 两种认证中心方案的对比分析确定合适的系统方案。">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568099807740-b6f23b9f-79f7-4f1e-8c5b-e7e6dcc812c7.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;121&amp;name&#x3D;image.png&amp;originHeight&#x3D;121&amp;originWidth&#x3D;531&amp;size&#x3D;9511&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;531">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568101991767-538e6965-086f-4f6a-bc9e-ddaad3dd6acc.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;301&amp;name&#x3D;image.png&amp;originHeight&#x3D;416&amp;originWidth&#x3D;466&amp;size&#x3D;22980&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;337">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568102224149-f1424311-b431-4989-b589-b89f2fe08d2c.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;337&amp;name&#x3D;image.png&amp;originHeight&#x3D;422&amp;originWidth&#x3D;347&amp;size&#x3D;54611&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;277">
@@ -68,7 +67,15 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568620339129-62544ce7-0f22-40be-9ac3-e8479f90b590.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;231&amp;name&#x3D;image.png&amp;originHeight&#x3D;231&amp;originWidth&#x3D;476&amp;size&#x3D;12341&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;476">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568621100341-781dba8e-5d5d-4349-80d4-50449397caff.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;341&amp;name&#x3D;image.png&amp;originHeight&#x3D;341&amp;originWidth&#x3D;569&amp;size&#x3D;16799&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;569">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568622013241-ade99ea1-a5b4-4da8-8c98-0c07cefd3044.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;281&amp;name&#x3D;image.png&amp;originHeight&#x3D;281&amp;originWidth&#x3D;637&amp;size&#x3D;13836&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;637">
-<meta property="og:updated_time" content="2019-09-09T16:00:00.000Z">
+<meta property="article:published_time" content="2019-09-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-09T16:00:00.000Z">
+<meta property="article:author" content="夏印昌">
+<meta property="article:tag" content="OAuth 2.0">
+<meta property="article:tag" content="OpenID">
+<meta property="article:tag" content="Athorization">
+<meta property="article:tag" content="Authentication">
+<meta property="article:tag" content="Keystone">
+<meta property="article:tag" content="Keycloak">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568099807740-b6f23b9f-79f7-4f1e-8c5b-e7e6dcc812c7.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;121&amp;name&#x3D;image.png&amp;originHeight&#x3D;121&amp;originWidth&#x3D;531&amp;size&#x3D;9511&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;531">
 
@@ -695,7 +702,7 @@
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -747,9 +754,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -767,7 +782,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

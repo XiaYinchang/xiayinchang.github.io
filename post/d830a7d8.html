@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 4.1.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,20 +51,27 @@
 </script>
 
   <meta name="description" content="理清 Linux 网络 IO 的各种概念。">
-<meta name="keywords" content="Linux,IO,异步,同步,阻塞,非阻塞">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IO 同步、异步及阻塞、非阻塞">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;d830a7d8.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="理清 Linux 网络 IO 的各种概念。">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800282968-bce27934-e535-49b8-8c25-2945f7d2ce70.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;291&amp;name&#x3D;image.png&amp;originHeight&#x3D;291&amp;originWidth&#x3D;550&amp;size&#x3D;33321&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;550">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800363874-2e57da37-f74c-4dd4-b75c-6a7db13bb99d.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;291&amp;name&#x3D;image.png&amp;originHeight&#x3D;291&amp;originWidth&#x3D;550&amp;size&#x3D;40341&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;550">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800468227-7354dc16-071b-459d-a472-33103ef6e76d.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;299&amp;name&#x3D;image.png&amp;originHeight&#x3D;299&amp;originWidth&#x3D;550&amp;size&#x3D;42845&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;550">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800792427-fc0c4e8f-336a-4c86-a3b0-646238b5c2ca.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;313&amp;name&#x3D;image.png&amp;originHeight&#x3D;313&amp;originWidth&#x3D;550&amp;size&#x3D;44205&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;550">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800815863-ec7fe271-d1a0-4e49-a4ba-8e5d5990e151.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;327&amp;name&#x3D;image.png&amp;originHeight&#x3D;327&amp;originWidth&#x3D;550&amp;size&#x3D;41762&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;550">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575804118240-0ad5c30f-e984-45fc-b945-a6ca192fefa7.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;328&amp;name&#x3D;image.png&amp;originHeight&#x3D;328&amp;originWidth&#x3D;587&amp;size&#x3D;87015&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;587">
-<meta property="og:updated_time" content="2019-12-07T16:00:00.000Z">
+<meta property="article:published_time" content="2019-12-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-12-07T16:00:00.000Z">
+<meta property="article:author" content="夏印昌">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="IO">
+<meta property="article:tag" content="异步">
+<meta property="article:tag" content="同步">
+<meta property="article:tag" content="阻塞">
+<meta property="article:tag" content="非阻塞">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800282968-bce27934-e535-49b8-8c25-2945f7d2ce70.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;291&amp;name&#x3D;image.png&amp;originHeight&#x3D;291&amp;originWidth&#x3D;550&amp;size&#x3D;33321&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;550">
 
@@ -525,7 +532,7 @@
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -577,9 +584,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -597,7 +612,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

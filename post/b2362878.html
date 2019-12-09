@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 4.1.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,13 +51,12 @@
 </script>
 
   <meta name="description" content="语雀，一款非常便捷友好的知识管理工具，很适合用来撰写博客。借助 yueque-hexo 可以将语雀与静态网站生成工具 Hexo 结合起来，再利用 GitHub 平台和阿里云函数计算服务可以实现博客更新与发布全流程的自动化。本文简单记录一下折腾过程。">
-<meta name="keywords" content="语雀, GitHub, Serverless">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用语雀、GitHub 和阿里云函数计算构建博客">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;b2362878.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="语雀，一款非常便捷友好的知识管理工具，很适合用来撰写博客。借助 yueque-hexo 可以将语雀与静态网站生成工具 Hexo 结合起来，再利用 GitHub 平台和阿里云函数计算服务可以实现博客更新与发布全流程的自动化。本文简单记录一下折腾过程。">
-<meta property="og:locale" content="zh-CN">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574345326347-21a088e7-b99e-48ab-b4d4-03da8cd43dd5.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;281&amp;name&#x3D;image.png&amp;originHeight&#x3D;562&amp;originWidth&#x3D;1454&amp;size&#x3D;81111&amp;status&#x3D;done&amp;width&#x3D;727">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;svg&#x2F;182657&#x2F;1574346796484-cd1f3d51-6d05-4e95-a457-68f02556072e.svg#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;53&amp;name&#x3D;yuque-github.svg&amp;originHeight&#x3D;53&amp;originWidth&#x3D;531&amp;size&#x3D;9035&amp;status&#x3D;done&amp;width&#x3D;531">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574348003304-00176e01-df5f-452f-8a3e-d2b42ccbb19f.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;159&amp;name&#x3D;image.png&amp;originHeight&#x3D;318&amp;originWidth&#x3D;1550&amp;size&#x3D;73916&amp;status&#x3D;done&amp;width&#x3D;775">
@@ -66,7 +65,12 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574348964801-b5f5e678-23bd-4af9-b3ad-2a8fdb3eb129.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;365&amp;name&#x3D;image.png&amp;originHeight&#x3D;1104&amp;originWidth&#x3D;2256&amp;size&#x3D;191252&amp;status&#x3D;done&amp;width&#x3D;746">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574349095187-c0ee05f1-2140-4664-b999-fb46b18e5b1d.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;319&amp;name&#x3D;image.png&amp;originHeight&#x3D;638&amp;originWidth&#x3D;2408&amp;size&#x3D;127346&amp;status&#x3D;done&amp;width&#x3D;1204">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574349534969-cee1fcaf-2bbc-4eff-9c8a-dc44fa6363b8.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;522&amp;name&#x3D;image.png&amp;originHeight&#x3D;1044&amp;originWidth&#x3D;2132&amp;size&#x3D;157428&amp;status&#x3D;done&amp;width&#x3D;1066">
-<meta property="og:updated_time" content="2019-11-20T16:00:00.000Z">
+<meta property="article:published_time" content="2019-11-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-11-20T16:00:00.000Z">
+<meta property="article:author" content="夏印昌">
+<meta property="article:tag" content="语雀">
+<meta property="article:tag" content=" GitHub">
+<meta property="article:tag" content=" Serverless">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574345326347-21a088e7-b99e-48ab-b4d4-03da8cd43dd5.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;281&amp;name&#x3D;image.png&amp;originHeight&#x3D;562&amp;originWidth&#x3D;1454&amp;size&#x3D;81111&amp;status&#x3D;done&amp;width&#x3D;727">
 
@@ -505,7 +509,7 @@
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
     <span title="站点阅读时长">2:46</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -557,9 +561,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -577,7 +589,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
