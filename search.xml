@@ -70,6 +70,12 @@
 <p><a name="x0FF4"></a></p>
 <h4 id="ceph-总体及各存储池使用量"><a href="#ceph-总体及各存储池使用量" class="headerlink" title="ceph 总体及各存储池使用量"></a>ceph 总体及各存储池使用量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph df detail</span></pre></td></tr></table></figure>
 
+<p><a name="XThMD"></a></p>
+<h4 id="删除存储池"><a href="#删除存储池" class="headerlink" title="删除存储池"></a>删除存储池</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ceph tell mon.\* injectargs <span class="string">'--mon-allow-pool-delete=true'</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">## The following will delete the pool</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">$ ceph osd pool delete &lt;pool-name&gt; &lt;pool-name&gt; --yes-i-really-really-mean-it</span></pre></td></tr><tr><td class="code"><pre><span class="line">$ ceph tell mon.\* injectargs <span class="string">'--mon-allow-pool-delete=false'</span></span></pre></td></tr></table></figure>
+
+<p><a name="gZ7UD"></a></p>
+<h4 id="rados-对象操作"><a href="#rados-对象操作" class="headerlink" title="rados 对象操作"></a>rados 对象操作</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 上传文件</span></pre></td></tr><tr><td class="code"><pre><span class="line">rados -p &lt;pool-name&gt; put &lt;object-name&gt; &lt;file&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">// 下载文件</span></pre></td></tr><tr><td class="code"><pre><span class="line">rados -p &lt;pool-name&gt; get &lt;object-name&gt; &lt;file&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">// 列出文件</span></pre></td></tr><tr><td class="code"><pre><span class="line">rados -p &lt;pool-name&gt; ls</span></pre></td></tr><tr><td class="code"><pre><span class="line">// 删除文件</span></pre></td></tr><tr><td class="code"><pre><span class="line">rados -p &lt;pool-name&gt; rm &lt;object-name&gt;</span></pre></td></tr></table></figure>
+
 
 ]]></content>
       <categories>
