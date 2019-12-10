@@ -268,7 +268,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4k</span>
+              <span>4.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -306,6 +306,9 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">qm unlock 101</span></pre></td></tr></table></figure>
 
+<p><a name="EybNz"></a></p>
+<h4 id="zfs-基本用法"><a href="#zfs-基本用法" class="headerlink" title="zfs 基本用法"></a>zfs 基本用法</h4><p>参考：<a href="https://www.thegeekdiary.com/zfs-tutorials-creating-zfs-pools-and-file-systems/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/zfs-tutorials-creating-zfs-pools-and-file-systems/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">// 创建完 pool 就直接在 /poolname 下自动挂载了</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">zpool create poolname /dev/sdc /dev/sdd</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">zpool status</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">zfs create poolname/fs1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">zfs list</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">NAME           USED  AVAIL  REFER  MOUNTPOINT</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">poolname       131K   976M    31K  /poolname</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">poolname/fs1    31K   976M    31K  /poolname/fs1</span></pre></td></tr></table></figure>
 
 <p><a name="jAYK1"></a></p>
 <h4 id="添加-CE-版-Proxmox-Debian-源"><a href="#添加-CE-版-Proxmox-Debian-源" class="headerlink" title="添加 CE 版  Proxmox Debian 源"></a>添加 CE 版  Proxmox Debian 源</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">deb http://download.proxmox.com/debian/pve buster pve-no-subscription</span></pre></td></tr></table></figure>
@@ -434,7 +437,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#zfs-destroy-提示-dataset-is-busy"><span class="nav-number">1.</span> <span class="nav-text">zfs destroy 提示 dataset is busy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加-CE-版-Proxmox-Debian-源"><span class="nav-number">2.</span> <span class="nav-text">添加 CE 版  Proxmox Debian 源</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#zfs-destroy-提示-dataset-is-busy"><span class="nav-number">1.</span> <span class="nav-text">zfs destroy 提示 dataset is busy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zfs-基本用法"><span class="nav-number">2.</span> <span class="nav-text">zfs 基本用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加-CE-版-Proxmox-Debian-源"><span class="nav-number">3.</span> <span class="nav-text">添加 CE 版  Proxmox Debian 源</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -512,7 +515,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">176k</span>
+    <span title="站点总字数">177k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
