@@ -117,7 +117,21 @@
 <p><a name="jAYK1"></a></p>
 <h4 id="添加-CE-版-Proxmox-Debian-源"><a href="#添加-CE-版-Proxmox-Debian-源" class="headerlink" title="添加 CE 版  Proxmox Debian 源"></a>添加 CE 版  Proxmox Debian 源</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deb http://download.proxmox.com/debian/pve buster pve-no-subscription</span></pre></td></tr></table></figure>
 
+<p><a name="f2a3R"></a></p>
+<h4 id="在-Proxmox-集群之间迁移虚拟机"><a href="#在-Proxmox-集群之间迁移虚拟机" class="headerlink" title="在 Proxmox 集群之间迁移虚拟机"></a>在 Proxmox 集群之间迁移虚拟机</h4><p>参考：<a href="https://cyberpersons.com/2016/09/13/backup-transfer-proxmox-vm-another-proxmox-node/" target="_blank" rel="external nofollow noopener noreferrer">https://cyberpersons.com/2016/09/13/backup-transfer-proxmox-vm-another-proxmox-node/</a></p>
+<ol>
+<li><p>创建虚拟机备份</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Change directory where backups are stored</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment"># create backup</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">vzdump 100</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment"># this will create backup for vm id 100</span></span></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝到新集群宿主机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># change directory</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">scp vzdump-qemu-122-2016_09_13-14_12_32.vma root@192.168.1.1:/var/lib/vz/dump/vzdump-qemu-122-2016_09_13-14_12_32.vma</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment"># this is one single command</span></span></pre></td></tr></table></figure>
+</li>
+<li><p>恢复虚拟机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">qmrestore vzdump-qemu-122-2016_09_13-14_12_32.vma 500</span></pre></td></tr></table></figure>
 
+
+</li>
+</ol>
 ]]></content>
       <categories>
         <category>Proxmox</category>
