@@ -373,6 +373,10 @@
 <p><a name="1EEnK"></a></p>
 <h4 id="查看网络中已存在的-IP"><a href="#查看网络中已存在的-IP" class="headerlink" title="查看网络中已存在的 IP"></a>查看网络中已存在的 IP</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">arp-scan -I eth0 192.168.180.0/24</span></pre></td></tr><tr><td class="code"><pre><span class="line">//或</span></pre></td></tr><tr><td class="code"><pre><span class="line">nmap -sP -PR 192.168.180.*</span></pre></td></tr></table></figure>
 
+<p><a name="sbDNW"></a></p>
+<h4 id="iostat-查看磁盘读写速度"><a href="#iostat-查看磁盘读写速度" class="headerlink" title="iostat 查看磁盘读写速度"></a>iostat 查看磁盘读写速度</h4><p>参考：<a href="https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/" target="_blank" rel="external nofollow noopener noreferrer">https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 以 MB 为单位显示速度</span></pre></td></tr><tr><td class="code"><pre><span class="line">iostat -m</span></pre></td></tr></table></figure>
+
 <p><a name="fL7Yx"></a></p>
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
