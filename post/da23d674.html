@@ -301,14 +301,14 @@
 <p>本文汇总了在Qt  5.8中使用C++进行开发时遇到的编译错误和警告及其解决方法，基于C++11标准。</p>
 <p><a name="eca07263"></a></p>
 <h3 id="constant-string-to-char"><a href="#constant-string-to-char" class="headerlink" title="constant string to char *"></a>constant string to char *</h3><p>初始代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">char *p &#x3D; &quot;Hello&quot;;</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char *p &#x3D; &quot;Hello&quot;;</span><br></pre></td></tr></table></figure>
 
 <p>编译输出：</p>
 <blockquote>
 <p>ISO C++ forbids conversion from constant string to char *.</p>
 </blockquote>
 <p>修改代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">char const *p &#x3D; &quot;Hello&quot;;</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char const *p &#x3D; &quot;Hello&quot;;</span><br></pre></td></tr></table></figure>
 
 <p>参考资料：</p>
 <ol>
@@ -316,14 +316,14 @@
 </ol>
 <p><a name="0fd228ba"></a></p>
 <h3 id="comparison-between-signed-and-unsigned"><a href="#comparison-between-signed-and-unsigned" class="headerlink" title="comparison between signed and unsigned"></a>comparison between signed and unsigned</h3><p>初始代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">for (int i &#x3D; 0, max &#x3D; vec.size(); i !&#x3D; max; ++i)</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (int i &#x3D; 0, max &#x3D; vec.size(); i !&#x3D; max; ++i)</span><br></pre></td></tr></table></figure>
 
 <p>编译输出：</p>
 <blockquote>
 <p>warning: comparison between signed and unsigned integer expressions [-Wsign-compare]</p>
 </blockquote>
 <p>修改代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">for (std::size_t i &#x3D; 0, max &#x3D; vec.size(); i !&#x3D; max; ++i)</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (std::size_t i &#x3D; 0, max &#x3D; vec.size(); i !&#x3D; max; ++i)</span><br></pre></td></tr></table></figure>
 
 <p>附加注释：</p>
 <blockquote>

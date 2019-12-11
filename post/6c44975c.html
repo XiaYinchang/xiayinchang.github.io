@@ -317,37 +317,37 @@
 <h4 id="调整安装好的操作系统"><a href="#调整安装好的操作系统" class="headerlink" title="调整安装好的操作系统"></a>调整安装好的操作系统</h4><ul>
 <li>进入操作系统，首先关闭 selinux、firewalld 和 NetworkManager。</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> --now firewalld NetworkManager</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">setenforce 0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/^[^#]*SELINUX=/s#=.+$#=disabled#'</span> /etc/selinux/config</span></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> --now firewalld NetworkManager</span><br><span class="line">setenforce 0</span><br><span class="line">sed -ri <span class="string">'/^[^#]*SELINUX=/s#=.+$#=disabled#'</span> /etc/selinux/config</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>安装acpid cloud-init cloud-utils-growpart</li>
 </ul>
 <p>apcid 是为了可以使 kvm 可以关闭和重启虚拟机，qemu-guest-agent 使得 Proxmox 可以获取虚拟机的 IP 等信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">yum install -y acpid cloud-init cloud-utils-growpart qemu-guest-agent</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> acpid </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> qemu-guest-agent</span></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y acpid cloud-init cloud-utils-growpart qemu-guest-agent</span><br><span class="line">systemctl <span class="built_in">enable</span> acpid </span><br><span class="line">systemctl <span class="built_in">enable</span> qemu-guest-agent</span><br></pre></td></tr></table></figure>
 
 
 <ul>
 <li>禁用默认zeroconf路线</li>
 </ul>
 <p>当系统无法连接DHCP server的时候，就会尝试通过ZEROCONF来获取IP,并添加一条169.254.0.0/16的路由条目。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"NOZEROCONF=yes"</span> &gt;&gt; /etc/sysconfig/network</span></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"NOZEROCONF=yes"</span> &gt;&gt; /etc/sysconfig/network</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>修改sshd不使用dns防止ssh连接慢</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/UseDNS/&#123;s@#@@;s@\s+.+@ no@&#125;'</span> /etc/ssh/sshd_config</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">systemctl restart sshd</span></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/UseDNS/&#123;s@#@@;s@\s+.+@ no@&#125;'</span> /etc/ssh/sshd_config</span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>修改 cloud-init 配置</li>
 </ul>
 <p>分别是允许 root 登录，允许使用 password 登录，禁止第一次开机自动更新系统。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/disable_root/&#123;s#\S$#0#&#125;'</span> /etc/cloud/cloud.cfg</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/ssh_pwauth/&#123;s#\S$#1#&#125;'</span> /etc/cloud/cloud.cfg</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/package-update/s@^@#@'</span> /etc/cloud/cloud.cfg</span></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -ri <span class="string">'/disable_root/&#123;s#\S$#0#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/ssh_pwauth/&#123;s#\S$#1#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/package-update/s@^@#@'</span> /etc/cloud/cloud.cfg</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>如有需要可以自行添加一些额外的配置</li>
 </ul>
 <p>我在 /sbin/ifup-local 中添加了如下配置用于配置特殊的路由以适应办公室网络环境。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">touch /sbin/ifup-local</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">chmod +x /sbin/ifup-local</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">cat /sbin/ifup-local</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">ip r add 192.168.76.0/24 via 192.168.180.254</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">ip r add 192.168.77.0/24 via 192.168.180.254</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="built_in">exit</span> 0</span></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">touch /sbin/ifup-local</span><br><span class="line">chmod +x /sbin/ifup-local</span><br><span class="line">cat /sbin/ifup-local</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">ip r add 192.168.76.0/24 via 192.168.180.254</span><br><span class="line">ip r add 192.168.77.0/24 via 192.168.180.254</span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
 
 
 <ul>
