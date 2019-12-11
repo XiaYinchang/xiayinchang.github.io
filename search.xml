@@ -82,7 +82,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:&#x2F; &#x2F;cephfs ceph name&#x3D;admin,secret&#x3D;AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw&#x3D;&#x3D;,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
 
 <p><a name="0mfaM"></a></p>
-<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">&#x2F;&#x2F; 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode</span><br></pre></td></tr></table></figure>
+<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">&#x2F;&#x2F; 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br></pre></td></tr></table></figure>
 
 
 ]]></content>
