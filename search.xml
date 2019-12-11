@@ -82,7 +82,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:&#x2F; &#x2F;cephfs ceph name&#x3D;admin,secret&#x3D;AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw&#x3D;&#x3D;,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
 
 <p><a name="0mfaM"></a></p>
-<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">&#x2F;&#x2F; 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br></pre></td></tr></table></figure>
+<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">&#x2F;&#x2F; 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 查看自动增加的 pg 数量</span><br><span class="line">ceph osd pool autoscale-status</span><br></pre></td></tr></table></figure>
 
 
 ]]></content>
@@ -92,6 +92,54 @@
       <tags>
         <tag>Linux</tag>
         <tag>Ceph</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 文件系统基础知识</title>
+    <url>/post/c957e495.html</url>
+    <content><![CDATA[<p><a name="d3l9E"></a></p><h4 id="软链接和硬链接的区别"><a href="#软链接和硬链接的区别" class="headerlink" title="软链接和硬链接的区别"></a>软链接和硬链接的区别</h4><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&name=image.png&originHeight=255&originWidth=514&size=34517&status=done&style=none&width=514" alt="image.png"></p><ul>
+<li><p>参考：<a href="https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link</a></p>
+</li>
+<li><p>硬链接是对 inode 的引用，只有所有引用都删除后 inode 才会被删除，删除源文件，通过硬链接创建的文件仍然能够访问之前保存的数据；软链接指向源文件，源文件被删除后，访问软链接会提示文件不存在， inode 一般在源文件删除后即被删除（除非有硬链接指向该 inode）。</p>
+</li>
+<li><p>创建硬链接时源文件必须存在；而软链接可以指向不存在的对象以及不同文件系统的对象（目录或文件）。</p>
+</li>
+<li><p>创建硬链接改变文件系统结构，创建软链接不改变文件系统结构（或许是增加了一个应用层存储软链接对象）。</p>
+</li>
+<li><p>关于为什么不允许对目录创建硬链接的个人理解：硬链接创建的是和源文件同样类型的文件系统对象，在硬链接创建完成后，文件系统已经无法区分新建出来的文件系统对象是否是通过硬链接创建出来的，因此在执行目录遍历时便会将其作为普通的文件对象对待，因此一旦允许硬链接指向目录，则在出现环路时会永不停止的遍历下去，造成文件系统无法正常工作；而对目录创建软链接可以工作是因为，软链接创建出来的文件系统对象和普通的文件系统对象类型是不一样的，因此文件系统可以区分出软链接创建出来的文件系统对象并在进行目录遍历时获取到软链接指向的最短路径（readlink -f soft-link）后就终止对其进行遍历，从而能够正常工作；其关键在于是否可识别，如果能够识别就可以区别对待。<br><a name="KiJyy"></a></p>
+<h4 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h4><p>chroot 改变了进程及其子进程能够访问的文件系统的入口点，使得该应用只能访问新的根目录下的文件内容而无法访问根目录以外的文件，将应用置于沙盒中从而限制其能够访问的文件和设备等资源，实现对应用的安全隔离。<br><a name="Hy6Xv"></a></p>
+<h4 id="软链接和-bind-mount-的比较"><a href="#软链接和-bind-mount-的比较" class="headerlink" title="软链接和 bind mount 的比较"></a>软链接和 bind mount 的比较</h4></li>
+<li><p>其相同之处是都可以实现对源目录进行跨文件系统的定位和访问。</p>
+</li>
+<li><p>其主要的不同点在于它们的控制主体和表现形式，软链接由文件系统负责管理，是文件系统中的对象；bind mount 由内核直接控制，是内核中的实体，比文件系统层级更低（因此 bind mount 需要 root 权限，创建软链接并不需要 root 权限），它可以更改文件系统的底层拓扑结构而使得文件系统毫无察觉（因此 bind mount 过程不会持久化保存，系统重启时必须重新进行 bind mount，一般将其写入到 /etc/fstab）。</p>
+</li>
+<li><p>软链接的创建可以使用相对路径或绝对路径，表示对象中保存的源路径与输入路径完全一致，因此有可能使得软链接在某些情况无法访问（例如，在由软链接建立的循环路径中相对路径可能失效）；bind mount 在使用相对路径作为源路径时会将其解析为绝对路径后保存并挂载。</p>
+</li>
+<li><p>在使用 chroot 的情况下，软链接的范围仅限于当前新的根目录下（源目录与目的目录均在当前 chroot 下），而 bind mount 可以将 chroot 外的文件挂载到当前 chroot 中使用（过程是怎样的？）</p>
+</li>
+<li><p>容器文件系统的挂载过程借助了 bind mount。</p>
+</li>
+<li><p>参考：<a href="https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix" target="_blank" rel="external nofollow noopener noreferrer">https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix</a></p>
+</li>
+<li><p>参考：<a href="https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount</a><br><a name="XJ56q"></a></p>
+<h4 id="mount-namespace"><a href="#mount-namespace" class="headerlink" title="mount namespace"></a>mount namespace</h4></li>
+<li><p><a href="https://lwn.net/Articles/689856/" target="_blank" rel="external nofollow noopener noreferrer">https://lwn.net/Articles/689856/</a></p>
+</li>
+<li><p>新的 mount namespace 会继承原 mount namespace 的挂载点（因为是 clone），之后挂载点会各自变化。</p>
+</li>
+<li><p>Creating a mount namespace is similar to a recursive bind mount of / followed by chroot into the bind mount. Chroot creating is simular to creating a mount namespace followed by pivot_root.</p>
+</li>
+<li><p><a href="https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces</a><br><a name="ICS4l"></a></p>
+<h4 id="bind-mount-写入-fstab"><a href="#bind-mount-写入-fstab" class="headerlink" title="bind mount 写入 fstab"></a>bind mount 写入 fstab</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;cephfs&#x2F;storage &#x2F;storage none defaults,bind 0 0</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1347,51 +1395,6 @@
       <tags>
         <tag>语雀</tag>
         <tag>GitHub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 文件系统基础知识</title>
-    <url>/post/c957e495.html</url>
-    <content><![CDATA[<p><a name="d3l9E"></a></p><h4 id="软链接和硬链接的区别"><a href="#软链接和硬链接的区别" class="headerlink" title="软链接和硬链接的区别"></a>软链接和硬链接的区别</h4><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&name=image.png&originHeight=255&originWidth=514&size=34517&status=done&width=514" alt="image.png"></p><ul>
-<li><p>参考：<a href="https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link</a></p>
-</li>
-<li><p>硬链接是对 inode 的引用，只有所有引用都删除后 inode 才会被删除，删除源文件，通过硬链接创建的文件仍然能够访问之前保存的数据；软链接指向源文件，源文件被删除后，访问软链接会提示文件不存在， inode 一般在源文件删除后即被删除（除非有硬链接指向该 inode）。</p>
-</li>
-<li><p>创建硬链接时源文件必须存在；而软链接可以指向不存在的对象以及不同文件系统的对象（目录或文件）。</p>
-</li>
-<li><p>创建硬链接改变文件系统结构，创建软链接不改变文件系统结构（或许是增加了一个应用层存储软链接对象）。</p>
-</li>
-<li><p>关于为什么不允许对目录创建硬链接的个人理解：硬链接创建的是和源文件同样类型的文件系统对象，在硬链接创建完成后，文件系统已经无法区分新建出来的文件系统对象是否是通过硬链接创建出来的，因此在执行目录遍历时便会将其作为普通的文件对象对待，因此一旦允许硬链接指向目录，则在出现环路时会永不停止的遍历下去，造成文件系统无法正常工作；而对目录创建软链接可以工作是因为，软链接创建出来的文件系统对象和普通的文件系统对象类型是不一样的，因此文件系统可以区分出软链接创建出来的文件系统对象并在进行目录遍历时获取到软链接指向的最短路径（readlink -f soft-link）后就终止对其进行遍历，从而能够正常工作；其关键在于是否可识别，如果能够识别就可以区别对待。<br><a name="KiJyy"></a></p>
-<h4 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h4><p>chroot 改变了进程及其子进程能够访问的文件系统的入口点，使得该应用只能访问新的根目录下的文件内容而无法访问根目录以外的文件，将应用置于沙盒中从而限制其能够访问的文件和设备等资源，实现对应用的安全隔离。<br><a name="Hy6Xv"></a></p>
-<h4 id="软链接和-bind-mount-的比较"><a href="#软链接和-bind-mount-的比较" class="headerlink" title="软链接和 bind mount 的比较"></a>软链接和 bind mount 的比较</h4></li>
-<li><p>其相同之处是都可以实现对源目录进行跨文件系统的定位和访问。</p>
-</li>
-<li><p>其主要的不同点在于它们的控制主体和表现形式，软链接由文件系统负责管理，是文件系统中的对象；bind mount 由内核直接控制，是内核中的实体，比文件系统层级更低（因此 bind mount 需要 root 权限，创建软链接并不需要 root 权限），它可以更改文件系统的底层拓扑结构而使得文件系统毫无察觉（因此 bind mount 过程不会持久化保存，系统重启时必须重新进行 bind mount，一般将其写入到 /etc/fstab）。</p>
-</li>
-<li><p>软链接的创建可以使用相对路径或绝对路径，表示对象中保存的源路径与输入路径完全一致，因此有可能使得软链接在某些情况无法访问（例如，在由软链接建立的循环路径中相对路径可能失效）；bind mount 在使用相对路径作为源路径时会将其解析为绝对路径后保存并挂载。</p>
-</li>
-<li><p>在使用 chroot 的情况下，软链接的范围仅限于当前新的根目录下（源目录与目的目录均在当前 chroot 下），而 bind mount 可以将 chroot 外的文件挂载到当前 chroot 中使用（过程是怎样的？）</p>
-</li>
-<li><p>容器文件系统的挂载过程借助了 bind mount。</p>
-</li>
-<li><p>参考：<a href="https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix" target="_blank" rel="external nofollow noopener noreferrer">https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix</a></p>
-</li>
-<li><p>参考：<a href="https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount</a><br><a name="XJ56q"></a></p>
-<h4 id="mount-namespace"><a href="#mount-namespace" class="headerlink" title="mount namespace"></a>mount namespace</h4></li>
-<li><p><a href="https://lwn.net/Articles/689856/" target="_blank" rel="external nofollow noopener noreferrer">https://lwn.net/Articles/689856/</a></p>
-</li>
-<li><p>新的 mount namespace 会继承原 mount namespace 的挂载点（因为是 clone），之后挂载点会各自变化。</p>
-</li>
-<li><p>Creating a mount namespace is similar to a recursive bind mount of / followed by chroot into the bind mount. Chroot creating is simular to creating a mount namespace followed by pivot_root.</p>
-</li>
-<li><p><a href="https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces</a></p>
-</li>
-</ul>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
