@@ -78,6 +78,8 @@
 
 <p><a name="K2eGm"></a></p>
 <h4 id="挂载-cephfs-到本地"><a href="#挂载-cephfs-到本地" class="headerlink" title="挂载 cephfs 到本地"></a>挂载 cephfs 到本地</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/mycephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==</span><br></pre></td></tr></table></figure>
+<p>写入到 fstab 中，开机自动挂载</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:&#x2F; &#x2F;cephfs ceph name&#x3D;admin,secret&#x3D;AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw&#x3D;&#x3D;,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
 
 
 ]]></content>
