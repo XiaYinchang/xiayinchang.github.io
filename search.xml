@@ -102,6 +102,32 @@
       </tags>
   </entry>
   <entry>
+    <title>Keycloak 使用过程记录</title>
+    <url>/post/e4c4afae.html</url>
+    <content><![CDATA[<p><a name="Cmvxj"></a></p><h4 id="keycloak-js-sdk"><a href="#keycloak-js-sdk" class="headerlink" title="keycloak js sdk"></a>keycloak js sdk</h4><p>Angular 版本的 SDK ：<a href="https://www.npmjs.com/package/keycloak-angular" target="_blank" rel="external nofollow noopener noreferrer">https://www.npmjs.com/package/keycloak-angular</a>。为了实现 Token 刷新可以采用以下方式：</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">keycloak.onTokenExpired = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'token expired'</span>, keycloak.token);</span><br><span class="line">    keycloak.updateToken(<span class="number">30</span>).success(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'successfully get a new token'</span>, keycloak.token);</span><br><span class="line">        ...</span><br><span class="line">    &#125;).error(<span class="function"><span class="params">()</span> =&gt;</span> &#123;...&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p><a name="O4e8p"></a></p>
+<h4 id="Keycloak-使用-LDAP"><a href="#Keycloak-使用-LDAP" class="headerlink" title="Keycloak 使用 LDAP"></a>Keycloak 使用 LDAP</h4><p><a href="https://codehumsafar.wordpress.com/tag/ldap-with-keycloak/" target="_blank" rel="external nofollow noopener noreferrer">https://codehumsafar.wordpress.com/tag/ldap-with-keycloak/</a></p>
+<p><a name="LTbsg"></a></p>
+<h4 id="导出-Realm-和-User"><a href="#导出-Realm-和-User" class="headerlink" title="导出 Realm 和 User"></a>导出 Realm 和 User</h4><p>参考：<a href="https://stackoverflow.com/questions/46281416/best-practices-of-export-import-keycloak-data-in-kubernetes" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/46281416/best-practices-of-export-import-keycloak-data-in-kubernetes</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 实测在使用 mariadb 和 tidb 时无法导出成功，使用 PostgreSQL 可以</span><br><span class="line">.&#x2F;standalone.sh -Dkeycloak.migration.realmName&#x3D;umstor -Dkeycloak.migration.action&#x3D;export -Dkeycloak.migration.usersExportStrategy&#x3D;REALM_FILE -Dkeycloak.migration.provider&#x3D;singleFile -Dkeycloak.migration.file&#x3D;&#x2F;opt&#x2F;jboss&#x2F;keycloak&#x2F;bin&#x2F;umstor-realm.json -Djboss.http.port&#x3D;8888 -Djboss.https.port&#x3D;9999 -Djboss.management.http.port&#x3D;7777</span><br></pre></td></tr></table></figure>
+
+<p><a name="qqoIl"></a></p>
+<h4 id="Admin-cli"><a href="#Admin-cli" class="headerlink" title="Admin cli"></a>Admin cli</h4><p>在 keycloak 容器镜像中 admin cli 位于<code>/opt/jboss/keycloak/bin/</code> 目录下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 配置授权信息</span><br><span class="line">.&#x2F;kcadm.sh config credentials --server http:&#x2F;&#x2F;localhost:8080&#x2F;keycloak --realm master --user root --password r00tme</span><br><span class="line">&#x2F;&#x2F; 根据之前导出的 json 创建 realm</span><br><span class="line">.&#x2F;kcadm.sh create realms -f realm-export.json</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>认证</category>
+      </categories>
+      <tags>
+        <tag>认证</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 实用命令集合</title>
     <url>/post/b489449e.html</url>
     <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><ul>
@@ -411,32 +437,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>Proxmox</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Keycloak 使用过程记录</title>
-    <url>/post/e4c4afae.html</url>
-    <content><![CDATA[<p><a name="Cmvxj"></a></p><h4 id="keycloak-js-sdk"><a href="#keycloak-js-sdk" class="headerlink" title="keycloak js sdk"></a>keycloak js sdk</h4><p>Angular 版本的 SDK ：<a href="https://www.npmjs.com/package/keycloak-angular" target="_blank" rel="external nofollow noopener noreferrer">https://www.npmjs.com/package/keycloak-angular</a>。为了实现 Token 刷新可以采用以下方式：</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">keycloak.onTokenExpired = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'token expired'</span>, keycloak.token);</span><br><span class="line">    keycloak.updateToken(<span class="number">30</span>).success(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'successfully get a new token'</span>, keycloak.token);</span><br><span class="line">        ...</span><br><span class="line">    &#125;).error(<span class="function"><span class="params">()</span> =&gt;</span> &#123;...&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-<p><a name="O4e8p"></a></p>
-<h4 id="Keycloak-使用-LDAP"><a href="#Keycloak-使用-LDAP" class="headerlink" title="Keycloak 使用 LDAP"></a>Keycloak 使用 LDAP</h4><p><a href="https://codehumsafar.wordpress.com/tag/ldap-with-keycloak/" target="_blank" rel="external nofollow noopener noreferrer">https://codehumsafar.wordpress.com/tag/ldap-with-keycloak/</a></p>
-<p><a name="LTbsg"></a></p>
-<h4 id="导出-Realm-和-User"><a href="#导出-Realm-和-User" class="headerlink" title="导出 Realm 和 User"></a>导出 Realm 和 User</h4><p>参考：<a href="https://stackoverflow.com/questions/46281416/best-practices-of-export-import-keycloak-data-in-kubernetes" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/46281416/best-practices-of-export-import-keycloak-data-in-kubernetes</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;standalone.sh -Dkeycloak.migration.realmName&#x3D;umstor -Dkeycloak.migration.action&#x3D;export -Dkeycloak.migration.usersExportStrategy&#x3D;REALM_FILE -Dkeycloak.migration.provider&#x3D;singleFile -Dkeycloak.migration.file&#x3D;&#x2F;opt&#x2F;jboss&#x2F;keycloak&#x2F;bin&#x2F;umstor-realm.json -Djboss.http.port&#x3D;8888 -Djboss.https.port&#x3D;9999 -Djboss.management.http.port&#x3D;7777</span><br></pre></td></tr></table></figure>
-
-<p><a name="qqoIl"></a></p>
-<h4 id="Admin-cli"><a href="#Admin-cli" class="headerlink" title="Admin cli"></a>Admin cli</h4><p>在 keycloak 容器镜像中 admin cli 位于<code>/opt/jboss/keycloak/bin/</code> 目录下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 配置授权信息</span><br><span class="line">.&#x2F;kcadm.sh config credentials --server http:&#x2F;&#x2F;localhost:8080&#x2F;keycloak --realm master --user root --password r00tme</span><br><span class="line">&#x2F;&#x2F; 根据之前导出的 json 创建 realm</span><br><span class="line">.&#x2F;kcadm.sh create realms -f realm-export.json</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>认证</category>
-      </categories>
-      <tags>
-        <tag>认证</tag>
       </tags>
   </entry>
   <entry>
