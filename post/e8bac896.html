@@ -268,14 +268,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.2k</span>
+              <span>8.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>8 分钟</span>
             </span>
             <div class="post-description">本文记录使用 Ceph 过程中常用的命令。</div>
 
@@ -372,6 +372,9 @@
 <p><a name="BlwFR"></a></p>
 <h4 id="删除-OSD-节点"><a href="#删除-OSD-节点" class="headerlink" title="删除 OSD 节点"></a>删除 OSD 节点</h4><p>参考先删后增节点时如何减少数据迁移：<a href="https://www.cnblogs.com/schangech/p/8036191.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/schangech/p/8036191.html</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 停止指定 OSD 进程</span><br><span class="line">systemctl stop ceph-osd@15</span><br><span class="line">// out 指定 OSD</span><br><span class="line">ceph osd out 15</span><br><span class="line">// crush remove 指定 OSD</span><br><span class="line">ceph osd crush remove osd.15</span><br><span class="line">// 删除 osd 对应的 auth</span><br><span class="line">ceph auth del osd.15</span><br><span class="line">// 删除 osd</span><br><span class="line">ceph osd rm 15</span><br><span class="line">// 按照上述步骤删除节点上所有 osd 后，crush remove 指定节点</span><br><span class="line">ceph osd crush rm osd-host</span><br></pre></td></tr></table></figure>
+
+<p><a name="jpOwk"></a></p>
+<h4 id="CentOS-安装-ceph-common"><a href="#CentOS-安装-ceph-common" class="headerlink" title="CentOS 安装 ceph-common"></a>CentOS 安装 ceph-common</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh https:&#x2F;&#x2F;download.ceph.com&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">yum install epel-release</span><br><span class="line">yum install ceph-common</span><br></pre></td></tr></table></figure>
 
 
 
@@ -497,7 +500,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-rbd-image-时提示有-watcher"><span class="nav-number">1.</span> <span class="nav-text">删除 rbd image 时提示有 watcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrub-errors-修复"><span class="nav-number">2.</span> <span class="nav-text">scrub errors 修复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-Monitor"><span class="nav-number">3.</span> <span class="nav-text">删除 Monitor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-部署"><span class="nav-number">4.</span> <span class="nav-text">ceph-ansible 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-添加-osd"><span class="nav-number">5.</span> <span class="nav-text">ceph-ansible 添加 osd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rbd-image-使用"><span class="nav-number">6.</span> <span class="nav-text">rbd image 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cinder-创建-Volume-副本并-Boot-with-it"><span class="nav-number">7.</span> <span class="nav-text">Cinder 创建 Volume 副本并 Boot with it</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看并修改-crushmap"><span class="nav-number">8.</span> <span class="nav-text">查看并修改 crushmap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSD-过度使用内存"><span class="nav-number">9.</span> <span class="nav-text">OSD 过度使用内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-查看存储池-IO"><span class="nav-number">10.</span> <span class="nav-text">ceph 查看存储池 IO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-总体及各存储池使用量"><span class="nav-number">11.</span> <span class="nav-text">ceph 总体及各存储池使用量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除存储池"><span class="nav-number">12.</span> <span class="nav-text">删除存储池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rados-对象操作"><span class="nav-number">13.</span> <span class="nav-text">rados 对象操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#挂载-cephfs-到本地"><span class="nav-number">14.</span> <span class="nav-text">挂载 cephfs 到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启存储池-pg-num-自动调整"><span class="nav-number">15.</span> <span class="nav-text">开启存储池 pg_num 自动调整</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-OSD-节点"><span class="nav-number">16.</span> <span class="nav-text">删除 OSD 节点</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-rbd-image-时提示有-watcher"><span class="nav-number">1.</span> <span class="nav-text">删除 rbd image 时提示有 watcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrub-errors-修复"><span class="nav-number">2.</span> <span class="nav-text">scrub errors 修复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-Monitor"><span class="nav-number">3.</span> <span class="nav-text">删除 Monitor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-部署"><span class="nav-number">4.</span> <span class="nav-text">ceph-ansible 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-添加-osd"><span class="nav-number">5.</span> <span class="nav-text">ceph-ansible 添加 osd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rbd-image-使用"><span class="nav-number">6.</span> <span class="nav-text">rbd image 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cinder-创建-Volume-副本并-Boot-with-it"><span class="nav-number">7.</span> <span class="nav-text">Cinder 创建 Volume 副本并 Boot with it</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看并修改-crushmap"><span class="nav-number">8.</span> <span class="nav-text">查看并修改 crushmap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSD-过度使用内存"><span class="nav-number">9.</span> <span class="nav-text">OSD 过度使用内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-查看存储池-IO"><span class="nav-number">10.</span> <span class="nav-text">ceph 查看存储池 IO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-总体及各存储池使用量"><span class="nav-number">11.</span> <span class="nav-text">ceph 总体及各存储池使用量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除存储池"><span class="nav-number">12.</span> <span class="nav-text">删除存储池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rados-对象操作"><span class="nav-number">13.</span> <span class="nav-text">rados 对象操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#挂载-cephfs-到本地"><span class="nav-number">14.</span> <span class="nav-text">挂载 cephfs 到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启存储池-pg-num-自动调整"><span class="nav-number">15.</span> <span class="nav-text">开启存储池 pg_num 自动调整</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-OSD-节点"><span class="nav-number">16.</span> <span class="nav-text">删除 OSD 节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CentOS-安装-ceph-common"><span class="nav-number">17.</span> <span class="nav-text">CentOS 安装 ceph-common</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -575,7 +578,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">179k</span>
+    <span title="站点总字数">180k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

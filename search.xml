@@ -88,6 +88,9 @@
 <h4 id="删除-OSD-节点"><a href="#删除-OSD-节点" class="headerlink" title="删除 OSD 节点"></a>删除 OSD 节点</h4><p>参考先删后增节点时如何减少数据迁移：<a href="https://www.cnblogs.com/schangech/p/8036191.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/schangech/p/8036191.html</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 停止指定 OSD 进程</span><br><span class="line">systemctl stop ceph-osd@15</span><br><span class="line">// out 指定 OSD</span><br><span class="line">ceph osd out 15</span><br><span class="line">// crush remove 指定 OSD</span><br><span class="line">ceph osd crush remove osd.15</span><br><span class="line">// 删除 osd 对应的 auth</span><br><span class="line">ceph auth del osd.15</span><br><span class="line">// 删除 osd</span><br><span class="line">ceph osd rm 15</span><br><span class="line">// 按照上述步骤删除节点上所有 osd 后，crush remove 指定节点</span><br><span class="line">ceph osd crush rm osd-host</span><br></pre></td></tr></table></figure>
 
+<p><a name="jpOwk"></a></p>
+<h4 id="CentOS-安装-ceph-common"><a href="#CentOS-安装-ceph-common" class="headerlink" title="CentOS 安装 ceph-common"></a>CentOS 安装 ceph-common</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -Uvh https:&#x2F;&#x2F;download.ceph.com&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">yum install epel-release</span><br><span class="line">yum install ceph-common</span><br></pre></td></tr></table></figure>
+
 
 ]]></content>
       <categories>
