@@ -258,6 +258,61 @@
       </tags>
   </entry>
   <entry>
+    <title>Proxmox 使用拾遗</title>
+    <url>/post/399a617a.html</url>
+    <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="zfs-destroy-提示-dataset-is-busy"><a href="#zfs-destroy-提示-dataset-is-busy" class="headerlink" title="zfs destroy 提示 dataset is busy"></a>zfs destroy 提示 dataset is busy</h4><p>报错如下：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor22:~<span class="comment"># zfs destroy -r umstor22-zfs</span></span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-0'</span>: dataset is busy</span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-2'</span>: dataset is busy</span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-1'</span>: dataset is busy</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>首先使用 fuser 查看挂载了相关虚拟设备的进程：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor22:~<span class="comment"># fuser -am /dev/umstor22-zfs/vm-109-disk-0</span></span><br><span class="line">/dev/zd0:            2133532</span><br><span class="line">root@umstor22:~<span class="comment"># fuser -am /dev/umstor22-zfs/vm-109-disk-1</span></span><br><span class="line">/dev/zd16:           2133532</span><br><span class="line">root@umstor22:~<span class="comment"># fuser -am /dev/umstor22-zfs/vm-109-disk-2</span></span><br><span class="line">/dev/zd32:           2133532</span><br></pre></td></tr></table></figure>
+
+<p>然后查看进程号为 2133532 的进程信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor22:~<span class="comment"># ps aux | grep 2133532</span></span><br><span class="line">root     1832619  0.0  0.0   6072   892 pts/0    S+   11:41   0:00 grep 2133532</span><br><span class="line">root     2133532  3.2  0.1 9705992 105132 ?      Sl   Sep02  42:19 /usr/bin/kvm -id 109 -name yf01 -chardev socket,id=qmp,path=/var/run/qemu-server/109.qmp,server,nowait -mon chardev=qmp,mode=control -chardev socket,id=qmp-event,path=/var/run/qmeventd.sock,reconnect=5 -mon chardev=qmp-event,mode=control -pidfile /var/run/qemu-server/109.pid -daemonize -smbios <span class="built_in">type</span>=1,uuid=3969d5bf-1597-4834-ac82-bc89de18495a -smp 8,sockets=2,cores=4,maxcpus=8 -nodefaults -boot menu=on,strict=on,reboot-timeout=1000,splash=/usr/share/qemu-server/bootsplash.jpg -vnc unix:/var/run/qemu-server/109.vnc,password -cpu kvm64,+lahf_lm,+sep,+kvm_pv_unhalt,+kvm_pv_eoi,enforce -m 8192 -device pci-bridge,id=pci.1,chassis_nr=1,bus=pci.0,addr=0x1e -device pci-bridge,id=pci.2,chassis_nr=2,bus=pci.0,addr=0x1f -device vmgenid,guid=b917480a-d4f1-4d4d-869e-632b6a9d7769 -device piix3-usb-uhci,id=uhci,bus=pci.0,addr=0x1.0x2 -device usb-tablet,id=tablet,bus=uhci.0,port=1 -device VGA,id=vga,bus=pci.0,addr=0x2 -chardev socket,path=/var/run/qemu-server/109.qga,server,nowait,id=qga0 -device virtio-serial,id=qga0,bus=pci.0,addr=0x8 -device virtserialport,chardev=qga0,name=org.qemu.guest_agent.0 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x3 -iscsi initiator-name=iqn.1993-08.org.debian:01:c024a4d1a487 -drive file=rbd:cloud-disk/vm-109-cloudinit:conf=/etc/pve/ceph.conf:id=admin:keyring=/etc/pve/priv/ceph/ceph.keyring,<span class="keyword">if</span>=none,id=drive-ide0,media=cdrom,aio=threads -device ide-cd,bus=ide.0,unit=0,drive=drive-ide0,id=ide0,bootindex=200 -device virtio-scsi-pci,id=scsihw0,bus=pci.0,addr=0x5 -drive file=/dev/zvol/umstor22-zfs/vm-109-disk-0,<span class="keyword">if</span>=none,id=drive-scsi0,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=0,drive=drive-scsi0,id=scsi0,bootindex=100 -drive file=/dev/zvol/umstor22-zfs/vm-109-disk-1,<span class="keyword">if</span>=none,id=drive-scsi1,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=1,drive=drive-scsi1,id=scsi1 -drive file=/dev/zvol/umstor22-zfs/vm-109-disk-2,<span class="keyword">if</span>=none,id=drive-scsi2,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=2,drive=drive-scsi2,id=scsi2 -drive file=rbd:cloud-disk/vm-109-disk-0:conf=/etc/pve/ceph.conf:id=admin:keyring=/etc/pve/priv/ceph/ceph.keyring,<span class="keyword">if</span>=none,id=drive-scsi3,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=3,drive=drive-scsi3,id=scsi3 -drive file=rbd:cloud-disk/vm-109-disk-2:conf=/etc/pve/ceph.conf:id=admin:keyring=/etc/pve/priv/ceph/ceph.keyring,<span class="keyword">if</span>=none,id=drive-scsi4,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=4,drive=drive-scsi4,id=scsi4 -drive file=rbd:cloud-disk/vm-109-disk-5:conf=/etc/pve/ceph.conf:id=admin:keyring=/etc/pve/priv/ceph/ceph.keyring,<span class="keyword">if</span>=none,id=drive-scsi5,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=5,drive=drive-scsi5,id=scsi5 -netdev <span class="built_in">type</span>=tap,id=net0,ifname=tap109i0,script=/var/lib/qemu-server/pve-bridge,downscript=/var/lib/qemu-server/pve-bridgedown,vhost=on -device virtio-net-pci,mac=1A:D3:33:5C:92:DF,netdev=net0,bus=pci.0,addr=0x12,id=net0,bootindex=300 -machine <span class="built_in">type</span>=pc-i440fx-4.0 -incoming unix:/run/qemu-server/109.migrate -S</span><br></pre></td></tr></table></figure>
+
+<p>可知，该进程为一个 kvm 虚拟机的进程，杀掉进程后重新执行 destroy 即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 2133532</span><br><span class="line">zfs destroy -r umstor22-zfs</span><br><span class="line">zpool destroy umstor22-zfs</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>vm is locked</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qm unlock 101</span><br></pre></td></tr></table></figure>
+
+<p><a name="EybNz"></a></p>
+<h4 id="zfs-基本用法"><a href="#zfs-基本用法" class="headerlink" title="zfs 基本用法"></a>zfs 基本用法</h4><p>参考：<a href="https://www.thegeekdiary.com/zfs-tutorials-creating-zfs-pools-and-file-systems/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/zfs-tutorials-creating-zfs-pools-and-file-systems/</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 创建完 pool 就直接在 /poolname 下自动挂载了</span><br><span class="line">zpool create poolname /dev/sdc /dev/sdd</span><br><span class="line">zpool status</span><br><span class="line">zfs create poolname/fs1</span><br><span class="line">zfs list</span><br><span class="line">NAME           USED  AVAIL  REFER  MOUNTPOINT</span><br><span class="line">poolname       131K   976M    31K  /poolname</span><br><span class="line">poolname/fs1    31K   976M    31K  /poolname/fs1</span><br></pre></td></tr></table></figure>
+
+<p><a name="jAYK1"></a></p>
+<h4 id="添加-CE-版-Proxmox-Debian-源"><a href="#添加-CE-版-Proxmox-Debian-源" class="headerlink" title="添加 CE 版  Proxmox Debian 源"></a>添加 CE 版  Proxmox Debian 源</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deb http://download.proxmox.com/debian/pve buster pve-no-subscription</span><br></pre></td></tr></table></figure>
+
+<p><a name="f2a3R"></a></p>
+<h4 id="在-Proxmox-集群之间迁移虚拟机"><a href="#在-Proxmox-集群之间迁移虚拟机" class="headerlink" title="在 Proxmox 集群之间迁移虚拟机"></a>在 Proxmox 集群之间迁移虚拟机</h4><p>参考：<a href="https://cyberpersons.com/2016/09/13/backup-transfer-proxmox-vm-another-proxmox-node/" target="_blank" rel="external nofollow noopener noreferrer">https://cyberpersons.com/2016/09/13/backup-transfer-proxmox-vm-another-proxmox-node/</a></p>
+<ol>
+<li><p>创建虚拟机备份</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Change directory where backups are stored</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span><br><span class="line"></span><br><span class="line"><span class="comment"># create backup</span></span><br><span class="line"></span><br><span class="line">vzdump 100</span><br><span class="line"></span><br><span class="line"><span class="comment"># this will create backup for vm id 100</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝到新集群宿主机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># change directory</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span><br><span class="line"></span><br><span class="line">scp vzdump-qemu-122-2016_09_13-14_12_32.vma root@192.168.1.1:/var/lib/vz/dump/vzdump-qemu-122-2016_09_13-14_12_32.vma</span><br><span class="line"></span><br><span class="line"><span class="comment"># this is one single command</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>恢复虚拟机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span><br><span class="line"></span><br><span class="line">qmrestore vzdump-qemu-122-2016_09_13-14_12_32.vma 500</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><a name="OH5Kb"></a></p>
+<h4 id="从集群中删除节点"><a href="#从集群中删除节点" class="headerlink" title="从集群中删除节点"></a>从集群中删除节点</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pvecm nodes</span><br><span class="line">pvecm delnode node1</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>Proxmox</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Proxmox</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Ceph 常用操作</title>
     <url>/post/e8bac896.html</url>
     <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="删除-rbd-image-时提示有-watcher"><a href="#删除-rbd-image-时提示有-watcher" class="headerlink" title="删除 rbd image 时提示有 watcher"></a>删除 rbd image 时提示有 watcher</h4><p>查看该 image 信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd info vm-109-cloudinit --pool cloud-disk</span></span><br><span class="line">rbd image <span class="string">'vm-109-cloudinit'</span>:</span><br><span class="line">        size 4 MiB <span class="keyword">in</span> 1 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: 85a71142d8c136</span><br><span class="line">        block_name_prefix: rbd_data.85a71142d8c136</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">        op_features: </span><br><span class="line">        flags: </span><br><span class="line">        create_timestamp: Wed Aug 28 10:04:09 2019</span><br><span class="line">        access_timestamp: Mon Sep  2 13:59:31 2019</span><br><span class="line">        modify_timestamp: Mon Sep  2 13:59:31 2019</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -419,58 +474,6 @@
       </categories>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Proxmox 使用拾遗</title>
-    <url>/post/399a617a.html</url>
-    <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="zfs-destroy-提示-dataset-is-busy"><a href="#zfs-destroy-提示-dataset-is-busy" class="headerlink" title="zfs destroy 提示 dataset is busy"></a>zfs destroy 提示 dataset is busy</h4><p>报错如下：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor22:~<span class="comment"># zfs destroy -r umstor22-zfs</span></span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-0'</span>: dataset is busy</span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-2'</span>: dataset is busy</span><br><span class="line">cannot destroy <span class="string">'umstor22-zfs/vm-109-disk-1'</span>: dataset is busy</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-<p>首先使用 fuser 查看挂载了相关虚拟设备的进程：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor22:~<span class="comment"># fuser -am /dev/umstor22-zfs/vm-109-disk-0</span></span><br><span class="line">/dev/zd0:            2133532</span><br><span class="line">root@umstor22:~<span class="comment"># fuser -am /dev/umstor22-zfs/vm-109-disk-1</span></span><br><span class="line">/dev/zd16:           2133532</span><br><span class="line">root@umstor22:~<span class="comment"># fuser -am /dev/umstor22-zfs/vm-109-disk-2</span></span><br><span class="line">/dev/zd32:           2133532</span><br></pre></td></tr></table></figure>
-
-<p>然后查看进程号为 2133532 的进程信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor22:~<span class="comment"># ps aux | grep 2133532</span></span><br><span class="line">root     1832619  0.0  0.0   6072   892 pts/0    S+   11:41   0:00 grep 2133532</span><br><span class="line">root     2133532  3.2  0.1 9705992 105132 ?      Sl   Sep02  42:19 /usr/bin/kvm -id 109 -name yf01 -chardev socket,id=qmp,path=/var/run/qemu-server/109.qmp,server,nowait -mon chardev=qmp,mode=control -chardev socket,id=qmp-event,path=/var/run/qmeventd.sock,reconnect=5 -mon chardev=qmp-event,mode=control -pidfile /var/run/qemu-server/109.pid -daemonize -smbios <span class="built_in">type</span>=1,uuid=3969d5bf-1597-4834-ac82-bc89de18495a -smp 8,sockets=2,cores=4,maxcpus=8 -nodefaults -boot menu=on,strict=on,reboot-timeout=1000,splash=/usr/share/qemu-server/bootsplash.jpg -vnc unix:/var/run/qemu-server/109.vnc,password -cpu kvm64,+lahf_lm,+sep,+kvm_pv_unhalt,+kvm_pv_eoi,enforce -m 8192 -device pci-bridge,id=pci.1,chassis_nr=1,bus=pci.0,addr=0x1e -device pci-bridge,id=pci.2,chassis_nr=2,bus=pci.0,addr=0x1f -device vmgenid,guid=b917480a-d4f1-4d4d-869e-632b6a9d7769 -device piix3-usb-uhci,id=uhci,bus=pci.0,addr=0x1.0x2 -device usb-tablet,id=tablet,bus=uhci.0,port=1 -device VGA,id=vga,bus=pci.0,addr=0x2 -chardev socket,path=/var/run/qemu-server/109.qga,server,nowait,id=qga0 -device virtio-serial,id=qga0,bus=pci.0,addr=0x8 -device virtserialport,chardev=qga0,name=org.qemu.guest_agent.0 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x3 -iscsi initiator-name=iqn.1993-08.org.debian:01:c024a4d1a487 -drive file=rbd:cloud-disk/vm-109-cloudinit:conf=/etc/pve/ceph.conf:id=admin:keyring=/etc/pve/priv/ceph/ceph.keyring,<span class="keyword">if</span>=none,id=drive-ide0,media=cdrom,aio=threads -device ide-cd,bus=ide.0,unit=0,drive=drive-ide0,id=ide0,bootindex=200 -device virtio-scsi-pci,id=scsihw0,bus=pci.0,addr=0x5 -drive file=/dev/zvol/umstor22-zfs/vm-109-disk-0,<span class="keyword">if</span>=none,id=drive-scsi0,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=0,drive=drive-scsi0,id=scsi0,bootindex=100 -drive file=/dev/zvol/umstor22-zfs/vm-109-disk-1,<span class="keyword">if</span>=none,id=drive-scsi1,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=1,drive=drive-scsi1,id=scsi1 -drive file=/dev/zvol/umstor22-zfs/vm-109-disk-2,<span class="keyword">if</span>=none,id=drive-scsi2,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=2,drive=drive-scsi2,id=scsi2 -drive file=rbd:cloud-disk/vm-109-disk-0:conf=/etc/pve/ceph.conf:id=admin:keyring=/etc/pve/priv/ceph/ceph.keyring,<span class="keyword">if</span>=none,id=drive-scsi3,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=3,drive=drive-scsi3,id=scsi3 -drive file=rbd:cloud-disk/vm-109-disk-2:conf=/etc/pve/ceph.conf:id=admin:keyring=/etc/pve/priv/ceph/ceph.keyring,<span class="keyword">if</span>=none,id=drive-scsi4,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=4,drive=drive-scsi4,id=scsi4 -drive file=rbd:cloud-disk/vm-109-disk-5:conf=/etc/pve/ceph.conf:id=admin:keyring=/etc/pve/priv/ceph/ceph.keyring,<span class="keyword">if</span>=none,id=drive-scsi5,format=raw,cache=none,aio=native,detect-zeroes=on -device scsi-hd,bus=scsihw0.0,channel=0,scsi-id=0,lun=5,drive=drive-scsi5,id=scsi5 -netdev <span class="built_in">type</span>=tap,id=net0,ifname=tap109i0,script=/var/lib/qemu-server/pve-bridge,downscript=/var/lib/qemu-server/pve-bridgedown,vhost=on -device virtio-net-pci,mac=1A:D3:33:5C:92:DF,netdev=net0,bus=pci.0,addr=0x12,id=net0,bootindex=300 -machine <span class="built_in">type</span>=pc-i440fx-4.0 -incoming unix:/run/qemu-server/109.migrate -S</span><br></pre></td></tr></table></figure>
-
-<p>可知，该进程为一个 kvm 虚拟机的进程，杀掉进程后重新执行 destroy 即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 2133532</span><br><span class="line">zfs destroy -r umstor22-zfs</span><br><span class="line">zpool destroy umstor22-zfs</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>vm is locked</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qm unlock 101</span><br></pre></td></tr></table></figure>
-
-<p><a name="EybNz"></a></p>
-<h4 id="zfs-基本用法"><a href="#zfs-基本用法" class="headerlink" title="zfs 基本用法"></a>zfs 基本用法</h4><p>参考：<a href="https://www.thegeekdiary.com/zfs-tutorials-creating-zfs-pools-and-file-systems/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/zfs-tutorials-creating-zfs-pools-and-file-systems/</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 创建完 pool 就直接在 /poolname 下自动挂载了</span><br><span class="line">zpool create poolname /dev/sdc /dev/sdd</span><br><span class="line">zpool status</span><br><span class="line">zfs create poolname/fs1</span><br><span class="line">zfs list</span><br><span class="line">NAME           USED  AVAIL  REFER  MOUNTPOINT</span><br><span class="line">poolname       131K   976M    31K  /poolname</span><br><span class="line">poolname/fs1    31K   976M    31K  /poolname/fs1</span><br></pre></td></tr></table></figure>
-
-<p><a name="jAYK1"></a></p>
-<h4 id="添加-CE-版-Proxmox-Debian-源"><a href="#添加-CE-版-Proxmox-Debian-源" class="headerlink" title="添加 CE 版  Proxmox Debian 源"></a>添加 CE 版  Proxmox Debian 源</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deb http://download.proxmox.com/debian/pve buster pve-no-subscription</span><br></pre></td></tr></table></figure>
-
-<p><a name="f2a3R"></a></p>
-<h4 id="在-Proxmox-集群之间迁移虚拟机"><a href="#在-Proxmox-集群之间迁移虚拟机" class="headerlink" title="在 Proxmox 集群之间迁移虚拟机"></a>在 Proxmox 集群之间迁移虚拟机</h4><p>参考：<a href="https://cyberpersons.com/2016/09/13/backup-transfer-proxmox-vm-another-proxmox-node/" target="_blank" rel="external nofollow noopener noreferrer">https://cyberpersons.com/2016/09/13/backup-transfer-proxmox-vm-another-proxmox-node/</a></p>
-<ol>
-<li><p>创建虚拟机备份</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Change directory where backups are stored</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span><br><span class="line"></span><br><span class="line"><span class="comment"># create backup</span></span><br><span class="line"></span><br><span class="line">vzdump 100</span><br><span class="line"></span><br><span class="line"><span class="comment"># this will create backup for vm id 100</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>拷贝到新集群宿主机</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># change directory</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span><br><span class="line"></span><br><span class="line">scp vzdump-qemu-122-2016_09_13-14_12_32.vma root@192.168.1.1:/var/lib/vz/dump/vzdump-qemu-122-2016_09_13-14_12_32.vma</span><br><span class="line"></span><br><span class="line"><span class="comment"># this is one single command</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>恢复虚拟机</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/lib/vz/dump</span><br><span class="line"></span><br><span class="line">qmrestore vzdump-qemu-122-2016_09_13-14_12_32.vma 500</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Proxmox</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Proxmox</tag>
       </tags>
   </entry>
   <entry>
