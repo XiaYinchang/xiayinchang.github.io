@@ -419,6 +419,10 @@
 
 <p><a name="O4e8p"></a></p>
 <h4 id="Keycloak-使用-LDAP"><a href="#Keycloak-使用-LDAP" class="headerlink" title="Keycloak 使用 LDAP"></a>Keycloak 使用 LDAP</h4><p><a href="https://codehumsafar.wordpress.com/tag/ldap-with-keycloak/" target="_blank" rel="external nofollow noopener noreferrer">https://codehumsafar.wordpress.com/tag/ldap-with-keycloak/</a></p>
+<p><a name="LTbsg"></a></p>
+<h4 id="导出-Realm-和-User"><a href="#导出-Realm-和-User" class="headerlink" title="导出 Realm 和 User"></a>导出 Realm 和 User</h4><p>参考：<a href="https://stackoverflow.com/questions/46281416/best-practices-of-export-import-keycloak-data-in-kubernetes" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/46281416/best-practices-of-export-import-keycloak-data-in-kubernetes</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;standalone.sh -Dkeycloak.migration.realmName&#x3D;umstor -Dkeycloak.migration.action&#x3D;export -Dkeycloak.migration.usersExportStrategy&#x3D;REALM_FILE -Dkeycloak.migration.provider&#x3D;singleFile -Dkeycloak.migration.file&#x3D;&#x2F;opt&#x2F;jboss&#x2F;keycloak&#x2F;bin&#x2F;umstor-realm.json -Djboss.http.port&#x3D;8888 -Djboss.https.port&#x3D;9999 -Djboss.management.http.port&#x3D;7777</span><br></pre></td></tr></table></figure>
+
 <p><a name="qqoIl"></a></p>
 <h4 id="Admin-cli"><a href="#Admin-cli" class="headerlink" title="Admin cli"></a>Admin cli</h4><p>在 keycloak 容器镜像中 admin cli 位于<code>/opt/jboss/keycloak/bin/</code> 目录下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 配置授权信息</span><br><span class="line">.&#x2F;kcadm.sh config credentials --server http:&#x2F;&#x2F;localhost:8080&#x2F;keycloak --realm master --user root --password r00tme</span><br><span class="line">&#x2F;&#x2F; 根据之前导出的 json 创建 realm</span><br><span class="line">.&#x2F;kcadm.sh create realms -f realm-export.json</span><br></pre></td></tr></table></figure>
