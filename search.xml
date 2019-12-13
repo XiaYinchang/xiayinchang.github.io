@@ -565,6 +565,94 @@
       </tags>
   </entry>
   <entry>
+    <title>为 Proxmox 制作包含 cloud-init 的虚拟机模板</title>
+    <url>/post/6c44975c.html</url>
+    <content><![CDATA[<p><a name="WsMUi"></a></p><h4 id="安装-Centos"><a href="#安装-Centos" class="headerlink" title="安装 Centos"></a>安装 Centos</h4><p>在我搭建的 Proxmox 平台中使用了 Ceph 作为虚拟机的后端存储，为了提高虚拟机磁盘性能，在安装虚拟机的时候使用 LVM raid0 逻辑分区挂载根目录。</p><ul>
+<li>在 install destination 中选中三块盘并勾选自行分区选项</li>
+</ul><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&display=inline&height=690&name=image.png&originHeight=690&originWidth=1038&size=159786&status=done&style=none&width=1038" alt="image.png"></p><ul>
+<li>点击 automatically create lvm partition 自动创建分区，删除其它分区只保留 /boot 分区</li>
+</ul><a id="more"></a>
+
+
+
+
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png#align=left&display=inline&height=751&name=image.png&originHeight=751&originWidth=1043&size=125930&status=done&style=none&width=1043" alt="image.png"></p>
+<ul>
+<li>点击 + 按钮添加新的分区，挂载点为根路径，容量超过磁盘最大容量，安装程序会自动校正到真实的最大可用容量。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png#align=left&display=inline&height=769&name=image.png&originHeight=769&originWidth=1026&size=121666&status=done&style=none&width=1026" alt="image.png"></p>
+<ul>
+<li>点击 Modify 按钮修改新建分区的 RAID Level 为 RAID0。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png#align=left&display=inline&height=769&name=image.png&originHeight=769&originWidth=1041&size=165004&status=done&style=none&width=1041" alt="image.png"></p>
+<ul>
+<li>以下是创建完成的分区，保存后按照常规步骤继续安装操作系统。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png#align=left&display=inline&height=733&name=image.png&originHeight=733&originWidth=1020&size=132613&status=done&style=none&width=1020" alt="image.png"></p>
+<p><a name="0dMBI"></a></p>
+<h4 id="调整安装好的操作系统"><a href="#调整安装好的操作系统" class="headerlink" title="调整安装好的操作系统"></a>调整安装好的操作系统</h4><ul>
+<li>进入操作系统，首先关闭 selinux、firewalld 和 NetworkManager。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> --now firewalld NetworkManager</span><br><span class="line">setenforce 0</span><br><span class="line">sed -ri <span class="string">'/^[^#]*SELINUX=/s#=.+$#=disabled#'</span> /etc/selinux/config</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装acpid cloud-init cloud-utils-growpart</li>
+</ul>
+<p>apcid 是为了可以使 kvm 可以关闭和重启虚拟机，qemu-guest-agent 使得 Proxmox 可以获取虚拟机的 IP 等信息。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install -y acpid cloud-init cloud-utils-growpart qemu-guest-agent</span><br><span class="line">systemctl <span class="built_in">enable</span> acpid </span><br><span class="line">systemctl <span class="built_in">enable</span> qemu-guest-agent</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>禁用默认zeroconf路线</li>
+</ul>
+<p>当系统无法连接DHCP server的时候，就会尝试通过ZEROCONF来获取IP,并添加一条169.254.0.0/16的路由条目。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"NOZEROCONF=yes"</span> &gt;&gt; /etc/sysconfig/network</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改sshd不使用dns防止ssh连接慢</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -ri <span class="string">'/UseDNS/&#123;s@#@@;s@\s+.+@ no@&#125;'</span> /etc/ssh/sshd_config</span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 cloud-init 配置</li>
+</ul>
+<p>分别是允许 root 登录，允许使用 password 登录，禁止第一次开机自动更新系统。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -ri <span class="string">'/disable_root/&#123;s#\S$#0#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/ssh_pwauth/&#123;s#\S$#1#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/package-update/s@^@#@'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/update_etc_hosts/s@^@#@'</span> /etc/cloud/cloud.cfg</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如有需要可以自行添加一些额外的配置</li>
+</ul>
+<p>我在 /sbin/ifup-local 中添加了如下配置用于配置特殊的路由以适应办公室网络环境。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch /sbin/ifup-local</span><br><span class="line">chmod +x /sbin/ifup-local</span><br><span class="line">cat /sbin/ifup-local</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">ip r add 192.168.76.0/24 via 192.168.180.254</span><br><span class="line">ip r add 192.168.77.0/24 via 192.168.180.254</span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>关机，并在 Proxmox 中为之添加 CloudInit Drive。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align=left&display=inline&height=633&name=image.png&originHeight=633&originWidth=719&size=92450&status=done&style=none&width=719" alt="image.png"></p>
+<ul>
+<li>填写相关 init 参数并 regenerate image。</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565765613783-81f32306-e298-4d18-a553-128415466232.png#align=left&display=inline&height=388&name=image.png&originHeight=388&originWidth=533&size=35717&status=done&style=none&width=533" alt="image.png"></p>
+<ul>
+<li>启用 qemu-agent</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align=left&display=inline&height=645&name=image.png&originHeight=645&originWidth=720&size=68736&status=done&style=none&width=720" alt="image.png"></p>
+<ul>
+<li>将虚拟机转为模板，之后就可以以此为基础创建新的虚拟机。<br><a name="btgSa"></a><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><a href="https://zhangguanzhang.github.io/2019/01/22/proxmox-cloud-init/" target="_blank" rel="external nofollow noopener noreferrer">proxmox里使用cloud-init和一些笔记</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Proxmox</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag> 云计算</tag>
+        <tag>Proxmox</tag>
+        <tag>虚拟机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Keycloak 使用过程记录</title>
     <url>/post/e4c4afae.html</url>
     <content><![CDATA[<p><a name="Cmvxj"></a></p><h4 id="keycloak-js-sdk"><a href="#keycloak-js-sdk" class="headerlink" title="keycloak js sdk"></a>keycloak js sdk</h4><p>Angular 版本的 SDK ：<a href="https://www.npmjs.com/package/keycloak-angular" target="_blank" rel="external nofollow noopener noreferrer">https://www.npmjs.com/package/keycloak-angular</a>。为了实现 Token 刷新可以采用以下方式：</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">keycloak.onTokenExpired = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'token expired'</span>, keycloak.token);</span><br><span class="line">    keycloak.updateToken(<span class="number">30</span>).success(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'successfully get a new token'</span>, keycloak.token);</span><br><span class="line">        ...</span><br><span class="line">    &#125;).error(<span class="function"><span class="params">()</span> =&gt;</span> &#123;...&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -2082,94 +2170,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>为 Proxmox 制作包含 cloud-init 的虚拟机模板</title>
-    <url>/post/6c44975c.html</url>
-    <content><![CDATA[<p><a name="WsMUi"></a></p><h4 id="安装-Centos"><a href="#安装-Centos" class="headerlink" title="安装 Centos"></a>安装 Centos</h4><p>在我搭建的 Proxmox 平台中使用了 Ceph 作为虚拟机的后端存储，为了提高虚拟机磁盘性能，在安装虚拟机的时候使用 LVM raid0 逻辑分区挂载根目录。</p><ul>
-<li>在 install destination 中选中三块盘并勾选自行分区选项</li>
-</ul><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&display=inline&height=690&name=image.png&originHeight=690&originWidth=1038&size=159786&status=done&width=1038" alt="image.png"></p><ul>
-<li>点击 automatically create lvm partition 自动创建分区，删除其它分区只保留 /boot 分区</li>
-</ul><a id="more"></a>
-
-
-
-
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png#align=left&display=inline&height=751&name=image.png&originHeight=751&originWidth=1043&size=125930&status=done&width=1043" alt="image.png"></p>
-<ul>
-<li>点击 + 按钮添加新的分区，挂载点为根路径，容量超过磁盘最大容量，安装程序会自动校正到真实的最大可用容量。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png#align=left&display=inline&height=769&name=image.png&originHeight=769&originWidth=1026&size=121666&status=done&width=1026" alt="image.png"></p>
-<ul>
-<li>点击 Modify 按钮修改新建分区的 RAID Level 为 RAID0。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png#align=left&display=inline&height=769&name=image.png&originHeight=769&originWidth=1041&size=165004&status=done&width=1041" alt="image.png"></p>
-<ul>
-<li>以下是创建完成的分区，保存后按照常规步骤继续安装操作系统。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png#align=left&display=inline&height=733&name=image.png&originHeight=733&originWidth=1020&size=132613&status=done&width=1020" alt="image.png"></p>
-<p><a name="0dMBI"></a></p>
-<h4 id="调整安装好的操作系统"><a href="#调整安装好的操作系统" class="headerlink" title="调整安装好的操作系统"></a>调整安装好的操作系统</h4><ul>
-<li>进入操作系统，首先关闭 selinux、firewalld 和 NetworkManager。</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> --now firewalld NetworkManager</span><br><span class="line">setenforce 0</span><br><span class="line">sed -ri <span class="string">'/^[^#]*SELINUX=/s#=.+$#=disabled#'</span> /etc/selinux/config</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>安装acpid cloud-init cloud-utils-growpart</li>
-</ul>
-<p>apcid 是为了可以使 kvm 可以关闭和重启虚拟机，qemu-guest-agent 使得 Proxmox 可以获取虚拟机的 IP 等信息。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install -y acpid cloud-init cloud-utils-growpart qemu-guest-agent</span><br><span class="line">systemctl <span class="built_in">enable</span> acpid </span><br><span class="line">systemctl <span class="built_in">enable</span> qemu-guest-agent</span><br></pre></td></tr></table></figure>
-
-
-<ul>
-<li>禁用默认zeroconf路线</li>
-</ul>
-<p>当系统无法连接DHCP server的时候，就会尝试通过ZEROCONF来获取IP,并添加一条169.254.0.0/16的路由条目。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"NOZEROCONF=yes"</span> &gt;&gt; /etc/sysconfig/network</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改sshd不使用dns防止ssh连接慢</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -ri <span class="string">'/UseDNS/&#123;s@#@@;s@\s+.+@ no@&#125;'</span> /etc/ssh/sshd_config</span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改 cloud-init 配置</li>
-</ul>
-<p>分别是允许 root 登录，允许使用 password 登录，禁止第一次开机自动更新系统。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -ri <span class="string">'/disable_root/&#123;s#\S$#0#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/ssh_pwauth/&#123;s#\S$#1#&#125;'</span> /etc/cloud/cloud.cfg</span><br><span class="line">sed -ri <span class="string">'/package-update/s@^@#@'</span> /etc/cloud/cloud.cfg</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如有需要可以自行添加一些额外的配置</li>
-</ul>
-<p>我在 /sbin/ifup-local 中添加了如下配置用于配置特殊的路由以适应办公室网络环境。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch /sbin/ifup-local</span><br><span class="line">chmod +x /sbin/ifup-local</span><br><span class="line">cat /sbin/ifup-local</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">ip r add 192.168.76.0/24 via 192.168.180.254</span><br><span class="line">ip r add 192.168.77.0/24 via 192.168.180.254</span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
-
-
-<ul>
-<li>关机，并在 Proxmox 中为之添加 CloudInit Drive。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align=left&display=inline&height=633&name=image.png&originHeight=633&originWidth=719&size=92450&status=done&width=719" alt="image.png"></p>
-<ul>
-<li>填写相关 init 参数并 regenerate image。</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565765613783-81f32306-e298-4d18-a553-128415466232.png#align=left&display=inline&height=388&name=image.png&originHeight=388&originWidth=533&size=35717&status=done&width=533" alt="image.png"></p>
-<ul>
-<li>启用 qemu-agent</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align=left&display=inline&height=645&name=image.png&originHeight=645&originWidth=720&size=68736&status=done&width=720" alt="image.png"></p>
-<ul>
-<li>将虚拟机转为模板，之后就可以以此为基础创建新的虚拟机。<br><a name="btgSa"></a><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><a href="https://zhangguanzhang.github.io/2019/01/22/proxmox-cloud-init/" target="_blank" rel="external nofollow noopener noreferrer">proxmox里使用cloud-init和一些笔记</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Proxmox</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag> 云计算</tag>
-        <tag>Proxmox</tag>
-        <tag>虚拟机</tag>
       </tags>
   </entry>
   <entry>
