@@ -215,6 +215,9 @@
 
 </li>
 </ul>
+<p><a name="XIbTO"></a></p>
+<h4 id="优雅地删除节点"><a href="#优雅地删除节点" class="headerlink" title="优雅地删除节点"></a>优雅地删除节点</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl get nodes</span><br><span class="line">kubectl drain &lt;node-name&gt;</span><br><span class="line">kubectl drain &lt;node-name&gt; --ignore-daemonsets --delete-local-data</span><br><span class="line">kubectl delete node &lt;node-name&gt;</span><br></pre></td></tr></table></figure>
+
 <p><a name="iiFsk"></a></p>
 <h4 id="十二因素应用"><a href="#十二因素应用" class="headerlink" title="十二因素应用"></a>十二因素应用</h4><ul>
 <li>十二因素的提出早于 Kubernetes 的大规模使用，但是一些因素和基于 Kubernetes 的服务开发部署有着很好的吻合。可参考： <a href="https://skyao.io/learning-cloudnative/factor/" target="_blank" rel="external nofollow noopener noreferrer">https://skyao.io/learning-cloudnative/factor/</a> ，<a href="https://blog.csdn.net/zeb_perfect/article/details/52536411" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/zeb_perfect/article/details/52536411</a>， <a href="https://12factor.net/" target="_blank" rel="external nofollow noopener noreferrer">https://12factor.net/</a></li>
