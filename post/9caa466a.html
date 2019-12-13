@@ -268,14 +268,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.9k</span>
+              <span>11k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>10 分钟</span>
             </span>
             <div class="post-description">本文记录 Kubernetes 相关的操作命令和实践方法。</div>
 
@@ -391,9 +391,7 @@
 </thead>
 </table>
 <ul>
-<li>添加 master 节点<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 先安装好 docker， 参见：https:&#x2F;&#x2F;docs.docker.com&#x2F;install&#x2F;linux&#x2F;docker-ce&#x2F;centos&#x2F;</span><br><span class="line">systemctl enable --now docker</span><br><span class="line">&#x2F;&#x2F;</span><br></pre></td></tr></table></figure>
-
-
+<li>添加 master 节点<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 先安装好 docker， 参见：https:&#x2F;&#x2F;docs.docker.com&#x2F;install&#x2F;linux&#x2F;docker-ce&#x2F;centos&#x2F;</span><br><span class="line">systemctl enable --now docker</span><br><span class="line">&#x2F;&#x2F; 从集群内节点拷贝离线安装包并解压缩</span><br><span class="line">scp 192.168.180.8:.&#x2F;kube1.15.0.tar.gz .</span><br><span class="line">tar zxvf kube1.15.0.tar.gz</span><br><span class="line">&#x2F;&#x2F; 执行初始化操作</span><br><span class="line">chmod +x .&#x2F;kube&#x2F;shell&#x2F;init.sh</span><br><span class="line">cd kube&#x2F;shell</span><br><span class="line">.&#x2F;init.sh</span><br><span class="line">&#x2F;&#x2F; 在 hosts 文件中加入 apiserver 解析</span><br><span class="line">echo &#39;192.168.180.7 apiserver.cluster.local&#39; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">&#x2F;&#x2F; 获取 cert-key </span><br><span class="line">kubeadm init phase upload-certs --upload-certs</span><br><span class="line">&#x2F;&#x2F; 获取加入集群的命令</span><br><span class="line">kubeadm token create --print-join-command</span><br><span class="line">&#x2F;&#x2F; 拼出 master 节点加入集群的命令并执行</span><br><span class="line">kubeadm join apiserver.cluster.local:6443 --control-plane --certificate-key $CERT_KEY --token f0d79y.lekvh1338tye45d0 --discovery-token-ca-cert-hash sha256:33d4cbc2207ad24c551cbdd0d5b9c70cf42232795d87d7c30054ddb8773c99f6</span><br><span class="line">&#x2F;&#x2F; 加入成功后替换解析地址为本机 IP</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -676,13 +674,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">182k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:45</span>
+    <span title="站点阅读时长">2:46</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
   </div>

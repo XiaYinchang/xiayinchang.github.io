@@ -210,9 +210,7 @@
 </thead>
 </table>
 <ul>
-<li>添加 master 节点<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 先安装好 docker， 参见：https:&#x2F;&#x2F;docs.docker.com&#x2F;install&#x2F;linux&#x2F;docker-ce&#x2F;centos&#x2F;</span><br><span class="line">systemctl enable --now docker</span><br><span class="line">&#x2F;&#x2F;</span><br></pre></td></tr></table></figure>
-
-
+<li>添加 master 节点<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 先安装好 docker， 参见：https:&#x2F;&#x2F;docs.docker.com&#x2F;install&#x2F;linux&#x2F;docker-ce&#x2F;centos&#x2F;</span><br><span class="line">systemctl enable --now docker</span><br><span class="line">&#x2F;&#x2F; 从集群内节点拷贝离线安装包并解压缩</span><br><span class="line">scp 192.168.180.8:.&#x2F;kube1.15.0.tar.gz .</span><br><span class="line">tar zxvf kube1.15.0.tar.gz</span><br><span class="line">&#x2F;&#x2F; 执行初始化操作</span><br><span class="line">chmod +x .&#x2F;kube&#x2F;shell&#x2F;init.sh</span><br><span class="line">cd kube&#x2F;shell</span><br><span class="line">.&#x2F;init.sh</span><br><span class="line">&#x2F;&#x2F; 在 hosts 文件中加入 apiserver 解析</span><br><span class="line">echo &#39;192.168.180.7 apiserver.cluster.local&#39; &gt;&gt; &#x2F;etc&#x2F;hosts</span><br><span class="line">&#x2F;&#x2F; 获取 cert-key </span><br><span class="line">kubeadm init phase upload-certs --upload-certs</span><br><span class="line">&#x2F;&#x2F; 获取加入集群的命令</span><br><span class="line">kubeadm token create --print-join-command</span><br><span class="line">&#x2F;&#x2F; 拼出 master 节点加入集群的命令并执行</span><br><span class="line">kubeadm join apiserver.cluster.local:6443 --control-plane --certificate-key $CERT_KEY --token f0d79y.lekvh1338tye45d0 --discovery-token-ca-cert-hash sha256:33d4cbc2207ad24c551cbdd0d5b9c70cf42232795d87d7c30054ddb8773c99f6</span><br><span class="line">&#x2F;&#x2F; 加入成功后替换解析地址为本机 IP</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
