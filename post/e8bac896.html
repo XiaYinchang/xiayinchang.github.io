@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="本文记录使用 Ceph 过程中常用的命令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ceph 常用操作">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;e8bac896.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="本文记录使用 Ceph 过程中常用的命令。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-09-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-12-12T16:00:00.000Z">
+<meta property="article:author" content="夏印昌">
+<meta property="article:tag" content="Ceph">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.xiayinchang.top/post/e8bac896.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Ceph 常用操作 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="external nofollow noopener noreferrer" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/e8bac896.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Ceph 常用操作
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-03T00:00:00+08:00">2019-09-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-13 00:00:00" itemprop="dateModified" datetime="2019-12-13T00:00:00+08:00">2019-12-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ceph/" itemprop="url" rel="index">
+                    <span itemprop="name">Ceph</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+            <div class="post-description">本文记录使用 Ceph 过程中常用的命令。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a name="BdT88"></a></p><h4 id="删除-rbd-image-时提示有-watcher"><a href="#删除-rbd-image-时提示有-watcher" class="headerlink" title="删除 rbd image 时提示有 watcher"></a>删除 rbd image 时提示有 watcher</h4><p>查看该 image 信息</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd info vm-109-cloudinit --pool cloud-disk</span></span><br><span class="line">rbd image <span class="string">'vm-109-cloudinit'</span>:</span><br><span class="line">        size 4 MiB <span class="keyword">in</span> 1 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: 85a71142d8c136</span><br><span class="line">        block_name_prefix: rbd_data.85a71142d8c136</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">        op_features: </span><br><span class="line">        flags: </span><br><span class="line">        create_timestamp: Wed Aug 28 10:04:09 2019</span><br><span class="line">        access_timestamp: Mon Sep  2 13:59:31 2019</span><br><span class="line">        modify_timestamp: Mon Sep  2 13:59:31 2019</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>从 info 中 block_name_prefix: rbd_data.85a71142d8c136 获知 rados 对象名称为 rbd_header.85a71142d8c136 ，然后列出对象所有 watcher：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rados listwatchers --pool cloud-disk rbd_header.85a71142d8c136</span></span><br><span class="line">watcher=192.168.180.116:0/2072981162 client.27537920 cookie=139876735669120</span><br></pre></td></tr></table></figure>
+
+<p>或者直接通过 rbd 命令列出 watcher：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd status --pool cloud-disk vm-109-cloudinit</span></span><br><span class="line">Watchers:</span><br><span class="line">        watcher=192.168.180.116:0/2072981162 client.27537920 cookie=139876735669120</span><br></pre></td></tr></table></figure>
+
+<p>将 watcher 加入黑名单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph osd blacklist add 192.168.180.116:0/2072981162</span><br></pre></td></tr></table></figure>
+
+<p>此时再次查看 image 的 watcher ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd status --pool cloud-disk vm-109-cloudinit</span></span><br><span class="line">Watchers: none</span><br></pre></td></tr></table></figure>
+
+<p>没有了 watcher 我们就可以继续删除该 image ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rbd rm --pool cloud-disk vm-109-cloudinit</span><br></pre></td></tr></table></figure>
+
+<p>然后将 watcher 从黑名单剔除或者不手动操作，默认1个小时后自动恢复：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist ls</span></span><br><span class="line">listed 1 entries</span><br><span class="line">192.168.180.116:0/2072981162 2019-09-03 11:19:24.466205</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist rm 192.168.180.116:0/2072981162</span></span><br><span class="line">un-blacklisting 192.168.180.116:0/2072981162</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist clear</span></span><br><span class="line"> removed all blacklist entries</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist ls</span></span><br><span class="line">listed 0 entries</span><br></pre></td></tr></table></figure>
+
+<p><a name="uB6Bh"></a></p>
+<h4 id="scrub-errors-修复"><a href="#scrub-errors-修复" class="headerlink" title="scrub errors 修复"></a>scrub errors 修复</h4><p>错误如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">root@umstor21:~<span class="comment"># ceph -s</span></span><br><span class="line">  cluster:</span><br><span class="line">    id:     d6aadfd6-9e08-4000-98bd-a5a14f59ef97</span><br><span class="line">    health: HEALTH_ERR</span><br><span class="line">            30 scrub errors</span><br><span class="line">            Reduced data availability: 25 pgs inactive</span><br><span class="line">            Possible data damage: 1 pg inconsistent</span><br><span class="line">            Degraded data redundancy: 60273/2821944 objects degraded (2.136%), 68 pgs degraded, 57 pgs undersized</span><br><span class="line"> </span><br><span class="line">  services:</span><br><span class="line">    mon: 3 daemons, quorum openstack-compute-04,openstack-compute-02,openstack-compute-03 (age 63m)</span><br><span class="line">    mgr: openstack-compute-02(active, since 8d), standbys: openstack-compute-04, openstack-compute-03</span><br><span class="line">    mds: cephfs:1 &#123;0=openstack-compute-04=up:active&#125; 2 up:standby</span><br><span class="line">    osd: 19 osds: 18 up (since 8m), 18 <span class="keyword">in</span> (since 53m); 57 remapped pgs</span><br><span class="line"> </span><br><span class="line">  data:</span><br><span class="line">    pools:   12 pools, 1076 pgs</span><br><span class="line">    objects: 1.41M objects, 5.3 TiB</span><br><span class="line">    usage:   4.9 TiB used, 11 TiB / 16 TiB avail</span><br><span class="line">    pgs:     2.323% pgs not active</span><br><span class="line">             60273/2821944 objects degraded (2.136%)</span><br><span class="line">             1006 active+clean</span><br><span class="line">             32   active+undersized+degraded+remapped+backfill_wait</span><br><span class="line">             18   undersized+degraded+remapped+backfill_wait+peered</span><br><span class="line">             11   active+recovery_wait+degraded</span><br><span class="line">             7    undersized+degraded+remapped+backfilling+peered</span><br><span class="line">             1    active+recovery_wait</span><br><span class="line">             1    active+clean+inconsistent</span><br><span class="line"> </span><br><span class="line">  io:</span><br><span class="line">    recovery: 40 MiB/s, 21 objects/s</span><br></pre></td></tr></table></figure>
+
+<p>查看详细信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@umstor21:~<span class="comment"># ceph health detail</span></span><br><span class="line">HEALTH_ERR 30 scrub errors; Reduced data availability: 25 pgs inactive; Possible data damage: 1 pg inconsistent; Degraded data redundancy: 59572/2821944 objects degraded (2.111%), 68 pgs degraded, 57 pgs undersized</span><br><span class="line">OSD_SCRUB_ERRORS 30 scrub errors</span><br><span class="line">PG_AVAILABILITY Reduced data availability: 25 pgs inactive</span><br><span class="line">    pg 1.1 is stuck inactive <span class="keyword">for</span> 3867.682789, current state undersized+degraded+remapped+backfill_wait+peered, last acting [26]</span><br><span class="line">    pg 1.1b is stuck inactive <span class="keyword">for</span> 3867.800588, current state undersized+degraded+remapped+backfill_wait+peered, last acting [24]</span><br><span class="line">    pg 1.26 is stuck inactive <span class="keyword">for</span> 3867.806862, current state undersized+degraded+remapped+backfill_wait+peered, last acting [6]</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>修复 pg</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph pg repair &lt;pg_id&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a name="RAYxC"></a></p>
+<h4 id="删除-Monitor"><a href="#删除-Monitor" class="headerlink" title="删除 Monitor"></a>删除 Monitor</h4><p>更复杂情况参考：<a href="https://www.jianshu.com/p/b78cf33e558f" target="_blank" rel="external nofollow noopener noreferrer">https://www.jianshu.com/p/b78cf33e558f</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop ceph-mon@openstack-compute-02.service</span><br><span class="line">&#x2F;&#x2F; 如果停止一个 ceph-mon 后无法执行 ceph 命令，则应当先删除 mon 再停止 ceph-mon 服务</span><br><span class="line">ceph mon remove openstack-compute-02</span><br><span class="line">&#x2F;&#x2F; 移除 ceph.conf 中的相关信息</span><br></pre></td></tr></table></figure>
+
+<p><a name="PVcDQ"></a></p>
+<h4 id="添加-Monitor"><a href="#添加-Monitor" class="headerlink" title="添加 Monitor"></a>添加 Monitor</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 预先安装 ceph-common ，再安装 ceph-mon</span><br><span class="line">yum -y install ceph-common</span><br><span class="line">&#x2F;&#x2F; 在目标节点上创建 mon 目录，一般使用 hostname 作为 mon-id </span><br><span class="line">mkdir -p &#x2F;var&#x2F;lib&#x2F;ceph&#x2F;mon&#x2F;ceph-&#96;hostname&#96;</span><br><span class="line">&#x2F;&#x2F; 从已有 ceph 节点复制 ceph 配置</span><br><span class="line">scp 192.168.180.7:&#x2F;etc&#x2F;ceph&#x2F;* &#x2F;etc&#x2F;ceph&#x2F;</span><br><span class="line">&#x2F;&#x2F; 获取 mon keyring</span><br><span class="line">ceph auth get mon. -o &#x2F;tmp&#x2F;mon.keyring</span><br><span class="line">&#x2F;&#x2F; 获取 mon map</span><br><span class="line">ceph mon getmap -o &#x2F;tmp&#x2F;mon.map</span><br><span class="line">&#x2F;&#x2F; 格式化 mon 数据目录</span><br><span class="line">ceph-mon -i &#96;hostname&#96; --mkfs --monmap &#x2F;tmp&#x2F;mon.map --keyring &#x2F;tmp&#x2F;mon.keyring</span><br><span class="line">&#x2F;&#x2F; 更改目录所属用户为 ceph</span><br><span class="line">chown -R ceph:ceph &#x2F;etc&#x2F;ceph &#x2F;var&#x2F;lib&#x2F;ceph</span><br><span class="line">&#x2F;&#x2F; 启动 ceph-mon 服务</span><br><span class="line">systemctl enable --now ceph-mon@&#96;hostname&#96;</span><br></pre></td></tr></table></figure>
+
+<p><a name="0zXsv"></a></p>
+<h4 id="ceph-ansible-部署"><a href="#ceph-ansible-部署" class="headerlink" title="ceph-ansible 部署"></a>ceph-ansible 部署</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph-ansible.git</span><br><span class="line">git checkout v4.0.0</span><br><span class="line">// 在部署节点安装</span><br><span class="line">yum install -y ansible python-notario</span><br><span class="line">rpm -i http://download-ib01.fedoraproject.org/pub/epel/testing/7/x86_64/Packages/p/python2-notario-0.0.14-1.el7.noarch.rpm</span><br><span class="line">// 在所有节点安装</span><br><span class="line">yum install -y python-netaddr</span><br></pre></td></tr></table></figure>
+<p>cd  到 ceph-ansible ， 创建 hosts 文件如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[CephGroup:children]</span><br><span class="line">mons</span><br><span class="line">osds</span><br><span class="line">mdss</span><br><span class="line">mgrs</span><br><span class="line">rgws</span><br><span class="line">[CephGroup:vars]</span><br><span class="line"><span class="comment"># 最好事先配好免密</span></span><br><span class="line">ansible_ssh_user=root</span><br><span class="line">ansible_ssh_pass=<span class="built_in">test</span></span><br><span class="line">ansible_port=22</span><br><span class="line"></span><br><span class="line">[mons]</span><br><span class="line">ceph-csi-01</span><br><span class="line">ceph-csi-02</span><br><span class="line">ceph-csi-03</span><br><span class="line">[osds]</span><br><span class="line">ceph-csi-01</span><br><span class="line">ceph-csi-02</span><br><span class="line">ceph-csi-03</span><br><span class="line">[mdss]</span><br><span class="line">ceph-csi-01</span><br><span class="line">ceph-csi-02</span><br><span class="line">ceph-csi-03</span><br><span class="line">[mgrs]</span><br><span class="line">ceph-csi-01</span><br><span class="line">ceph-csi-02</span><br><span class="line">ceph-csi-03</span><br><span class="line">[rgws]</span><br><span class="line">ceph-csi-01</span><br><span class="line">ceph-csi-02</span><br><span class="line">ceph-csi-03</span><br></pre></td></tr></table></figure>
+<p>cd 到 group_vars 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">cp all.yml.sample all.yml</span><br><span class="line">// 取消注释并修改以下字段</span><br><span class="line">ceph_origin: repository</span><br><span class="line">ceph_repository: community</span><br><span class="line">ceph_stable_release: nautilus</span><br><span class="line">monitor_interface: eth0</span><br><span class="line">public_network: 10.23.0.0/16</span><br><span class="line">radosgw_interface: eth0</span><br><span class="line"></span><br><span class="line">cp osd.yml.sample osd.yml</span><br><span class="line">// 添加安装盘信息</span><br><span class="line">devices:</span><br><span class="line">  - /dev/vdb</span><br><span class="line">  - /dev/vdc</span><br><span class="line">  - /dev/vdd</span><br></pre></td></tr></table></figure>
+<p>回到项目根目录执行安装:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible-playbook -i hosts -v site.yml</span><br></pre></td></tr></table></figure>
+
+<p><a name="BMg3M"></a></p>
+<h4 id="ceph-ansible-添加-osd"><a href="#ceph-ansible-添加-osd" class="headerlink" title="ceph-ansible 添加 osd"></a>ceph-ansible 添加 osd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;ceph-ansible</span><br><span class="line">cp infrastructure-playbooks&#x2F;add-osd.yml .&#x2F;</span><br><span class="line">&#x2F;&#x2F; 修改 group_vars&#x2F;all.yml 磁盘信息</span><br><span class="line">ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml</span><br><span class="line">&#x2F;&#x2F; 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样</span><br><span class="line">&#x2F;&#x2F; 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决</span><br><span class="line">ceph osd unset noup</span><br></pre></td></tr></table></figure>
+
+<p><a name="knNuf"></a></p>
+<h4 id="rbd-image-使用"><a href="#rbd-image-使用" class="headerlink" title="rbd image 使用"></a>rbd image 使用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 创建大小为 1G 的 image</span><br><span class="line">rbd create rbd&#x2F;myimage --size 1024</span><br><span class="line">rbd map rbd&#x2F;myimage</span><br><span class="line">mkfs.xfs &#x2F;dev&#x2F;rbd0</span><br><span class="line">mkdir &#x2F;data</span><br><span class="line">mount &#x2F;dev&#x2F;rbd0 &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 扩容</span><br><span class="line">rbd resize --image&#x3D;rbd&#x2F;myimage --size 10G</span><br><span class="line">xfs_growfs &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 卸载</span><br><span class="line">umount &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 检查占用设备的进程</span><br><span class="line">fuser -m -v &#x2F;dev&#x2F;rbd0</span><br><span class="line">rbd unmap &#x2F;dev&#x2F;rbd0</span><br><span class="line">rbd rm rbd&#x2F;myimage</span><br><span class="line">&#x2F;&#x2F; rbd image 转换 format，也可用于 image 复制</span><br><span class="line">rbd export rbd&#x2F;myrbd - | rbd import --image-format 2 - rbd&#x2F;myrbd_v2</span><br><span class="line">&#x2F;&#x2F; rbd bench</span><br><span class="line">rados bench -p rbd 20 -b 4K write -t 1 --no-cleanup</span><br><span class="line">rbd create --size 4G test</span><br><span class="line">rbd bench-write test</span><br></pre></td></tr></table></figure>
+
+<p><a name="Z5LCG"></a></p>
+<h4 id="Cinder-创建-Volume-副本并-Boot-with-it"><a href="#Cinder-创建-Volume-副本并-Boot-with-it" class="headerlink" title="Cinder 创建 Volume 副本并 Boot with it"></a>Cinder 创建 Volume 副本并 Boot with it</h4><p>OpenStack: import existing Ceph volumes in Cinder：<a href="https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/" target="_blank" rel="external nofollow noopener noreferrer">https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/</a></p>
+<p><a name="xGnOB"></a></p>
+<h4 id="查看并修改-crushmap"><a href="#查看并修改-crushmap" class="headerlink" title="查看并修改 crushmap"></a>查看并修改 crushmap</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">1. 获取集群 crushmap</span><br><span class="line">ceph osd getcrushmap -o &#123;file1&#125;</span><br><span class="line">&#123;file1&#125; 为自定义的文件名，该文件为二进制文件，不可编辑。要想编辑此文件，需要用工具将其反编译解析，如 crushtool 工具。</span><br><span class="line"></span><br><span class="line">2 反编译 crushmap</span><br><span class="line">crushtool -d &#123;file1&#125; -o &#123;file2&#125;</span><br><span class="line">反编译二进制文件 &#123;file1&#125; 得到可编辑文件 &#123;file2&#125;</span><br><span class="line"></span><br><span class="line">3. 编辑 crushmap</span><br><span class="line">按自我需求修改可编辑文件 &#123;file2&#125;</span><br><span class="line"></span><br><span class="line">4. 编译 crushmap</span><br><span class="line">要想编辑后的文件机器能够识别，必须用工具编译它生成二进制文件。</span><br><span class="line">crushtool -c &#123;file2&#125; -o &#123;file3&#125;</span><br><span class="line"></span><br><span class="line">5. 注入 crushmap</span><br><span class="line">要想新的 crushmap 在集群中生效，必须将其注入要集群。</span><br><span class="line">ceph osd setcrushmap -i &#123;file3&#125;</span><br></pre></td></tr></table></figure>
+<p>基本理解：<a href="https://www.dovefi.com/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3crush1%E7%90%86%E8%A7%A3crush_map%E6%96%87%E4%BB%B6/" target="_blank" rel="external nofollow noopener noreferrer">深入理解 ceph crush (1)—- 理解 crush map 文件</a>／Crush算法：<a href="http://www.xuxiaopang.com/2016/11/08/easy-ceph-CRUSH/" target="_blank" rel="external nofollow noopener noreferrer">大话 Ceph–CRUSH 那点事儿</a>／Crush 查看：<a href="https://www.jianshu.com/p/2355701459e9" target="_blank" rel="external nofollow noopener noreferrer">Ceph 实践之 Crushmap 相关</a>。</p>
+<p><a name="7Rb6C"></a></p>
+<h4 id="OSD-过度使用内存"><a href="#OSD-过度使用内存" class="headerlink" title="OSD 过度使用内存"></a>OSD 过度使用内存</h4><p>在使用 Bluestore 时，bluestore_cache_autotune 默认已经启用，Bluestore 会将 OSD 堆内存使用量保持在指定的大小之下，通过配置选项 osd_memory_target 来控制，默认为 4G。对于内存较少但 OSD 节点较多的情况，仍然会可能造成内存几乎全部被 OSD 所用，最终致使宿主机死机。可以通过两种方式来缓解这种情况，一种是在启用自动配置时调小 osd_memory_target 值，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[osd]</span><br><span class="line">osd memory target &#x3D; 2147483648</span><br></pre></td></tr></table></figure>
+<p>另一种是禁用自动配置并手动指定缓存大小：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[osd]</span><br><span class="line">bluestore_cache_autotune &#x3D; False</span><br><span class="line">bluestore_min_alloc_size_ssd &#x3D; 32768</span><br><span class="line">bluestore_min_alloc_size_hdd &#x3D; 32768</span><br><span class="line">bluestore_min_alloc_size &#x3D; 32768</span><br><span class="line">bluestore_cache_kv_max &#x3D; 6442450944</span><br><span class="line">bluestore_cache_kv_ratio &#x3D; 0.990000</span><br><span class="line">bluestore_cache_meta_ratio &#x3D; 0.010000</span><br><span class="line">bluestore_cache_size &#x3D; 12884901888</span><br><span class="line">bluestore_cache_size_hdd &#x3D; 12884901888</span><br><span class="line">bluestore_cache_size_ssd &#x3D; 12884901888</span><br></pre></td></tr></table></figure>
+
+<p><a name="SnsuP"></a></p>
+<h4 id="ceph-查看存储池-IO"><a href="#ceph-查看存储池-IO" class="headerlink" title="ceph 查看存储池 IO"></a>ceph 查看存储池 IO</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph osd pool stats</span><br></pre></td></tr></table></figure>
+
+<p><a name="x0FF4"></a></p>
+<h4 id="ceph-总体及各存储池使用量"><a href="#ceph-总体及各存储池使用量" class="headerlink" title="ceph 总体及各存储池使用量"></a>ceph 总体及各存储池使用量</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph df detail</span><br></pre></td></tr></table></figure>
+
+<p><a name="XThMD"></a></p>
+<h4 id="删除存储池"><a href="#删除存储池" class="headerlink" title="删除存储池"></a>删除存储池</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ceph tell mon.\* injectargs <span class="string">'--mon-allow-pool-delete=true'</span></span><br><span class="line"><span class="comment">## The following will delete the pool</span></span><br><span class="line">$ ceph osd pool delete &lt;pool-name&gt; &lt;pool-name&gt; --yes-i-really-really-mean-it</span><br><span class="line">$ ceph tell mon.\* injectargs <span class="string">'--mon-allow-pool-delete=false'</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="gZ7UD"></a></p>
+<h4 id="rados-对象操作"><a href="#rados-对象操作" class="headerlink" title="rados 对象操作"></a>rados 对象操作</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 上传文件</span><br><span class="line">rados -p &lt;pool-name&gt; put &lt;object-name&gt; &lt;file&gt;</span><br><span class="line">// 下载文件</span><br><span class="line">rados -p &lt;pool-name&gt; get &lt;object-name&gt; &lt;file&gt;</span><br><span class="line">// 列出文件</span><br><span class="line">rados -p &lt;pool-name&gt; ls</span><br><span class="line">// 删除文件</span><br><span class="line">rados -p &lt;pool-name&gt; rm &lt;object-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a name="K2eGm"></a></p>
+<h4 id="挂载-cephfs-到本地"><a href="#挂载-cephfs-到本地" class="headerlink" title="挂载 cephfs 到本地"></a>挂载 cephfs 到本地</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/mycephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==</span><br></pre></td></tr></table></figure>
+<p>写入到 fstab 中，开机自动挂载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:&#x2F; &#x2F;cephfs ceph name&#x3D;admin,secret&#x3D;AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw&#x3D;&#x3D;,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
+
+<p><a name="0mfaM"></a></p>
+<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">&#x2F;&#x2F; 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 查看自动增加的 pg 数量</span><br><span class="line">ceph osd pool autoscale-status</span><br></pre></td></tr></table></figure>
+
+<p><a name="BlwFR"></a></p>
+<h4 id="删除-OSD-节点"><a href="#删除-OSD-节点" class="headerlink" title="删除 OSD 节点"></a>删除 OSD 节点</h4><p>参考先删后增节点时如何减少数据迁移：<a href="https://www.cnblogs.com/schangech/p/8036191.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/schangech/p/8036191.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 停止指定 OSD 进程</span><br><span class="line">systemctl stop ceph-osd@15</span><br><span class="line">// out 指定 OSD</span><br><span class="line">ceph osd out 15</span><br><span class="line">// crush remove 指定 OSD</span><br><span class="line">ceph osd crush remove osd.15</span><br><span class="line">// 删除 osd 对应的 auth</span><br><span class="line">ceph auth del osd.15</span><br><span class="line">// 删除 osd</span><br><span class="line">ceph osd rm 15</span><br><span class="line">// 按照上述步骤删除节点上所有 osd 后，crush remove 指定节点</span><br><span class="line">ceph osd crush rm osd-host</span><br></pre></td></tr></table></figure>
+
+<p><a name="jpOwk"></a></p>
+<h4 id="CentOS-安装-ceph-common"><a href="#CentOS-安装-ceph-common" class="headerlink" title="CentOS 安装 ceph-common"></a>CentOS 安装 ceph-common</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh https:&#x2F;&#x2F;download.ceph.com&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">&#x2F;&#x2F; 或使用镜像源</span><br><span class="line">rpm -Uvh https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ceph&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">sed -i &#39;s+download.ceph.com+mirrors.tuna.tsinghua.edu.cn&#x2F;ceph+&#39; &#x2F;etc&#x2F;yum.repos.d&#x2F;ceph.repo</span><br><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install ceph-common</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/d830a7d8.html" rel="bookmark">IO 同步、异步及阻塞、非阻塞</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/9caa466a.html" rel="bookmark">Kubernetes 实践</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/b489449e.html" rel="bookmark">Linux 实用命令集合</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/Ceph/" rel="tag"># Ceph</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/399a617a.html" rel="next" title="Proxmox 使用拾遗">
+                  <i class="fa fa-chevron-left"></i> Proxmox 使用拾遗
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/post/bda105fe.html" rel="prev" title="ArchLinux 常用命令">
+                  ArchLinux 常用命令 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-rbd-image-时提示有-watcher"><span class="nav-number">1.</span> <span class="nav-text">删除 rbd image 时提示有 watcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scrub-errors-修复"><span class="nav-number">2.</span> <span class="nav-text">scrub errors 修复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-Monitor"><span class="nav-number">3.</span> <span class="nav-text">删除 Monitor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加-Monitor"><span class="nav-number">4.</span> <span class="nav-text">添加 Monitor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-部署"><span class="nav-number">5.</span> <span class="nav-text">ceph-ansible 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-ansible-添加-osd"><span class="nav-number">6.</span> <span class="nav-text">ceph-ansible 添加 osd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rbd-image-使用"><span class="nav-number">7.</span> <span class="nav-text">rbd image 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cinder-创建-Volume-副本并-Boot-with-it"><span class="nav-number">8.</span> <span class="nav-text">Cinder 创建 Volume 副本并 Boot with it</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看并修改-crushmap"><span class="nav-number">9.</span> <span class="nav-text">查看并修改 crushmap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSD-过度使用内存"><span class="nav-number">10.</span> <span class="nav-text">OSD 过度使用内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-查看存储池-IO"><span class="nav-number">11.</span> <span class="nav-text">ceph 查看存储池 IO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceph-总体及各存储池使用量"><span class="nav-number">12.</span> <span class="nav-text">ceph 总体及各存储池使用量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除存储池"><span class="nav-number">13.</span> <span class="nav-text">删除存储池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rados-对象操作"><span class="nav-number">14.</span> <span class="nav-text">rados 对象操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#挂载-cephfs-到本地"><span class="nav-number">15.</span> <span class="nav-text">挂载 cephfs 到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启存储池-pg-num-自动调整"><span class="nav-number">16.</span> <span class="nav-text">开启存储池 pg_num 自动调整</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-OSD-节点"><span class="nav-number">17.</span> <span class="nav-text">删除 OSD 节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CentOS-安装-ceph-common"><span class="nav-number">18.</span> <span class="nav-text">CentOS 安装 ceph-common</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌" src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="external nofollow noopener noreferrer" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">190k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:53</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;" z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="153,153,153" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>

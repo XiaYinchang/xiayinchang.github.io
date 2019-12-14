@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="通过对 Keystone 与 Keycloak 两种认证中心方案的对比分析确定合适的系统方案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="统一认证中心方案调研">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;c851306f.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="通过对 Keystone 与 Keycloak 两种认证中心方案的对比分析确定合适的系统方案。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568099807740-b6f23b9f-79f7-4f1e-8c5b-e7e6dcc812c7.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;121&amp;name&#x3D;image.png&amp;originHeight&#x3D;121&amp;originWidth&#x3D;531&amp;size&#x3D;9511&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;531">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568101991767-538e6965-086f-4f6a-bc9e-ddaad3dd6acc.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;301&amp;name&#x3D;image.png&amp;originHeight&#x3D;416&amp;originWidth&#x3D;466&amp;size&#x3D;22980&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;337">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568102224149-f1424311-b431-4989-b589-b89f2fe08d2c.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;337&amp;name&#x3D;image.png&amp;originHeight&#x3D;422&amp;originWidth&#x3D;347&amp;size&#x3D;54611&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;277">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568102587868-68ff5b22-2254-47f9-86a7-109ad9a01934.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;377&amp;name&#x3D;%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190910155905.png&amp;originHeight&#x3D;1508&amp;originWidth&#x3D;1077&amp;size&#x3D;105137&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;269">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568106057222-f82dd3f8-d2ac-427a-ab9f-05d3fd651fe1.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;514&amp;name&#x3D;auth-center-02.png&amp;originHeight&#x3D;514&amp;originWidth&#x3D;733&amp;size&#x3D;66359&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;733">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568554312502-222a3c04-cfb8-44a0-b25d-428c7c56684e.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;132&amp;name&#x3D;image.png&amp;originHeight&#x3D;132&amp;originWidth&#x3D;721&amp;size&#x3D;5838&amp;status&#x3D;done&amp;width&#x3D;721">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568554290207-8a67772f-52fc-4d4b-9778-7a934ed22ac6.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;140&amp;name&#x3D;image.png&amp;originHeight&#x3D;140&amp;originWidth&#x3D;726&amp;size&#x3D;5728&amp;status&#x3D;done&amp;width&#x3D;726">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568620339129-62544ce7-0f22-40be-9ac3-e8479f90b590.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;231&amp;name&#x3D;image.png&amp;originHeight&#x3D;231&amp;originWidth&#x3D;476&amp;size&#x3D;12341&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;476">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568621100341-781dba8e-5d5d-4349-80d4-50449397caff.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;341&amp;name&#x3D;image.png&amp;originHeight&#x3D;341&amp;originWidth&#x3D;569&amp;size&#x3D;16799&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;569">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568622013241-ade99ea1-a5b4-4da8-8c98-0c07cefd3044.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;281&amp;name&#x3D;image.png&amp;originHeight&#x3D;281&amp;originWidth&#x3D;637&amp;size&#x3D;13836&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;637">
+<meta property="article:published_time" content="2019-09-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-09T16:00:00.000Z">
+<meta property="article:author" content="夏印昌">
+<meta property="article:tag" content="OAuth 2.0">
+<meta property="article:tag" content="OpenID">
+<meta property="article:tag" content="Athorization">
+<meta property="article:tag" content="Authentication">
+<meta property="article:tag" content="Keystone">
+<meta property="article:tag" content="Keycloak">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1568099807740-b6f23b9f-79f7-4f1e-8c5b-e7e6dcc812c7.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;121&amp;name&#x3D;image.png&amp;originHeight&#x3D;121&amp;originWidth&#x3D;531&amp;size&#x3D;9511&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;531">
+
+<link rel="canonical" href="https://www.xiayinchang.top/post/c851306f.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>统一认证中心方案调研 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="external nofollow noopener noreferrer" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/c851306f.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          统一认证中心方案调研
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-10 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-10T00:00:00+08:00">2019-09-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+            <div class="post-description">通过对 Keystone 与 Keycloak 两种认证中心方案的对比分析确定合适的系统方案。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a name="QW5Ia"></a></p><h4 id="为什么需要认证中心"><a href="#为什么需要认证中心" class="headerlink" title="为什么需要认证中心"></a>为什么需要认证中心</h4><p>认证（Authentication）和授权（Athorization）是企业级服务的基本功能，企业级应用的开发必须考虑到如何使提供的产品与用户已有的认证和授权体系结合起来，更进一步能够基于该体系提供开发接口给其它应用调用。如下图所示，不同的用户可能已经有不同的认证体系，有的用户可能用的是<br> LDAP，这是种比较老的认证方式，SAML 新一些，最新的是<br>OpenID，这些不同的认证后端都应当可以接入到统一认证中心，从而能够更好地管理用户和进行授权。</p><a id="more"></a>
+
+<p><img src="https://i.loli.net/2019/12/05/3Tib16onMXjIHsw.png" alt="image.png"><br></p>
+<p><a name="lMJ8j"></a></p>
+<h4 id="OpenID"><a href="#OpenID" class="headerlink" title="OpenID"></a>OpenID</h4><p>如上图所示，不论用户已有的认证体系是基于什么协议的，通过认证中心我们将其统一转换为 OpenID 协议从而方便应用服务的开发，协议的转换可以交由 Keystone 和 Keycloak 等开源方案来解决， 而 OpenID 是我们开发环节必须要涉及到的内容，因此需要搞清楚其原理。<br>OpenID 是 OAuth 2.0 协议的扩展，主要增强了认证功能，因此认识 OpenID 需要从 OAuth 2.0 开始。OAuth 2.0 协议的应用实际上已经相当广泛，现在很多网站都允许使用微信扫码登录，这个登录过程其实就是 OAuth 2.0 协议的一种实现。下面以<a href="https://www.ituring.com.cn" target="_blank" rel="external nofollow noopener noreferrer">图灵社区</a>使用微信账号登录为例说明整个过程：</p>
+<ol>
+<li>第一步：打开图灵社区登录页面<a href="https://account.ituring.com.cn/log-in" target="_blank" rel="external nofollow noopener noreferrer">https://account.ituring.com.cn/log-in</a>，点击微信登录图标</li>
+</ol>
+<p><img src="https://i.loli.net/2019/12/05/AZXWI7bgHzBlmys.png" alt="image.png"></p>
+<ol start="2">
+<li>第二步：页面跳转至微信认证中心</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;open.weixin.qq.com&#x2F;connect&#x2F;qrconnect?appid&#x3D;wx3a6700225b70af1f&amp;redirect_uri&#x3D;https%3A%2F%2Faccount.ituring.com.cn%2Fsignin-wechat&amp;response_type&#x3D;code&amp;scope&#x3D;snsapi_login&amp;state&#x3D;7nh23BdGirIHwjyH79bzV6YjF-55Vn7AzzZIjFZZnKrFxCmAsisTRfSCD7ikv_PMx7uFjsdQPUA8A94MzuZxPOAAvqd1P-0-oo2HGw0yatvKc4hZFU0-ZpEBHt2gqkXqXHAI-0wpyATNbXv14mDzcJSPR-OST90-XwoHpwD0fCXlM3sGdzYHHHPb74bW4dMHSeOThBkhpJvD6oE_k0TFAwQd4cIFV9-gj5tYRelAawc</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2019/12/05/MZDczVPs7kGixvN.png" alt="image.png"></p>
+<ol start="3">
+<li>第三步：用户微信扫码进行授权确认</li>
+</ol>
+<p><img src="https://i.loli.net/2019/12/05/v5ABqlugGnramHo.png" alt="微信图片_20190910155905.png"></p>
+<ol start="4">
+<li>第四步: 登录成功，返回图灵社区主页。</li>
+</ol>
+<p>这里的四步是我们能够直观看到的步骤，实际上背后的交互逻辑如下：<br><br><br><img src="https://i.loli.net/2019/12/05/XwPjfhUOS3FWpGJ.png" alt="auth-center-02.png"></p>
+<p>交互过程中涉及到的 OAuth 术语有：</p>
+<ul>
+<li>Resource owner:： 用户</li>
+<li>Client：需要授权的应用，这里指图灵社区</li>
+<li>Authorization server：认证中心，这里指微信开发中心</li>
+<li>Resource server： 拥有 Client 所需资源的服务端，这里指存储有用户基本信息的微信 API 服务端</li>
+<li>Access token：Client 与 Resource Server 交互时的凭证</li>
+<li>Scope： 通常指一个可用 api 资源的集合，这里的 scope 值为 snsapi_login 意味着 client 请求的这个集合只包含登录用的基本操作 API ，如查询用户基本信息，而不能去操作用户，如更改用户名</li>
+<li>Consent： 同意，这里指用户同意授权图灵社区获取自己的基本信息</li>
+</ul>
+<p>更具体的交互过程参考：</p>
+<ul>
+<li><a href="https://mp.weixin.qq.com/wiki?action=doc&id=mp1421140842" target="_blank" rel="external nofollow noopener noreferrer">微信官方文档</a></li>
+<li><a href="https://www.cnblogs.com/0201zcr/p/5131602.html" target="_blank" rel="external nofollow noopener noreferrer">cnblog-微信公众平台开发 —— 微信授权登录（OAuth2.0）</a></li>
+</ul>
+<p><a name="RW3b5"></a></p>
+<h4 id="Keystone-与-Keycloak"><a href="#Keystone-与-Keycloak" class="headerlink" title="Keystone 与 Keycloak"></a>Keystone 与 Keycloak</h4><p>Keystone 是 OpenStack 社区的统一认证项目，主要是作为 OpenStack 多租户管理的基础组件 ，由于 OpenStack 所有项目的设计都具有松耦合的特点， Keystone 项目完全可以单独拿出来使用，另外 Keystone 也充当了 OpenStack 项目的服务注册中心。<br>Keycloak 是 RedHat 维护的统一认证项目，是其商业产品 RH-SSO 的上游项目。<br>下面对两个项目做对比说明。</p>
+<ul>
+<li>基本信息</li>
+</ul>
+<p>下表显示的基本信息为 2019 年 09 月 15 日的情况：<br></p>
+<table>
+<thead>
+<tr>
+<th align="center">比较项<br></th>
+<th align="center"><strong>Keystone</strong></th>
+<th align="center"><strong>Keycloak</strong><br></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">开发语言</td>
+<td align="center">Python<br></td>
+<td align="center">Java</td>
+</tr>
+<tr>
+<td align="center">开源<br></td>
+<td align="center">是</td>
+<td align="center">是，有商业版</td>
+</tr>
+<tr>
+<td align="center">维护方<br></td>
+<td align="center">OpenStack 社区<br></td>
+<td align="center">RedHat 及社区<br></td>
+</tr>
+<tr>
+<td align="center">贡献者数量<br></td>
+<td align="center">433</td>
+<td align="center">328</td>
+</tr>
+<tr>
+<td align="center">提交数</td>
+<td align="center">14250<br></td>
+<td align="center">11665</td>
+</tr>
+<tr>
+<td align="center">最近一年的提交数</td>
+<td align="center"><img src="https://i.loli.net/2019/11/24/yhtv6BiNLOnEq7A.png" alt="image.png"></td>
+<td align="center"><img src="https://i.loli.net/2019/11/24/c6pr4I9JHhuYogB.png" alt="image.png"></td>
+</tr>
+<tr>
+<td align="center">LDAP 集成<br></td>
+<td align="center">支持<br></td>
+<td align="center">支持<br></td>
+</tr>
+<tr>
+<td align="center">支持的数据库<br></td>
+<td align="center">MySQL</td>
+<td align="center">h2，MySQL，Postgres</td>
+</tr>
+<tr>
+<td align="center">UI<br></td>
+<td align="center">无独立 UI，界面集成在 Horizon 中<br></td>
+<td align="center">有独立 UI，可以定制主题以适应需要<br></td>
+</tr>
+<tr>
+<td align="center">SDK<br></td>
+<td align="center">不区分 Admin 和 普通用户 SDK ，<a href="https://github.com/openstack/js-openstack-lib" target="_blank" rel="external nofollow noopener noreferrer">js SDK  </a>有但不完善，<a href="https://github.com/openstack/python-keystoneclient" target="_blank" rel="external nofollow noopener noreferrer"> Python SDK </a>最完善，<a href="https://github.com/gophercloud/gophercloud" target="_blank" rel="external nofollow noopener noreferrer">Go SDK </a>相对完善。</td>
+<td align="center">区分 Admin 和 普通用户 SDK ，Admin SDK 提供了管理用户、角色和应用认证等的功能，普用户SDK主要实现认证和授权功能， Admin SDK Java 版本最完善， Node 版次之， <a href="https://github.com/Nerzal/gocloak" target="_blank" rel="external nofollow noopener noreferrer">Go</a> 版为非官方维护，较为完善。普通用户 SDK 同样是 Java最为完善，其次是 JavaScript 、Node、Python等，由于其遵循标准的 OpenID 认证流程，故各种语言已有的 OpenID Client 都可以直接使用。<br><br></td>
+</tr>
+<tr>
+<td align="center">Rest API <br></td>
+<td align="center"><a href="https://docs.openstack.org/api-ref/identity/v3/" target="_blank" rel="external nofollow noopener noreferrer">v3 </a>版本文档：<a href="https://docs.openstack.org/api-ref/identity/v3/" target="_blank" rel="external nofollow noopener noreferrer">https://docs.openstack.org/api-ref/identity/v3/</a></td>
+<td align="center">7.0 版本的 <a href="https://www.keycloak.org/docs-api/7.0/rest-api/index.html" target="_blank" rel="external nofollow noopener noreferrer">Admin API</a> 文档<br>：<a href="https://www.keycloak.org/docs-api/7.0/rest-api/index.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.keycloak.org/docs-api/7.0/rest-api/index.html</a></td>
+</tr>
+<tr>
+<td align="center">基于 Kubernetes 部署<br></td>
+<td align="center">官方有使用 <a href="https://github.com/openstack/openstack-helm" target="_blank" rel="external nofollow noopener noreferrer">Helm charts </a>部署整个 OpenStack 集群的方案，没有专门的使用 Kubernetes 部署Keystone 的方案，可从  OpenStack helm charts 中抽离，但有一定的工作量。<br></td>
+<td align="center">有非官方的 <a href="https://github.com/codecentric/helm-charts" target="_blank" rel="external nofollow noopener noreferrer">Helm charts </a>用于部署高可用 Keycloak 集群，经试用满足需求。另外最近官方新开了 <a href="https://github.com/keycloak/keycloak-operator" target="_blank" rel="external nofollow noopener noreferrer">keycloak-operator</a> 仓库，下一步有可能提供基于 CRD 的部署支持。<br></td>
+</tr>
+<tr>
+<td align="center">非侵入式认证</td>
+<td align="center">未见官方支持方案<br></td>
+<td align="center">官方提供 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 项目通过 proxy 方式代理前端请求，认证过程由代理完成，业务代码中不需要加入认证处理的内容，方便现有业务的无侵入接入认证。可以结合 Nginx-Ingress 等 API Gateway 使用。<br></td>
+</tr>
+</tbody></table>
+<ul>
+<li>基本概念</li>
+</ul>
+<p>Keystone 和 Keycloak 有一部分概念是相同的，有一部分是相似的（即涵义基本相同，名称不同），还有一部分是各自独有的，下表对照说明：<br></p>
+<table>
+<thead>
+<tr>
+<th align="center">比较项<br></th>
+<th align="center"><strong>Keystone</strong></th>
+<th align="center"><strong>Keycloak</strong><br></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">用户</td>
+<td align="center">Users：用户必须属于某一个域（domain），用户名非全局唯一，而是域内唯一。</td>
+<td align="center">Users：概念一致。</td>
+</tr>
+<tr>
+<td align="center">用户组</td>
+<td align="center">Groups：用户组包含一组用户，用户组必须属于某一个域（domain）。</td>
+<td align="center">Groups：概念一致。</td>
+</tr>
+<tr>
+<td align="center">项目</td>
+<td align="center">Projects： OpenStack 中为方便多租户管理的概念。OpenStack 中的虚拟机、虚拟盘等资源必须是属于某一个项目，而项目本身必须是属于某一个域（domain）。<br></td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">域</td>
+<td align="center">Domains： 域是项目、用户组、用户的容器，Keystone 提供默认域（Default）。对所有用户、项目和用户组的操作都必须提供域信息。域名全局唯一。<br></td>
+<td align="center">Realms：和 Domains 概念一致，Keycloak 提供默认域（Master）。<br></td>
+</tr>
+<tr>
+<td align="center">角色</td>
+<td align="center">Roles：用于约束用户在某种资源上可以进行的操作，从而实现基于角色的授权（RBAC）。可以对单个用户或某组用户授予操作某个项目或某个域的某种角色。角色名域内唯一。</td>
+<td align="center">Roles： 概念一致。<br></td>
+</tr>
+<tr>
+<td align="center">Token</td>
+<td align="center">Token：用于在向资源服务器请求资源时标示自身身份。根据用途的不同和有效范围可分为多种 token。</td>
+<td align="center">Token：用途一致，实现 token 使用的算法有所区别</td>
+</tr>
+<tr>
+<td align="center">服务目录</td>
+<td align="center">Catalog：服务目录，用于集中注册和管理 OpenStack 各种服务，方便松耦合的各项服务之间互相发现和调用。<br></td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">客户端认证<br></td>
+<td align="center">Application Credentials：应用凭证，与用户绑定的一种凭证，拥有与用户一致的权限（Role），也可以在创建时指定，专门给 client 端在无需使用用户和密码进行登录时使用。<br>Credentials：与用户名和密码基本等同的凭证，只不过是以 EC2 方式提供的凭证，包括 accekey 和 secret key。<br></td>
+<td align="center">Clients： 和 OAuth 术语基本一致，只能由管理员用户创建，和普通用户并无绑定关系。使用标准认证协议 OpenID（OAuth 2.0）或者 SAML2 。可以配置成需要用户登录认证或者直接访问。</td>
+</tr>
+<tr>
+<td align="center">认证提供方</td>
+<td align="center">Identity Provider：第三方认证提供方，用于替代 Keystone 的认证功能， 例如 Github、微信等，只要是支持的标准协议就可以接入， Keystone 支持 SAML2 和 OpenID<br>。Keystone 既可以接入第三方认证提供方，其本身也可以作为认证提供方供其它服务调用。当作为认证提供方时支持 SAML2 和 OAuth1.0a 对外服务，不支持 OpenID。<br></td>
+<td align="center">Identity Provider：概念一致，但是作为认证提供方时支持 SAML2 和 OpenID。<br></td>
+</tr>
+</tbody></table>
+<ul>
+<li>结论</li>
+</ul>
+<p>通过对比，可以知道 Keystone 更多是为 OpenStack 专门设计的，虽然也支持标准协议的接入，但这并不是其核心和重点功能，而 Keycloak 一开始就是作为独立的认证中心进行设计的，完全建立在标准认证协议之上，并为此提供了完善的周边工具，因此选择使用 Keycloak 作为基础进行认证中心的实现更合适。<br><a name="tlhNK"></a></p>
+<h4 id="引入-Keycloak-后的架构"><a href="#引入-Keycloak-后的架构" class="headerlink" title="引入 Keycloak 后的架构"></a>引入 Keycloak 后的架构</h4><ul>
+<li>引入 Keycloak 之前的架构</li>
+</ul>
+<p>这是最初的架构，客户端请求经过 API 网关分发到不同的服务，而服务在业务代码中维护用户的认证和授权过程，并且用户的管理包括用户、角色以及用户角色的绑定都由后端服务自己进行。</p>
+<p><img src="https://i.loli.net/2019/12/05/4VCLhQ5x1IBwFbv.png" alt="image.png"></p>
+<ul>
+<li>引入 Keycloak 之后</li>
+</ul>
+<p>由于我们的服务都是基于 Kubernetes 部署的，我们使用了 ingress-nginx 作为 API 网关， ingress-nginx 可以视为 nginx 为 Kubernetes 定制的版本，功能受到 Kubernetes Ingress 定义的限制，虽然支持使用 OAuth 2.0 对接外部认证服务，但本身并不支持对接外部授权服务。如果使用 ingress-nginx 对接 Keycloak 认证，则总体架构变为下图所示，Ingress 负责进行认证，各个后端服务仍然需要自行去处理授权。<br><img src="https://i.loli.net/2019/12/05/nvyOpgFz5jcVZGW.png" alt="image.png"><br>更进一步，使用 keycloak-gatekeeper 进行认证和授权，这样后端服务将完全和认证与授权解耦，只关注业务逻辑，这样解耦的一个好处是，更换认证提供方对于后端服务是无感的，更加灵活。<br><img src="https://i.loli.net/2019/12/05/nFhSXr3wROUbZkT.png" alt="image.png"></p>
+<ul>
+<li>keycloak-gatekeeper</li>
+</ul>
+<p>keycloak-gatekeeper 是 Keycloak 官方使用 Go 语言开发的请求代理转发组件，集成了认证和授权功能，对服务的请求只有经过了 gatekeeper 的验证才会被转发到下一环节，否则将直接返回未授权响应。一个示例 keycloak-gatekeeper 如下， 对于 /admin 路径下资源的请求必须具有相应的角色才能继续进行。 <br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># is the url for retrieve the OpenID configuration - normally the &lt;server&gt;&#x2F;auth&#x2F;realm&#x2F;&lt;realm_name&gt;</span><br><span class="line">discovery-url: https:&#x2F;&#x2F;keycloak.example.com&#x2F;auth&#x2F;realms&#x2F;&lt;REALM_NAME&gt;</span><br><span class="line"># the client id for the &#39;client&#39; application</span><br><span class="line">client-id: &lt;CLIENT_ID&gt;</span><br><span class="line"># the secret associated to the &#39;client&#39; application</span><br><span class="line">client-secret: &lt;CLIENT_SECRET&gt;</span><br><span class="line"># the interface definition you wish the proxy to listen, all interfaces is specified as &#39;:&lt;port&gt;&#39;, unix sockets as unix:&#x2F;&#x2F;&lt;REL_PATH&gt;|&lt;&#x2F;ABS PATH&gt;</span><br><span class="line">listen: 127.0.0.1:3000</span><br><span class="line"># whether to enable refresh tokens</span><br><span class="line">enable-refresh-tokens: true</span><br><span class="line"># the location of a certificate you wish the proxy to use for TLS support</span><br><span class="line">tls-cert:</span><br><span class="line"># the location of a private key for TLS</span><br><span class="line">tls-private-key:</span><br><span class="line"># the redirection url, essentially the site url, note: &#x2F;oauth&#x2F;callback is added at the end</span><br><span class="line">redirection-url: http:&#x2F;&#x2F;127.0.0.1:3000</span><br><span class="line"># the encryption key used to encode the session state</span><br><span class="line">encryption-key: &lt;ENCRYPTION_KEY&gt;</span><br><span class="line"># the upstream endpoint which we should proxy request</span><br><span class="line">upstream-url: http:&#x2F;&#x2F;127.0.0.1:80</span><br><span class="line"># additional scopes to add to add to the default (openid+email+profile)</span><br><span class="line">scopes:</span><br><span class="line">- vpn-user</span><br><span class="line"># a collection of resource i.e. urls that you wish to protect</span><br><span class="line">resources:</span><br><span class="line">- uri: &#x2F;admin&#x2F;test</span><br><span class="line">  # the methods on this url that should be protected, if missing, we assuming all</span><br><span class="line">  methods:</span><br><span class="line">  - GET</span><br><span class="line">  # a list of roles the user must have in order to access urls under the above</span><br><span class="line">  # If all you want is authentication ONLY, simply remove the roles array - the user must be authenticated but</span><br><span class="line">  # no roles are required</span><br><span class="line">  roles:</span><br><span class="line">  - openvpn:vpn-user</span><br><span class="line">  - openvpn:prod-vpn</span><br><span class="line">  - test</span><br><span class="line">- uri: &#x2F;admin&#x2F;*</span><br><span class="line">  methods:</span><br><span class="line">  - GET</span><br><span class="line">  roles:</span><br><span class="line">  - openvpn:vpn-user</span><br><span class="line">  - openvpn:commons-prod-vpn</span><br></pre></td></tr></table></figure>
+
+<p><a name="crKdK"></a></p>
+<h4 id="扩展阅读资料"><a href="#扩展阅读资料" class="headerlink" title="扩展阅读资料"></a>扩展阅读资料</h4><p><a href="https://www.infoq.cn/article/identity-authentication-of-architecture-in-micro-service" target="_blank" rel="external nofollow noopener noreferrer">深入聊聊微服务架构的身份认证问题</a></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/9caa466a.html" rel="bookmark">Kubernetes 实践</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/e8bac896.html" rel="bookmark">Ceph 常用操作</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/d830a7d8.html" rel="bookmark">IO 同步、异步及阻塞、非阻塞</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/31e91381.html" rel="next" title="LVM 基本概念">
+                  <i class="fa fa-chevron-left"></i> LVM 基本概念
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/post/466a6051.html" rel="prev" title="Ceph 对接 Kubernetes 的两种方式">
+                  Ceph 对接 Kubernetes 的两种方式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么需要认证中心"><span class="nav-number">1.</span> <span class="nav-text">为什么需要认证中心</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenID"><span class="nav-number">2.</span> <span class="nav-text">OpenID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Keystone-与-Keycloak"><span class="nav-number">3.</span> <span class="nav-text">Keystone 与 Keycloak</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引入-Keycloak-后的架构"><span class="nav-number">4.</span> <span class="nav-text">引入 Keycloak 后的架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展阅读资料"><span class="nav-number">5.</span> <span class="nav-text">扩展阅读资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌" src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="external nofollow noopener noreferrer" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">190k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:53</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;" z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="153,153,153" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>
