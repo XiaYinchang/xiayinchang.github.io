@@ -316,6 +316,27 @@
     <link href="https://www.xiayinchang.top/post/c957e495.html"/>
     <id>https://www.xiayinchang.top/post/c957e495.html</id>
     <published>2019-11-07T16:00:00.000Z</published>
+    <updated>2019-12-13T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Linux 文件系统基础知识。
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 进程管理基础知识</title>
+    <link href="https://www.xiayinchang.top/post/ee7438a7.html"/>
+    <id>https://www.xiayinchang.top/post/ee7438a7.html</id>
+    <published>2019-11-07T16:00:00.000Z</published>
     <updated>2019-12-10T16:00:00.000Z</updated>
     
     <summary type="html">
@@ -438,29 +459,6 @@
     
     
       <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>基础网络知识</title>
-    <link href="https://www.xiayinchang.top/post/cf4d6f51.html"/>
-    <id>https://www.xiayinchang.top/post/cf4d6f51.html</id>
-    <published>2019-10-08T16:00:00.000Z</published>
-    <updated>2019-12-03T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      本文记录需要掌握的基础网络知识。
-    
-    </summary>
-    
-    
-      <category term="网络" scheme="https://www.xiayinchang.top/categories/%E7%BD%91%E7%BB%9C/"/>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
-    
-      <category term="网络" scheme="https://www.xiayinchang.top/tags/%E7%BD%91%E7%BB%9C/"/>
     
   </entry>
   
