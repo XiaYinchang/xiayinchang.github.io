@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,20 +51,18 @@
 </script>
 
   <meta name="description" content="Linux 文件系统基础知识。">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 文件系统基础知识">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;c957e495.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="Linux 文件系统基础知识。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;150&amp;name&#x3D;image.png&amp;originHeight&#x3D;299&amp;originWidth&#x3D;441&amp;size&#x3D;14934&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;220.5">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;255&amp;name&#x3D;image.png&amp;originHeight&#x3D;255&amp;originWidth&#x3D;514&amp;size&#x3D;34517&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;514">
-<meta property="article:published_time" content="2019-11-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-12-13T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="Linux">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&amp;display=inline&amp;height=150&amp;name=image.png&amp;originHeight=299&amp;originWidth=441&amp;size=14934&amp;status=done&amp;style=none&amp;width=220.5">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&amp;display=inline&amp;height=255&amp;name=image.png&amp;originHeight=255&amp;originWidth=514&amp;size=34517&amp;status=done&amp;style=none&amp;width=514">
+<meta property="og:updated_time" content="2019-12-13T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;150&amp;name&#x3D;image.png&amp;originHeight&#x3D;299&amp;originWidth&#x3D;441&amp;size&#x3D;14934&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;220.5">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&amp;display=inline&amp;height=150&amp;name=image.png&amp;originHeight=299&amp;originWidth=441&amp;size=14934&amp;status=done&amp;style=none&amp;width=220.5">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/c957e495.html">
 
@@ -271,7 +269,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
+              <span>3.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -327,7 +325,7 @@
 <li><p>Creating a mount namespace is similar to a recursive bind mount of / followed by chroot into the bind mount. Chroot creating is simular to creating a mount namespace followed by pivot_root.</p>
 </li>
 <li><p><a href="https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces</a><br><a name="ICS4l"></a></p>
-<h4 id="bind-mount-写入-fstab"><a href="#bind-mount-写入-fstab" class="headerlink" title="bind mount 写入 fstab"></a>bind mount 写入 fstab</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;cephfs&#x2F;storage &#x2F;storage none defaults,bind 0 0</span><br></pre></td></tr></table></figure>
+<h4 id="bind-mount-写入-fstab"><a href="#bind-mount-写入-fstab" class="headerlink" title="bind mount 写入 fstab"></a>bind mount 写入 fstab</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/cephfs/storage /storage none defaults,bind 0 0</span><br></pre></td></tr></table></figure>
 
 
 </li>
@@ -469,7 +467,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -497,7 +495,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -532,15 +530,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -592,17 +590,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -620,9 +610,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 

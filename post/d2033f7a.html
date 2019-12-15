@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,22 +51,19 @@
 </script>
 
   <meta name="description" content="Go 语言中 IO 的基本用法。">
+<meta name="keywords" content="Go,IO">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go 语言流式 IO">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;d2033f7a.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="Go 语言中 IO 的基本用法。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574581234981-aab516f1-5c45-4c94-a275-5291faa2e23b.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;186&amp;name&#x3D;image.png&amp;originHeight&#x3D;372&amp;originWidth&#x3D;2772&amp;size&#x3D;89243&amp;status&#x3D;done&amp;width&#x3D;1386">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574582203043-67900870-30e2-4c99-bd30-da4717c937b5.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;206&amp;name&#x3D;image.png&amp;originHeight&#x3D;412&amp;originWidth&#x3D;1858&amp;size&#x3D;60329&amp;status&#x3D;done&amp;width&#x3D;929">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574586722093-9d4d9479-da59-446d-a748-e38a16b37d77.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;213&amp;name&#x3D;image.png&amp;originHeight&#x3D;426&amp;originWidth&#x3D;1902&amp;size&#x3D;62060&amp;status&#x3D;done&amp;width&#x3D;951">
-<meta property="article:published_time" content="2019-11-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-11-23T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="Go">
-<meta property="article:tag" content="IO">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574581234981-aab516f1-5c45-4c94-a275-5291faa2e23b.png#align=left&amp;display=inline&amp;height=186&amp;name=image.png&amp;originHeight=372&amp;originWidth=2772&amp;size=89243&amp;status=done&amp;width=1386">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574582203043-67900870-30e2-4c99-bd30-da4717c937b5.png#align=left&amp;display=inline&amp;height=206&amp;name=image.png&amp;originHeight=412&amp;originWidth=1858&amp;size=60329&amp;status=done&amp;width=929">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574586722093-9d4d9479-da59-446d-a748-e38a16b37d77.png#align=left&amp;display=inline&amp;height=213&amp;name=image.png&amp;originHeight=426&amp;originWidth=1902&amp;size=62060&amp;status=done&amp;width=951">
+<meta property="og:updated_time" content="2019-11-23T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574581234981-aab516f1-5c45-4c94-a275-5291faa2e23b.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;186&amp;name&#x3D;image.png&amp;originHeight&#x3D;372&amp;originWidth&#x3D;2772&amp;size&#x3D;89243&amp;status&#x3D;done&amp;width&#x3D;1386">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1574581234981-aab516f1-5c45-4c94-a275-5291faa2e23b.png#align=left&amp;display=inline&amp;height=186&amp;name=image.png&amp;originHeight=372&amp;originWidth=2772&amp;size=89243&amp;status=done&amp;width=1386">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/d2033f7a.html">
 
@@ -507,7 +504,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -535,7 +532,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -570,15 +567,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -630,17 +627,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -658,9 +647,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 

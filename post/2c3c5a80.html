@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,28 +51,24 @@
 </script>
 
   <meta name="description" content="尝试使用K8S的CNI网络插件限制Pod带宽。">
+<meta name="keywords" content="Kubernetes, OpenShift, CNI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于K8S中Pod带宽限制的问题">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;2c3c5a80.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="尝试使用K8S的CNI网络插件限制Pod带宽。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;38&amp;name&#x3D;image.png&amp;originHeight&#x3D;38&amp;originWidth&#x3D;1166&amp;size&#x3D;27284&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1166">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575442988039-9762993b-8113-4dae-b114-b305332405bd.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;74&amp;name&#x3D;image.png&amp;originHeight&#x3D;74&amp;originWidth&#x3D;1218&amp;size&#x3D;63427&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1218">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443012295-d2bc2306-a82c-4223-95a1-7ca0567eaa11.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;127&amp;name&#x3D;image.png&amp;originHeight&#x3D;127&amp;originWidth&#x3D;630&amp;size&#x3D;45608&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;630">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443032242-0bc4e6c4-f824-4821-b254-2d16eee44ce5.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;126&amp;name&#x3D;image.png&amp;originHeight&#x3D;126&amp;originWidth&#x3D;660&amp;size&#x3D;49857&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;660">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443051065-4bc1bc1a-0b5a-4591-b3df-f57802fc1ff4.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;274&amp;name&#x3D;image.png&amp;originHeight&#x3D;274&amp;originWidth&#x3D;823&amp;size&#x3D;150326&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;823">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443067485-64bda488-ce15-45e7-9208-97030040af11.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;220&amp;name&#x3D;image.png&amp;originHeight&#x3D;220&amp;originWidth&#x3D;586&amp;size&#x3D;68560&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;586">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443083763-bea1fe29-ae77-4322-bf1f-0d955d4780a8.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;74&amp;name&#x3D;image.png&amp;originHeight&#x3D;74&amp;originWidth&#x3D;684&amp;size&#x3D;42546&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;684">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443097570-ef5d3d03-4755-497c-8bbe-6ee3bbb73d03.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;127&amp;name&#x3D;image.png&amp;originHeight&#x3D;127&amp;originWidth&#x3D;666&amp;size&#x3D;79395&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;666">
-<meta property="article:published_time" content="2019-01-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-01-12T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="Kubernetes">
-<meta property="article:tag" content=" OpenShift">
-<meta property="article:tag" content=" CNI">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png#align=left&amp;display=inline&amp;height=38&amp;name=image.png&amp;originHeight=38&amp;originWidth=1166&amp;size=27284&amp;status=done&amp;style=none&amp;width=1166">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575442988039-9762993b-8113-4dae-b114-b305332405bd.png#align=left&amp;display=inline&amp;height=74&amp;name=image.png&amp;originHeight=74&amp;originWidth=1218&amp;size=63427&amp;status=done&amp;style=none&amp;width=1218">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443012295-d2bc2306-a82c-4223-95a1-7ca0567eaa11.png#align=left&amp;display=inline&amp;height=127&amp;name=image.png&amp;originHeight=127&amp;originWidth=630&amp;size=45608&amp;status=done&amp;style=none&amp;width=630">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443032242-0bc4e6c4-f824-4821-b254-2d16eee44ce5.png#align=left&amp;display=inline&amp;height=126&amp;name=image.png&amp;originHeight=126&amp;originWidth=660&amp;size=49857&amp;status=done&amp;style=none&amp;width=660">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443051065-4bc1bc1a-0b5a-4591-b3df-f57802fc1ff4.png#align=left&amp;display=inline&amp;height=274&amp;name=image.png&amp;originHeight=274&amp;originWidth=823&amp;size=150326&amp;status=done&amp;style=none&amp;width=823">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443067485-64bda488-ce15-45e7-9208-97030040af11.png#align=left&amp;display=inline&amp;height=220&amp;name=image.png&amp;originHeight=220&amp;originWidth=586&amp;size=68560&amp;status=done&amp;style=none&amp;width=586">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443083763-bea1fe29-ae77-4322-bf1f-0d955d4780a8.png#align=left&amp;display=inline&amp;height=74&amp;name=image.png&amp;originHeight=74&amp;originWidth=684&amp;size=42546&amp;status=done&amp;style=none&amp;width=684">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575443097570-ef5d3d03-4755-497c-8bbe-6ee3bbb73d03.png#align=left&amp;display=inline&amp;height=127&amp;name=image.png&amp;originHeight=127&amp;originWidth=666&amp;size=79395&amp;status=done&amp;style=none&amp;width=666">
+<meta property="og:updated_time" content="2019-01-12T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;38&amp;name&#x3D;image.png&amp;originHeight&#x3D;38&amp;originWidth&#x3D;1166&amp;size&#x3D;27284&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1166">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png#align=left&amp;display=inline&amp;height=38&amp;name=image.png&amp;originHeight=38&amp;originWidth=1166&amp;size=27284&amp;status=done&amp;style=none&amp;width=1166">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/2c3c5a80.html">
 
@@ -315,7 +311,7 @@
   &quot;policy&quot;: { &quot;type&quot;: &quot;k8s&quot; },
   &quot;kubernetes&quot;: { &quot;kubeconfig&quot;: &quot;/etc/cni/net.d/calico-kubeconfig&quot; },
 },
-{ &quot;type&quot;: &quot;bandwidth&quot;, &quot;capabilities&quot;: { &quot;bandwidth&quot;: true } },</code></pre>  ]<br>}<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 在 Pod 模板中添加以下注解即可：&#96;&#96;&#96;yaml</span><br><span class="line">apiVersion: v1</span><br><span class="line">  kind: Pod</span><br><span class="line">  metadata:</span><br><span class="line">  annotations:</span><br><span class="line">      kubernetes.io&#x2F;ingress-bandwidth: 1M</span><br><span class="line">      kubernetes.io&#x2F;egress-bandwidth: 1M</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+{ &quot;type&quot;: &quot;bandwidth&quot;, &quot;capabilities&quot;: { &quot;bandwidth&quot;: true } },</code></pre>  ]<br>}<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 在 Pod 模板中添加以下注解即可：```yaml</span><br><span class="line">apiVersion: v1</span><br><span class="line">  kind: Pod</span><br><span class="line">  metadata:</span><br><span class="line">  annotations:</span><br><span class="line">      kubernetes.io/ingress-bandwidth: 1M</span><br><span class="line">      kubernetes.io/egress-bandwidth: 1M</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul><a id="more"></a>
@@ -511,7 +507,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -539,7 +535,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -574,15 +570,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -634,17 +630,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -662,9 +650,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 

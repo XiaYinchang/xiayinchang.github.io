@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,16 +51,14 @@
 </script>
 
   <meta name="description" content="本文记录使用 Ceph 过程中常用的命令。">
+<meta name="keywords" content="Ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ceph 常用操作">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;e8bac896.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录使用 Ceph 过程中常用的命令。">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-09-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-12-12T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="Ceph">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-12T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/e8bac896.html">
@@ -268,14 +266,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.4k</span>
+              <span>8.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>8 分钟</span>
             </span>
             <div class="post-description">本文记录使用 Ceph 过程中常用的命令。</div>
 
@@ -322,10 +320,10 @@
 
 <p><a name="RAYxC"></a></p>
 <h4 id="删除-Monitor"><a href="#删除-Monitor" class="headerlink" title="删除 Monitor"></a>删除 Monitor</h4><p>更复杂情况参考：<a href="https://www.jianshu.com/p/b78cf33e558f" target="_blank" rel="external nofollow noopener noreferrer">https://www.jianshu.com/p/b78cf33e558f</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop ceph-mon@openstack-compute-02.service</span><br><span class="line">&#x2F;&#x2F; 如果停止一个 ceph-mon 后无法执行 ceph 命令，则应当先删除 mon 再停止 ceph-mon 服务</span><br><span class="line">ceph mon remove openstack-compute-02</span><br><span class="line">&#x2F;&#x2F; 移除 ceph.conf 中的相关信息</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop ceph-mon@openstack-compute-02.service</span><br><span class="line">// 如果停止一个 ceph-mon 后无法执行 ceph 命令，则应当先删除 mon 再停止 ceph-mon 服务</span><br><span class="line">ceph mon remove openstack-compute-02</span><br><span class="line">// 移除 ceph.conf 中的相关信息</span><br></pre></td></tr></table></figure>
 
 <p><a name="PVcDQ"></a></p>
-<h4 id="添加-Monitor"><a href="#添加-Monitor" class="headerlink" title="添加 Monitor"></a>添加 Monitor</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 预先安装 ceph-common ，再安装 ceph-mon</span><br><span class="line">yum -y install ceph-common</span><br><span class="line">&#x2F;&#x2F; 在目标节点上创建 mon 目录，一般使用 hostname 作为 mon-id </span><br><span class="line">mkdir -p &#x2F;var&#x2F;lib&#x2F;ceph&#x2F;mon&#x2F;ceph-&#96;hostname&#96;</span><br><span class="line">&#x2F;&#x2F; 从已有 ceph 节点复制 ceph 配置</span><br><span class="line">scp 192.168.180.7:&#x2F;etc&#x2F;ceph&#x2F;* &#x2F;etc&#x2F;ceph&#x2F;</span><br><span class="line">&#x2F;&#x2F; 获取 mon keyring</span><br><span class="line">ceph auth get mon. -o &#x2F;tmp&#x2F;mon.keyring</span><br><span class="line">&#x2F;&#x2F; 获取 mon map</span><br><span class="line">ceph mon getmap -o &#x2F;tmp&#x2F;mon.map</span><br><span class="line">&#x2F;&#x2F; 格式化 mon 数据目录</span><br><span class="line">ceph-mon -i &#96;hostname&#96; --mkfs --monmap &#x2F;tmp&#x2F;mon.map --keyring &#x2F;tmp&#x2F;mon.keyring</span><br><span class="line">&#x2F;&#x2F; 更改目录所属用户为 ceph</span><br><span class="line">chown -R ceph:ceph &#x2F;etc&#x2F;ceph &#x2F;var&#x2F;lib&#x2F;ceph</span><br><span class="line">&#x2F;&#x2F; 启动 ceph-mon 服务</span><br><span class="line">systemctl enable --now ceph-mon@&#96;hostname&#96;</span><br></pre></td></tr></table></figure>
+<h4 id="添加-Monitor"><a href="#添加-Monitor" class="headerlink" title="添加 Monitor"></a>添加 Monitor</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 预先安装 ceph-common ，再安装 ceph-mon</span><br><span class="line">yum -y install ceph-common</span><br><span class="line">// 在目标节点上创建 mon 目录，一般使用 hostname 作为 mon-id </span><br><span class="line">mkdir -p /var/lib/ceph/mon/ceph-`hostname`</span><br><span class="line">// 从已有 ceph 节点复制 ceph 配置</span><br><span class="line">scp 192.168.180.7:/etc/ceph/* /etc/ceph/</span><br><span class="line">// 获取 mon keyring</span><br><span class="line">ceph auth get mon. -o /tmp/mon.keyring</span><br><span class="line">// 获取 mon map</span><br><span class="line">ceph mon getmap -o /tmp/mon.map</span><br><span class="line">// 格式化 mon 数据目录</span><br><span class="line">ceph-mon -i `hostname` --mkfs --monmap /tmp/mon.map --keyring /tmp/mon.keyring</span><br><span class="line">// 更改目录所属用户为 ceph</span><br><span class="line">chown -R ceph:ceph /etc/ceph /var/lib/ceph</span><br><span class="line">// 启动 ceph-mon 服务</span><br><span class="line">systemctl enable --now ceph-mon@`hostname`</span><br></pre></td></tr></table></figure>
 
 <p><a name="0zXsv"></a></p>
 <h4 id="ceph-ansible-部署"><a href="#ceph-ansible-部署" class="headerlink" title="ceph-ansible 部署"></a>ceph-ansible 部署</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph-ansible.git</span><br><span class="line">git checkout v4.0.0</span><br><span class="line">// 在部署节点安装</span><br><span class="line">yum install -y ansible python-notario</span><br><span class="line">rpm -i http://download-ib01.fedoraproject.org/pub/epel/testing/7/x86_64/Packages/p/python2-notario-0.0.14-1.el7.noarch.rpm</span><br><span class="line">// 在所有节点安装</span><br><span class="line">yum install -y python-netaddr</span><br></pre></td></tr></table></figure>
@@ -337,10 +335,10 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible-playbook -i hosts -v site.yml</span><br></pre></td></tr></table></figure>
 
 <p><a name="BMg3M"></a></p>
-<h4 id="ceph-ansible-添加-osd"><a href="#ceph-ansible-添加-osd" class="headerlink" title="ceph-ansible 添加 osd"></a>ceph-ansible 添加 osd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;ceph-ansible</span><br><span class="line">cp infrastructure-playbooks&#x2F;add-osd.yml .&#x2F;</span><br><span class="line">&#x2F;&#x2F; 修改 group_vars&#x2F;all.yml 磁盘信息</span><br><span class="line">ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml</span><br><span class="line">&#x2F;&#x2F; 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样</span><br><span class="line">&#x2F;&#x2F; 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决</span><br><span class="line">ceph osd unset noup</span><br></pre></td></tr></table></figure>
+<h4 id="ceph-ansible-添加-osd"><a href="#ceph-ansible-添加-osd" class="headerlink" title="ceph-ansible 添加 osd"></a>ceph-ansible 添加 osd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/ceph-ansible</span><br><span class="line">cp infrastructure-playbooks/add-osd.yml ./</span><br><span class="line">// 修改 group_vars/all.yml 磁盘信息</span><br><span class="line">ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml</span><br><span class="line">// 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样</span><br><span class="line">// 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决</span><br><span class="line">ceph osd unset noup</span><br></pre></td></tr></table></figure>
 
 <p><a name="knNuf"></a></p>
-<h4 id="rbd-image-使用"><a href="#rbd-image-使用" class="headerlink" title="rbd image 使用"></a>rbd image 使用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 创建大小为 1G 的 image</span><br><span class="line">rbd create rbd&#x2F;myimage --size 1024</span><br><span class="line">rbd map rbd&#x2F;myimage</span><br><span class="line">mkfs.xfs &#x2F;dev&#x2F;rbd0</span><br><span class="line">mkdir &#x2F;data</span><br><span class="line">mount &#x2F;dev&#x2F;rbd0 &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 扩容</span><br><span class="line">rbd resize --image&#x3D;rbd&#x2F;myimage --size 10G</span><br><span class="line">xfs_growfs &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 卸载</span><br><span class="line">umount &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 检查占用设备的进程</span><br><span class="line">fuser -m -v &#x2F;dev&#x2F;rbd0</span><br><span class="line">rbd unmap &#x2F;dev&#x2F;rbd0</span><br><span class="line">rbd rm rbd&#x2F;myimage</span><br><span class="line">&#x2F;&#x2F; rbd image 转换 format，也可用于 image 复制</span><br><span class="line">rbd export rbd&#x2F;myrbd - | rbd import --image-format 2 - rbd&#x2F;myrbd_v2</span><br><span class="line">&#x2F;&#x2F; rbd bench</span><br><span class="line">rados bench -p rbd 20 -b 4K write -t 1 --no-cleanup</span><br><span class="line">rbd create --size 4G test</span><br><span class="line">rbd bench-write test</span><br></pre></td></tr></table></figure>
+<h4 id="rbd-image-使用"><a href="#rbd-image-使用" class="headerlink" title="rbd image 使用"></a>rbd image 使用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// 创建大小为 1G 的 image</span><br><span class="line">rbd create rbd/myimage --size 1024</span><br><span class="line">rbd map rbd/myimage</span><br><span class="line">mkfs.xfs /dev/rbd0</span><br><span class="line">mkdir /data</span><br><span class="line">mount /dev/rbd0 /data</span><br><span class="line">// 扩容</span><br><span class="line">rbd resize --image=rbd/myimage --size 10G</span><br><span class="line">xfs_growfs /data</span><br><span class="line">// 卸载</span><br><span class="line">umount /data</span><br><span class="line">// 检查占用设备的进程</span><br><span class="line">fuser -m -v /dev/rbd0</span><br><span class="line">rbd unmap /dev/rbd0</span><br><span class="line">rbd rm rbd/myimage</span><br><span class="line">// rbd image 转换 format，也可用于 image 复制</span><br><span class="line">rbd export rbd/myrbd - | rbd import --image-format 2 - rbd/myrbd_v2</span><br><span class="line">// rbd bench</span><br><span class="line">rados bench -p rbd 20 -b 4K write -t 1 --no-cleanup</span><br><span class="line">rbd create --size 4G test</span><br><span class="line">rbd bench-write test</span><br></pre></td></tr></table></figure>
 
 <p><a name="Z5LCG"></a></p>
 <h4 id="Cinder-创建-Volume-副本并-Boot-with-it"><a href="#Cinder-创建-Volume-副本并-Boot-with-it" class="headerlink" title="Cinder 创建 Volume 副本并 Boot with it"></a>Cinder 创建 Volume 副本并 Boot with it</h4><p>OpenStack: import existing Ceph volumes in Cinder：<a href="https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/" target="_blank" rel="external nofollow noopener noreferrer">https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/</a></p>
@@ -349,9 +347,9 @@
 <p>基本理解：<a href="https://www.dovefi.com/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3crush1%E7%90%86%E8%A7%A3crush_map%E6%96%87%E4%BB%B6/" target="_blank" rel="external nofollow noopener noreferrer">深入理解 ceph crush (1)—- 理解 crush map 文件</a>／Crush算法：<a href="http://www.xuxiaopang.com/2016/11/08/easy-ceph-CRUSH/" target="_blank" rel="external nofollow noopener noreferrer">大话 Ceph–CRUSH 那点事儿</a>／Crush 查看：<a href="https://www.jianshu.com/p/2355701459e9" target="_blank" rel="external nofollow noopener noreferrer">Ceph 实践之 Crushmap 相关</a>。</p>
 <p><a name="7Rb6C"></a></p>
 <h4 id="OSD-过度使用内存"><a href="#OSD-过度使用内存" class="headerlink" title="OSD 过度使用内存"></a>OSD 过度使用内存</h4><p>在使用 Bluestore 时，bluestore_cache_autotune 默认已经启用，Bluestore 会将 OSD 堆内存使用量保持在指定的大小之下，通过配置选项 osd_memory_target 来控制，默认为 4G。对于内存较少但 OSD 节点较多的情况，仍然会可能造成内存几乎全部被 OSD 所用，最终致使宿主机死机。可以通过两种方式来缓解这种情况，一种是在启用自动配置时调小 osd_memory_target 值，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[osd]</span><br><span class="line">osd memory target &#x3D; 2147483648</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[osd]</span><br><span class="line">osd memory target = 2147483648</span><br></pre></td></tr></table></figure>
 <p>另一种是禁用自动配置并手动指定缓存大小：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[osd]</span><br><span class="line">bluestore_cache_autotune &#x3D; False</span><br><span class="line">bluestore_min_alloc_size_ssd &#x3D; 32768</span><br><span class="line">bluestore_min_alloc_size_hdd &#x3D; 32768</span><br><span class="line">bluestore_min_alloc_size &#x3D; 32768</span><br><span class="line">bluestore_cache_kv_max &#x3D; 6442450944</span><br><span class="line">bluestore_cache_kv_ratio &#x3D; 0.990000</span><br><span class="line">bluestore_cache_meta_ratio &#x3D; 0.010000</span><br><span class="line">bluestore_cache_size &#x3D; 12884901888</span><br><span class="line">bluestore_cache_size_hdd &#x3D; 12884901888</span><br><span class="line">bluestore_cache_size_ssd &#x3D; 12884901888</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[osd]</span><br><span class="line">bluestore_cache_autotune = False</span><br><span class="line">bluestore_min_alloc_size_ssd = 32768</span><br><span class="line">bluestore_min_alloc_size_hdd = 32768</span><br><span class="line">bluestore_min_alloc_size = 32768</span><br><span class="line">bluestore_cache_kv_max = 6442450944</span><br><span class="line">bluestore_cache_kv_ratio = 0.990000</span><br><span class="line">bluestore_cache_meta_ratio = 0.010000</span><br><span class="line">bluestore_cache_size = 12884901888</span><br><span class="line">bluestore_cache_size_hdd = 12884901888</span><br><span class="line">bluestore_cache_size_ssd = 12884901888</span><br></pre></td></tr></table></figure>
 
 <p><a name="SnsuP"></a></p>
 <h4 id="ceph-查看存储池-IO"><a href="#ceph-查看存储池-IO" class="headerlink" title="ceph 查看存储池 IO"></a>ceph 查看存储池 IO</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph osd pool stats</span><br></pre></td></tr></table></figure>
@@ -368,17 +366,17 @@
 <p><a name="K2eGm"></a></p>
 <h4 id="挂载-cephfs-到本地"><a href="#挂载-cephfs-到本地" class="headerlink" title="挂载 cephfs 到本地"></a>挂载 cephfs 到本地</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/mycephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==</span><br></pre></td></tr></table></figure>
 <p>写入到 fstab 中，开机自动挂载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:&#x2F; &#x2F;cephfs ceph name&#x3D;admin,secret&#x3D;AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw&#x3D;&#x3D;,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:/ /cephfs ceph name=admin,secret=AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw==,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
 
 <p><a name="0mfaM"></a></p>
-<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">&#x2F;&#x2F; 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 查看自动增加的 pg 数量</span><br><span class="line">ceph osd pool autoscale-status</span><br></pre></td></tr></table></figure>
+<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">// 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">// 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br><span class="line">// 查看自动增加的 pg 数量</span><br><span class="line">ceph osd pool autoscale-status</span><br></pre></td></tr></table></figure>
 
 <p><a name="BlwFR"></a></p>
 <h4 id="删除-OSD-节点"><a href="#删除-OSD-节点" class="headerlink" title="删除 OSD 节点"></a>删除 OSD 节点</h4><p>参考先删后增节点时如何减少数据迁移：<a href="https://www.cnblogs.com/schangech/p/8036191.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/schangech/p/8036191.html</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 停止指定 OSD 进程</span><br><span class="line">systemctl stop ceph-osd@15</span><br><span class="line">// out 指定 OSD</span><br><span class="line">ceph osd out 15</span><br><span class="line">// crush remove 指定 OSD</span><br><span class="line">ceph osd crush remove osd.15</span><br><span class="line">// 删除 osd 对应的 auth</span><br><span class="line">ceph auth del osd.15</span><br><span class="line">// 删除 osd</span><br><span class="line">ceph osd rm 15</span><br><span class="line">// 按照上述步骤删除节点上所有 osd 后，crush remove 指定节点</span><br><span class="line">ceph osd crush rm osd-host</span><br></pre></td></tr></table></figure>
 
 <p><a name="jpOwk"></a></p>
-<h4 id="CentOS-安装-ceph-common"><a href="#CentOS-安装-ceph-common" class="headerlink" title="CentOS 安装 ceph-common"></a>CentOS 安装 ceph-common</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh https:&#x2F;&#x2F;download.ceph.com&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">&#x2F;&#x2F; 或使用镜像源</span><br><span class="line">rpm -Uvh https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ceph&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">sed -i &#39;s+download.ceph.com+mirrors.tuna.tsinghua.edu.cn&#x2F;ceph+&#39; &#x2F;etc&#x2F;yum.repos.d&#x2F;ceph.repo</span><br><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install ceph-common</span><br></pre></td></tr></table></figure>
+<h4 id="CentOS-安装-ceph-common"><a href="#CentOS-安装-ceph-common" class="headerlink" title="CentOS 安装 ceph-common"></a>CentOS 安装 ceph-common</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rpm -Uvh https://download.ceph.com/rpm-nautilus/el7/noarch/ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">// 或使用镜像源</span><br><span class="line">rpm -Uvh https://mirrors.tuna.tsinghua.edu.cn/ceph/rpm-nautilus/el7/noarch/ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">sed -i &apos;s+download.ceph.com+mirrors.tuna.tsinghua.edu.cn/ceph+&apos; /etc/yum.repos.d/ceph.repo</span><br><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install ceph-common</span><br></pre></td></tr></table></figure>
 
 
 
@@ -519,7 +517,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -547,7 +545,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -582,15 +580,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -642,17 +640,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -670,9 +660,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 

@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,25 +51,21 @@
 </script>
 
   <meta name="description" content="使用 Keystone 管理K8S用户以及认证过程。">
+<meta name="keywords" content="Kubernetes, Keystone, Authentication">
 <meta property="og:type" content="article">
 <meta property="og:title" content="K8S集成Keystone认证">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;699b195d.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="使用 Keystone 管理K8S用户以及认证过程。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;780&amp;name&#x3D;image.png&amp;originHeight&#x3D;780&amp;originWidth&#x3D;1124&amp;size&#x3D;108671&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1124">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441117777-1a84f269-f9cb-4f21-b149-f3a9979f981d.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;1128&amp;name&#x3D;image.png&amp;originHeight&#x3D;1128&amp;originWidth&#x3D;1268&amp;size&#x3D;287983&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1268">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441145645-fc76fed8-5251-442c-897c-ec854e8fbdf8.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;204&amp;name&#x3D;image.png&amp;originHeight&#x3D;204&amp;originWidth&#x3D;792&amp;size&#x3D;37633&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;792">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441171154-0092ca7c-9d67-46e0-8d07-752a98a02951.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;614&amp;name&#x3D;image.png&amp;originHeight&#x3D;614&amp;originWidth&#x3D;778&amp;size&#x3D;107346&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;778">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441193681-709aa70d-5835-46dc-a67a-57b10339e0da.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;172&amp;name&#x3D;image.png&amp;originHeight&#x3D;172&amp;originWidth&#x3D;1316&amp;size&#x3D;66169&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1316">
-<meta property="article:published_time" content="2019-02-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-02-11T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="Kubernetes">
-<meta property="article:tag" content=" Keystone">
-<meta property="article:tag" content=" Authentication">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png#align=left&amp;display=inline&amp;height=780&amp;name=image.png&amp;originHeight=780&amp;originWidth=1124&amp;size=108671&amp;status=done&amp;style=none&amp;width=1124">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441117777-1a84f269-f9cb-4f21-b149-f3a9979f981d.png#align=left&amp;display=inline&amp;height=1128&amp;name=image.png&amp;originHeight=1128&amp;originWidth=1268&amp;size=287983&amp;status=done&amp;style=none&amp;width=1268">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441145645-fc76fed8-5251-442c-897c-ec854e8fbdf8.png#align=left&amp;display=inline&amp;height=204&amp;name=image.png&amp;originHeight=204&amp;originWidth=792&amp;size=37633&amp;status=done&amp;style=none&amp;width=792">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441171154-0092ca7c-9d67-46e0-8d07-752a98a02951.png#align=left&amp;display=inline&amp;height=614&amp;name=image.png&amp;originHeight=614&amp;originWidth=778&amp;size=107346&amp;status=done&amp;style=none&amp;width=778">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441193681-709aa70d-5835-46dc-a67a-57b10339e0da.png#align=left&amp;display=inline&amp;height=172&amp;name=image.png&amp;originHeight=172&amp;originWidth=1316&amp;size=66169&amp;status=done&amp;style=none&amp;width=1316">
+<meta property="og:updated_time" content="2019-02-11T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;780&amp;name&#x3D;image.png&amp;originHeight&#x3D;780&amp;originWidth&#x3D;1124&amp;size&#x3D;108671&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1124">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png#align=left&amp;display=inline&amp;height=780&amp;name=image.png&amp;originHeight=780&amp;originWidth=1124&amp;size=108671&amp;status=done&amp;style=none&amp;width=1124">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/699b195d.html">
 
@@ -269,7 +265,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.7k</span>
+              <span>8.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -378,7 +374,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create clusterrolebinding key-auth-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default</span><br></pre></td></tr></table></figure>
 
 <p>另外 K8S 使用 https 协议，所以需要提供 tls 认证证书，这里直接使用 master 节点宿主机上的证书创建一个 secret ，然后挂载到k8s-keystone-auth pod 中使用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret generic keystone-auth-certs --from-file&#x3D;cert-file&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;pki&#x2F;apiserver.crt --from-file&#x3D;key-file&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;pki&#x2F;apiserver.key -n kube-system</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret generic keystone-auth-certs --from-file=cert-file=/etc/kubernetes/pki/apiserver.crt --from-file=key-file=/etc/kubernetes/pki/apiserver.key -n kube-system</span><br></pre></td></tr></table></figure>
 
 <p>然后，创建 k8s-keystone-auth 的部署文件如下：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">k8s-keystone-auth</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">k8s-keystone-auth</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">k8s-keystone-auth</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">k8s-keystone-auth</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">k8s-keystone-auth</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">xyc11223344/k8s-keystone-auth:v1.0</span></span><br><span class="line">          <span class="attr">imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line">          <span class="attr">args:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">/bin/k8s-keystone-auth</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--v=10</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--tls-cert-file</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">/etc/kubernetes/pki/cert-file</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--tls-private-key-file</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">/etc/kubernetes/pki/key-file</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--sync-configmap-name</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">k8s-sync-config</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">--keystone-url</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">http://keystone.keystone:5000/v3</span></span><br><span class="line">          <span class="attr">env:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">KEYSTONE_SYNC_CONFIGMAP_NAME</span></span><br><span class="line">            <span class="attr">value:</span> <span class="string">k8s-sync-config</span></span><br><span class="line">          <span class="attr">volumeMounts:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/etc/kubernetes/pki</span></span><br><span class="line">              <span class="attr">name:</span> <span class="string">k8s-certs</span></span><br><span class="line">              <span class="attr">readOnly:</span> <span class="literal">true</span></span><br><span class="line">          <span class="attr">ports:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">8443</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">k8s-certs</span></span><br><span class="line">        <span class="attr">secret:</span></span><br><span class="line">          <span class="attr">secretName:</span> <span class="string">keystone-auth-certs</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">k8s-keystone-auth-service</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">k8s-keystone-auth</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">nodePort:</span> <span class="number">32189</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">8443</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">8443</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br></pre></td></tr></table></figure>
@@ -390,7 +386,7 @@
 
 <p>之后将 webhook 配置文件拷贝到每一个 master 节点的 /etc/kubernetes/pki/webhookconfig.yaml 路径， 这是因为该配置文件需要被 kube-apiserver 容器访问到，而 /etc/kubernetes 路径已经以 hostPath 的形式挂载到了 kube-apiserver 容器中，所以放到宿主机上该路径下的文件可以直接被容器访问到。</p>
 <p>接下来，更改 kube-apiserver 的启动参数，编辑 /etc/kubernetes/manifests/kube-apiserver.yaml 如下，增加了一行内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--authentication-token-webhook-config-file&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;pki&#x2F;webhookconfig.yaml</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--authentication-token-webhook-config-file=/etc/kubernetes/pki/webhookconfig.yaml</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://i.loli.net/2019/12/04/kLvZaG9NQ3lTebA.png" alt="image.png"></p>
 <p><a name="fd1817a9"></a></p>
@@ -404,10 +400,10 @@
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">users:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">admin</span></span><br><span class="line">  <span class="attr">user:</span></span><br><span class="line">    <span class="attr">exec:</span></span><br><span class="line">      <span class="attr">apiVersion:</span> <span class="string">client.authentication.k8s.io/v1beta1</span></span><br><span class="line">      <span class="attr">command:</span> <span class="string">/usr/local/bin/client-keystone-auth</span></span><br></pre></td></tr></table></figure>
 
 <p>接着执行以下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl config set-context --cluster&#x3D;kubernetes --user&#x3D;admin keystone-admin@kubernetes</span><br><span class="line">kubectl config use-context keystone-admin@kubernetes</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl config set-context --cluster=kubernetes --user=admin keystone-admin@kubernetes</span><br><span class="line">kubectl config use-context keystone-admin@kubernetes</span><br></pre></td></tr></table></figure>
 
 <p>此时再执行 kubectl 命令会提示输入 Keystone 相关认证信息。也可以提前设置好如下环境变量：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export OS_DOMAIN_NAME&#x3D;Default</span><br><span class="line">export OS_PROJECT_NAME&#x3D;admin</span><br><span class="line">export OS_USERNAME&#x3D;admin</span><br><span class="line">export OS_PASSWORD&#x3D;test</span><br><span class="line">export OS_AUTH_URL&#x3D;http:&#x2F;&#x2F;10.10.144.75:31221&#x2F;v3</span><br><span class="line">export OS_IDENTITY_API_VERSION&#x3D;3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export OS_DOMAIN_NAME=Default</span><br><span class="line">export OS_PROJECT_NAME=admin</span><br><span class="line">export OS_USERNAME=admin</span><br><span class="line">export OS_PASSWORD=test</span><br><span class="line">export OS_AUTH_URL=http://10.10.144.75:31221/v3</span><br><span class="line">export OS_IDENTITY_API_VERSION=3</span><br></pre></td></tr></table></figure>
 
 <p>设置好环境变量后使用 kubectl 依然会提示 unauthorized，这是因为 admin 用户并没有权限访问集群资源，admin 用户目前只有权限访问从 keystone 同步过来的项目。执行以下命令，切换 kubectl 认证信息为集群初始的管理员：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config use-context kubernetes-admin@kubernetes</span><br></pre></td></tr></table></figure>
@@ -563,7 +559,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -591,7 +587,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -626,15 +622,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -686,17 +682,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -714,9 +702,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 

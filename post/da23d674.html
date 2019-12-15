@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,17 +51,14 @@
 </script>
 
   <meta name="description" content="Qt编译过程中常见的问题及解决方法汇总。">
+<meta name="keywords" content="Qt, 编译问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Qt 常见编译问题汇总">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;da23d674.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="Qt编译过程中常见的问题及解决方法汇总。">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-04-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2017-04-06T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="Qt">
-<meta property="article:tag" content=" 编译问题">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-04-06T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/da23d674.html">
@@ -262,7 +259,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -301,14 +298,14 @@
 <p>本文汇总了在Qt  5.8中使用C++进行开发时遇到的编译错误和警告及其解决方法，基于C++11标准。</p>
 <p><a name="eca07263"></a></p>
 <h3 id="constant-string-to-char"><a href="#constant-string-to-char" class="headerlink" title="constant string to char *"></a>constant string to char *</h3><p>初始代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char *p &#x3D; &quot;Hello&quot;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char *p = &quot;Hello&quot;;</span><br></pre></td></tr></table></figure>
 
 <p>编译输出：</p>
 <blockquote>
 <p>ISO C++ forbids conversion from constant string to char *.</p>
 </blockquote>
 <p>修改代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char const *p &#x3D; &quot;Hello&quot;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char const *p = &quot;Hello&quot;;</span><br></pre></td></tr></table></figure>
 
 <p>参考资料：</p>
 <ol>
@@ -316,14 +313,14 @@
 </ol>
 <p><a name="0fd228ba"></a></p>
 <h3 id="comparison-between-signed-and-unsigned"><a href="#comparison-between-signed-and-unsigned" class="headerlink" title="comparison between signed and unsigned"></a>comparison between signed and unsigned</h3><p>初始代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (int i &#x3D; 0, max &#x3D; vec.size(); i !&#x3D; max; ++i)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (int i = 0, max = vec.size(); i != max; ++i)</span><br></pre></td></tr></table></figure>
 
 <p>编译输出：</p>
 <blockquote>
 <p>warning: comparison between signed and unsigned integer expressions [-Wsign-compare]</p>
 </blockquote>
 <p>修改代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (std::size_t i &#x3D; 0, max &#x3D; vec.size(); i !&#x3D; max; ++i)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (std::size_t i = 0, max = vec.size(); i != max; ++i)</span><br></pre></td></tr></table></figure>
 
 <p>附加注释：</p>
 <blockquote>
@@ -455,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#constant-string-to-char"><span class="nav-number">1.</span> <span class="nav-text">constant string to char *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#comparison-between-signed-and-unsigned"><span class="nav-number">2.</span> <span class="nav-text">comparison between signed and unsigned</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined-reference-to-inet-addr-4’"><span class="nav-number">3.</span> <span class="nav-text">undefined reference to &#96;inet_addr@4’</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#constant-string-to-char"><span class="nav-number">1.</span> <span class="nav-text">constant string to char *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#comparison-between-signed-and-unsigned"><span class="nav-number">2.</span> <span class="nav-text">comparison between signed and unsigned</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined-reference-to-inet-addr-4’"><span class="nav-number">3.</span> <span class="nav-text">undefined reference to `inet_addr@4’</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -470,7 +467,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -498,7 +495,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -533,15 +530,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -593,17 +590,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -621,9 +610,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 

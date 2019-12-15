@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,24 +51,20 @@
 </script>
 
   <meta name="description" content="使用 kolla-ansible 部署一套具有三个控制节点和两个计算节点的 OpenStack 环境。">
+<meta name="keywords" content="OpenStack, Kolla, Ansible">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 kolla-ansible 部署 OpenStack">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;43354256.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="使用 kolla-ansible 部署一套具有三个控制节点和两个计算节点的 OpenStack 环境。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;702&amp;name&#x3D;image.png&amp;originHeight&#x3D;702&amp;originWidth&#x3D;891&amp;size&#x3D;68225&amp;status&#x3D;done&amp;width&#x3D;891">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;696&amp;name&#x3D;image.png&amp;originHeight&#x3D;696&amp;originWidth&#x3D;885&amp;size&#x3D;68338&amp;status&#x3D;done&amp;width&#x3D;885">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;614&amp;name&#x3D;image.png&amp;originHeight&#x3D;614&amp;originWidth&#x3D;617&amp;size&#x3D;55558&amp;status&#x3D;done&amp;width&#x3D;617">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558870518738-a48e46b4-d616-4a1b-9c17-f11fc2595b76.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;590&amp;name&#x3D;image.png&amp;originHeight&#x3D;701&amp;originWidth&#x3D;886&amp;size&#x3D;70490&amp;status&#x3D;done&amp;width&#x3D;746">
-<meta property="article:published_time" content="2019-05-25T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-05-25T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="OpenStack">
-<meta property="article:tag" content=" Kolla">
-<meta property="article:tag" content=" Ansible">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align=left&amp;display=inline&amp;height=702&amp;name=image.png&amp;originHeight=702&amp;originWidth=891&amp;size=68225&amp;status=done&amp;width=891">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png#align=left&amp;display=inline&amp;height=696&amp;name=image.png&amp;originHeight=696&amp;originWidth=885&amp;size=68338&amp;status=done&amp;width=885">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png#align=left&amp;display=inline&amp;height=614&amp;name=image.png&amp;originHeight=614&amp;originWidth=617&amp;size=55558&amp;status=done&amp;width=617">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558870518738-a48e46b4-d616-4a1b-9c17-f11fc2595b76.png#align=left&amp;display=inline&amp;height=590&amp;name=image.png&amp;originHeight=701&amp;originWidth=886&amp;size=70490&amp;status=done&amp;width=746">
+<meta property="og:updated_time" content="2019-05-25T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;702&amp;name&#x3D;image.png&amp;originHeight&#x3D;702&amp;originWidth&#x3D;891&amp;size&#x3D;68225&amp;status&#x3D;done&amp;width&#x3D;891">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align=left&amp;display=inline&amp;height=702&amp;name=image.png&amp;originHeight=702&amp;originWidth=891&amp;size=68225&amp;status=done&amp;width=891">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/43354256.html">
 
@@ -529,7 +525,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -557,7 +553,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -592,15 +588,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -652,17 +648,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -680,9 +668,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 

@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,19 +51,17 @@
 </script>
 
   <meta name="description" content="开发过程中遇到的有趣及琐碎的前端知识。">
+<meta name="keywords" content="前端">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端知识点滴">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;a68ff6.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="开发过程中遇到的有趣及琐碎的前端知识。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575432225980-3814e3a4-8a82-478e-8f1f-8713291450ea.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;453&amp;name&#x3D;image.png&amp;originHeight&#x3D;453&amp;originWidth&#x3D;961&amp;size&#x3D;68737&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;961">
-<meta property="article:published_time" content="2019-11-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-12-07T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="前端">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575432225980-3814e3a4-8a82-478e-8f1f-8713291450ea.png#align=left&amp;display=inline&amp;height=453&amp;name=image.png&amp;originHeight=453&amp;originWidth=961&amp;size=68737&amp;status=done&amp;style=none&amp;width=961">
+<meta property="og:updated_time" content="2019-12-07T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575432225980-3814e3a4-8a82-478e-8f1f-8713291450ea.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;453&amp;name&#x3D;image.png&amp;originHeight&#x3D;453&amp;originWidth&#x3D;961&amp;size&#x3D;68737&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;961">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575432225980-3814e3a4-8a82-478e-8f1f-8713291450ea.png#align=left&amp;display=inline&amp;height=453&amp;name=image.png&amp;originHeight=453&amp;originWidth=961&amp;size=68737&amp;status=done&amp;style=none&amp;width=961">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/a68ff6.html">
 
@@ -270,7 +268,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.4k</span>
+              <span>8.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -330,7 +328,7 @@
 <li><p>HTTP 请求发送 Cookies 的条件：本地已经缓存有 cookies；根据请求的 URL 来匹配 cookies 的 domain、path 属性，如果都符合才会发送。</p>
 </li>
 <li><p>如下为HTTP 响应头中设置 cookie 的示例，Expires 和 Max-Age 同时设置时后者优先级高，如果均未设置则默认有效期为 session，当浏览器关闭时失效，设置 Max-Age 为 0 使 cookie 立即失效即删除cookie，HttpOnly 指明只允许浏览器自动处理，不允许使用 JavaScrit 操作该 cookie，Path 指定对哪些 Path 自动发送该 cookie，默认为 ／ 代表对所有路径有效，设置 domain 为顶级域名时可以在各子域名之间共享 cookie，如 Set-Cookie: name=value; domain=mydomain.com ，则可以在 sub1.mydomain.com／sub2.mydomain.com／subsub.subdomain.mydomain.com 之间共享该 cookie，无论最初的 set-cookie 响应头源自哪个 sub domain：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: KEYCLOAK_SESSION&#x3D;umstor&#x2F;fe2ff4f2-6b3c-4d03-aaf1-0e79f09568c5&#x2F;9e4adcbc-cfec-4f57-9eb9-4bcc16877a23; Version&#x3D;1; Expires&#x3D;Sat, 30-Nov-2019 14:52:40 GMT; Max-Age&#x3D;36000; Path&#x3D;&#x2F;keycloak&#x2F;realms&#x2F;umstor&#x2F;</span><br><span class="line">Set-Cookie: KEYCLOAK_REMEMBER_ME&#x3D;; Version&#x3D;1; Comment&#x3D;Expiring cookie; Expires&#x3D;Thu, 01-Jan-1970 00:00:10 GMT; Max-Age&#x3D;0; Path&#x3D;&#x2F;keycloak&#x2F;realms&#x2F;umstor&#x2F;; HttpOnly</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: KEYCLOAK_SESSION=umstor/fe2ff4f2-6b3c-4d03-aaf1-0e79f09568c5/9e4adcbc-cfec-4f57-9eb9-4bcc16877a23; Version=1; Expires=Sat, 30-Nov-2019 14:52:40 GMT; Max-Age=36000; Path=/keycloak/realms/umstor/</span><br><span class="line">Set-Cookie: KEYCLOAK_REMEMBER_ME=; Version=1; Comment=Expiring cookie; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Max-Age=0; Path=/keycloak/realms/umstor/; HttpOnly</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>session 是服务端记录用户登录状态的机制，只不过需要借助 cookie 机制在浏览器每次发起请求时带上 session id。</p>
 </li>
@@ -498,7 +496,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#swagger-client"><span class="nav-number">1.</span> <span class="nav-text">swagger-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件下载"><span class="nav-number">2.</span> <span class="nav-text">文件下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新依赖"><span class="nav-number">3.</span> <span class="nav-text">更新依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-下载图片到本地"><span class="nav-number">4.</span> <span class="nav-text">Node.js 下载图片到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-教程"><span class="nav-number">5.</span> <span class="nav-text">Node.js 教程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-流式转存图片"><span class="nav-number">6.</span> <span class="nav-text">Node.js 流式转存图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从-Html-文本中匹配所有-img-的地址"><span class="nav-number">7.</span> <span class="nav-text">从 Html 文本中匹配所有 img 的地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie-的工作原理"><span class="nav-number">8.</span> <span class="nav-text">cookie 的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前端的各种存储"><span class="nav-number">9.</span> <span class="nav-text">前端的各种存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chrome-控制台记录-XMLHttpRequest-请求"><span class="nav-number">10.</span> <span class="nav-text">Chrome 控制台记录 XMLHttpRequest 请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-Token-的认识"><span class="nav-number">11.</span> <span class="nav-text">关于 Token 的认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OAtuh-与-OpenID"><span class="nav-number">12.</span> <span class="nav-text">OAtuh 与 OpenID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单点登录的实现方式"><span class="nav-number">13.</span> <span class="nav-text">单点登录的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问资源时省略-URL-中的协议"><span class="nav-number">14.</span> <span class="nav-text">访问资源时省略 URL 中的协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#长短连接与长短轮询"><span class="nav-number">15.</span> <span class="nav-text">长短连接与长短轮询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-2-与-HTTP-1-1"><span class="nav-number">16.</span> <span class="nav-text">HTTP&#x2F;2 与 HTTP&#x2F;1.1</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#swagger-client"><span class="nav-number">1.</span> <span class="nav-text">swagger-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件下载"><span class="nav-number">2.</span> <span class="nav-text">文件下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新依赖"><span class="nav-number">3.</span> <span class="nav-text">更新依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-下载图片到本地"><span class="nav-number">4.</span> <span class="nav-text">Node.js 下载图片到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-教程"><span class="nav-number">5.</span> <span class="nav-text">Node.js 教程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-js-流式转存图片"><span class="nav-number">6.</span> <span class="nav-text">Node.js 流式转存图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从-Html-文本中匹配所有-img-的地址"><span class="nav-number">7.</span> <span class="nav-text">从 Html 文本中匹配所有 img 的地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie-的工作原理"><span class="nav-number">8.</span> <span class="nav-text">cookie 的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前端的各种存储"><span class="nav-number">9.</span> <span class="nav-text">前端的各种存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chrome-控制台记录-XMLHttpRequest-请求"><span class="nav-number">10.</span> <span class="nav-text">Chrome 控制台记录 XMLHttpRequest 请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-Token-的认识"><span class="nav-number">11.</span> <span class="nav-text">关于 Token 的认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OAtuh-与-OpenID"><span class="nav-number">12.</span> <span class="nav-text">OAtuh 与 OpenID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单点登录的实现方式"><span class="nav-number">13.</span> <span class="nav-text">单点登录的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问资源时省略-URL-中的协议"><span class="nav-number">14.</span> <span class="nav-text">访问资源时省略 URL 中的协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#长短连接与长短轮询"><span class="nav-number">15.</span> <span class="nav-text">长短连接与长短轮询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-2-与-HTTP-1-1"><span class="nav-number">16.</span> <span class="nav-text">HTTP/2 与 HTTP/1.1</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -513,7 +511,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -541,7 +539,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -576,15 +574,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -636,17 +634,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -664,9 +654,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 

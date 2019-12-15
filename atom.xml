@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2019-12-13T16:00:00.000Z</updated>
+  <updated>2019-12-14T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Netfilter 框架及其周边组件</title>
+    <link href="https://www.xiayinchang.top/post/d617cc74.html"/>
+    <id>https://www.xiayinchang.top/post/d617cc74.html</id>
+    <published>2019-12-14T16:00:00.000Z</published>
+    <updated>2019-12-14T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Netfilter 框架及其周边组件作为 Linux 内核网络栈的一部分在网络包过滤等方面发挥重要作用。我们在使用 iptables 配置防火墙规则、使用 conntrack 跟踪网络连接、使用 ipvs 配置虚拟服务器实现负载均衡时都使用到了 Netfilter 框架提供的功能特性。对 Netfilter 的生态进行梳理有助于我们对现有应用场景加深理解，也能进一步帮助我们发掘出更多的应用场景。
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux 进程管理基础知识</title>
@@ -438,27 +459,6 @@
       <category term="Ceph" scheme="https://www.xiayinchang.top/tags/Ceph/"/>
     
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Go 知识点汇总</title>
-    <link href="https://www.xiayinchang.top/post/defe85e8.html"/>
-    <id>https://www.xiayinchang.top/post/defe85e8.html</id>
-    <published>2019-10-11T16:00:00.000Z</published>
-    <updated>2019-11-23T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      汇总对 Go 语言的基本理解、编程方法和开源库等。
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
     
   </entry>
   

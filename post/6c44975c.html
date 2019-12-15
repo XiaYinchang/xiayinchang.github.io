@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.1.1">
+<meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,27 +51,24 @@
 </script>
 
   <meta name="description" content="为了方便基于 Proxmox 平台创建虚拟机，本文描述了制作包含 cloud-init 的虚拟机模板。">
+<meta name="keywords" content="Proxmox, cloud-init">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为 Proxmox 制作包含 cloud-init 的虚拟机模板">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;6c44975c.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="为了方便基于 Proxmox 平台创建虚拟机，本文描述了制作包含 cloud-init 的虚拟机模板。">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;690&amp;name&#x3D;image.png&amp;originHeight&#x3D;690&amp;originWidth&#x3D;1038&amp;size&#x3D;159786&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1038">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;751&amp;name&#x3D;image.png&amp;originHeight&#x3D;751&amp;originWidth&#x3D;1043&amp;size&#x3D;125930&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1043">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;769&amp;name&#x3D;image.png&amp;originHeight&#x3D;769&amp;originWidth&#x3D;1026&amp;size&#x3D;121666&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1026">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;769&amp;name&#x3D;image.png&amp;originHeight&#x3D;769&amp;originWidth&#x3D;1041&amp;size&#x3D;165004&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1041">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;733&amp;name&#x3D;image.png&amp;originHeight&#x3D;733&amp;originWidth&#x3D;1020&amp;size&#x3D;132613&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1020">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;633&amp;name&#x3D;image.png&amp;originHeight&#x3D;633&amp;originWidth&#x3D;719&amp;size&#x3D;92450&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;719">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765613783-81f32306-e298-4d18-a553-128415466232.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;388&amp;name&#x3D;image.png&amp;originHeight&#x3D;388&amp;originWidth&#x3D;533&amp;size&#x3D;35717&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;533">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;645&amp;name&#x3D;image.png&amp;originHeight&#x3D;645&amp;originWidth&#x3D;720&amp;size&#x3D;68736&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;720">
-<meta property="article:published_time" content="2019-08-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2019-12-12T16:00:00.000Z">
-<meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="Proxmox">
-<meta property="article:tag" content=" cloud-init">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&amp;display=inline&amp;height=690&amp;name=image.png&amp;originHeight=690&amp;originWidth=1038&amp;size=159786&amp;status=done&amp;style=none&amp;width=1038">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png#align=left&amp;display=inline&amp;height=751&amp;name=image.png&amp;originHeight=751&amp;originWidth=1043&amp;size=125930&amp;status=done&amp;style=none&amp;width=1043">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png#align=left&amp;display=inline&amp;height=769&amp;name=image.png&amp;originHeight=769&amp;originWidth=1026&amp;size=121666&amp;status=done&amp;style=none&amp;width=1026">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png#align=left&amp;display=inline&amp;height=769&amp;name=image.png&amp;originHeight=769&amp;originWidth=1041&amp;size=165004&amp;status=done&amp;style=none&amp;width=1041">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png#align=left&amp;display=inline&amp;height=733&amp;name=image.png&amp;originHeight=733&amp;originWidth=1020&amp;size=132613&amp;status=done&amp;style=none&amp;width=1020">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align=left&amp;display=inline&amp;height=633&amp;name=image.png&amp;originHeight=633&amp;originWidth=719&amp;size=92450&amp;status=done&amp;style=none&amp;width=719">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565765613783-81f32306-e298-4d18-a553-128415466232.png#align=left&amp;display=inline&amp;height=388&amp;name=image.png&amp;originHeight=388&amp;originWidth=533&amp;size=35717&amp;status=done&amp;style=none&amp;width=533">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align=left&amp;display=inline&amp;height=645&amp;name=image.png&amp;originHeight=645&amp;originWidth=720&amp;size=68736&amp;status=done&amp;style=none&amp;width=720">
+<meta property="og:updated_time" content="2019-12-12T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align&#x3D;left&amp;display&#x3D;inline&amp;height&#x3D;690&amp;name&#x3D;image.png&amp;originHeight&#x3D;690&amp;originWidth&#x3D;1038&amp;size&#x3D;159786&amp;status&#x3D;done&amp;style&#x3D;none&amp;width&#x3D;1038">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&amp;display=inline&amp;height=690&amp;name=image.png&amp;originHeight=690&amp;originWidth=1038&amp;size=159786&amp;status=done&amp;style=none&amp;width=1038">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/6c44975c.html">
 
@@ -512,7 +509,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -540,7 +537,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -575,15 +572,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">190k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:53</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.1.1
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -635,17 +632,9 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
 <script src="/js/schemes/muse.js"></script>
-
-
 <script src="/js/next-boot.js"></script>
-
 
 
 
@@ -663,9 +652,7 @@
 
 
 
-  
-<script src="/js/local-search.js"></script>
-
+  <script src="/js/local-search.js"></script>
 
 
 
