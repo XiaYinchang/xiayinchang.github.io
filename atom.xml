@@ -218,29 +218,6 @@
   </entry>
   
   <entry>
-    <title>数据结构-绪论</title>
-    <link href="https://www.xiayinchang.top/post/75bf7760.html"/>
-    <id>https://www.xiayinchang.top/post/75bf7760.html</id>
-    <published>2019-11-23T16:00:00.000Z</published>
-    <updated>2019-11-23T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      邓俊辉的《数据结构(C++ 语言版)》课程与书籍学习笔记，本篇为绪论学习总结，相关代码均重新用 Go 语言实现并托管至 GitHub 。
-    
-    </summary>
-    
-    
-      <category term="数据结构" scheme="https://www.xiayinchang.top/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
-    
-      <category term="数据结构" scheme="https://www.xiayinchang.top/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
     <title>使用语雀、GitHub 和阿里云函数计算构建博客</title>
     <link href="https://www.xiayinchang.top/post/b2362878.html"/>
     <id>https://www.xiayinchang.top/post/b2362878.html</id>
@@ -459,6 +436,27 @@
       <category term="Ceph" scheme="https://www.xiayinchang.top/tags/Ceph/"/>
     
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Go 知识点汇总</title>
+    <link href="https://www.xiayinchang.top/post/defe85e8.html"/>
+    <id>https://www.xiayinchang.top/post/defe85e8.html</id>
+    <published>2019-10-11T16:00:00.000Z</published>
+    <updated>2019-11-23T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      汇总对 Go 语言的基本理解、编程方法和开源库等。
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
     
   </entry>
   

@@ -354,7 +354,7 @@
 <li>MAC 地址表：用于记录局域网中每个宿主机的位置（通过 MAC 地址与接口的对应关系确定位置）。</li>
 </ul>
 <p>网桥通过构造一张 MAC 地址表将 MAC 地址和 MAC 地址连接的网络端口关联起来。当一个数据帧到达网桥的一个接口，网桥会更新 MAC 地址表记录下数据帧中的源 MAC 地址和该网络接口的对应关系。每个接口可以关联多个 MAC 地址，但是每个 MAC 地址只能对应一个网络接口。<br>数据帧从某个接口到达网桥后，网桥在记录源 MAC 地址与接口的对应关系的同时，也会查找表中关于目的 MAC 地址的记录。如果目的 MAC 地址在表中，则数据帧会被转发到对应的接口。如果目的 MAC 地址不在表中，或者目的 MAC 地址是一个广播或多播地址，则该数据帧将会被转发给除了进入网桥时的端口之外的所有端口。这样会造成环路和流量洪泛，而 STP 就是用来解决这个问题的，STP 会保留所有可以到达根路由器的路径中最短的路径，而切断其它的路径，从而形成树形结构。<br>实验细节参考：<a href="https://hechao.li/2017/12/13/linux-bridge-part1/" target="_blank" rel="external nofollow noopener noreferrer">https://hechao.li/2017/12/13/linux-bridge-part1/</a><br><a name="88953"></a></p>
-<h4 id="TUN-TAP"><a href="#TUN-TAP" class="headerlink" title="TUN/TAP"></a>TUN/TAP</h4><p>根据 Linux 内核文档: TUN/TAP 为用户空间程序提供分组接收和传输功能。它可以被看作是一个简单的点对点或以太网设备，它不是从物理媒体接收数据包，而是从用户空间程序接收数据包，并且不是通过物理媒体发送数据包，而是将数据包写入用户空间程序。<br>也就是说，TUN/TAP 接口是虚拟接口，没有相关的物理设备。用户空间程序可以连接到 TUN/TAP 接口，并处理发送到接口的流量。<br>TUN 接口是虚拟 IP 点对点接口，而 TAP 接口是虚拟以太网接口。 这意味着用户程序只能从 / 向 TUN 接口读 / 写 IP 数据包，从 / 向 TAP 接口读 / 写以太网帧。<br>TUN 接口的典型用例是 IP 隧道。 例如，OpenVPN 从 tun0 等 TUN 接口接收数据包，并在将其发送到真正的以太网接口 eth0 之前对其进行加密。 然后，对端网络上的 OpenVPN 客户端接收来自 eth0 的数据包，并在将其发送到 tun0 之前对其进行解密。 换句话说，OpenVPN 作为 tun0 和 eth0 之间的代理工作，并在两个主机之间通过互联网创建加密的 UDP 连接。<br><img src="https://i.loli.net/2019/12/15/jp6VyqowIgJlM5F.png" alt="image.png"><br>TAP 接口的典型用例是虚拟网络。 例如，在 Linux Bridge Part 1 中，我们已经看到，当我们使用桥接网络在 KVM 中创建一个 VM 时，它会创建一个类似 vnet0 的 TAP 接口，并将其添加到 Linux 桥。 在这种情况下，KVM 是用于读取和写入 TAP 接口的 usersapce 程序。 当 VM0 向它的 eth0 发送一个数据包时，KVM 将其发送到 TAP 接口 vnet0，以便桥接器将其转发到 vnet1。 然后 KVM 接收它并将其发送给 VM1 的 eth0。<br><img src="https://i.loli.net/2019/12/15/mHtLG93idgXPlAN.png" alt="image.png"><br><code>ip tuntap</code> 命令可用于管理 TUN/TAP 接口。例如:</p>
+<h4 id="TUN-TAP"><a href="#TUN-TAP" class="headerlink" title="TUN/TAP"></a>TUN/TAP</h4><p>根据 Linux 内核文档: TUN/TAP 为用户空间程序提供分组接收和传输功能。它可以被看作是一个简单的点对点或以太网设备，它不是从物理媒体接收数据包，而是从用户空间程序接收数据包，并且不是通过物理媒体发送数据包，而是将数据包写入用户空间程序。<br>也就是说，TUN/TAP 接口是虚拟接口，没有相关的物理设备。用户空间程序可以连接到 TUN/TAP 接口，并处理发送到接口的流量。<br>TUN 接口是虚拟 IP 点对点接口，而 TAP 接口是虚拟以太网接口。 这意味着用户程序只能从 / 向 TUN 接口读 / 写 IP 数据包，从 / 向 TAP 接口读 / 写以太网帧。<br>TUN 接口的典型用例是 IP 隧道。 例如，OpenVPN 从 tun0 等 TUN 接口接收数据包，并在将其发送到真正的以太网接口 eth0 之前对其进行加密。 然后，对端网络上的 OpenVPN 客户端接收来自 eth0 的数据包，并在将其发送到 tun0 之前对其进行解密。 换句话说，OpenVPN 作为 tun0 和 eth0 之间的代理工作，并在两个主机之间通过互联网创建加密的 UDP 连接。<br><img src="https://i.loli.net/2019/12/16/upfdaxSFeP2h9tE.png" alt="image.png"><br>TAP 接口的典型用例是虚拟网络。 例如，在 Linux Bridge Part 1 中，我们已经看到，当我们使用桥接网络在 KVM 中创建一个 VM 时，它会创建一个类似 vnet0 的 TAP 接口，并将其添加到 Linux 桥。 在这种情况下，KVM 是用于读取和写入 TAP 接口的 usersapce 程序。 当 VM0 向它的 eth0 发送一个数据包时，KVM 将其发送到 TAP 接口 vnet0，以便桥接器将其转发到 vnet1。 然后 KVM 接收它并将其发送给 VM1 的 eth0。<br><img src="https://i.loli.net/2019/12/16/b7ijn2asqKXBF6V.png" alt="image.png"><br><code>ip tuntap</code> 命令可用于管理 TUN/TAP 接口。例如:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ip tuntap <span class="built_in">help</span></span><br><span class="line">Usage: ip tuntap &#123; add | del | show | list | lst | <span class="built_in">help</span> &#125; [ dev PHYS_DEV ]</span><br><span class="line">          [ mode &#123; tun | tap &#125; ] [ user USER ] [ group GROUP ]</span><br><span class="line">          [ one_queue ] [ pi ] [ vnet_hdr ] [ multi_queue ]</span><br><span class="line"></span><br><span class="line">Where: USER  := &#123; STRING | NUMBER &#125;</span><br><span class="line">       GROUP := &#123; STRING | NUMBER &#125;</span><br></pre></td></tr></table></figure>
 <p>参考：<a href="https://hechao.li/2018/05/21/Tun-Tap-Interface/" target="_blank" rel="external nofollow noopener noreferrer">https://hechao.li/2018/05/21/Tun-Tap-Interface/</a><br><a name="JsS9S"></a></p>
 <h4 id="阅读资料"><a href="#阅读资料" class="headerlink" title="阅读资料"></a>阅读资料</h4>
@@ -495,20 +495,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">46</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -558,13 +558,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">192k</span>
+    <span title="站点总字数">191k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:55</span>
+    <span title="站点阅读时长">2:54</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
