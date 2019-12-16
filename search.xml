@@ -49,10 +49,13 @@
 <p>   参考： <a href="https://juejin.im/post/5c3363bf6fb9a049e2322cdb" target="_blank" rel="external nofollow noopener noreferrer">Docker 的网络模式详解</a></p>
 </li>
 <li><p>查看 docker registry 中的镜像信息</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -X GET https://myregistry:5000/v2/_catalog</span><br><span class="line">curl -X GET https://myregistry:5000/v2/ubuntu/tags/list</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>docker 指定 tcp 监听地址</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 修改 /usr/lib/systemd/system/docker.service</span><br><span class="line">ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H fd:// --containerd=/run/containerd/containerd.sock</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -X GET https://myregistry:5000/v2/_catalog</span><br><span class="line">curl -X GET https://myregistry:5000/v2/ubuntu/tags/list</span><br></pre></td></tr></table></figure>
-
 <p><a name="LzPfH"></a></p>
 <h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h4><ul>
 <li><p>升级系统内核</p>
