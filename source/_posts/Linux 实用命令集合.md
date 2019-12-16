@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Sat Dec 14 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon Dec 16 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -354,6 +354,11 @@ git rebase --root -i
 - 删除所有没有远程分支的本地分支
 ```
 git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d
+```
+
+- 撤销某个 commit
+```
+git revert --strategy resolve <commit>
 ```
 
 <a name="Qgmi6"></a>
