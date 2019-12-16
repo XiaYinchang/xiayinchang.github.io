@@ -144,7 +144,7 @@ func main() {
 
 <a name="IWVp8"></a>
 #### 包导入过程
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&display=inline&height=424&name=image.png&originHeight=424&originWidth=953&size=146883&status=done&width=953)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&display=inline&height=424&name=image.png&originHeight=424&originWidth=953&size=146883&status=done&style=none&width=953)
 <a name="ifRex"></a>
 #### godoc 与 go doc
 从 go 1.12 开始， godoc 不再提供各种子命令，仅作为一个 http server 提供 GOPATH 和 GOROOT 下 pkg 的在线文档，而 go doc 命令可以用来查看本地程序的文档。
