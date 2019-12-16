@@ -60,10 +60,15 @@ docker run --name b2 -it --network container:b1 --rm busybox:latest
      参考： [Docker 的网络模式详解](https://juejin.im/post/5c3363bf6fb9a049e2322cdb)
 
 - 查看 docker registry 中的镜像信息
-
 ```
 curl -X GET https://myregistry:5000/v2/_catalog
 curl -X GET https://myregistry:5000/v2/ubuntu/tags/list
+```
+
+- docker 指定 tcp 监听地址
+```
+// 修改 /usr/lib/systemd/system/docker.service
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H fd:// --containerd=/run/containerd/containerd.sock
 ```
 
 <a name="LzPfH"></a>
