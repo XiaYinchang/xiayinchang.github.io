@@ -299,14 +299,18 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">export ETCDCTL_API=3</span><br><span class="line">export ETCDCTL_CACERT=/etc/kubernetes/pki/etcd/ca.crt</span><br><span class="line">export ETCDCTL_CERT=/etc/kubernetes/pki/etcd/healthcheck-client.crt</span><br><span class="line">export ETCDCTL_KEY=/etc/kubernetes/pki/etcd/healthcheck-client.key</span><br><span class="line">export ETCDCTL_ENDPOINTS=192.168.180.7:2379,192.168.180.8:2379,192.168.180.9:2379</span><br><span class="line">// 列出所有键值对</span><br><span class="line">etcdctl get &quot;&quot; --prefix=true</span><br><span class="line">etcdctl get &quot;&quot; --from-key</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>备份</li>
-</ul>
+<li><p>备份</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save etcd-snapshot.db</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>磁盘读写速度过慢造成的故障</li>
+</li>
+<li><p>磁盘读写速度过慢造成的故障</p>
+</li>
 </ul>
 <p>如果 etcd pod 的 log 中会存在大量的类似 “etcdserver: read-only range request “key:…” with result “…” took too long (…) to execute” 的报错，大概率是磁盘损坏造成的读写速度过慢导致的，etcd 的数据存储在 /var/lib/etcd 目录下。</p>
+<ul>
+<li>删除节点<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">etcdctl member list</span><br><span class="line">etcdctl member remove member_id</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 <p><a name="kPMVq"></a></p>
 <h4 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h4><ul>
 <li>为 Ingress Host 生成自签名证书<ul>
