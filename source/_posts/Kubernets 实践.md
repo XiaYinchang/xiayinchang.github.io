@@ -412,6 +412,7 @@ kubeadm join apiserver.cluster.local:6443 --control-plane --certificate-key $CER
 
 <a name="XIbTO"></a>
 #### 优雅地删除节点
+ 删除 master 节点时注意可能需要手动修改 kubeadm-config 中的配置，同时手动修改 /etc/kubernetes/manifests/etcd.yaml 文件移除相关 IP。
 ```
 kubectl get nodes
 kubectl drain <node-name>
