@@ -121,4 +121,11 @@ pvecm nodes
 pvecm delnode node1
 ```
 
+<a name="IntbW"></a>
+#### 国内镜像
+```
+https://mirrors.ustc.edu.cn/proxmox/
+http://download.proxmox.wiki/
+```
+
 
