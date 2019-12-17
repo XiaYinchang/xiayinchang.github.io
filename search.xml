@@ -985,6 +985,9 @@
 <p><a name="OH5Kb"></a></p>
 <h4 id="从集群中删除节点"><a href="#从集群中删除节点" class="headerlink" title="从集群中删除节点"></a>从集群中删除节点</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pvecm nodes</span><br><span class="line">pvecm delnode node1</span><br></pre></td></tr></table></figure>
 
+<p><a name="IntbW"></a></p>
+<h4 id="国内镜像"><a href="#国内镜像" class="headerlink" title="国内镜像"></a>国内镜像</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https://mirrors.ustc.edu.cn/proxmox/</span><br><span class="line">http://download.proxmox.wiki/</span><br></pre></td></tr></table></figure>
+
 
 ]]></content>
       <categories>
