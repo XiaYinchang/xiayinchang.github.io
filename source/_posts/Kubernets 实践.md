@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Fri Dec 13 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Dec 17 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -63,6 +63,36 @@ etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.
 ```
 etcdctl member list
 etcdctl member remove member_id
+```
+
+<a name="xcw1D"></a>
+#### Kubernetes-go-client
+
+- 更新 api 对象的两种方式
+```go
+import (
+"k8s.io/apimachinery/pkg/types"
+)
+
+patch, err := json.Marshal([]common.JsonPatchSpec{
+    {
+        Op:    "replace",
+        Path:  "/spec/suspend",
+        Value: true,
+    },
+})
+
+_, err = common.CronClient.CronJobs(config.UMStorInfraNamespace).Patch(in.GetName(), types.JSONPatchType, patch)
+
+// 或者使用 update
+_, err = common.AppsClient.Deployments(config.UMStorInfraNamespace).Update(&k8s_apps_api.Deployment{
+    ObjectMeta: k8s_metav1.ObjectMeta{
+        Name:            in.Name,
+        ResourceVersion: originDeploy.ResourceVersion,
+        Labels:          originDeploy.Labels,
+    },
+    Spec: originDeploy.Spec,
+})
 ```
 
 <a name="kPMVq"></a>
