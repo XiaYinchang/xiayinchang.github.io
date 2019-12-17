@@ -85,6 +85,7 @@ patch, err := json.Marshal([]common.JsonPatchSpec{
 _, err = common.CronClient.CronJobs(config.UMStorInfraNamespace).Patch(in.GetName(), types.JSONPatchType, patch)
 
 // 或者使用 update
+// 先按需修改 originDeploy 中的内容，关键是要重建 objectmeta
 _, err = common.AppsClient.Deployments(config.UMStorInfraNamespace).Update(&k8s_apps_api.Deployment{
     ObjectMeta: k8s_metav1.ObjectMeta{
         Name:            in.Name,
