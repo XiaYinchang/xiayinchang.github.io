@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录 Kubernetes 相关的操作命令和实践方法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-12T16:00:00.000Z">
+<meta property="og:updated_time" content="2019-12-16T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/9caa466a.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-13 00:00:00" itemprop="dateModified" datetime="2019-12-13T00:00:00+08:00">2019-12-13</time>
+                <time title="修改时间：2019-12-17 00:00:00" itemprop="dateModified" datetime="2019-12-17T00:00:00+08:00">2019-12-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,14 +266,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>10k</span>
+              <span>11k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>9 分钟</span>
+              <span>10 分钟</span>
             </span>
             <div class="post-description">本文记录 Kubernetes 相关的操作命令和实践方法。</div>
 
@@ -308,6 +308,12 @@
 <p>如果 etcd pod 的 log 中会存在大量的类似 “etcdserver: read-only range request “key:…” with result “…” took too long (…) to execute” 的报错，大概率是磁盘损坏造成的读写速度过慢导致的，etcd 的数据存储在 /var/lib/etcd 目录下。</p>
 <ul>
 <li>删除节点<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">etcdctl member list</span><br><span class="line">etcdctl member remove member_id</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><a name="xcw1D"></a></p>
+<h4 id="Kubernetes-go-client"><a href="#Kubernetes-go-client" class="headerlink" title="Kubernetes-go-client"></a>Kubernetes-go-client</h4><ul>
+<li>更新 api 对象的两种方式<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">"k8s.io/apimachinery/pkg/types"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">patch, err := json.Marshal([]common.JsonPatchSpec&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        Op:    <span class="string">"replace"</span>,</span><br><span class="line">        Path:  <span class="string">"/spec/suspend"</span>,</span><br><span class="line">        Value: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">_, err = common.CronClient.CronJobs(config.UMStorInfraNamespace).Patch(in.GetName(), types.JSONPatchType, patch)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者使用 update</span></span><br><span class="line">_, err = common.AppsClient.Deployments(config.UMStorInfraNamespace).Update(&amp;k8s_apps_api.Deployment&#123;</span><br><span class="line">    ObjectMeta: k8s_metav1.ObjectMeta&#123;</span><br><span class="line">        Name:            in.Name,</span><br><span class="line">        ResourceVersion: originDeploy.ResourceVersion,</span><br><span class="line">        Labels:          originDeploy.Labels,</span><br><span class="line">    &#125;,</span><br><span class="line">    Spec: originDeploy.Spec,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -601,7 +607,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#taint"><span class="nav-number">1.</span> <span class="nav-text">taint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toleration"><span class="nav-number">2.</span> <span class="nav-text">toleration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">3.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书"><span class="nav-number">4.</span> <span class="nav-text">证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubeadm"><span class="nav-number">5.</span> <span class="nav-text">Kubeadm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Helm"><span class="nav-number">6.</span> <span class="nav-text">Helm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ingress-nginx"><span class="nav-number">7.</span> <span class="nav-text">ingress-nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-subPath-挂载-Volume"><span class="nav-number">8.</span> <span class="nav-text">使用 subPath 挂载 Volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建并使用-imagePullSecrets"><span class="nav-number">9.</span> <span class="nav-text">创建并使用 imagePullSecrets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sealos-部署-Kubernetes"><span class="nav-number">10.</span> <span class="nav-text">sealos 部署 Kubernetes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅地删除节点"><span class="nav-number">11.</span> <span class="nav-text">优雅地删除节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#十二因素应用"><span class="nav-number">12.</span> <span class="nav-text">十二因素应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用操作"><span class="nav-number">13.</span> <span class="nav-text">常用操作</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#taint"><span class="nav-number">1.</span> <span class="nav-text">taint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toleration"><span class="nav-number">2.</span> <span class="nav-text">toleration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">3.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-go-client"><span class="nav-number">4.</span> <span class="nav-text">Kubernetes-go-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书"><span class="nav-number">5.</span> <span class="nav-text">证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubeadm"><span class="nav-number">6.</span> <span class="nav-text">Kubeadm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Helm"><span class="nav-number">7.</span> <span class="nav-text">Helm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ingress-nginx"><span class="nav-number">8.</span> <span class="nav-text">ingress-nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-subPath-挂载-Volume"><span class="nav-number">9.</span> <span class="nav-text">使用 subPath 挂载 Volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建并使用-imagePullSecrets"><span class="nav-number">10.</span> <span class="nav-text">创建并使用 imagePullSecrets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sealos-部署-Kubernetes"><span class="nav-number">11.</span> <span class="nav-text">sealos 部署 Kubernetes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅地删除节点"><span class="nav-number">12.</span> <span class="nav-text">优雅地删除节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#十二因素应用"><span class="nav-number">13.</span> <span class="nav-text">十二因素应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用操作"><span class="nav-number">14.</span> <span class="nav-text">常用操作</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -679,13 +685,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">191k</span>
+    <span title="站点总字数">192k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:54</span>
+    <span title="站点阅读时长">2:55</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
