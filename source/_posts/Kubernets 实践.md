@@ -51,7 +51,6 @@ etcdctl get "" --from-key
 ```
 
 - 备份
-
 ```
 etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save etcd-snapshot.db
 ```
@@ -59,6 +58,12 @@ etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.
 - 磁盘读写速度过慢造成的故障
 
 如果 etcd pod 的 log 中会存在大量的类似 “etcdserver: read-only range request "key:..." with result "..." took too long (...) to execute” 的报错，大概率是磁盘损坏造成的读写速度过慢导致的，etcd 的数据存储在 /var/lib/etcd 目录下。
+
+- 删除节点
+```
+etcdctl member list
+etcdctl member remove member_id
+```
 
 <a name="kPMVq"></a>
 #### 证书
