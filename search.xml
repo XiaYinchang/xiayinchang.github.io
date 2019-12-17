@@ -609,6 +609,10 @@
 <p><a name="jpOwk"></a></p>
 <h4 id="CentOS-安装-ceph-common"><a href="#CentOS-安装-ceph-common" class="headerlink" title="CentOS 安装 ceph-common"></a>CentOS 安装 ceph-common</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -Uvh https://download.ceph.com/rpm-nautilus/el7/noarch/ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">// 或使用镜像源</span><br><span class="line">rpm -Uvh https://mirrors.tuna.tsinghua.edu.cn/ceph/rpm-nautilus/el7/noarch/ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">sed -i &apos;s+download.ceph.com+mirrors.tuna.tsinghua.edu.cn/ceph+&apos; /etc/yum.repos.d/ceph.repo</span><br><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install ceph-common</span><br></pre></td></tr></table></figure>
 
+<p><a name="pzQnJ"></a></p>
+<h4 id="查看使用-ceph-volume-创建的-osd-信息"><a href="#查看使用-ceph-volume-创建的-osd-信息" class="headerlink" title="查看使用 ceph-volume 创建的 osd 信息"></a>查看使用 ceph-volume 创建的 osd 信息</h4><p>ceph-volume 使用逻辑卷创建 osd，ceph-disk 使用物理盘创建 osd，物理盘创建的 osd 与 盘符对应关系往往一目了然，逻辑卷创建的 osd 与盘符的对应关系需要执行以下命令查询：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ceph-volume inventory /dev/sda</span><br></pre></td></tr></table></figure>
+
 
 ]]></content>
       <categories>
