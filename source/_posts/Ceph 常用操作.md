@@ -415,4 +415,11 @@ yum -y install epel-release
 yum -y install ceph-common
 ```
 
+<a name="pzQnJ"></a>
+#### 查看使用 ceph-volume 创建的 osd 信息
+ceph-volume 使用逻辑卷创建 osd，ceph-disk 使用物理盘创建 osd，物理盘创建的 osd 与 盘符对应关系往往一目了然，逻辑卷创建的 osd 与盘符的对应关系需要执行以下命令查询：
+```
+ceph-volume inventory /dev/sda
+```
+
 
