@@ -121,7 +121,8 @@
 </li>
 </ul>
 <p><a name="XIbTO"></a></p>
-<h4 id="优雅地删除节点"><a href="#优雅地删除节点" class="headerlink" title="优雅地删除节点"></a>优雅地删除节点</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl get nodes</span><br><span class="line">kubectl drain &lt;node-name&gt;</span><br><span class="line">kubectl drain &lt;node-name&gt; --ignore-daemonsets --delete-local-data</span><br><span class="line">kubectl delete node &lt;node-name&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="优雅地删除节点"><a href="#优雅地删除节点" class="headerlink" title="优雅地删除节点"></a>优雅地删除节点</h4><p> 删除 master 节点时注意可能需要手动修改 kubeadm-config 中的配置，同时手动修改 /etc/kubernetes/manifests/etcd.yaml 文件移除相关 IP。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl get nodes</span><br><span class="line">kubectl drain &lt;node-name&gt;</span><br><span class="line">kubectl drain &lt;node-name&gt; --ignore-daemonsets --delete-local-data</span><br><span class="line">kubectl delete node &lt;node-name&gt;</span><br></pre></td></tr></table></figure>
 
 <p><a name="iiFsk"></a></p>
 <h4 id="十二因素应用"><a href="#十二因素应用" class="headerlink" title="十二因素应用"></a>十二因素应用</h4><ul>
