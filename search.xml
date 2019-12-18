@@ -467,6 +467,9 @@
 <h4 id="Wireshark-过滤表达式"><a href="#Wireshark-过滤表达式" class="headerlink" title="Wireshark 过滤表达式"></a>Wireshark 过滤表达式</h4><p>参考：<a href="https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html</a></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ip.scr==10.0.0.5 or ip.dst==192.1.1.1</span><br></pre></td></tr></table></figure>
 
+<p><a name="lX9js"></a></p>
+<h4 id="alpine-修改镜像源"><a href="#alpine-修改镜像源" class="headerlink" title="alpine 修改镜像源"></a>alpine 修改镜像源</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sed -i &apos;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&apos; /etc/apk/repositories</span><br></pre></td></tr></table></figure>
+
 <p><a name="fL7Yx"></a></p>
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
