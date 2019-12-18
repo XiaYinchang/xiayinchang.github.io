@@ -645,6 +645,12 @@ iostat -m
 ip.scr==10.0.0.5 or ip.dst==192.1.1.1
 ```
 
+<a name="lX9js"></a>
+#### alpine 修改镜像源
+```
+sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+```
+
 <a name="fL7Yx"></a>
 #### 实用工具
 
