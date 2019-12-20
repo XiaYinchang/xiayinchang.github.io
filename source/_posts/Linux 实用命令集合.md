@@ -682,10 +682,10 @@ vim /etc/tinc/`hostname`/tinc.conf
   Interface = tinc
   Mode = switch
   ConnectTo = vpn
- tincd -n `hostname` -K
- scp vpn-public-ip:/etc/tinc/vpn/hosts/vpn /etc/tinc/`hostname`/hosts
- vim /etc/tinc/`hostname`/hosts/vpn # 第一行加上 Address = vpn-public-ip
- scp /etc/tinc/vpn/hosts/`hostname` vpn-public-ip:/etc/tinc/vpn/hosts/
+tincd -n `hostname` -K
+scp vpn-public-ip:/etc/tinc/vpn/hosts/vpn /etc/tinc/`hostname`/hosts
+vim /etc/tinc/`hostname`/hosts/vpn # 第一行加上 Address = vpn-public-ip
+scp /etc/tinc/vpn/hosts/`hostname` vpn-public-ip:/etc/tinc/vpn/hosts/
  // 启动服务
 tincd -n `hostname` -D
 ip link set tinc up
