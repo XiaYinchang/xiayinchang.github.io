@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Mon Dec 16 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Dec 20 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -564,6 +564,13 @@ lastlog --time 90
 rsync -aru -e "ssh" --rsync-path="sudo rsync" 172.16.110.215:~/ ~/  --progress --exclude=.cache
 ```
 
+<a name="xr010"></a>
+#### rclone 将 http file server 的内容同步到本地
+
+```bash
+rclone sync --http-url http://my.file.server :http:centos/test /repo/test --progress
+```
+
 <a name="hU4cE"></a>
 #### expr 比较字符串大小
 ```bash
@@ -649,6 +656,41 @@ ip.scr==10.0.0.5 or ip.dst==192.1.1.1
 #### alpine 修改镜像源
 ```
 sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+```
+
+<a name="52SGW"></a>
+#### tinc 配置 VPN
+首先要有一个有公网 IP 的服务器作为交换节点。该节点进行如下配置：
+```bash
+yum install -y tinc
+mkdir -p /etc/tinc/vpn/hosts
+vim /etc/tinc/vpn/tinc.conf
+  Name = vpn
+  Interface = tinc
+  Mode = switch
+tincd -n vpn -K
+ // 启动服务
+tincd -n vpn -D
+ip link set tinc up
+ip a add 192.168.120.1/24 dev tinc
+```
+客户端配置：
+```bash
+mkdir -p /etc/tinc/`hostname`/hosts
+vim /etc/tinc/`hostname`/tinc.conf
+  Name = hostname
+  Interface = tinc
+  Mode = switch
+  ConnectTo = vpn
+ tincd -n `hostname` -K
+ scp vpn-public-ip:/etc/tinc/vpn/hosts/vpn /etc/tinc/`hostname`/hosts
+ vim /etc/tinc/`hostname`/hosts/vpn # 第一行加上 Address = vpn-public-ip
+ scp /etc/tinc/vpn/hosts/`hostname` vpn-public-ip:/etc/tinc/vpn/hosts/
+ // 启动服务
+tincd -n `hostname` -D
+ip link set tinc up
+ip a add 192.168.120.2/24 dev tinc
+ip r add 10.10.0.0/16 dev tinc
 ```
 
 <a name="fL7Yx"></a>
