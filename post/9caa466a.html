@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录 Kubernetes 相关的操作命令和实践方法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-16T16:00:00.000Z">
+<meta property="og:updated_time" content="2019-12-19T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/9caa466a.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-17 00:00:00" itemprop="dateModified" datetime="2019-12-17T00:00:00+08:00">2019-12-17</time>
+                <time title="修改时间：2019-12-20 00:00:00" itemprop="dateModified" datetime="2019-12-20T00:00:00+08:00">2019-12-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,14 +266,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>11 分钟</span>
             </span>
             <div class="post-description">本文记录 Kubernetes 相关的操作命令和实践方法。</div>
 
@@ -369,6 +369,12 @@
 
 </li>
 </ul>
+<p><a name="b94zX"></a></p>
+<h4 id="添加自定义-DNS-记录"><a href="#添加自定义-DNS-记录" class="headerlink" title="添加自定义 DNS 记录"></a>添加自定义 DNS 记录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">[root@10-8-62-148 ~]<span class="comment"># kubectl get cm -n kube-system coredns -oyaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">data:</span><br><span class="line">  Corefile: |</span><br><span class="line">    .:53 &#123;</span><br><span class="line">        errors</span><br><span class="line">        health</span><br><span class="line">        rewrite name harbor.sh.umcloud.network harbor.default.svc.cluster.local</span><br><span class="line">        rewrite name docker.sh.umcloud.network docker.default.svc.cluster.local</span><br><span class="line">        kubernetes cluster.local <span class="keyword">in</span>-addr.arpa ip6.arpa &#123;</span><br><span class="line">           pods insecure</span><br><span class="line">           upstream</span><br><span class="line">           fallthrough <span class="keyword">in</span>-addr.arpa ip6.arpa</span><br><span class="line">           ttl 30</span><br><span class="line">        &#125;</span><br><span class="line">        prometheus :9153</span><br><span class="line">        forward . /etc/resolv.conf</span><br><span class="line">        cache 30</span><br><span class="line">        loop</span><br><span class="line">        reload</span><br><span class="line">        loadbalance</span><br><span class="line">    &#125;</span><br><span class="line">kind: ConfigMap</span><br><span class="line">metadata:</span><br><span class="line">  creationTimestamp: <span class="string">"2019-09-05T07:29:37Z"</span></span><br><span class="line">  name: coredns</span><br><span class="line">  namespace: kube-system</span><br><span class="line"></span><br><span class="line">[root@10-8-62-148 ~]<span class="comment"># cat umcloud-svc.yaml </span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: harbor</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">    - port: 80</span><br><span class="line">      name: http</span><br><span class="line">    - port: 443</span><br><span class="line">      name: https</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Endpoints</span><br><span class="line">metadata:</span><br><span class="line">  name: harbor</span><br><span class="line">subsets:</span><br><span class="line">  - addresses:</span><br><span class="line">      - ip: 10.8.62.148</span><br><span class="line">    ports:</span><br><span class="line">      - port: 80</span><br><span class="line">        name: http</span><br><span class="line">        protocol: TCP</span><br><span class="line">      - port: 443</span><br><span class="line">        name: https</span><br><span class="line">        protocol: TCP</span><br></pre></td></tr></table></figure>
+
+<p><a name="9BV58"></a></p>
+<h4 id="向容器添加-hosts-记录"><a href="#向容器添加-hosts-记录" class="headerlink" title="向容器添加 hosts 记录"></a>向容器添加 hosts 记录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: hostaliases-pod</span><br><span class="line">spec:</span><br><span class="line">  restartPolicy: Never</span><br><span class="line">  hostAliases:</span><br><span class="line">  - ip: <span class="string">"127.0.0.1"</span></span><br><span class="line">    hostnames:</span><br><span class="line">    - <span class="string">"foo.local"</span></span><br><span class="line">    - <span class="string">"bar.local"</span></span><br><span class="line">  - ip: <span class="string">"10.1.2.3"</span></span><br><span class="line">    hostnames:</span><br><span class="line">    - <span class="string">"foo.remote"</span></span><br><span class="line">    - <span class="string">"bar.remote"</span></span><br><span class="line">  containers:</span><br><span class="line">  - name: cat-hosts</span><br><span class="line">    image: busybox</span><br><span class="line">    <span class="built_in">command</span>:</span><br><span class="line">    - cat</span><br><span class="line">    args:</span><br><span class="line">    - <span class="string">"/etc/hosts"</span></span><br></pre></td></tr></table></figure>
+
 <p><a name="O0gNe"></a></p>
 <h4 id="ingress-nginx"><a href="#ingress-nginx" class="headerlink" title="ingress-nginx"></a>ingress-nginx</h4><ul>
 <li><p>为转向上游的请求添加 header：</p>
@@ -608,7 +614,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#taint"><span class="nav-number">1.</span> <span class="nav-text">taint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toleration"><span class="nav-number">2.</span> <span class="nav-text">toleration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">3.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-go-client"><span class="nav-number">4.</span> <span class="nav-text">Kubernetes-go-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书"><span class="nav-number">5.</span> <span class="nav-text">证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubeadm"><span class="nav-number">6.</span> <span class="nav-text">Kubeadm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Helm"><span class="nav-number">7.</span> <span class="nav-text">Helm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ingress-nginx"><span class="nav-number">8.</span> <span class="nav-text">ingress-nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-subPath-挂载-Volume"><span class="nav-number">9.</span> <span class="nav-text">使用 subPath 挂载 Volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建并使用-imagePullSecrets"><span class="nav-number">10.</span> <span class="nav-text">创建并使用 imagePullSecrets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sealos-部署-Kubernetes"><span class="nav-number">11.</span> <span class="nav-text">sealos 部署 Kubernetes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅地删除节点"><span class="nav-number">12.</span> <span class="nav-text">优雅地删除节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#十二因素应用"><span class="nav-number">13.</span> <span class="nav-text">十二因素应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用操作"><span class="nav-number">14.</span> <span class="nav-text">常用操作</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#taint"><span class="nav-number">1.</span> <span class="nav-text">taint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toleration"><span class="nav-number">2.</span> <span class="nav-text">toleration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">3.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-go-client"><span class="nav-number">4.</span> <span class="nav-text">Kubernetes-go-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书"><span class="nav-number">5.</span> <span class="nav-text">证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubeadm"><span class="nav-number">6.</span> <span class="nav-text">Kubeadm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Helm"><span class="nav-number">7.</span> <span class="nav-text">Helm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加自定义-DNS-记录"><span class="nav-number">8.</span> <span class="nav-text">添加自定义 DNS 记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向容器添加-hosts-记录"><span class="nav-number">9.</span> <span class="nav-text">向容器添加 hosts 记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ingress-nginx"><span class="nav-number">10.</span> <span class="nav-text">ingress-nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-subPath-挂载-Volume"><span class="nav-number">11.</span> <span class="nav-text">使用 subPath 挂载 Volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建并使用-imagePullSecrets"><span class="nav-number">12.</span> <span class="nav-text">创建并使用 imagePullSecrets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sealos-部署-Kubernetes"><span class="nav-number">13.</span> <span class="nav-text">sealos 部署 Kubernetes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅地删除节点"><span class="nav-number">14.</span> <span class="nav-text">优雅地删除节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#十二因素应用"><span class="nav-number">15.</span> <span class="nav-text">十二因素应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用操作"><span class="nav-number">16.</span> <span class="nav-text">常用操作</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -686,13 +692,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">193k</span>
+    <span title="站点总字数">194k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:56</span>
+    <span title="站点阅读时长">2:57</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
