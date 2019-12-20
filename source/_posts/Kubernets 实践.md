@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Tue Dec 17 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Dec 20 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -285,6 +285,92 @@ sysctl -p /etc/sysctl.conf
 mkdir yamls
 helm fetch --untar --untardir . 'stable/redis' #makes a directory called redis 
 helm template --output-dir './yamls' './redis' #redis dir (local helm chart), export to yamls dir
+```
+
+<a name="b94zX"></a>
+#### 添加自定义 DNS 记录
+```bash
+[root@10-8-62-148 ~]# kubectl get cm -n kube-system coredns -oyaml
+apiVersion: v1
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health
+        rewrite name harbor.sh.umcloud.network harbor.default.svc.cluster.local
+        rewrite name docker.sh.umcloud.network docker.default.svc.cluster.local
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           upstream
+           fallthrough in-addr.arpa ip6.arpa
+           ttl 30
+        }
+        prometheus :9153
+        forward . /etc/resolv.conf
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2019-09-05T07:29:37Z"
+  name: coredns
+  namespace: kube-system
+
+[root@10-8-62-148 ~]# cat umcloud-svc.yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  name: harbor
+spec:
+  ports:
+    - port: 80
+      name: http
+    - port: 443
+      name: https
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: harbor
+subsets:
+  - addresses:
+      - ip: 10.8.62.148
+    ports:
+      - port: 80
+        name: http
+        protocol: TCP
+      - port: 443
+        name: https
+        protocol: TCP
+```
+
+<a name="9BV58"></a>
+#### 向容器添加 hosts 记录
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostaliases-pod
+spec:
+  restartPolicy: Never
+  hostAliases:
+  - ip: "127.0.0.1"
+    hostnames:
+    - "foo.local"
+    - "bar.local"
+  - ip: "10.1.2.3"
+    hostnames:
+    - "foo.remote"
+    - "bar.remote"
+  containers:
+  - name: cat-hosts
+    image: busybox
+    command:
+    - cat
+    args:
+    - "/etc/hosts"
 ```
 
 <a name="O0gNe"></a>
