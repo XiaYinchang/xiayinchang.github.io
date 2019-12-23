@@ -405,6 +405,18 @@ server {
 }
 ```
 
+- 自定义 timeout 
+```bash
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+```
+
 <a name="sM7pt"></a>
 #### 使用 subPath 挂载 Volume
 ```
