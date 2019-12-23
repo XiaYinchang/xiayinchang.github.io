@@ -47,6 +47,9 @@
 <h4 id="删除私有-registry-中损坏的镜像"><a href="#删除私有-registry-中损坏的镜像" class="headerlink" title="删除私有 registry 中损坏的镜像"></a>删除私有 registry 中损坏的镜像</h4><p>docker pull 时报错如下：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@umstor01 ~]<span class="comment"># docker pull registry.umstor.io:5050/umplus/umstor-elasticsearch:6.7.1</span></span><br><span class="line">...</span><br><span class="line">filesystem layer verification failed <span class="keyword">for</span> digest sha256:08f62e37e0f75961adcf1b87778f8c25412a2865742ffe4d79cde83ac08987ca</span><br></pre></td></tr></table></figure>
 <p>先到仓库目录 <code>registry/v2/repositories/umplus</code> 删除 <code>umstor-elasticsearch</code> 镜像，再到 <code>docker/registry/v2/blobs/sha256</code> 目录删除 <code>08f62e37e0f75961adcf1b87778f8c25412a2865742ffe4d79c</code>。之后重启 docker registry 。</p>
+<p><a name="MOdiv"></a></p>
+<h4 id="docker-push-时报错-file-integrity-checksum-failed"><a href="#docker-push-时报错-file-integrity-checksum-failed" class="headerlink" title="docker push 时报错 file integrity checksum failed"></a>docker push 时报错 file integrity checksum failed</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">➜  umstorlcm git:(dev) ✗ sudo docker push registry.umstor.io:5050/umplus/umstor-elasticsearch:6.7.1</span><br><span class="line">...</span><br><span class="line">file integrity checksum failed <span class="keyword">for</span> <span class="string">"usr/share/elasticsearch/plugins/opendistro_security/jjwt-api-0.10.5.jar"</span></span><br></pre></td></tr></table></figure>
+<p>可尝试执行 <code>sudo docker system prune -a</code> 后重新打包或拉取镜像 retag 重试 push。</p>
 ]]></content>
       <categories>
         <category>Docker</category>
