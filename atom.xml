@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2019-12-14T16:00:00.000Z</updated>
+  <updated>2019-12-22T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Docker 知识点与命令集合</title>
+    <link href="https://www.xiayinchang.top/post/f8a08eb2.html"/>
+    <id>https://www.xiayinchang.top/post/f8a08eb2.html</id>
+    <published>2019-12-22T16:00:00.000Z</published>
+    <updated>2019-12-22T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Docker 相关的基础知识与常用操作记录。
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://www.xiayinchang.top/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="https://www.xiayinchang.top/tags/Docker/"/>
+    
+      <category term=" 云计算" scheme="https://www.xiayinchang.top/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+    
+  </entry>
   
   <entry>
     <title>Netfilter 框架及其周边组件</title>
@@ -436,27 +459,6 @@
       <category term="Ceph" scheme="https://www.xiayinchang.top/tags/Ceph/"/>
     
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Go 知识点汇总</title>
-    <link href="https://www.xiayinchang.top/post/defe85e8.html"/>
-    <id>https://www.xiayinchang.top/post/defe85e8.html</id>
-    <published>2019-10-11T16:00:00.000Z</published>
-    <updated>2019-11-23T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      汇总对 Go 语言的基本理解、编程方法和开源库等。
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
     
   </entry>
   
