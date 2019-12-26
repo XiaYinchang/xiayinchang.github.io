@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Fri Dec 20 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Dec 26 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -14,65 +14,7 @@ abbrlink: b489449e
 ---
 
 <a name="CYJKi"></a>
-#### Docker
-
-- 安装
-
-参考：[https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/](https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/)
-```bash
-yum remove docker docker-common docker-selinux docker-engine
-yum install -y yum-utils device-mapper-persistent-data lvm2
-wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
-sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
-yum install docker-ce docker-ce-cli containerd.io
-systemctl enable --now docker
-```
-
-- 按指定格式输出Images信息
-```bash
- docker images --format "{{.ID}}: {{.Repository}}"
-```
-| Placeholder | Description |
-| :--- | :--- |
-| `.ID` | Image ID |
-| `.Repository` | Image repository |
-| `.Tag` | Image tag |
-
-
-- 使用镜像下载 docker image
-
-```bash
-docker pull golang:1.13.0 => docker pull dockerhub.azk8s.cn/library/golang:1.13.0
-docker pull rook/ceph:v1.0.6 => docker pull dockerhub.azk8s.cn/rook/ceph:v1.0.6
-docker pull gcr.io/kubernetes-helm/tiller:v2.9.1 => docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.9.1
-docker pull k8s.gcr.io/kube-apiserver:v1.14.1 => docker pull gcr.azk8s.cn/google-containers/kube-apiserver:v1.14.1
-docker pull quay.io/k8scsi/csi-node-driver-registrar:v1.1.0 => docker pull quay.azk8s.cn/k8scsi/csi-node-driver-registrar:v1.1.0
-```
-
-- 新建容器时加入已有容器网络
-
-```
-docker run --name b2 -it --network container:b1 --rm busybox:latest
-```
-
-- docker 容器的四种网络模型：Bridge, Host, Container, None
-
-     参考： [Docker 的网络模式详解](https://juejin.im/post/5c3363bf6fb9a049e2322cdb)
-
-- 查看 docker registry 中的镜像信息
-```
-curl -X GET https://myregistry:5000/v2/_catalog
-curl -X GET https://myregistry:5000/v2/ubuntu/tags/list
-```
-
-- docker 指定 tcp 监听地址
-```
-// 修改 /usr/lib/systemd/system/docker.service
-ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H fd:// --containerd=/run/containerd/containerd.sock
-```
-
-<a name="LzPfH"></a>
-#### CentOS
+#### CentOS<br />
 
 - 升级系统内核
 ```bash
@@ -691,6 +633,19 @@ tincd -n `hostname` -D
 ip link set tinc up
 ip a add 192.168.120.2/24 dev tinc
 ip r add 10.10.0.0/16 dev tinc
+```
+
+<a name="ttdKC"></a>
+#### 删文件报错 Structure needs cleaning
+```bash
+sudo rm -fR hourly.5/
+
+rm: cannot remove 'hourly.5/snapshot_root/mnt/Vancouver/temp/temp - old/temp - 09 (Dec 07, 2014 - Sep 02, 2015)/a_OLD-gmail/victoria.a.stuart@gmail.com/[Gmail]/LINUX/rsync, rsnapshot; Other backups/19.bak': Structure needs cleaning
+```
+原因可能是文件系统损坏，xfs 文件系统可以使用 Live 系统登陆后使用以下命令尝试修复：
+```bash
+umount /dev/sda1
+xfs_repair /dev/sda1
 ```
 
 <a name="fL7Yx"></a>
