@@ -2,7 +2,7 @@
 title: Ceph 常用操作
 urlname: asu9v3
 date: '2019-09-03 00:00:00 +0800'
-updated: 'Fri Dec 13 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Dec 31 2019 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Ceph
@@ -422,4 +422,7 @@ ceph-volume 使用逻辑卷创建 osd，ceph-disk 使用物理盘创建 osd，�
 ceph-volume inventory /dev/sda
 ```
 
+<a name="RPg2T"></a>
+#### /var/lib/ceph/osd/ceph-x 使用内存盘
+使用 bluestore 的 OSD，所有需要持久化的数据均存储在 LVM metadata 中，所以 /var/lib/ceph/osd/ceph-x 使用 tmpfs 是预期行为， OSD 启动时会从 metadata 中取出相关数据填充到 tmpfs 文件中。参见：[http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html](http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html)
 
