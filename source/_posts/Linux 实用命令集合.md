@@ -655,6 +655,7 @@ xfs_repair /dev/sda1
 - pandoc 可以借助第三方引擎实现各种文档格式之间的转换：[https://pandoc.org/](https://pandoc.org/)。
 - MOBI 转 PDF 的在线网站：[https://ebook2pdf.com/](https://ebook2pdf.com/)
 - Github dispatch 使用示例：[https://alejandroandr.eu/posts/manual-trigger-github-workflows/](https://alejandroandr.eu/posts/manual-trigger-github-workflows/)
+- deepin-wine : [https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722](https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722)
 
 
 
