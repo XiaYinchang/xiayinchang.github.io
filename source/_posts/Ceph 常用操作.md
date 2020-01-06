@@ -2,7 +2,7 @@
 title: Ceph 常用操作
 urlname: asu9v3
 date: '2019-09-03 00:00:00 +0800'
-updated: 'Tue Dec 31 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon Jan 06 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Ceph
@@ -365,12 +365,19 @@ rados -p <pool-name> rm <object-name>
 
 <a name="K2eGm"></a>
 #### 挂载 cephfs 到本地
+用户态挂载
 ```bash
-mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/mycephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==
+yum install ceph-fuse -y
+mkdir -p /mnt/cephfs
+ceph-fuse -n client.admin --key AQBvN8lbCuTBFhAAJPMWYwu+Jho8B1QGt80jAA== --host 10.23.229.102,10.23.109.25 /mnt/cephfs
+```
+内核态挂载
+```bash
+mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/cephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==
 ```
 写入到 fstab 中，开机自动挂载
 ```
-192.168.180.125:6789,192.168.180.115:6789:/ /cephfs ceph name=admin,secret=AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw==,_netdev,noatime     0 0
+192.168.180.125:6789,192.168.180.115:6789:/ /mnt/cephfs ceph name=admin,secret=AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw==,_netdev,noatime     0 0
 ```
 
 <a name="0mfaM"></a>
