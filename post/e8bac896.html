@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录使用 Ceph 过程中常用的命令。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-30T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-01-05T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/e8bac896.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-31 00:00:00" itemprop="dateModified" datetime="2019-12-31T00:00:00+08:00">2019-12-31</time>
+                <time title="修改时间：2020-01-06 00:00:00" itemprop="dateModified" datetime="2020-01-06T00:00:00+08:00">2020-01-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.1k</span>
+              <span>9.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -364,9 +364,12 @@
 <h4 id="rados-对象操作"><a href="#rados-对象操作" class="headerlink" title="rados 对象操作"></a>rados 对象操作</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 上传文件</span><br><span class="line">rados -p &lt;pool-name&gt; put &lt;object-name&gt; &lt;file&gt;</span><br><span class="line">// 下载文件</span><br><span class="line">rados -p &lt;pool-name&gt; get &lt;object-name&gt; &lt;file&gt;</span><br><span class="line">// 列出文件</span><br><span class="line">rados -p &lt;pool-name&gt; ls</span><br><span class="line">// 删除文件</span><br><span class="line">rados -p &lt;pool-name&gt; rm &lt;object-name&gt;</span><br></pre></td></tr></table></figure>
 
 <p><a name="K2eGm"></a></p>
-<h4 id="挂载-cephfs-到本地"><a href="#挂载-cephfs-到本地" class="headerlink" title="挂载 cephfs 到本地"></a>挂载 cephfs 到本地</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/mycephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==</span><br></pre></td></tr></table></figure>
+<h4 id="挂载-cephfs-到本地"><a href="#挂载-cephfs-到本地" class="headerlink" title="挂载 cephfs 到本地"></a>挂载 cephfs 到本地</h4><p>用户态挂载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install ceph-fuse -y</span><br><span class="line">mkdir -p /mnt/cephfs</span><br><span class="line">ceph-fuse -n client.admin --key AQBvN8lbCuTBFhAAJPMWYwu+Jho8B1QGt80jAA== --host 10.23.229.102,10.23.109.25 /mnt/cephfs</span><br></pre></td></tr></table></figure>
+<p>内核态挂载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/cephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==</span><br></pre></td></tr></table></figure>
 <p>写入到 fstab 中，开机自动挂载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:/ /cephfs ceph name=admin,secret=AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw==,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:/ /mnt/cephfs ceph name=admin,secret=AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw==,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
 
 <p><a name="0mfaM"></a></p>
 <h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">// 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">// 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br><span class="line">// 查看自动增加的 pg 数量</span><br><span class="line">ceph osd pool autoscale-status</span><br></pre></td></tr></table></figure>
