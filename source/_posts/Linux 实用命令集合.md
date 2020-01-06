@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Thu Dec 26 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon Jan 06 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -227,16 +227,21 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 ```
 
 - netinstall  centos 1804 可用如下镜像源
-
 ```
 // 不要遗漏最后的反斜线
 https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.5.1804/os/x86_64/
 ```
 
 - 包版本降级
-
 ```bash
 yum downgrade httpd-2.2.3-22.el5
+```
+
+- 查看包安装信息
+```bash
+rpm -qa | grep nginx
+rpm -qf /usr/sbin/nginx
+rpm -ql nginx
 ```
 
 <a name="3HTPv"></a>
@@ -655,7 +660,7 @@ xfs_repair /dev/sda1
 - pandoc 可以借助第三方引擎实现各种文档格式之间的转换：[https://pandoc.org/](https://pandoc.org/)。
 - MOBI 转 PDF 的在线网站：[https://ebook2pdf.com/](https://ebook2pdf.com/)
 - Github dispatch 使用示例：[https://alejandroandr.eu/posts/manual-trigger-github-workflows/](https://alejandroandr.eu/posts/manual-trigger-github-workflows/)
-- deepin-wine : [https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722](https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722)
+- deepin-wine 安装微软雅黑字体 : [https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722](https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722)
 
 
 
