@@ -222,6 +222,9 @@
 <p>原因可能是文件系统损坏，xfs 文件系统可以使用 Live 系统登陆后使用以下命令尝试修复：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">umount /dev/sda1</span><br><span class="line">xfs_repair /dev/sda1</span><br></pre></td></tr></table></figure>
 
+<p><a name="hh4rr"></a></p>
+<h4 id="coredumpctl"><a href="#coredumpctl" class="headerlink" title="coredumpctl"></a>coredumpctl</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">coredumpctl list</span><br><span class="line">coredumpctl dump pid</span><br><span class="line">coredumpctl dump chrome</span><br><span class="line">coredumpctl -o core.dump dump chrome</span><br><span class="line">coredumpctl gdb pid</span><br></pre></td></tr></table></figure>
+
 <p><a name="fL7Yx"></a></p>
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
