@@ -653,6 +653,17 @@ umount /dev/sda1
 xfs_repair /dev/sda1
 ```
 
+<a name="hh4rr"></a>
+#### coredumpctl 
+
+```bash
+coredumpctl list
+coredumpctl dump pid
+coredumpctl dump chrome
+coredumpctl -o core.dump dump chrome
+coredumpctl gdb pid
+```
+
 <a name="fL7Yx"></a>
 #### 实用工具
 
