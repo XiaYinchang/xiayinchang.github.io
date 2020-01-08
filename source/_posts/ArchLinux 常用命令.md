@@ -2,7 +2,7 @@
 title: ArchLinux 常用命令
 urlname: egtn5p
 date: '2019-09-04 00:00:00 +0800'
-updated: 'Thu Dec 05 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Wed Jan 08 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Linux
@@ -64,6 +64,16 @@ cni-plugins /usr/
 cni-plugins /usr/lib/
 cni-plugins /usr/lib/cni/
 ...
+```
+
+<a name="J6u5z"></a>
+#### 清理系统缓存
+```
+sudo paccache -r
+sudo paccache -ruk0
+sudo pacman -Scc
+sudo journalctl --vacuum-size=50M
+sudo rm /var/lib/systemd/coredump/*
 ```
 
 
