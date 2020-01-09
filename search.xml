@@ -3,8 +3,11 @@
   <entry>
     <title>ArchLinux 常用命令</title>
     <url>/post/bda105fe.html</url>
-    <content><![CDATA[<p><a name="BdT88"></a></p><h4 id="yay-使用相关"><a href="#yay-使用相关" class="headerlink" title="yay 使用相关"></a>yay 使用相关</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装包时覆盖本地已存在文件</span></span><br><span class="line">yay deluge --force</span><br><span class="line"><span class="comment"># 查看所有安装的文件及其路径</span></span><br><span class="line">yay -Ql deluge</span><br><span class="line"><span class="comment"># 查找时按照指定 filed 排序</span></span><br><span class="line">yay wechat --sortby &lt;votes|popularity|id|baseid|name|base|submitted|modified&gt;</span><br></pre></td></tr></table></figure><a id="more"></a>
+    <content><![CDATA[<p><a name="52t3i"></a></p><h4 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -Sy archlinux-keyring</span><br><span class="line">sudo pacman -Syuu</span><br><span class="line">sudo pacman -S systemd --overwrite &apos;*&apos;</span><br><span class="line">sudo pacman -S systemd-sysvcompat --overwrite &apos;*&apos;</span><br><span class="line">// 自动获取最快的镜像源</span><br><span class="line">sudo reflector --verbose -c &apos;China&apos; -l 20 -p http --sort rate --save /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure><a id="more"></a>
 
+
+<p><a name="BdT88"></a></p>
+<h4 id="yay-使用相关"><a href="#yay-使用相关" class="headerlink" title="yay 使用相关"></a>yay 使用相关</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装包时覆盖本地已存在文件</span></span><br><span class="line">yay deluge --force</span><br><span class="line"><span class="comment"># 查看所有安装的文件及其路径</span></span><br><span class="line">yay -Ql deluge</span><br><span class="line"><span class="comment"># 查找时按照指定 filed 排序</span></span><br><span class="line">yay wechat --sortby &lt;votes|popularity|id|baseid|name|base|submitted|modified&gt;</span><br></pre></td></tr></table></figure>
 
 <p><a name="aQrbN"></a></p>
 <h4 id="Network-Manage-使用-SSTP-VPN"><a href="#Network-Manage-使用-SSTP-VPN" class="headerlink" title="Network-Manage 使用 SSTP VPN"></a>Network-Manage 使用 SSTP VPN</h4><p>需要安装客户端软件： <code>network-manager-sstp</code></p>
