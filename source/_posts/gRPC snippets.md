@@ -2,7 +2,7 @@
 title: gRPC snippets
 urlname: xs66n7
 date: '2019-11-14 00:00:00 +0800'
-updated: 'Sun Nov 24 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Jan 09 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: gRPC
@@ -129,7 +129,7 @@ protoc -I/usr/local/include -I. -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecos
 // 生成 swagger 格式的 API 文档，使用到 protoc-gen-swagger 可执行文件
 protoc -I/usr/local/include -I. -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --swagger_out=logtostderr=true:. service.proto
 ```
-使用 gRPC 错误类型的另一个好处是 grpc-gateway 会自动将其转换为对应的 HTTP 状态码而不是每次出错都返回 500，参见 grpc-gateway [源码](https://github.com/grpc-ecosystem/grpc-gateway/blob/master/runtime/errors.go)。<br />可参考的实例：
+使用 gRPC 错误类型的另一个好处是 grpc-gateway 会自动将其转换为对应的 HTTP 状态码而不是每次出错都返回 500，参见 grpc-gateway [源码](https://github.com/grpc-ecosystem/grpc-gateway/blob/master/runtime/errors.go)。<br />grpc-gateway 需要使用 google.api.http，参考 [https://blog.csdn.net/xiaojia1100/article/details/79447283](https://blog.csdn.net/xiaojia1100/article/details/79447283)<br />可参考的实例：
 
 - [https://medium.com/swlh/rest-over-grpc-with-grpc-gateway-for-go-9584bfcbb835](https://medium.com/swlh/rest-over-grpc-with-grpc-gateway-for-go-9584bfcbb835)
 - [https://forum.golangbridge.org/t/go-rest-grpc-api/13072/5](https://forum.golangbridge.org/t/go-rest-grpc-api/13072/5)
