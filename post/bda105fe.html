@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录使用 ArchLinux 作为开发平台常用的命令和操作。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-07T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-01-08T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/bda105fe.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-08 00:00:00" itemprop="dateModified" datetime="2020-01-08T00:00:00+08:00">2020-01-08</time>
+                <time title="修改时间：2020-01-09 00:00:00" itemprop="dateModified" datetime="2020-01-09T00:00:00+08:00">2020-01-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -302,8 +302,8 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdk.tls.disabledAlgorithms=NULL</span><br></pre></td></tr></table></figure>
 <p>打开 <code>jcontrol</code> 程序将物理机终端地址加入白名单，如：<code>http://192.168.181.134:80</code>。<br>重新打开浏览器即可。</p>
 <p><a name="AM6Pq"></a></p>
-<h4 id="pacman-查看软件包安装的文件"><a href="#pacman-查看软件包安装的文件" class="headerlink" title="pacman 查看软件包安装的文件"></a>pacman 查看软件包安装的文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bin sudo pacman -Ql cni-plugins</span><br><span class="line">cni-plugins /usr/</span><br><span class="line">cni-plugins /usr/lib/</span><br><span class="line">cni-plugins /usr/lib/cni/</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
+<h4 id="pacman-查看软件包安装的文件"><a href="#pacman-查看软件包安装的文件" class="headerlink" title="pacman 查看软件包安装的文件"></a>pacman 查看软件包安装的文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Ql cni-plugins</span><br><span class="line">cni-plugins /usr/</span><br><span class="line">cni-plugins /usr/lib/</span><br><span class="line">cni-plugins /usr/lib/cni/</span><br><span class="line">...</span><br><span class="line">// 查看文件属于哪个包</span><br><span class="line">sudo pacman -Qo /bin/pacman-mirrors</span><br></pre></td></tr></table></figure>
+<p>更多参考：<a href="https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3" target="_blank" rel="external nofollow noopener noreferrer">https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3</a></p>
 <p><a name="J6u5z"></a></p>
 <h4 id="清理系统缓存"><a href="#清理系统缓存" class="headerlink" title="清理系统缓存"></a>清理系统缓存</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo paccache -r</span><br><span class="line">sudo paccache -ruk0</span><br><span class="line">sudo pacman -Scc</span><br><span class="line">sudo journalctl --vacuum-size=50M</span><br><span class="line">sudo rm /var/lib/systemd/coredump/*</span><br></pre></td></tr></table></figure>
 
