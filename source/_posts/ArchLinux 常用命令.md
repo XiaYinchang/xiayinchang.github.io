@@ -14,6 +14,17 @@ description: 本文记录使用 ArchLinux 作为开发平台常用的命令和�
 abbrlink: bda105fe
 ---
 
+<a name="52t3i"></a>
+#### 更新系统
+
+```
+sudo pacman -Sy archlinux-keyring
+sudo pacman -Syuu
+sudo pacman -S systemd --overwrite '*'
+sudo pacman -S systemd-sysvcompat --overwrite '*'
+// 自动获取最快的镜像源
+sudo reflector --verbose -c 'China' -l 20 -p http --sort rate --save /etc/pacman.d/mirrorlist
+```
 
 <a name="BdT88"></a>
 #### yay 使用相关
