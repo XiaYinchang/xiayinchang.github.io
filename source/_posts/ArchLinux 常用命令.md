@@ -2,7 +2,7 @@
 title: ArchLinux 常用命令
 urlname: egtn5p
 date: '2019-09-04 00:00:00 +0800'
-updated: 'Wed Jan 08 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Jan 09 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Linux
@@ -59,12 +59,15 @@ jdk.tls.disabledAlgorithms=NULL
 <a name="AM6Pq"></a>
 #### pacman 查看软件包安装的文件
 ```
-bin sudo pacman -Ql cni-plugins
+sudo pacman -Ql cni-plugins
 cni-plugins /usr/
 cni-plugins /usr/lib/
 cni-plugins /usr/lib/cni/
 ...
+// 查看文件属于哪个包
+sudo pacman -Qo /bin/pacman-mirrors
 ```
+更多参考：[https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3](https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3)
 
 <a name="J6u5z"></a>
 #### 清理系统缓存
