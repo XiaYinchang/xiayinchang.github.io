@@ -90,4 +90,14 @@ sudo journalctl --vacuum-size=50M
 sudo rm /var/lib/systemd/coredump/*
 ```
 
+<a name="C8RKE"></a>
+#### 安装 Deepin 桌面
+```bash
+pacman -S xorg xorg-server deepin deepin-extra
+vim /etc/lightdm/lightdm.conf
+greeter-session=lightdm-deepin-greeter
+systemctl enable lightdm.service
+systemctl enable NetworkManager
+```
+
 
