@@ -98,6 +98,8 @@ vim /etc/lightdm/lightdm.conf
 greeter-session=lightdm-deepin-greeter
 systemctl enable lightdm.service
 systemctl enable NetworkManager
+useradd -m -g users -G wheel -s /bin/bash xyc
+passwd xyc
 ```
 
 
