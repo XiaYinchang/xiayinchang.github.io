@@ -2,7 +2,7 @@
 title: Go 知识点汇总
 urlname: sfexfo
 date: '2019-10-12 00:00:00 +0800'
-updated: 'Sun Nov 24 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Jan 14 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Go
@@ -508,6 +508,70 @@ if err != nil {
 }
 scanner := bufio.NewScanner(stdout)
 for scanner.Scan() {}
+```
+
+<a name="zJv1y"></a>
+#### json unmarshal 时保留 raw message
+保留 raw message 的一个用途是，针对不同版本的返回值同一字段的结构可能不一样，因此可以先保留 raw message 然后根据版本进行进一步处理。
+```bash
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"strconv"
+)
+
+var jsonStrVersion1 = []byte(`{
+    "id"  : 15,
+    "version" : 1,
+    "foo" : { "foo": 123, "bar": "baz" }
+}`)
+var jsonStrVersion2 = []byte(`{
+    "id"  : 16,
+    "version" : 2,
+    "foo" : 124
+}`)
+
+type Bar struct {
+	Id      int64           `json:"id"`
+	Version int64           `json:"version"`
+	Foo     json.RawMessage `json:"foo"`
+}
+type Foo struct {
+	Foo int64  `json:"foo"`
+	Bar string `json:"bar"`
+}
+
+func main() {
+	var bar Bar
+	err := json.Unmarshal(jsonStrVersion1, &bar)
+	if err != nil {
+		panic(err)
+	}
+	getFoo(bar)
+	err = json.Unmarshal(jsonStrVersion2, &bar)
+	if err != nil {
+		panic(err)
+	}
+	getFoo(bar)
+}
+
+func getFoo(bar Bar) {
+	var num int64
+	switch bar.Version {
+	case 1:
+		var foo Foo
+		_ = json.Unmarshal(bar.Foo, &foo)
+		num = foo.Foo
+	case 2:
+		num, _ = strconv.ParseInt(string(bar.Foo), 10, 64)
+	}
+	fmt.Println(num)
+}
+//输出
+//123
+//124
 ```
 
 <a name="utDk1"></a>
