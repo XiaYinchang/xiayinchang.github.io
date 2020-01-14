@@ -1,6 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux 实用命令集合</title>
+    <url>/post/b489449e.html</url>
+    <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS<br></h4><ul>
+<li><p>升级系统内核</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</span><br><span class="line">rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</span><br><span class="line">yum --enablerepo=elrepo-kernel install kernel-ml</span><br><span class="line">awk -F\<span class="string">' '</span><span class="variable">$1</span>==<span class="string">"menuentry "</span> &#123;<span class="built_in">print</span> i++ <span class="string">" : "</span> <span class="variable">$2</span>&#125;<span class="string">' /etc/grub2.cfg</span></span><br><span class="line"><span class="string">grub2-set-default 0</span></span><br><span class="line"><span class="string">grub2-mkconfig -o /boot/grub2/grub.cfg</span></span><br><span class="line"><span class="string">reboot</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装fish</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/yum.repos.d/</span><br><span class="line">wget https://download.opensuse.org/repositories/shells:fish:release:2/CentOS_7/shells:fish:release:2.repo</span><br><span class="line">yum install fish -y</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建网桥</p>
+</li>
+</ul><a id="more"></a>
+
+<p>可以直接在配置文件修改，如下创建网桥 br0：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-br0 </span></span><br><span class="line">TYPE=Bridge</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">NAME=br0</span><br><span class="line">DEVICE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.180.136</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.180.254</span><br><span class="line">DNS1=114.114.114.114</span><br></pre></td></tr></table></figure>
+
+
+<p>加入物理网卡 em1 到网桥</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-em1</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=no</span><br><span class="line">NAME=em1</span><br><span class="line">DEVICE=em1</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BRIDGE=br0</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>创建 veth 并持久化</li>
+</ul>
+<p>创建两对 veth 并加入到网桥，脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /root/config_veth.sh </span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">ip link add dev veth0 <span class="built_in">type</span> veth peer name veth1</span><br><span class="line">ip link add dev veth2 <span class="built_in">type</span> veth peer name veth3</span><br><span class="line">ip link <span class="built_in">set</span> dev veth0 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth1 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth2 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth3 up</span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+<p>执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /usr/lib/systemd/system/veth.service </span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Create veths</span><br><span class="line">After=network-pre.target dbus.service</span><br><span class="line">Before=network.target network.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/root/config_veth.sh</span><br><span class="line">Restart=on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>创建完上述文件，不要忘了执行 systemctl enable –now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth0</span></span><br><span class="line">DEVICE=veth0</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth1</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth1</span></span><br><span class="line">DEVICE=veth1</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">IPADDR=192.168.180.211</span><br><span class="line">MTU=1500</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth2</span></span><br><span class="line">DEVICE=veth2</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth3</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth3</span></span><br><span class="line">DEVICE=veth3</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth2</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
+
+<p>现在，就算重启系统虚拟网卡也会被自动重建了。</p>
+<ul>
+<li>自动加载内核模块</li>
+</ul>
+<p>以下示例加载 ipvs 内核模块:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modules-load.d/ipvs.conf</span><br><span class="line">ip_vs</span><br><span class="line">ip_vs_lc</span><br><span class="line">ip_vs_wlc</span><br><span class="line">ip_vs_rr</span><br><span class="line">ip_vs_wrr</span><br><span class="line">ip_vs_lblc</span><br><span class="line">ip_vs_lblcr</span><br><span class="line">ip_vs_dh</span><br><span class="line">ip_vs_sh</span><br><span class="line">ip_vs_nq</span><br><span class="line">ip_vs_sed</span><br><span class="line">ip_vs_ftp</span><br><span class="line">nf_conntrack</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>自动设置内核参数<br>以下示例启用 ipv4 转发功能：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/sysctl.conf</span><br><span class="line">net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables=1</span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">vm.swappiness=0</span><br><span class="line">net.core.somaxconn=32768</span><br><span class="line">net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.conf.all.rp_filter=1</span><br><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>磁盘性能测试</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install fio</span><br><span class="line">fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=<span class="built_in">test</span> --filename=<span class="built_in">test</span> --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75</span><br><span class="line"></span><br><span class="line">//latnecy</span><br><span class="line">yum install epel-release</span><br><span class="line">yum install ioping</span><br><span class="line">ioping -c 10 .</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装 MariaDB</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 添加 MariaDB 仓库</span></span><br><span class="line">cat /etc/yum.repos.d/MariaDB.repo</span><br><span class="line">[mariadb]</span><br><span class="line">name = MariaDB</span><br><span class="line">baseurl = http://yum.mariadb.org/10.4/centos7-amd64</span><br><span class="line">gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck=1</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 执行安装</span></span><br><span class="line">yum -y install MariaDB-server MariaDB-client</span><br><span class="line">systemctl <span class="built_in">enable</span> --now mariadb</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>在 grub 引导界面临时编辑内核启动参数</p>
+<p>   首先，选中要编辑的内核项，按 <strong>e</strong> 进入编辑页面，编辑完成后按 <strong>Ctrl + x</strong>  启动系统。下图为编辑内核参数直接进入救援模式。</p>
+</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&display=inline&height=230&name=image.png&originHeight=230&originWidth=716&size=13999&status=done&style=none&width=716" alt="image.png"><br></p>
+<ul>
+<li>在操作系统中编辑内核启动参数并重新生成 grub 引导</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 修改 /etc/default/grub 中的参数设置</span><br><span class="line">[root@umstor03 ~]<span class="comment"># cat /etc/default/grub </span></span><br><span class="line">GRUB_TIMEOUT=5</span><br><span class="line">GRUB_DISTRIBUTOR=<span class="string">"<span class="variable">$(sed 's, release .*$,,g' /etc/system-release)</span>"</span></span><br><span class="line">GRUB_DEFAULT=saved</span><br><span class="line">GRUB_DISABLE_SUBMENU=<span class="literal">true</span></span><br><span class="line">GRUB_TERMINAL_OUTPUT=<span class="string">"console"</span></span><br><span class="line">GRUB_CMDLINE_LINUX=<span class="string">"crashkernel=auto rd.lvm.lv=centos_umstor03/root video=640x480 nomodeset"</span></span><br><span class="line">GRUB_DISABLE_RECOVERY=<span class="string">"true"</span></span><br><span class="line"></span><br><span class="line">// 执行以下命令生成新的 grub 引导文件</span><br><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br><span class="line">// 重启系统时参数生效</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>netinstall  centos 1804 可用如下镜像源</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 不要遗漏最后的反斜线</span><br><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.5.1804/os/x86_64/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>包版本降级</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum downgrade httpd-2.2.3-22.el5</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看包安装信息</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -qa | grep nginx</span><br><span class="line">rpm -qf /usr/sbin/nginx</span><br><span class="line">rpm -ql nginx</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><a name="3HTPv"></a></p>
+<h4 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h4><ul>
+<li>替换空格为换行</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&style=none&width=160" alt="image.png"></p>
+<p><a name="FfBcn"></a></p>
+<h4 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h4><ul>
+<li><p>修改历史 commit 信息</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase -i HEAD~2</span><br><span class="line">pick -&gt; edit</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改 commit 时间</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置为当前时间</span><br><span class="line">GIT_COMMITTER_DATE=&quot;$(date &apos;+%Y-%m-%d %H:%M:%S&apos;)&quot; git commit --amend --no-edit --date &quot;$(date)&quot;</span><br><span class="line"># 设置为指定时间</span><br><span class="line">GIT_COMMITTER_DATE=&quot;Mon 20 Aug 2018 20:19:19 BST&quot; git commit --amend --no-edit --date &quot;Mon 20 Aug 2018 20:19:19 BST&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较两个分支的不同</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git diff branch_1..branch_2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>merge 时使用指定方代码解决冲突</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">git merge -X theirs origin/dev</span><br><span class="line">git merge -X ours origin/dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看一个文件完整的修改历史</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git log --follow -p -- _config.yml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将当前分支下子目录内容提交至另一个分支</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git subtree push --prefix dist origin gh-pages</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除 submodule</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git submodule deinit &lt;path_to_submodule&gt;</span><br><span class="line">git rm &lt;path_to_submodule&gt;</span><br><span class="line">git commit -m &quot;Removed submodule &quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合并所有 commit 为一个</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase --root -i</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除所有没有远程分支的本地分支</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git fetch -p &amp;&amp; git branch -vv | awk &apos;/: gone]/&#123;print $1&#125;&apos; | xargs git branch -d</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>撤销某个 commit</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git revert --strategy resolve &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 ssh 替代 https 访问</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global url.<span class="string">"git@git.ucloudadmin.com:"</span>.insteadOf <span class="string">"https://git.ucloudadmin.com/"</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><a name="Qgmi6"></a></p>
+<h4 id="Ansible"><a href="#Ansible" class="headerlink" title="Ansible"></a>Ansible</h4><ul>
+<li>打印 Ansible 所有的变量 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- name: Print some debug information </span><br><span class="line">  vars: </span><br><span class="line">    msg: |</span><br><span class="line">        Module Variables (&quot;vars&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; vars | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">        Environment Variables (&quot;environment&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; environment | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">        GROUP NAMES Variables (&quot;group_names&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; group_names | to_nice_json &#125;&#125;</span><br><span class="line"> </span><br><span class="line">        GROUPS Variables (&quot;groups&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; groups | to_nice_json &#125;&#125;</span><br><span class="line"> </span><br><span class="line">        HOST Variables (&quot;hostvars&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; hostvars | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">  debug: </span><br><span class="line">    msg: &quot;&#123;&#123; msg.split(&apos;\n&apos;) &#125;&#125;&quot;       </span><br><span class="line">  tags: debug_info</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- name: Display all variables/facts known for a host</span><br><span class="line">  debug:</span><br><span class="line">    var: hostvars[inventory_hostname]</span><br><span class="line">  tags: debug_info</span><br></pre></td></tr></table></figure>
+
+<p><a name="uiMU3"></a></p>
+<h4 id="man-查看手册"><a href="#man-查看手册" class="headerlink" title="man 查看手册"></a>man 查看手册</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 查看 man 命令使用说明</span><br><span class="line">man man</span><br><span class="line">// 查看 exit bash 命令使用说明</span><br><span class="line">man exit</span><br><span class="line">// 查看 exit 系统调用使用说明，指定 section 为 2（系统调用手册所在区）</span><br><span class="line">man 2 exit</span><br></pre></td></tr></table></figure>
+
+<p><a name="gzyiV"></a></p>
+<h4 id="tcpdump-捕获-http-包"><a href="#tcpdump-捕获-http-包" class="headerlink" title="tcpdump 捕获 http 包"></a>tcpdump 捕获 http 包</h4><p>更多参考：<a href="https://hackertarget.com/tcpdump-examples/" target="_blank" rel="external nofollow noopener noreferrer">https://hackertarget.com/tcpdump-examples/</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tcpdump -s 0 -A <span class="string">'tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x47455420'</span></span><br><span class="line">tcpdump -ni ens5f0 -A -s 10240 <span class="string">'tcp port 8056 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'</span> | egrep --line-buffered <span class="string">"^........(GET |HTTP\/|POST |HEAD )|^[A-Za-z0-9-]+: "</span> | sed -r <span class="string">'s/^........(GET |HTTP\/|POST |HEAD )/\n\1/g'</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="WZCnh"></a></p>
+<h4 id="mount-查看目录或分区挂载情况"><a href="#mount-查看目录或分区挂载情况" class="headerlink" title="mount 查看目录或分区挂载情况"></a>mount 查看目录或分区挂载情况</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /proc/mounts</span><br><span class="line">// or</span><br><span class="line">cat /proc/self/mountinfo</span><br><span class="line">// or</span><br><span class="line">mount -l</span><br><span class="line">// or</span><br><span class="line">findmnt</span><br><span class="line">// or</span><br><span class="line">df -aTh</span><br></pre></td></tr></table></figure>
+
+<p><a name="1rSZC"></a></p>
+<h4 id="pgrep-进程检索与杀死"><a href="#pgrep-进程检索与杀死" class="headerlink" title="pgrep 进程检索与杀死"></a>pgrep 进程检索与杀死</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 按名称列出进程 ID</span><br><span class="line">pgrep chrome</span><br><span class="line">// 按名称杀死进程</span><br><span class="line">pkill -9 fish</span><br><span class="line">killall -9 fish</span><br><span class="line">// 杀死指定 ID 的进程</span><br><span class="line"><span class="built_in">kill</span> -9 3049</span><br><span class="line">// 列出进程树</span><br><span class="line">pstree -p</span><br></pre></td></tr></table></figure>
+
+<p><a name="e1tG9"></a></p>
+<h4 id="fuser-找到正在使用某个文件的进程"><a href="#fuser-找到正在使用某个文件的进程" class="headerlink" title="fuser 找到正在使用某个文件的进程"></a>fuser 找到正在使用某个文件的进程</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// fuser 是 file user 的缩写</span><br><span class="line">fuser -uv &lt;filename&gt;</span><br><span class="line">fuser -uvm /folder</span><br><span class="line">// 查看哪个程序在占用 8000 端口</span><br><span class="line">fuser -v -n tcp 8000</span><br></pre></td></tr></table></figure>
+
+<p><a name="lw5hk"></a></p>
+<h4 id="lsof-列出所有打开的文件"><a href="#lsof-列出所有打开的文件" class="headerlink" title="lsof 列出所有打开的文件"></a>lsof 列出所有打开的文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// lsof 是 list open files 的缩写</span><br><span class="line">// -i 代表列出正在打开的 IPV4[6] 文件； -n 表示不进行 DNS 反解； -P 表示不进行端口反解</span><br><span class="line">lsof -i -n -P</span><br><span class="line">// 查看当前目录下打开的文件</span><br><span class="line">lsof .</span><br></pre></td></tr></table></figure>
+
+<p><a name="70PLT"></a></p>
+<h4 id="strace-跟踪系统调用"><a href="#strace-跟踪系统调用" class="headerlink" title="strace 跟踪系统调用"></a>strace 跟踪系统调用</h4><p>strace 用法参考： <a href="https://www.howtoforge.com/linux-strace-command/" target="_blank" rel="external nofollow noopener noreferrer">https://www.howtoforge.com/linux-strace-command/</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">strace -i ls</span><br></pre></td></tr></table></figure>
+
+<p><a name="6F4YX"></a></p>
+<h4 id="getent-获取系统用户信息"><a href="#getent-获取系统用户信息" class="headerlink" title="getent 获取系统用户信息"></a>getent 获取系统用户信息</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">getent passwd</span><br></pre></td></tr></table></figure>
+
+<p><a name="zdvyH"></a></p>
+<h4 id="sed-删除所有以-开头的行"><a href="#sed-删除所有以-开头的行" class="headerlink" title="sed 删除所有以 # 开头的行"></a>sed 删除所有以 # 开头的行</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">'/^#/ d'</span></span><br></pre></td></tr></table></figure>
+<p>更多使用方法参考：<a href="https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html</a></p>
+<p><a name="tZDa5"></a></p>
+<h4 id="生成-Linux-用户密码的哈希值"><a href="#生成-Linux-用户密码的哈希值" class="headerlink" title="生成 Linux 用户密码的哈希值"></a>生成 Linux 用户密码的哈希值</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python -c &quot;import crypt, getpass, pwd; print(crypt.crypt(&apos;password&apos;, &apos;\$6\$saltsalt\$&apos;))&quot;</span><br><span class="line">// 或者使用 go</span><br><span class="line">package main                                                </span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;github.com/tredoe/osutil/user/crypt/sha512_crypt&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">    c := sha512_crypt.New()</span><br><span class="line">    hash, err := c.Generate([]byte(&quot;rasmuslerdorf&quot;), []byte(&quot;$6$usesomesillystringforsalt&quot;))</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        panic(err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(hash)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a name="uvsm2"></a></p>
+<h4 id="允许使用-root-用户-ssh-登录"><a href="#允许使用-root-用户-ssh-登录" class="headerlink" title="允许使用 root 用户 ssh 登录"></a>允许使用 root 用户 ssh 登录</h4><p>先删除 <code>/root/.ssh/authorized_keys</code> 中的多余限制信息，之后在 <code>/etc/ssh/sshd_config</code> 中添加 <code>PermitRootLogin yes</code> 后重启 sshd 服务。</p>
+<p><a name="vwUdA"></a></p>
+<h4 id="解决”rtnetlink-answers-file-exists”"><a href="#解决”rtnetlink-answers-file-exists”" class="headerlink" title="解决”rtnetlink answers file exists”"></a>解决”rtnetlink answers file exists”</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ip a flush dev eth0</span><br></pre></td></tr></table></figure>
+
+<p><a name="HPtZj"></a></p>
+<h4 id="ssh-取消-StrictHostKeyChecking-并从环境变量读取-ssh-key-到本地"><a href="#ssh-取消-StrictHostKeyChecking-并从环境变量读取-ssh-key-到本地" class="headerlink" title="ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地"></a>ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"Host *"</span> &gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"  StrictHostKeyChecking=no"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"  UserKnownHostsFile=/dev/null"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line">mkdir -p ~/.ssh</span><br><span class="line">chmod 700 ~/.ssh</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PRIVATE_KEY</span>"</span> | tr -d <span class="string">'\r'</span> &gt; ~/.ssh/id_rsa</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PUBLIC_KEY</span>"</span> &gt; ~/.ssh/id_rsa.pub</span><br><span class="line">chmod 600 ~/.ssh/id_rsa</span><br><span class="line">chmod 644 ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+<p><a name="Ey88A"></a></p>
+<h4 id="查看登录记录"><a href="#查看登录记录" class="headerlink" title="查看登录记录"></a>查看登录记录</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看当前登录用户</span></span><br><span class="line">who</span><br><span class="line"><span class="comment"># 查看最近登录记录</span></span><br><span class="line">last -F</span><br><span class="line"><span class="comment"># 查看最近90天所有用户的最后登录时间</span></span><br><span class="line">lastlog --time 90</span><br></pre></td></tr></table></figure>
+
+<p><a name="g7NoE"></a></p>
+<h4 id="rsync-同步时需要-root-权限"><a href="#rsync-同步时需要-root-权限" class="headerlink" title="rsync 同步时需要 root 权限"></a>rsync 同步时需要 root 权限</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -aru -e <span class="string">"ssh"</span> --rsync-path=<span class="string">"sudo rsync"</span> 172.16.110.215:~/ ~/  --progress --exclude=.cache</span><br></pre></td></tr></table></figure>
+
+<p><a name="xr010"></a></p>
+<h4 id="rclone-将-http-file-server-的内容同步到本地"><a href="#rclone-将-http-file-server-的内容同步到本地" class="headerlink" title="rclone 将 http file server 的内容同步到本地"></a>rclone 将 http file server 的内容同步到本地</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rclone sync --http-url http://my.file.server :http:centos/<span class="built_in">test</span> /repo/<span class="built_in">test</span> --progress</span><br></pre></td></tr></table></figure>
+
+<p><a name="hU4cE"></a></p>
+<h4 id="expr-比较字符串大小"><a href="#expr-比较字符串大小" class="headerlink" title="expr 比较字符串大小"></a>expr 比较字符串大小</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">str3=<span class="string">'v1.13'</span></span><br><span class="line">str2=<span class="string">'v1.14'</span></span><br><span class="line"><span class="keyword">if</span> [ $(expr <span class="variable">$&#123;str3&#125;</span> \&lt;= <span class="variable">$&#123;str2&#125;</span>) -eq 1 ]; <span class="keyword">then</span>    <span class="built_in">echo</span> <span class="string">"[<span class="variable">$&#123;str3&#125;</span>] &lt;= [<span class="variable">$&#123;str2&#125;</span>]"</span>; <span class="keyword">else</span>    <span class="built_in">echo</span> <span class="string">"[<span class="variable">$&#123;str3&#125;</span>] &gt; [<span class="variable">$&#123;str2&#125;</span>]"</span>; <span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="bjtsD"></a></p>
+<h4 id="tr-移除所有空格"><a href="#tr-移除所有空格" class="headerlink" title="tr 移除所有空格"></a>tr 移除所有空格</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 获取 kubernetes 版本</span><br><span class="line">kubectl version --short | tail -1 | cut -d<span class="string">':'</span> -f2 | tr -d <span class="string">'[:space:]'</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="NBOFH"></a></p>
+<h4 id="vegeta-对-HTTP-服务进行性能测试"><a href="#vegeta-对-HTTP-服务进行性能测试" class="headerlink" title="vegeta 对 HTTP 服务进行性能测试"></a>vegeta 对 HTTP 服务进行性能测试</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">echo <span class="string">"GET http://localhost:8080/cephcsi"</span> | vegeta attack -rate=<span class="number">20000</span> -duration=<span class="number">60</span>s &gt; result.bin</span><br><span class="line">vegeta report result.bin</span><br></pre></td></tr></table></figure>
+<p>更多内容参考：<a href="https://www.scaleway.com/en/docs/vegeta-load-testing/" target="_blank" rel="external nofollow noopener noreferrer">https://www.scaleway.com/en/docs/vegeta-load-testing/</a></p>
+<p><a name="DNQzt"></a></p>
+<h4 id="zip-压缩文件不带顶级目录"><a href="#zip-压缩文件不带顶级目录" class="headerlink" title="zip 压缩文件不带顶级目录"></a>zip 压缩文件不带顶级目录</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pushd /Users/me/development/something</span><br><span class="line">cd path/to/parent/dir/;</span><br><span class="line">zip -r complete/path/to/name.zip ./*</span><br><span class="line">popd</span><br></pre></td></tr></table></figure>
+
+<p><a name="KWEjv"></a></p>
+<h4 id="MySQL-执行单行命令"><a href="#MySQL-执行单行命令" class="headerlink" title="MySQL 执行单行命令"></a>MySQL 执行单行命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql --user=&quot;$user&quot; --password=&quot;$password&quot; --database=&quot;$database&quot; --execute=&quot;DROP DATABASE $user; CREATE DATABASE $database;&quot;</span><br></pre></td></tr></table></figure>
+
+<p><a name="bIf97"></a></p>
+<h4 id="MySQL-导出数据库"><a href="#MySQL-导出数据库" class="headerlink" title="MySQL 导出数据库"></a>MySQL 导出数据库</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 导出</span><br><span class="line">mysqldump -P 3306 -u root --password=password -h 172.30.100.43  keycloak &gt; keycloak-3.sql</span><br><span class="line">// 导入</span><br><span class="line">mysql -P 3306 -u root --password=password -h 172.30.100.43  keycloak &lt; keycloak.sql</span><br></pre></td></tr></table></figure>
+
+<p><a name="csvsg"></a></p>
+<h4 id="ss-列出所有处于监听状态的-socket"><a href="#ss-列出所有处于监听状态的-socket" class="headerlink" title="ss 列出所有处于监听状态的 socket"></a>ss 列出所有处于监听状态的 socket</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">ss -lntu</span><br><span class="line">-l = only services which are listening on some port</span><br><span class="line">-n = show port number, don<span class="string">'t try to resolve the service name</span></span><br><span class="line"><span class="string">-t = tcp ports</span></span><br><span class="line"><span class="string">-u = udp ports</span></span><br><span class="line"><span class="string">-p = name of the program</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="1EEnK"></a></p>
+<h4 id="查看网络中已存在的-IP"><a href="#查看网络中已存在的-IP" class="headerlink" title="查看网络中已存在的 IP"></a>查看网络中已存在的 IP</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">arp-scan -I eth0 192.168.180.0/24</span><br><span class="line">//或</span><br><span class="line">nmap -sP -PR 192.168.180.*</span><br></pre></td></tr></table></figure>
+
+<p><a name="sbDNW"></a></p>
+<h4 id="iostat-查看磁盘读写速度"><a href="#iostat-查看磁盘读写速度" class="headerlink" title="iostat 查看磁盘读写速度"></a>iostat 查看磁盘读写速度</h4><p>参考：<a href="https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/" target="_blank" rel="external nofollow noopener noreferrer">https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 以 MB 为单位显示速度</span><br><span class="line">iostat -m</span><br></pre></td></tr></table></figure>
+
+<p><a name="vWZU0"></a></p>
+<h4 id="Wireshark-过滤表达式"><a href="#Wireshark-过滤表达式" class="headerlink" title="Wireshark 过滤表达式"></a>Wireshark 过滤表达式</h4><p>参考：<a href="https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ip.scr==10.0.0.5 or ip.dst==192.1.1.1</span><br></pre></td></tr></table></figure>
+
+<p><a name="lX9js"></a></p>
+<h4 id="alpine-修改镜像源"><a href="#alpine-修改镜像源" class="headerlink" title="alpine 修改镜像源"></a>alpine 修改镜像源</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sed -i &apos;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&apos; /etc/apk/repositories</span><br></pre></td></tr></table></figure>
+
+<p><a name="52SGW"></a></p>
+<h4 id="tinc-配置-VPN"><a href="#tinc-配置-VPN" class="headerlink" title="tinc 配置 VPN"></a>tinc 配置 VPN</h4><p>首先要有一个有公网 IP 的服务器作为交换节点。该节点进行如下配置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install -y tinc</span><br><span class="line">mkdir -p /etc/tinc/vpn/hosts</span><br><span class="line">vim /etc/tinc/vpn/tinc.conf</span><br><span class="line">  Name = vpn</span><br><span class="line">  Interface = tinc</span><br><span class="line">  Mode = switch</span><br><span class="line">tincd -n vpn -K</span><br><span class="line"> // 启动服务</span><br><span class="line">tincd -n vpn -D</span><br><span class="line">ip link <span class="built_in">set</span> tinc up</span><br><span class="line">ip a add 192.168.120.1/24 dev tinc</span><br></pre></td></tr></table></figure>
+<p>客户端配置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p /etc/tinc/`hostname`/hosts</span><br><span class="line">vim /etc/tinc/`hostname`/tinc.conf</span><br><span class="line">  Name = hostname</span><br><span class="line">  Interface = tinc</span><br><span class="line">  Mode = switch</span><br><span class="line">  ConnectTo = vpn</span><br><span class="line">tincd -n `hostname` -K</span><br><span class="line">scp vpn-public-ip:/etc/tinc/vpn/hosts/vpn /etc/tinc/`hostname`/hosts</span><br><span class="line">vim /etc/tinc/`hostname`/hosts/vpn <span class="comment"># 第一行加上 Address = vpn-public-ip</span></span><br><span class="line">scp /etc/tinc/vpn/hosts/`hostname` vpn-public-ip:/etc/tinc/vpn/hosts/</span><br><span class="line"> // 启动服务</span><br><span class="line">tincd -n `hostname` -D</span><br><span class="line">ip link <span class="built_in">set</span> tinc up</span><br><span class="line">ip a add 192.168.120.2/24 dev tinc</span><br><span class="line">ip r add 10.10.0.0/16 dev tinc</span><br></pre></td></tr></table></figure>
+
+<p><a name="ttdKC"></a></p>
+<h4 id="删文件报错-Structure-needs-cleaning"><a href="#删文件报错-Structure-needs-cleaning" class="headerlink" title="删文件报错 Structure needs cleaning"></a>删文件报错 Structure needs cleaning</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -fR hourly.5/</span><br><span class="line"></span><br><span class="line">rm: cannot remove <span class="string">'hourly.5/snapshot_root/mnt/Vancouver/temp/temp - old/temp - 09 (Dec 07, 2014 - Sep 02, 2015)/a_OLD-gmail/victoria.a.stuart@gmail.com/[Gmail]/LINUX/rsync, rsnapshot; Other backups/19.bak'</span>: Structure needs cleaning</span><br></pre></td></tr></table></figure>
+<p>原因可能是文件系统损坏，xfs 文件系统可以使用 Live 系统登陆后使用以下命令尝试修复：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">umount /dev/sda1</span><br><span class="line">xfs_repair /dev/sda1</span><br></pre></td></tr></table></figure>
+
+<p><a name="hh4rr"></a></p>
+<h4 id="coredumpctl"><a href="#coredumpctl" class="headerlink" title="coredumpctl"></a>coredumpctl</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">coredumpctl list</span><br><span class="line">coredumpctl dump pid</span><br><span class="line">coredumpctl dump chrome</span><br><span class="line">coredumpctl -o core.dump dump chrome</span><br><span class="line">coredumpctl gdb pid</span><br></pre></td></tr></table></figure>
+
+<p><a name="fL7Yx"></a></p>
+<h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
+<li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
+<li>pandoc 可以借助第三方引擎实现各种文档格式之间的转换：<a href="https://pandoc.org/" target="_blank" rel="external nofollow noopener noreferrer">https://pandoc.org/</a>。</li>
+<li>MOBI 转 PDF 的在线网站：<a href="https://ebook2pdf.com/" target="_blank" rel="external nofollow noopener noreferrer">https://ebook2pdf.com/</a></li>
+<li>Github dispatch 使用示例：<a href="https://alejandroandr.eu/posts/manual-trigger-github-workflows/" target="_blank" rel="external nofollow noopener noreferrer">https://alejandroandr.eu/posts/manual-trigger-github-workflows/</a></li>
+<li>deepin-wine 安装微软雅黑字体 : <a href="https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag> 云计算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ArchLinux 常用命令</title>
     <url>/post/bda105fe.html</url>
     <content><![CDATA[<p><a name="52t3i"></a></p><h4 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -Sy archlinux-keyring</span><br><span class="line">sudo pacman -Syuu</span><br><span class="line">sudo pacman -S systemd --overwrite &apos;*&apos;</span><br><span class="line">sudo pacman -S systemd-sysvcompat --overwrite &apos;*&apos;</span><br><span class="line">// 自动获取最快的镜像源</span><br><span class="line">sudo reflector --verbose -c &apos;China&apos; -l 20 -p http --sort rate --save /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -191,248 +436,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>Ceph</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 实用命令集合</title>
-    <url>/post/b489449e.html</url>
-    <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS<br></h4><ul>
-<li><p>升级系统内核</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</span><br><span class="line">rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</span><br><span class="line">yum --enablerepo=elrepo-kernel install kernel-ml</span><br><span class="line">awk -F\<span class="string">' '</span><span class="variable">$1</span>==<span class="string">"menuentry "</span> &#123;<span class="built_in">print</span> i++ <span class="string">" : "</span> <span class="variable">$2</span>&#125;<span class="string">' /etc/grub2.cfg</span></span><br><span class="line"><span class="string">grub2-set-default 0</span></span><br><span class="line"><span class="string">grub2-mkconfig -o /boot/grub2/grub.cfg</span></span><br><span class="line"><span class="string">reboot</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装fish</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/yum.repos.d/</span><br><span class="line">wget https://download.opensuse.org/repositories/shells:fish:release:2/CentOS_7/shells:fish:release:2.repo</span><br><span class="line">yum install fish -y</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>创建网桥</p>
-</li>
-</ul><a id="more"></a>
-
-<p>可以直接在配置文件修改，如下创建网桥 br0：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-br0 </span></span><br><span class="line">TYPE=Bridge</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">NAME=br0</span><br><span class="line">DEVICE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.180.136</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.180.254</span><br><span class="line">DNS1=114.114.114.114</span><br></pre></td></tr></table></figure>
-
-
-<p>加入物理网卡 em1 到网桥</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-em1</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=no</span><br><span class="line">NAME=em1</span><br><span class="line">DEVICE=em1</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BRIDGE=br0</span><br></pre></td></tr></table></figure>
-
-
-<ul>
-<li>创建 veth 并持久化</li>
-</ul>
-<p>创建两对 veth 并加入到网桥，脚本如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /root/config_veth.sh </span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">ip link add dev veth0 <span class="built_in">type</span> veth peer name veth1</span><br><span class="line">ip link add dev veth2 <span class="built_in">type</span> veth peer name veth3</span><br><span class="line">ip link <span class="built_in">set</span> dev veth0 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth1 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth2 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth3 up</span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
-
-<p>执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /usr/lib/systemd/system/veth.service </span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Create veths</span><br><span class="line">After=network-pre.target dbus.service</span><br><span class="line">Before=network.target network.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/root/config_veth.sh</span><br><span class="line">Restart=on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
-
-<p>创建完上述文件，不要忘了执行 systemctl enable –now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth0</span></span><br><span class="line">DEVICE=veth0</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth1</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth1</span></span><br><span class="line">DEVICE=veth1</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">IPADDR=192.168.180.211</span><br><span class="line">MTU=1500</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth2</span></span><br><span class="line">DEVICE=veth2</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth3</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth3</span></span><br><span class="line">DEVICE=veth3</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth2</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
-
-<p>现在，就算重启系统虚拟网卡也会被自动重建了。</p>
-<ul>
-<li>自动加载内核模块</li>
-</ul>
-<p>以下示例加载 ipvs 内核模块:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modules-load.d/ipvs.conf</span><br><span class="line">ip_vs</span><br><span class="line">ip_vs_lc</span><br><span class="line">ip_vs_wlc</span><br><span class="line">ip_vs_rr</span><br><span class="line">ip_vs_wrr</span><br><span class="line">ip_vs_lblc</span><br><span class="line">ip_vs_lblcr</span><br><span class="line">ip_vs_dh</span><br><span class="line">ip_vs_sh</span><br><span class="line">ip_vs_nq</span><br><span class="line">ip_vs_sed</span><br><span class="line">ip_vs_ftp</span><br><span class="line">nf_conntrack</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>自动设置内核参数<br>以下示例启用 ipv4 转发功能：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/sysctl.conf</span><br><span class="line">net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables=1</span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">vm.swappiness=0</span><br><span class="line">net.core.somaxconn=32768</span><br><span class="line">net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.conf.all.rp_filter=1</span><br><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>磁盘性能测试</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install fio</span><br><span class="line">fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=<span class="built_in">test</span> --filename=<span class="built_in">test</span> --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75</span><br><span class="line"></span><br><span class="line">//latnecy</span><br><span class="line">yum install epel-release</span><br><span class="line">yum install ioping</span><br><span class="line">ioping -c 10 .</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>安装 MariaDB</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 添加 MariaDB 仓库</span></span><br><span class="line">cat /etc/yum.repos.d/MariaDB.repo</span><br><span class="line">[mariadb]</span><br><span class="line">name = MariaDB</span><br><span class="line">baseurl = http://yum.mariadb.org/10.4/centos7-amd64</span><br><span class="line">gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck=1</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 执行安装</span></span><br><span class="line">yum -y install MariaDB-server MariaDB-client</span><br><span class="line">systemctl <span class="built_in">enable</span> --now mariadb</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>在 grub 引导界面临时编辑内核启动参数</p>
-<p>   首先，选中要编辑的内核项，按 <strong>e</strong> 进入编辑页面，编辑完成后按 <strong>Ctrl + x</strong>  启动系统。下图为编辑内核参数直接进入救援模式。</p>
-</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&display=inline&height=230&name=image.png&originHeight=230&originWidth=716&size=13999&status=done&style=none&width=716" alt="image.png"><br></p>
-<ul>
-<li>在操作系统中编辑内核启动参数并重新生成 grub 引导</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 修改 /etc/default/grub 中的参数设置</span><br><span class="line">[root@umstor03 ~]<span class="comment"># cat /etc/default/grub </span></span><br><span class="line">GRUB_TIMEOUT=5</span><br><span class="line">GRUB_DISTRIBUTOR=<span class="string">"<span class="variable">$(sed 's, release .*$,,g' /etc/system-release)</span>"</span></span><br><span class="line">GRUB_DEFAULT=saved</span><br><span class="line">GRUB_DISABLE_SUBMENU=<span class="literal">true</span></span><br><span class="line">GRUB_TERMINAL_OUTPUT=<span class="string">"console"</span></span><br><span class="line">GRUB_CMDLINE_LINUX=<span class="string">"crashkernel=auto rd.lvm.lv=centos_umstor03/root video=640x480 nomodeset"</span></span><br><span class="line">GRUB_DISABLE_RECOVERY=<span class="string">"true"</span></span><br><span class="line"></span><br><span class="line">// 执行以下命令生成新的 grub 引导文件</span><br><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br><span class="line">// 重启系统时参数生效</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>netinstall  centos 1804 可用如下镜像源</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 不要遗漏最后的反斜线</span><br><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.5.1804/os/x86_64/</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>包版本降级</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum downgrade httpd-2.2.3-22.el5</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看包安装信息</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rpm -qa | grep nginx</span><br><span class="line">rpm -qf /usr/sbin/nginx</span><br><span class="line">rpm -ql nginx</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><a name="3HTPv"></a></p>
-<h4 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h4><ul>
-<li>替换空格为换行</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&style=none&width=160" alt="image.png"></p>
-<p><a name="FfBcn"></a></p>
-<h4 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h4><ul>
-<li><p>修改历史 commit 信息</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase -i HEAD~2</span><br><span class="line">pick -&gt; edit</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>修改 commit 时间</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置为当前时间</span><br><span class="line">GIT_COMMITTER_DATE=&quot;$(date &apos;+%Y-%m-%d %H:%M:%S&apos;)&quot; git commit --amend --no-edit --date &quot;$(date)&quot;</span><br><span class="line"># 设置为指定时间</span><br><span class="line">GIT_COMMITTER_DATE=&quot;Mon 20 Aug 2018 20:19:19 BST&quot; git commit --amend --no-edit --date &quot;Mon 20 Aug 2018 20:19:19 BST&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>比较两个分支的不同</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git diff branch_1..branch_2</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>merge 时使用指定方代码解决冲突</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">git merge -X theirs origin/dev</span><br><span class="line">git merge -X ours origin/dev</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看一个文件完整的修改历史</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git log --follow -p -- _config.yml</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将当前分支下子目录内容提交至另一个分支</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git subtree push --prefix dist origin gh-pages</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除 submodule</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git submodule deinit &lt;path_to_submodule&gt;</span><br><span class="line">git rm &lt;path_to_submodule&gt;</span><br><span class="line">git commit -m &quot;Removed submodule &quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>合并所有 commit 为一个</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase --root -i</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除所有没有远程分支的本地分支</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git fetch -p &amp;&amp; git branch -vv | awk &apos;/: gone]/&#123;print $1&#125;&apos; | xargs git branch -d</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>撤销某个 commit</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git revert --strategy resolve &lt;commit&gt;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p><a name="Qgmi6"></a></p>
-<h4 id="Ansible"><a href="#Ansible" class="headerlink" title="Ansible"></a>Ansible</h4><ul>
-<li>打印 Ansible 所有的变量 </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- name: Print some debug information </span><br><span class="line">  vars: </span><br><span class="line">    msg: |</span><br><span class="line">        Module Variables (&quot;vars&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; vars | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">        Environment Variables (&quot;environment&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; environment | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">        GROUP NAMES Variables (&quot;group_names&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; group_names | to_nice_json &#125;&#125;</span><br><span class="line"> </span><br><span class="line">        GROUPS Variables (&quot;groups&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; groups | to_nice_json &#125;&#125;</span><br><span class="line"> </span><br><span class="line">        HOST Variables (&quot;hostvars&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; hostvars | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">  debug: </span><br><span class="line">    msg: &quot;&#123;&#123; msg.split(&apos;\n&apos;) &#125;&#125;&quot;       </span><br><span class="line">  tags: debug_info</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- name: Display all variables/facts known for a host</span><br><span class="line">  debug:</span><br><span class="line">    var: hostvars[inventory_hostname]</span><br><span class="line">  tags: debug_info</span><br></pre></td></tr></table></figure>
-
-<p><a name="uiMU3"></a></p>
-<h4 id="man-查看手册"><a href="#man-查看手册" class="headerlink" title="man 查看手册"></a>man 查看手册</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 查看 man 命令使用说明</span><br><span class="line">man man</span><br><span class="line">// 查看 exit bash 命令使用说明</span><br><span class="line">man exit</span><br><span class="line">// 查看 exit 系统调用使用说明，指定 section 为 2（系统调用手册所在区）</span><br><span class="line">man 2 exit</span><br></pre></td></tr></table></figure>
-
-<p><a name="gzyiV"></a></p>
-<h4 id="tcpdump-捕获-http-包"><a href="#tcpdump-捕获-http-包" class="headerlink" title="tcpdump 捕获 http 包"></a>tcpdump 捕获 http 包</h4><p>更多参考：<a href="https://hackertarget.com/tcpdump-examples/" target="_blank" rel="external nofollow noopener noreferrer">https://hackertarget.com/tcpdump-examples/</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tcpdump -s 0 -A <span class="string">'tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x47455420'</span></span><br><span class="line">tcpdump -ni ens5f0 -A -s 10240 <span class="string">'tcp port 8056 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'</span> | egrep --line-buffered <span class="string">"^........(GET |HTTP\/|POST |HEAD )|^[A-Za-z0-9-]+: "</span> | sed -r <span class="string">'s/^........(GET |HTTP\/|POST |HEAD )/\n\1/g'</span></span><br></pre></td></tr></table></figure>
-
-<p><a name="WZCnh"></a></p>
-<h4 id="mount-查看目录或分区挂载情况"><a href="#mount-查看目录或分区挂载情况" class="headerlink" title="mount 查看目录或分区挂载情况"></a>mount 查看目录或分区挂载情况</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /proc/mounts</span><br><span class="line">// or</span><br><span class="line">cat /proc/self/mountinfo</span><br><span class="line">// or</span><br><span class="line">mount -l</span><br><span class="line">// or</span><br><span class="line">findmnt</span><br><span class="line">// or</span><br><span class="line">df -aTh</span><br></pre></td></tr></table></figure>
-
-<p><a name="1rSZC"></a></p>
-<h4 id="pgrep-进程检索与杀死"><a href="#pgrep-进程检索与杀死" class="headerlink" title="pgrep 进程检索与杀死"></a>pgrep 进程检索与杀死</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 按名称列出进程 ID</span><br><span class="line">pgrep chrome</span><br><span class="line">// 按名称杀死进程</span><br><span class="line">pkill -9 fish</span><br><span class="line">killall -9 fish</span><br><span class="line">// 杀死指定 ID 的进程</span><br><span class="line"><span class="built_in">kill</span> -9 3049</span><br><span class="line">// 列出进程树</span><br><span class="line">pstree -p</span><br></pre></td></tr></table></figure>
-
-<p><a name="e1tG9"></a></p>
-<h4 id="fuser-找到正在使用某个文件的进程"><a href="#fuser-找到正在使用某个文件的进程" class="headerlink" title="fuser 找到正在使用某个文件的进程"></a>fuser 找到正在使用某个文件的进程</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// fuser 是 file user 的缩写</span><br><span class="line">fuser -uv &lt;filename&gt;</span><br><span class="line">fuser -uvm /folder</span><br><span class="line">// 查看哪个程序在占用 8000 端口</span><br><span class="line">fuser -v -n tcp 8000</span><br></pre></td></tr></table></figure>
-
-<p><a name="lw5hk"></a></p>
-<h4 id="lsof-列出所有打开的文件"><a href="#lsof-列出所有打开的文件" class="headerlink" title="lsof 列出所有打开的文件"></a>lsof 列出所有打开的文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// lsof 是 list open files 的缩写</span><br><span class="line">// -i 代表列出正在打开的 IPV4[6] 文件； -n 表示不进行 DNS 反解； -P 表示不进行端口反解</span><br><span class="line">lsof -i -n -P</span><br><span class="line">// 查看当前目录下打开的文件</span><br><span class="line">lsof .</span><br></pre></td></tr></table></figure>
-
-<p><a name="70PLT"></a></p>
-<h4 id="strace-跟踪系统调用"><a href="#strace-跟踪系统调用" class="headerlink" title="strace 跟踪系统调用"></a>strace 跟踪系统调用</h4><p>strace 用法参考： <a href="https://www.howtoforge.com/linux-strace-command/" target="_blank" rel="external nofollow noopener noreferrer">https://www.howtoforge.com/linux-strace-command/</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">strace -i ls</span><br></pre></td></tr></table></figure>
-
-<p><a name="6F4YX"></a></p>
-<h4 id="getent-获取系统用户信息"><a href="#getent-获取系统用户信息" class="headerlink" title="getent 获取系统用户信息"></a>getent 获取系统用户信息</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">getent passwd</span><br></pre></td></tr></table></figure>
-
-<p><a name="zdvyH"></a></p>
-<h4 id="sed-删除所有以-开头的行"><a href="#sed-删除所有以-开头的行" class="headerlink" title="sed 删除所有以 # 开头的行"></a>sed 删除所有以 # 开头的行</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">'/^#/ d'</span></span><br></pre></td></tr></table></figure>
-<p>更多使用方法参考：<a href="https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html</a></p>
-<p><a name="tZDa5"></a></p>
-<h4 id="生成-Linux-用户密码的哈希值"><a href="#生成-Linux-用户密码的哈希值" class="headerlink" title="生成 Linux 用户密码的哈希值"></a>生成 Linux 用户密码的哈希值</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python -c &quot;import crypt, getpass, pwd; print(crypt.crypt(&apos;password&apos;, &apos;\$6\$saltsalt\$&apos;))&quot;</span><br><span class="line">// 或者使用 go</span><br><span class="line">package main                                                </span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;github.com/tredoe/osutil/user/crypt/sha512_crypt&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">    c := sha512_crypt.New()</span><br><span class="line">    hash, err := c.Generate([]byte(&quot;rasmuslerdorf&quot;), []byte(&quot;$6$usesomesillystringforsalt&quot;))</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        panic(err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(hash)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><a name="uvsm2"></a></p>
-<h4 id="允许使用-root-用户-ssh-登录"><a href="#允许使用-root-用户-ssh-登录" class="headerlink" title="允许使用 root 用户 ssh 登录"></a>允许使用 root 用户 ssh 登录</h4><p>先删除 <code>/root/.ssh/authorized_keys</code> 中的多余限制信息，之后在 <code>/etc/ssh/sshd_config</code> 中添加 <code>PermitRootLogin yes</code> 后重启 sshd 服务。</p>
-<p><a name="vwUdA"></a></p>
-<h4 id="解决”rtnetlink-answers-file-exists”"><a href="#解决”rtnetlink-answers-file-exists”" class="headerlink" title="解决”rtnetlink answers file exists”"></a>解决”rtnetlink answers file exists”</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ip a flush dev eth0</span><br></pre></td></tr></table></figure>
-
-<p><a name="HPtZj"></a></p>
-<h4 id="ssh-取消-StrictHostKeyChecking-并从环境变量读取-ssh-key-到本地"><a href="#ssh-取消-StrictHostKeyChecking-并从环境变量读取-ssh-key-到本地" class="headerlink" title="ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地"></a>ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"Host *"</span> &gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"  StrictHostKeyChecking=no"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"  UserKnownHostsFile=/dev/null"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line">mkdir -p ~/.ssh</span><br><span class="line">chmod 700 ~/.ssh</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PRIVATE_KEY</span>"</span> | tr -d <span class="string">'\r'</span> &gt; ~/.ssh/id_rsa</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PUBLIC_KEY</span>"</span> &gt; ~/.ssh/id_rsa.pub</span><br><span class="line">chmod 600 ~/.ssh/id_rsa</span><br><span class="line">chmod 644 ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
-
-<p><a name="Ey88A"></a></p>
-<h4 id="查看登录记录"><a href="#查看登录记录" class="headerlink" title="查看登录记录"></a>查看登录记录</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看当前登录用户</span></span><br><span class="line">who</span><br><span class="line"><span class="comment"># 查看最近登录记录</span></span><br><span class="line">last -F</span><br><span class="line"><span class="comment"># 查看最近90天所有用户的最后登录时间</span></span><br><span class="line">lastlog --time 90</span><br></pre></td></tr></table></figure>
-
-<p><a name="g7NoE"></a></p>
-<h4 id="rsync-同步时需要-root-权限"><a href="#rsync-同步时需要-root-权限" class="headerlink" title="rsync 同步时需要 root 权限"></a>rsync 同步时需要 root 权限</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rsync -aru -e <span class="string">"ssh"</span> --rsync-path=<span class="string">"sudo rsync"</span> 172.16.110.215:~/ ~/  --progress --exclude=.cache</span><br></pre></td></tr></table></figure>
-
-<p><a name="xr010"></a></p>
-<h4 id="rclone-将-http-file-server-的内容同步到本地"><a href="#rclone-将-http-file-server-的内容同步到本地" class="headerlink" title="rclone 将 http file server 的内容同步到本地"></a>rclone 将 http file server 的内容同步到本地</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rclone sync --http-url http://my.file.server :http:centos/<span class="built_in">test</span> /repo/<span class="built_in">test</span> --progress</span><br></pre></td></tr></table></figure>
-
-<p><a name="hU4cE"></a></p>
-<h4 id="expr-比较字符串大小"><a href="#expr-比较字符串大小" class="headerlink" title="expr 比较字符串大小"></a>expr 比较字符串大小</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">str3=<span class="string">'v1.13'</span></span><br><span class="line">str2=<span class="string">'v1.14'</span></span><br><span class="line"><span class="keyword">if</span> [ $(expr <span class="variable">$&#123;str3&#125;</span> \&lt;= <span class="variable">$&#123;str2&#125;</span>) -eq 1 ]; <span class="keyword">then</span>    <span class="built_in">echo</span> <span class="string">"[<span class="variable">$&#123;str3&#125;</span>] &lt;= [<span class="variable">$&#123;str2&#125;</span>]"</span>; <span class="keyword">else</span>    <span class="built_in">echo</span> <span class="string">"[<span class="variable">$&#123;str3&#125;</span>] &gt; [<span class="variable">$&#123;str2&#125;</span>]"</span>; <span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
-<p><a name="bjtsD"></a></p>
-<h4 id="tr-移除所有空格"><a href="#tr-移除所有空格" class="headerlink" title="tr 移除所有空格"></a>tr 移除所有空格</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 获取 kubernetes 版本</span><br><span class="line">kubectl version --short | tail -1 | cut -d<span class="string">':'</span> -f2 | tr -d <span class="string">'[:space:]'</span></span><br></pre></td></tr></table></figure>
-
-<p><a name="NBOFH"></a></p>
-<h4 id="vegeta-对-HTTP-服务进行性能测试"><a href="#vegeta-对-HTTP-服务进行性能测试" class="headerlink" title="vegeta 对 HTTP 服务进行性能测试"></a>vegeta 对 HTTP 服务进行性能测试</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">echo <span class="string">"GET http://localhost:8080/cephcsi"</span> | vegeta attack -rate=<span class="number">20000</span> -duration=<span class="number">60</span>s &gt; result.bin</span><br><span class="line">vegeta report result.bin</span><br></pre></td></tr></table></figure>
-<p>更多内容参考：<a href="https://www.scaleway.com/en/docs/vegeta-load-testing/" target="_blank" rel="external nofollow noopener noreferrer">https://www.scaleway.com/en/docs/vegeta-load-testing/</a></p>
-<p><a name="DNQzt"></a></p>
-<h4 id="zip-压缩文件不带顶级目录"><a href="#zip-压缩文件不带顶级目录" class="headerlink" title="zip 压缩文件不带顶级目录"></a>zip 压缩文件不带顶级目录</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pushd /Users/me/development/something</span><br><span class="line">cd path/to/parent/dir/;</span><br><span class="line">zip -r complete/path/to/name.zip ./*</span><br><span class="line">popd</span><br></pre></td></tr></table></figure>
-
-<p><a name="KWEjv"></a></p>
-<h4 id="MySQL-执行单行命令"><a href="#MySQL-执行单行命令" class="headerlink" title="MySQL 执行单行命令"></a>MySQL 执行单行命令</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql --user=&quot;$user&quot; --password=&quot;$password&quot; --database=&quot;$database&quot; --execute=&quot;DROP DATABASE $user; CREATE DATABASE $database;&quot;</span><br></pre></td></tr></table></figure>
-
-<p><a name="bIf97"></a></p>
-<h4 id="MySQL-导出数据库"><a href="#MySQL-导出数据库" class="headerlink" title="MySQL 导出数据库"></a>MySQL 导出数据库</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 导出</span><br><span class="line">mysqldump -P 3306 -u root --password=password -h 172.30.100.43  keycloak &gt; keycloak-3.sql</span><br><span class="line">// 导入</span><br><span class="line">mysql -P 3306 -u root --password=password -h 172.30.100.43  keycloak &lt; keycloak.sql</span><br></pre></td></tr></table></figure>
-
-<p><a name="csvsg"></a></p>
-<h4 id="ss-列出所有处于监听状态的-socket"><a href="#ss-列出所有处于监听状态的-socket" class="headerlink" title="ss 列出所有处于监听状态的 socket"></a>ss 列出所有处于监听状态的 socket</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">ss -lntu</span><br><span class="line">-l = only services which are listening on some port</span><br><span class="line">-n = show port number, don<span class="string">'t try to resolve the service name</span></span><br><span class="line"><span class="string">-t = tcp ports</span></span><br><span class="line"><span class="string">-u = udp ports</span></span><br><span class="line"><span class="string">-p = name of the program</span></span><br></pre></td></tr></table></figure>
-
-<p><a name="1EEnK"></a></p>
-<h4 id="查看网络中已存在的-IP"><a href="#查看网络中已存在的-IP" class="headerlink" title="查看网络中已存在的 IP"></a>查看网络中已存在的 IP</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">arp-scan -I eth0 192.168.180.0/24</span><br><span class="line">//或</span><br><span class="line">nmap -sP -PR 192.168.180.*</span><br></pre></td></tr></table></figure>
-
-<p><a name="sbDNW"></a></p>
-<h4 id="iostat-查看磁盘读写速度"><a href="#iostat-查看磁盘读写速度" class="headerlink" title="iostat 查看磁盘读写速度"></a>iostat 查看磁盘读写速度</h4><p>参考：<a href="https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/" target="_blank" rel="external nofollow noopener noreferrer">https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 以 MB 为单位显示速度</span><br><span class="line">iostat -m</span><br></pre></td></tr></table></figure>
-
-<p><a name="vWZU0"></a></p>
-<h4 id="Wireshark-过滤表达式"><a href="#Wireshark-过滤表达式" class="headerlink" title="Wireshark 过滤表达式"></a>Wireshark 过滤表达式</h4><p>参考：<a href="https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ip.scr==10.0.0.5 or ip.dst==192.1.1.1</span><br></pre></td></tr></table></figure>
-
-<p><a name="lX9js"></a></p>
-<h4 id="alpine-修改镜像源"><a href="#alpine-修改镜像源" class="headerlink" title="alpine 修改镜像源"></a>alpine 修改镜像源</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sed -i &apos;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&apos; /etc/apk/repositories</span><br></pre></td></tr></table></figure>
-
-<p><a name="52SGW"></a></p>
-<h4 id="tinc-配置-VPN"><a href="#tinc-配置-VPN" class="headerlink" title="tinc 配置 VPN"></a>tinc 配置 VPN</h4><p>首先要有一个有公网 IP 的服务器作为交换节点。该节点进行如下配置：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install -y tinc</span><br><span class="line">mkdir -p /etc/tinc/vpn/hosts</span><br><span class="line">vim /etc/tinc/vpn/tinc.conf</span><br><span class="line">  Name = vpn</span><br><span class="line">  Interface = tinc</span><br><span class="line">  Mode = switch</span><br><span class="line">tincd -n vpn -K</span><br><span class="line"> // 启动服务</span><br><span class="line">tincd -n vpn -D</span><br><span class="line">ip link <span class="built_in">set</span> tinc up</span><br><span class="line">ip a add 192.168.120.1/24 dev tinc</span><br></pre></td></tr></table></figure>
-<p>客户端配置：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p /etc/tinc/`hostname`/hosts</span><br><span class="line">vim /etc/tinc/`hostname`/tinc.conf</span><br><span class="line">  Name = hostname</span><br><span class="line">  Interface = tinc</span><br><span class="line">  Mode = switch</span><br><span class="line">  ConnectTo = vpn</span><br><span class="line">tincd -n `hostname` -K</span><br><span class="line">scp vpn-public-ip:/etc/tinc/vpn/hosts/vpn /etc/tinc/`hostname`/hosts</span><br><span class="line">vim /etc/tinc/`hostname`/hosts/vpn <span class="comment"># 第一行加上 Address = vpn-public-ip</span></span><br><span class="line">scp /etc/tinc/vpn/hosts/`hostname` vpn-public-ip:/etc/tinc/vpn/hosts/</span><br><span class="line"> // 启动服务</span><br><span class="line">tincd -n `hostname` -D</span><br><span class="line">ip link <span class="built_in">set</span> tinc up</span><br><span class="line">ip a add 192.168.120.2/24 dev tinc</span><br><span class="line">ip r add 10.10.0.0/16 dev tinc</span><br></pre></td></tr></table></figure>
-
-<p><a name="ttdKC"></a></p>
-<h4 id="删文件报错-Structure-needs-cleaning"><a href="#删文件报错-Structure-needs-cleaning" class="headerlink" title="删文件报错 Structure needs cleaning"></a>删文件报错 Structure needs cleaning</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -fR hourly.5/</span><br><span class="line"></span><br><span class="line">rm: cannot remove <span class="string">'hourly.5/snapshot_root/mnt/Vancouver/temp/temp - old/temp - 09 (Dec 07, 2014 - Sep 02, 2015)/a_OLD-gmail/victoria.a.stuart@gmail.com/[Gmail]/LINUX/rsync, rsnapshot; Other backups/19.bak'</span>: Structure needs cleaning</span><br></pre></td></tr></table></figure>
-<p>原因可能是文件系统损坏，xfs 文件系统可以使用 Live 系统登陆后使用以下命令尝试修复：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">umount /dev/sda1</span><br><span class="line">xfs_repair /dev/sda1</span><br></pre></td></tr></table></figure>
-
-<p><a name="hh4rr"></a></p>
-<h4 id="coredumpctl"><a href="#coredumpctl" class="headerlink" title="coredumpctl"></a>coredumpctl</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">coredumpctl list</span><br><span class="line">coredumpctl dump pid</span><br><span class="line">coredumpctl dump chrome</span><br><span class="line">coredumpctl -o core.dump dump chrome</span><br><span class="line">coredumpctl gdb pid</span><br></pre></td></tr></table></figure>
-
-<p><a name="fL7Yx"></a></p>
-<h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
-<li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
-<li>pandoc 可以借助第三方引擎实现各种文档格式之间的转换：<a href="https://pandoc.org/" target="_blank" rel="external nofollow noopener noreferrer">https://pandoc.org/</a>。</li>
-<li>MOBI 转 PDF 的在线网站：<a href="https://ebook2pdf.com/" target="_blank" rel="external nofollow noopener noreferrer">https://ebook2pdf.com/</a></li>
-<li>Github dispatch 使用示例：<a href="https://alejandroandr.eu/posts/manual-trigger-github-workflows/" target="_blank" rel="external nofollow noopener noreferrer">https://alejandroandr.eu/posts/manual-trigger-github-workflows/</a></li>
-<li>deepin-wine 安装微软雅黑字体 : <a href="https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag> 云计算</tag>
       </tags>
   </entry>
   <entry>
