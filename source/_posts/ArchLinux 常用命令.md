@@ -113,4 +113,7 @@ sudo mhwd-kernel -li
 sudo mkwd-kernel -i linux44 rmc
 ```
 
+<a name="yORAd"></a>
+#### Manjaro 免密 sudo
+除了更改 `/etc/sudoers` 还要删除 `/etc/sudoers.d/10-installer`。
 
