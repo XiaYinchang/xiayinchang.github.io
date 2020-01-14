@@ -33,7 +33,8 @@
 <p><a name="PIpHY"></a></p>
 <h4 id="Manjaro-升级内核"><a href="#Manjaro-升级内核" class="headerlink" title="Manjaro 升级内核"></a>Manjaro 升级内核</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 列出可用内核</span><br><span class="line">sudo mhwd-kernel -l</span><br><span class="line">// 列出已安装内核</span><br><span class="line">sudo mhwd-kernel -li</span><br><span class="line">// 安装新内核并移除当前内核</span><br><span class="line">sudo mkwd-kernel -i linux44 rmc</span><br></pre></td></tr></table></figure>
 
-
+<p><a name="yORAd"></a></p>
+<h4 id="Manjaro-免密-sudo"><a href="#Manjaro-免密-sudo" class="headerlink" title="Manjaro 免密 sudo"></a>Manjaro 免密 sudo</h4><p>除了更改 <code>/etc/sudoers</code> 还要删除 <code>/etc/sudoers.d/10-installer</code>。</p>
 ]]></content>
       <categories>
         <category>Linux</category>
