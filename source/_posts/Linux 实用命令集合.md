@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Mon Jan 06 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Jan 14 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -311,6 +311,11 @@ git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d
 - 撤销某个 commit
 ```
 git revert --strategy resolve <commit>
+```
+
+- 使用 ssh 替代 https 访问
+```bash
+git config --global url."git@git.ucloudadmin.com:".insteadOf "https://git.ucloudadmin.com/"
 ```
 
 <a name="Qgmi6"></a>
