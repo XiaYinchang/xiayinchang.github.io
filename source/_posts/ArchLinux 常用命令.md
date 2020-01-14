@@ -2,7 +2,7 @@
 title: ArchLinux 常用命令
 urlname: egtn5p
 date: '2019-09-04 00:00:00 +0800'
-updated: 'Thu Jan 09 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Jan 14 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Linux
@@ -100,6 +100,17 @@ systemctl enable lightdm.service
 systemctl enable NetworkManager
 useradd -m -g users -G wheel -s /bin/bash xyc
 passwd xyc
+```
+
+<a name="PIpHY"></a>
+#### Manjaro 升级内核
+```bash
+// 列出可用内核
+sudo mhwd-kernel -l
+// 列出已安装内核
+sudo mhwd-kernel -li
+// 安装新内核并移除当前内核
+sudo mkwd-kernel -i linux44 rmc
 ```
 
 
