@@ -2,7 +2,7 @@
 title: Go 知识点汇总
 urlname: sfexfo
 date: '2019-10-12 00:00:00 +0800'
-updated: 'Tue Jan 14 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Jan 16 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Go
@@ -572,6 +572,63 @@ func getFoo(bar Bar) {
 //输出
 //123
 //124
+```
+
+<a name="Ep42i"></a>
+#### 编译时自动添加版本和日期信息
+简单的做法是把版本信息放到 main 包中，如下：
+```go
+package main
+import (
+  "fmt"
+)
+var GitCommit string
+func main() {
+  fmt.Printf("Hello world, version: %s\n", GitCommit)
+}
+```
+然后在编译时加上如下参数：
+```bash
+export GIT_COMMIT=$(git rev-list -1 HEAD)
+# go build -ldflags="-X 'package_path.variable_name=new_value'"
+go build -ldflags "-X main.GitCommit=$GIT_COMMIT"
+```
+如果将 version 信息放到一个单独的包中，如 app/version，如下：
+```bash
+package main
+
+import (
+    "app/build"
+    "fmt"
+)
+
+var Version = "development"
+
+func main() {
+    fmt.Println("Version:\t", Version)
+    fmt.Println("build.Time:\t", build.Time)
+    fmt.Println("build.User:\t", build.User)
+}
+```
+则添加参数时就需要先找到 version 包的路径，可通过如下方式寻找：
+```bash
+# 先编译得到 app 可执行文件
+go build
+# 再通过工具找到包的信息
+go tool nm ./app | grep app
+# 输出如下：
+Output
+  55d2c0 D app/build.Time
+  55d2d0 D app/build.User
+  4069a0 T runtime.appendIntStr
+  462580 T strconv.appendEscapedRune
+# 之后就可以使用以下方式添加编译参数
+go build -v -ldflags="-X 'main.Version=v1.0.0' -X 'app/build.User=$(id -u -n)' -X 'app/build.Time=$(date)'"
+```
+常用的版本相关信息有：
+```bash
+now=$(date +'%Y-%m-%d_%T')
+commit=$(git rev-parse HEAD)
 ```
 
 <a name="utDk1"></a>
