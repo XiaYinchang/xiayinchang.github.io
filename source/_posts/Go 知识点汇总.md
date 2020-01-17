@@ -148,6 +148,28 @@ func main() {
 <a name="ifRex"></a>
 #### godoc 与 go doc
 从 go 1.12 开始， godoc 不再提供各种子命令，仅作为一个 http server 提供 GOPATH 和 GOROOT 下 pkg 的在线文档，而 go doc 命令可以用来查看本地程序的文档。
+<a name="zfykF"></a>
+#### GOPRIVATE
+从 go 1.13 开始，增加了 GOPRIVATE 环境变量的配置用以跳过对私有仓库的 checksum 检查：
+```bash
+export GOPRIVATE="git.ucloudadmin.com/*,git.umcloud.io/*"
+# 设置完之后，通过 go env 可以看到 GONOSUMDB 和 GONOPROXY 环境变量也被自动更新了
+GO111MODULE="on"
+GOARCH="amd64"
+GOBIN=""
+GOCACHE="/home/xyc/.cache/go-build"
+GOENV="/home/xyc/.config/go/env"
+GOEXE=""
+GOFLAGS=""
+GOHOSTARCH="amd64"
+GOHOSTOS="linux"
+GONOPROXY="git.ucloudadmin.com/*,git.umcloud.io/*"
+GONOSUMDB="git.ucloudadmin.com/*,git.umcloud.io/*"
+GOOS="linux"
+GOPATH="/home/xyc/go"
+GOPRIVATE="git.ucloudadmin.com/*,git.umcloud.io/*"
+...
+```
 
 <a name="EA3XH"></a>
 ### 编程方法
