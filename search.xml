@@ -356,6 +356,8 @@
 <p>常用的版本相关信息有：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">now=$(date +<span class="string">'%Y-%m-%d_%T'</span>)</span><br><span class="line">commit=$(git rev-parse HEAD)</span><br></pre></td></tr></table></figure>
 
+<p><a name="CTcih"></a></p>
+<h4 id="go-module-相关问题"><a href="#go-module-相关问题" class="headerlink" title="go module 相关问题"></a>go module 相关问题</h4><p>etcd 编译时 GO 依赖包版本报错的解决方法: <a href="https://aiops.red/archives/571" target="_blank" rel="external nofollow noopener noreferrer">https://aiops.red/archives/571</a></p>
 <p><a name="utDk1"></a></p>
 <h3 id="WebAssembly"><a href="#WebAssembly" class="headerlink" title="WebAssembly"></a>WebAssembly</h3><ol>
 <li>作者通过一系列 hack 过程成功实现了将一个 go 语言写的工具 <a href="https://github.com/pdfcpu/pdfcpu" target="_blank" rel="external nofollow noopener noreferrer">pdfcpu</a> 编译为 wasm 文件并运行在浏览器中，其中有使用到一个浏览器端基于内存的文件系统 <a href="https://github.com/jvilk/BrowserFS" target="_blank" rel="external nofollow noopener noreferrer">BrowserFS</a> （实现了 Node JS 的 fs 库的 API）对 pdf 文件进行操作，很有意思。博客地址：<a href="https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn" target="_blank" rel="external nofollow noopener noreferrer">https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn</a>，代码地址：<a href="https://github.com/wcchoi/go-wasm-pdfcpu" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/wcchoi/go-wasm-pdfcpu</a>。</li>
