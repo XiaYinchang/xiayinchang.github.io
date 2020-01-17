@@ -653,6 +653,10 @@ now=$(date +'%Y-%m-%d_%T')
 commit=$(git rev-parse HEAD)
 ```
 
+<a name="CTcih"></a>
+#### go module 相关问题
+etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/archives/571](https://aiops.red/archives/571)
+
 <a name="utDk1"></a>
 ### WebAssembly
 
