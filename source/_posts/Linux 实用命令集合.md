@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Tue Jan 14 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Jan 17 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -660,13 +660,18 @@ xfs_repair /dev/sda1
 
 <a name="hh4rr"></a>
 #### coredumpctl 
-
 ```bash
 coredumpctl list
 coredumpctl dump pid
 coredumpctl dump chrome
 coredumpctl -o core.dump dump chrome
 coredumpctl gdb pid
+```
+
+<a name="AUh3a"></a>
+#### 终端设置全局代理，对 ssh 和 http均有效
+```bash
+export ALL_PROXY=socks5://127.0.0.1:1080
 ```
 
 <a name="fL7Yx"></a>
