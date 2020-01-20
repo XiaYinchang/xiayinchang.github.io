@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Fri Dec 20 2019 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon Jan 20 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -38,7 +38,6 @@ tolerations:
 #### etcd
 
 - 命令行读写
-
 ```
 export ETCDCTL_API=3
 export ETCDCTL_CACERT=/etc/kubernetes/pki/etcd/ca.crt
@@ -63,6 +62,11 @@ etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.
 ```
 etcdctl member list
 etcdctl member remove member_id
+```
+
+- check cluster health
+```bash
+etcdctl endpoint health
 ```
 
 <a name="xcw1D"></a>
