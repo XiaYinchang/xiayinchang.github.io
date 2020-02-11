@@ -461,6 +461,14 @@ sed '/^#/ d'
 sed 's/\(前一部分\)要替换的部分\(后一部分\)/\1替换后的字符串\2/'
 ```
 
+- 使用环境变量
+```bash
+eval sed ’s/$a/$b/’ filename
+sed "s/$a/$b/" filename
+sed ’s/’$a’/’$b’/’ filename 
+sed s/$a/$b/ filename
+```
+
 <a name="tZDa5"></a>
 #### 生成 Linux 用户密码的哈希值
 
