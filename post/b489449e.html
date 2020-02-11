@@ -450,6 +450,9 @@
 </li>
 <li><p>替换一个匹配字符串的其中一部分</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">'s/\(前一部分\)要替换的部分\(后一部分\)/\1替换后的字符串\2/'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> sed ’s/<span class="variable">$a</span>/<span class="variable">$b</span>/’ filename</span><br><span class="line">sed <span class="string">"s/<span class="variable">$a</span>/<span class="variable">$b</span>/"</span> filename</span><br><span class="line">sed ’s/’<span class="variable">$a</span>’/’<span class="variable">$b</span>’/’ filename </span><br><span class="line">sed s/<span class="variable">$a</span>/<span class="variable">$b</span>/ filename</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
