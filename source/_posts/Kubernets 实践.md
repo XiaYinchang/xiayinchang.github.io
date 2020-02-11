@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Mon Jan 20 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Feb 11 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -421,6 +421,9 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 ```
 
+<a name="pCtvi"></a>
+#### CronJob
+建议设置 startingDeadlineSeconds 值以防止从最后一次调度到当前时间错过的调度次数超过 100 导致不再进行调度（使用 etcd 备份数据恢复集群时可能出现这种情况），参考：[https://www.jianshu.com/p/3e3b18414e45](https://www.jianshu.com/p/3e3b18414e45)。
 <a name="sM7pt"></a>
 #### 使用 subPath 挂载 Volume
 ```
