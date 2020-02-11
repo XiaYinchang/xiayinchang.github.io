@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Fri Jan 17 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Feb 11 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -448,11 +448,18 @@ getent passwd
 ```
 
 <a name="zdvyH"></a>
-#### sed 删除所有以 # 开头的行
+#### sed
+
+- 删除所有以 # 开头的行
 ```bash
 sed '/^#/ d'
 ```
 更多使用方法参考：[https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html](https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html)
+
+- 替换一个匹配字符串的其中一部分
+```bash
+sed 's/\(前一部分\)要替换的部分\(后一部分\)/\1替换后的字符串\2/'
+```
 
 <a name="tZDa5"></a>
 #### 生成 Linux 用户密码的哈希值
