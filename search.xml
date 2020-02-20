@@ -84,7 +84,11 @@
 </ul>
 <p><a name="UYIkL"></a></p>
 <h4 id="Helm"><a href="#Helm" class="headerlink" title="Helm"></a>Helm</h4><ul>
-<li>从模板生成本地文件<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir yamls</span><br><span class="line">helm fetch --untar --untardir . &apos;stable/redis&apos; #makes a directory called redis </span><br><span class="line">helm template --output-dir &apos;./yamls&apos; &apos;./redis&apos; #redis dir (local helm chart), export to yamls dir</span><br></pre></td></tr></table></figure>
+<li><p>从模板生成本地文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir yamls</span><br><span class="line">helm fetch --untar --untardir . &apos;stable/redis&apos; #makes a directory called redis </span><br><span class="line">helm template --output-dir &apos;./yamls&apos; &apos;./redis&apos; #redis dir (local helm chart), export to yamls dir</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拉取压缩文件到本地</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">helm fetch ucloud/uk8s-etcd-backup</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
