@@ -291,6 +291,11 @@ helm fetch --untar --untardir . 'stable/redis' #makes a directory called redis
 helm template --output-dir './yamls' './redis' #redis dir (local helm chart), export to yamls dir
 ```
 
+- 拉取压缩文件到本地
+```
+helm fetch ucloud/uk8s-etcd-backup
+```
+
 <a name="b94zX"></a>
 #### 添加自定义 DNS 记录
 ```bash
