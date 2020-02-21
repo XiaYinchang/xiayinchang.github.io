@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Tue Feb 11 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Feb 21 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -687,6 +687,12 @@ coredumpctl gdb pid
 #### 终端设置全局代理，对 ssh 和 http均有效
 ```bash
 export ALL_PROXY=socks5://127.0.0.1:1080
+```
+
+<a name="JiKnX"></a>
+#### nethogs 查看进程流量
+```bash
+yum install nethogs
 ```
 
 <a name="fL7Yx"></a>
