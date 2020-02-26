@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Tue Feb 11 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Wed Feb 26 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -529,6 +529,15 @@ kubectl drain <node-name>
 kubectl drain <node-name> --ignore-daemonsets --delete-local-data
 kubectl delete node <node-name>
 ```
+
+<a name="z42bx"></a>
+#### 重启容器而非删除
+删除容器后会重新进行调度，如果希望在同一个宿主机上重新拉起容器可以执行如下命令：
+```bash
+# 在容器中执行如下命令，会使容器重新创建，但不会重新调度
+kill 1
+```
+但需要注意的是，上述命令会造成容器重建，所以在容器中进行的非持久修改均会丢失，若想保留临时修改，可先找到容器所在宿主机，然后登录到宿主机上执行 `docker restart` 重启会保留临时修改，往往用于调试场景。
 
 <a name="iiFsk"></a>
 #### 十二因素应用
