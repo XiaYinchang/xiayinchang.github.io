@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录 Kubernetes 相关的操作命令和实践方法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-25T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-02-26T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/9caa466a.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-26 00:00:00" itemprop="dateModified" datetime="2020-02-26T00:00:00+08:00">2020-02-26</time>
+                <time title="修改时间：2020-02-27 00:00:00" itemprop="dateModified" datetime="2020-02-27T00:00:00+08:00">2020-02-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -391,6 +391,12 @@
 </li>
 <li><p>自定义 timeout </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/proxy-read-timeout: <span class="string">"1800"</span></span><br><span class="line">    nginx.ingress.kubernetes.io/proxy-send-timeout: <span class="string">"1800"</span></span><br><span class="line">    nginx.ingress.kubernetes.io/rewrite-target: /<span class="variable">$2</span></span><br><span class="line">    nginx.ingress.kubernetes.io/ssl-redirect: <span class="string">"false"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>后端服务需要使用 HTTPS 访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/backend-protocol: <span class="string">"HTTPS"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>透传 TLS 握手</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/ssl-passthrough: <span class="string">"true"</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -712,7 +718,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:02</span>
+    <span title="站点阅读时长">3:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>

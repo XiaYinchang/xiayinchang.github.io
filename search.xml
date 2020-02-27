@@ -108,6 +108,12 @@
 </li>
 <li><p>自定义 timeout </p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/proxy-read-timeout: <span class="string">"1800"</span></span><br><span class="line">    nginx.ingress.kubernetes.io/proxy-send-timeout: <span class="string">"1800"</span></span><br><span class="line">    nginx.ingress.kubernetes.io/rewrite-target: /<span class="variable">$2</span></span><br><span class="line">    nginx.ingress.kubernetes.io/ssl-redirect: <span class="string">"false"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>后端服务需要使用 HTTPS 访问</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/backend-protocol: <span class="string">"HTTPS"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>透传 TLS 握手</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/ssl-passthrough: <span class="string">"true"</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
