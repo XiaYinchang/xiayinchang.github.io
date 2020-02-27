@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Wed Feb 26 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Feb 27 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -424,6 +424,16 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+```
+
+- 后端服务需要使用 HTTPS 访问
+```bash
+nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+```
+
+- 透传 TLS 握手
+```bash
+nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 ```
 
 <a name="pCtvi"></a>
