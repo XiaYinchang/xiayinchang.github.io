@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Fri Feb 21 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Mar 05 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -301,6 +301,8 @@ git commit -m "Removed submodule "
 - 合并所有 commit 为一个
 ```
 git rebase --root -i
+// 使用以下命令可以将需要 rebase 的 commit 的时间全部设置为当前时间
+git rebase --ignore-date 303a824f46b497f71582e2e5d493c132b85e3e0a
 ```
 
 - 删除所有没有远程分支的本地分支
@@ -694,7 +696,6 @@ export ALL_PROXY=socks5://127.0.0.1:1080
 ```bash
 yum install nethogs
 ```
-
 <a name="fL7Yx"></a>
 #### 实用工具
 
