@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Thu Feb 27 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Mar 10 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -439,6 +439,22 @@ nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 <a name="pCtvi"></a>
 #### CronJob
 建议设置 startingDeadlineSeconds 值以防止从最后一次调度到当前时间错过的调度次数超过 100 导致不再进行调度（使用 etcd 备份数据恢复集群时可能出现这种情况），参考：[https://www.jianshu.com/p/3e3b18414e45](https://www.jianshu.com/p/3e3b18414e45)。
+
+<a name="d24JT"></a>
+#### field-selector 和 labels-selector
+字段选择器：
+```
+kubectl get pods --field-selector=status.phase!=Running,spec.restartPolicy=Always
+kubectl get statefulsets,services --all-namespaces --field-selector metadata.namespace!=default
+```
+标签选择器：
+```
+kubectl get pods -l environment=production,tier=frontend
+kubectl get pods -l 'environment in (production),tier in (frontend)'
+kubectl get pods -l 'environment in (production, qa)'
+kubectl get pods -l 'environment,environment notin (frontend)'
+```
+
 <a name="sM7pt"></a>
 #### 使用 subPath 挂载 Volume
 ```
@@ -506,6 +522,7 @@ secrets:
 
 | 1.17.0 | [https://sealyun.oss-cn-beijing.aliyuncs.com/413bd3624b2fb9e466601594b4f72072-1.17.0/kube1.17.0.tar.gz](https://sealyun.oss-cn-beijing.aliyuncs.com/413bd3624b2fb9e466601594b4f72072-1.17.0/kube1.17.0.tar.gz) |
 | --- | --- |
+| 1.17.1 | [https://sealyun.oss-cn-beijing.aliyuncs.com/9347ea4e446ce514dbba6f686034a363-1.17.1/kube1.17.1.tar.gz](https://sealyun.oss-cn-beijing.aliyuncs.com/9347ea4e446ce514dbba6f686034a363-1.17.1/kube1.17.1.tar.gz) |
 
 
 - 添加 master 节点
