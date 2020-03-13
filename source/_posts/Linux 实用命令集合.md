@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Thu Mar 05 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Mar 13 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -696,7 +696,14 @@ export ALL_PROXY=socks5://127.0.0.1:1080
 ```bash
 yum install nethogs
 ```
-<a name="fL7Yx"></a>
+
+<a name="aUM4A"></a>
+#### 生成随机值
+```
+$(awk -v n=1 -v seed="$RANDOM" 'BEGIN { srand(seed); for (i=0; i<n; ++i) printf("%.4f\n", rand()*10) }')
+```
+
+<a name="tiQ7D"></a>
 #### 实用工具
 
 - 一个在线渲染代码为图片的网站：[https://carbon.now.sh/](https://carbon.now.sh/) ， 可以通过设置修改边框等信息。
