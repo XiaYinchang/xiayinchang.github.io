@@ -79,6 +79,16 @@
 
 </li>
 </ul>
+<p><a name="Y0lD3"></a></p>
+<h4 id="Debian"><a href="#Debian" class="headerlink" title="Debian"></a>Debian</h4><ul>
+<li><p>按关键字检索安装包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt-cache search linux-image</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看已安装软件包</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dpkg -l | grep linux</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
 <p><a name="3HTPv"></a></p>
 <h4 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h4><ul>
 <li>替换空格为换行</li>
