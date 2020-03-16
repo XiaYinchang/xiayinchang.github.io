@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Fri Mar 13 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon Mar 16 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -242,6 +242,20 @@ yum downgrade httpd-2.2.3-22.el5
 rpm -qa | grep nginx
 rpm -qf /usr/sbin/nginx
 rpm -ql nginx
+```
+
+<a name="Y0lD3"></a>
+#### Debian
+
+- 按关键字检索安装包
+```
+apt update
+apt-cache search linux-image
+```
+
+- 查看已安装软件包
+```
+dpkg -l | grep linux
 ```
 
 <a name="3HTPv"></a>
