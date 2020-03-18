@@ -82,10 +82,13 @@
 <p><a name="Y0lD3"></a></p>
 <h4 id="Debian"><a href="#Debian" class="headerlink" title="Debian"></a>Debian</h4><ul>
 <li><p>按关键字检索安装包</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt-cache search linux-image</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt-cache search linux-image</span><br><span class="line">apt-cache madison iptables</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>查看已安装软件包</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dpkg -l | grep linux</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载包不安装</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt-get download docker-ce</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -253,7 +256,7 @@
 <h4 id="终端设置全局代理，对-ssh-和-http均有效"><a href="#终端设置全局代理，对-ssh-和-http均有效" class="headerlink" title="终端设置全局代理，对 ssh 和 http均有效"></a>终端设置全局代理，对 ssh 和 http均有效</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ALL_PROXY=socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
 
 <p><a name="JiKnX"></a></p>
-<h4 id="nethogs-查看进程流量"><a href="#nethogs-查看进程流量" class="headerlink" title="nethogs 查看进程流量"></a>nethogs 查看进程流量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nethogs</span><br></pre></td></tr></table></figure>
+<h4 id="nethogs-查看进程网速"><a href="#nethogs-查看进程网速" class="headerlink" title="nethogs 查看进程网速"></a>nethogs 查看进程网速</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nethogs</span><br></pre></td></tr></table></figure>
 
 <p><a name="aUM4A"></a></p>
 <h4 id="生成随机值"><a href="#生成随机值" class="headerlink" title="生成随机值"></a>生成随机值</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(awk -v n=1 -v seed=&quot;$RANDOM&quot; &apos;BEGIN &#123; srand(seed); for (i=0; i&lt;n; ++i) printf(&quot;%.4f\n&quot;, rand()*10) &#125;&apos;)</span><br></pre></td></tr></table></figure>
@@ -3167,8 +3170,8 @@
         <category>读书笔记</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>读书</tag>
+        <tag>笔记</tag>
         <tag>物联网</tag>
       </tags>
   </entry>
