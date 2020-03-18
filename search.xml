@@ -258,6 +258,10 @@
 <p><a name="JiKnX"></a></p>
 <h4 id="nethogs-查看进程网速"><a href="#nethogs-查看进程网速" class="headerlink" title="nethogs 查看进程网速"></a>nethogs 查看进程网速</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nethogs</span><br></pre></td></tr></table></figure>
 
+<p><a name="LldNZ"></a></p>
+<h4 id="fpm-制作-deb-rpm-安装包"><a href="#fpm-制作-deb-rpm-安装包" class="headerlink" title="fpm 制作 deb/rpm 安装包"></a>fpm 制作 deb/rpm 安装包</h4><p>参考：<a href="https://askubuntu.com/a/1121733" target="_blank" rel="external nofollow noopener noreferrer">https://askubuntu.com/a/1121733</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fpm -f -s dir -t deb -n iptables -v 1.6.2 -C `pwd` --prefix / --deb-no-default-config-files usr</span><br></pre></td></tr></table></figure>
+
 <p><a name="aUM4A"></a></p>
 <h4 id="生成随机值"><a href="#生成随机值" class="headerlink" title="生成随机值"></a>生成随机值</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(awk -v n=1 -v seed=&quot;$RANDOM&quot; &apos;BEGIN &#123; srand(seed); for (i=0; i&lt;n; ++i) printf(&quot;%.4f\n&quot;, rand()*10) &#125;&apos;)</span><br></pre></td></tr></table></figure>
 
