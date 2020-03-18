@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Mon Mar 16 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Wed Mar 18 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -251,11 +251,17 @@ rpm -ql nginx
 ```
 apt update
 apt-cache search linux-image
+apt-cache madison iptables
 ```
 
 - 查看已安装软件包
 ```
 dpkg -l | grep linux
+```
+
+- 下载包不安装
+```
+apt-get download docker-ce
 ```
 
 <a name="3HTPv"></a>
@@ -706,7 +712,7 @@ export ALL_PROXY=socks5://127.0.0.1:1080
 ```
 
 <a name="JiKnX"></a>
-#### nethogs 查看进程流量
+#### nethogs 查看进程网速
 ```bash
 yum install nethogs
 ```
