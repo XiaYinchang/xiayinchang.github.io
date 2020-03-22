@@ -188,8 +188,8 @@ cd  到 ceph-ansible ， 创建 hosts 文件如下：
 [CephGroup:children]
 mons
 osds
-mdss
-#mgrs
+#mdss
+mgrs
 rgws
 [CephGroup:vars]
 ansible_ssh_user=root
