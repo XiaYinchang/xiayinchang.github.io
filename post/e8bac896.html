@@ -390,11 +390,11 @@
 <p><a name="RPg2T"></a></p>
 <h4 id="var-lib-ceph-osd-ceph-x-使用内存盘"><a href="#var-lib-ceph-osd-ceph-x-使用内存盘" class="headerlink" title="/var/lib/ceph/osd/ceph-x 使用内存盘"></a>/var/lib/ceph/osd/ceph-x 使用内存盘</h4><p>使用 bluestore 的 OSD，所有需要持久化的数据均存储在 LVM metadata 中，所以 /var/lib/ceph/osd/ceph-x 使用 tmpfs 是预期行为， OSD 启动时会从 metadata 中取出相关数据填充到 tmpfs 文件中。参见：<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html" target="_blank" rel="external nofollow noopener noreferrer">http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html</a></p>
 <p><a name="DcPaA"></a></p>
-<h4 id="osd-near-full-的解决方法"><a href="#osd-near-full-的解决方法" class="headerlink" title="osd (near) full 的解决方法"></a>osd (near) full 的解决方法</h4><ul>
-<li>根本解决之道是添加 osd</li>
-<li>临时解决方法删除无用数据， osd full 时所有的读写操作都无法进行，可通过两种方法恢复读写：</li>
+<h4 id="osd-near-full-的解决方法"><a href="#osd-near-full-的解决方法" class="headerlink" title="osd (near) full 的解决方法"></a>osd (near) full 的解决方法</h4><p>根本解决之道是添加 osd，临时解决方法是删除无用数据，osd full 时所有的读写操作都无法进行，可通过两种方法恢复读写后再执行删除数据的命令：</p>
+<ul>
+<li>一是调整 full osd 的权重：<code>ceph osd crush reweight osd.33 0.7</code> 或者 <code>ceph osd reweight-by-utilization</code></li>
+<li>二是调高 full 的上限：<code>ceph osd set-full-ratio 0.98</code>，参见：<a href="https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space" target="_blank" rel="external nofollow noopener noreferrer">no-free-drive-space</a></li>
 </ul>
-<p>一是调整 full osd 的权重：<code>ceph osd crush reweight osd.33 0.7</code> 或者 <code>ceph osd reweight-by-utilization</code><br>二是调高 full 的上限：<code>ceph osd set-full-ratio 0.98</code>，参见：<a href="https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space" target="_blank" rel="external nofollow noopener noreferrer">no-free-drive-space</a><br></p>
 
     </div>
 
