@@ -244,6 +244,10 @@ devices:
 cp site.yml.sample site.yml
 ansible-playbook -i hosts -v site.yml
 ```
+删除集群：
+```bash
+ansible-playbook -i hosts infrastructure-playbooks/purge-cluster.yml
+```
 
 <a name="BMg3M"></a>
 #### ceph-ansible 添加 osd 
