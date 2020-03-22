@@ -2,7 +2,7 @@
 title: Ceph 常用操作
 urlname: asu9v3
 date: '2019-09-03 00:00:00 +0800'
-updated: 'Mon Jan 06 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Sun Mar 22 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Ceph
@@ -176,11 +176,11 @@ systemctl enable --now ceph-mon@`hostname`
 #### ceph-ansible 部署
 ```bash
 git clone https://github.com/ceph/ceph-ansible.git
-git checkout v4.0.0
+git checkout v4.0.9
 // 在部署节点安装
-yum install -y ansible python-notario
-rpm -i http://download-ib01.fedoraproject.org/pub/epel/testing/7/x86_64/Packages/p/python2-notario-0.0.14-1.el7.noarch.rpm
-// 在所有节点安装
+yum install -y python-paramiko sshpass
+rpm -i https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.8.9-1.el7.ans.noarch.rpm
+// 在所有 ceph 节点安装
 yum install -y python-netaddr 
 ```
 cd  到 ceph-ansible ， 创建 hosts 文件如下：
@@ -192,36 +192,39 @@ mdss
 mgrs
 rgws
 [CephGroup:vars]
-# 最好事先配好免密
 ansible_ssh_user=root
 ansible_ssh_pass=test
 ansible_port=22
 
 [mons]
-ceph-csi-01
-ceph-csi-02
-ceph-csi-03
+ceph-csi-01 ansible_host=10.8.107.149
+ceph-csi-02 ansible_host=10.8.185.232
+ceph-csi-03 ansible_host=10.8.143.178
 [osds]
-ceph-csi-01
-ceph-csi-02
-ceph-csi-03
+ceph-csi-01 ansible_host=10.8.107.149
+ceph-csi-02 ansible_host=10.8.185.232
+ceph-csi-03 ansible_host=10.8.143.178
 [mdss]
-ceph-csi-01
-ceph-csi-02
-ceph-csi-03
+ceph-csi-01 ansible_host=10.8.107.149
+ceph-csi-02 ansible_host=10.8.185.232
+ceph-csi-03 ansible_host=10.8.143.178
 [mgrs]
-ceph-csi-01
-ceph-csi-02
-ceph-csi-03
+ceph-csi-01 ansible_host=10.8.107.149
+ceph-csi-02 ansible_host=10.8.185.232
+ceph-csi-03 ansible_host=10.8.143.178
 [rgws]
-ceph-csi-01
-ceph-csi-02
-ceph-csi-03
+ceph-csi-01 ansible_host=10.8.107.149
+ceph-csi-02 ansible_host=10.8.185.232
+ceph-csi-03 ansible_host=10.8.143.178
+[grafana-server]
+ceph-csi-01 ansible_host=10.8.107.149
+ceph-csi-02 ansible_host=10.8.185.232
+ceph-csi-03 ansible_host=10.8.143.178
 ```
 cd 到 group_vars 目录：
 ```bash
 cp all.yml.sample all.yml
-// 取消注释并修改以下字段
+// 填入以下内容并修改 public_network 与当前网络匹配
 ceph_origin: repository
 ceph_repository: community
 ceph_stable_release: nautilus
@@ -229,7 +232,7 @@ monitor_interface: eth0
 public_network: 10.23.0.0/16
 radosgw_interface: eth0
 
-cp osd.yml.sample osd.yml
+cp osds.yml.sample osds.yml
 // 添加安装盘信息
 devices:
   - /dev/vdb
@@ -238,6 +241,7 @@ devices:
 ```
 回到项目根目录执行安装:
 ```bash
+cp site.yml.sample site.yml
 ansible-playbook -i hosts -v site.yml
 ```
 
@@ -432,4 +436,13 @@ ceph-volume inventory /dev/sda
 <a name="RPg2T"></a>
 #### /var/lib/ceph/osd/ceph-x 使用内存盘
 使用 bluestore 的 OSD，所有需要持久化的数据均存储在 LVM metadata 中，所以 /var/lib/ceph/osd/ceph-x 使用 tmpfs 是预期行为， OSD 启动时会从 metadata 中取出相关数据填充到 tmpfs 文件中。参见：[http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html](http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html)
+
+<a name="DcPaA"></a>
+#### osd (near) full 的解决方法
+
+- 根本解决之道是添加 osd
+- 临时解决方法删除无用数据， osd full 时所有的读写操作都无法进行，可通过两种方法恢复读写：
+
+一是调整 full osd 的权重：`ceph osd crush reweight osd.33 0.7`<br />二是调高 full 的上限：`ceph osd set-full-ratio 0.98`，参见：[no-free-drive-space](https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space)<br />
+
 
