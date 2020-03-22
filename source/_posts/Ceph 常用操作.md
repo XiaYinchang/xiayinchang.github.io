@@ -443,10 +443,11 @@ ceph-volume inventory /dev/sda
 
 <a name="DcPaA"></a>
 #### osd (near) full 的解决方法
+根本解决之道是添加 osd，临时解决方法是删除无用数据，osd full 时所有的读写操作都无法进行，可通过两种方法恢复读写后再执行删除数据的命令：
 
-- 根本解决之道是添加 osd
-- 临时解决方法删除无用数据， osd full 时所有的读写操作都无法进行，可通过两种方法恢复读写：
+- 一是调整 full osd 的权重：`ceph osd crush reweight osd.33 0.7` 或者 `ceph osd reweight-by-utilization`
+- 二是调高 full 的上限：`ceph osd set-full-ratio 0.98`，参见：[no-free-drive-space](https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space)
 
-一是调整 full osd 的权重：`ceph osd crush reweight osd.33 0.7` 或者 `ceph osd reweight-by-utilization`<br />二是调高 full 的上限：`ceph osd set-full-ratio 0.98`，参见：[no-free-drive-space](https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space)<br />
+
 
 
