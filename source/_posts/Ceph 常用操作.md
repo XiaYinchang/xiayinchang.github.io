@@ -189,7 +189,7 @@ cd  到 ceph-ansible ， 创建 hosts 文件如下：
 mons
 osds
 mdss
-mgrs
+#mgrs
 rgws
 [CephGroup:vars]
 ansible_ssh_user=root
@@ -204,10 +204,10 @@ ceph-csi-03 ansible_host=10.8.143.178
 ceph-csi-01 ansible_host=10.8.107.149
 ceph-csi-02 ansible_host=10.8.185.232
 ceph-csi-03 ansible_host=10.8.143.178
-[mdss]
-ceph-csi-01 ansible_host=10.8.107.149
-ceph-csi-02 ansible_host=10.8.185.232
-ceph-csi-03 ansible_host=10.8.143.178
+#[mdss]
+#ceph-csi-01 ansible_host=10.8.107.149
+#ceph-csi-02 ansible_host=10.8.185.232
+#ceph-csi-03 ansible_host=10.8.143.178
 [mgrs]
 ceph-csi-01 ansible_host=10.8.107.149
 ceph-csi-02 ansible_host=10.8.185.232
@@ -443,6 +443,6 @@ ceph-volume inventory /dev/sda
 - 根本解决之道是添加 osd
 - 临时解决方法删除无用数据， osd full 时所有的读写操作都无法进行，可通过两种方法恢复读写：
 
-一是调整 full osd 的权重：`ceph osd crush reweight osd.33 0.7`<br />二是调高 full 的上限：`ceph osd set-full-ratio 0.98`，参见：[no-free-drive-space](https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space)<br />
+一是调整 full osd 的权重：`ceph osd crush reweight osd.33 0.7` 或者 `ceph osd reweight-by-utilization`<br />二是调高 full 的上限：`ceph osd set-full-ratio 0.98`，参见：[no-free-drive-space](https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space)<br />
 
 
