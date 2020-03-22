@@ -227,6 +227,8 @@ cp all.yml.sample all.yml
 // 填入以下内容并修改 public_network 与当前网络匹配
 ceph_origin: repository
 ceph_repository: community
+ceph_mirror: https://mirrors.aliyun.com/ceph
+ceph_stable_key: https://mirrors.aliyun.com/ceph/keys/release.asc
 ceph_stable_release: nautilus
 monitor_interface: eth0
 public_network: 10.23.0.0/16
