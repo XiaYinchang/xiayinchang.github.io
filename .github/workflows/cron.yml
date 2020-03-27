@@ -37,6 +37,16 @@ jobs:
           PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
           PUBLISH_BRANCH: master
           PUBLISH_DIR: ./public
+      - name: Deploy to Staging server
+        run: |
+          sshpass -p $SSH_PASS scp -o StrictHostKeyChecking=no -r $SOURCE $REMOTE_USER@$REMOTE_HOST:$TARGET
+        env:
+          SSH_PASS: ${{ secrets.SSH_PASS }}
+          ARGS: "-aru"
+          SOURCE: "public/*"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: "/usr/share/nginx/html/"
       - name: Commit files
         continue-on-error: true
         run: |
