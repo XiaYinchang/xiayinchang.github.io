@@ -36,7 +36,7 @@ jobs:
           PUBLISH_DIR: ./public
       - name: Deploy to Staging server
         run: |
-          sshpass -p $SSH_PASS rsync $ARGS $REMOTE_USER@$REMOTE_HOST:$SOURCE $TARGET
+          sshpass -p $SSH_PASS scp -o StrictHostKeyChecking=no -r $SOURCE $REMOTE_USER@$REMOTE_HOST:$TARGET
         env:
           SSH_PASS: ${{ secrets.SSH_PASS }}
           ARGS: "-aru"
