@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Wed Mar 18 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Mar 27 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -27,12 +27,14 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 reboot
 ```
 
+
 - 安装fish
 ```bash
 cd /etc/yum.repos.d/
 wget https://download.opensuse.org/repositories/shells:fish:release:2/CentOS_7/shells:fish:release:2.repo
 yum install fish -y
 ```
+
 
 - 创建网桥
 
@@ -52,7 +54,7 @@ DNS1=114.114.114.114
 ```
 
 
-加入物理网卡 em1 到网桥
+<br />加入物理网卡 em1 到网桥<br />
 
 ```bash
 # cat /etc/sysconfig/network-scripts/ifcfg-em1
@@ -66,9 +68,10 @@ BRIDGE=br0
 ```
 
 
+
 - 创建 veth 并持久化
 
-创建两对 veth 并加入到网桥，脚本如下：
+创建两对 veth 并加入到网桥，脚本如下：<br />
 
 ```bash
 # cat /root/config_veth.sh 
@@ -84,7 +87,7 @@ ip link set dev veth3 up
 exit 0
 ```
 
-执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：
+<br />执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：<br />
 
 ```bash
 # cat /usr/lib/systemd/system/veth.service 
@@ -101,7 +104,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-创建完上述文件，不要忘了执行 systemctl enable --now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：
+<br />创建完上述文件，不要忘了执行 systemctl enable --now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：<br />
 
 ```bash
 # cat /etc/sysconfig/network-scripts/ifcfg-veth0
@@ -135,11 +138,11 @@ VETH_PEER=veth2
 ONBOOT=yes
 ```
 
-现在，就算重启系统虚拟网卡也会被自动重建了。
+<br />现在，就算重启系统虚拟网卡也会被自动重建了。<br />
 
 - 自动加载内核模块
 
-以下示例加载 ipvs 内核模块:
+以下示例加载 ipvs 内核模块:<br />
 
 ```bash
 $ cat /etc/modules-load.d/ipvs.conf
@@ -158,8 +161,9 @@ ip_vs_ftp
 nf_conntrack
 ```
 
+
 - 自动设置内核参数
-以下示例启用 ipv4 转发功能：
+以下示例启用 ipv4 转发功能：<br />
 
 ```bash
 $ cat /etc/sysctl.conf
@@ -173,7 +177,9 @@ net.ipv4.conf.all.rp_filter=1
 net.ipv4.ip_forward=1
 ```
 
+
 - 磁盘性能测试
+
 
 ```bash
 yum install epel-release
@@ -186,7 +192,10 @@ yum install ioping
 ioping -c 10 .
 ```
 
+
 - 安装 MariaDB
+
+
 
 ```bash
 # 添加 MariaDB 仓库
@@ -202,6 +211,7 @@ yum -y install MariaDB-server MariaDB-client
 systemctl enable --now mariadb
 ```
 
+
 - 在 grub 引导界面临时编辑内核启动参数
 
      首先，选中要编辑的内核项，按 **e** 进入编辑页面，编辑完成后按 **Ctrl + x**  启动系统。下图为编辑内核参数直接进入救援模式。
@@ -209,6 +219,8 @@ systemctl enable --now mariadb
 ![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&display=inline&height=230&name=image.png&originHeight=230&originWidth=716&size=13999&status=done&style=none&width=716)<br />
 
 - 在操作系统中编辑内核启动参数并重新生成 grub 引导
+
+
 
 ```bash
 // 修改 /etc/default/grub 中的参数设置
@@ -226,16 +238,19 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 // 重启系统时参数生效
 ```
 
+
 - netinstall  centos 1804 可用如下镜像源
 ```
 // 不要遗漏最后的反斜线
 https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.5.1804/os/x86_64/
 ```
 
+
 - 包版本降级
 ```bash
 yum downgrade httpd-2.2.3-22.el5
 ```
+
 
 - 查看包安装信息
 ```bash
@@ -243,6 +258,7 @@ rpm -qa | grep nginx
 rpm -qf /usr/sbin/nginx
 rpm -ql nginx
 ```
+
 
 <a name="Y0lD3"></a>
 #### Debian
@@ -264,12 +280,13 @@ dpkg -l | grep linux
 apt-get download docker-ce
 ```
 
+
 <a name="3HTPv"></a>
 #### VIM
 
 - 替换空格为换行
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&style=none&width=160)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&style=none&width=160)<br />
 
 <a name="FfBcn"></a>
 #### Git
@@ -282,6 +299,7 @@ git commit --amend
 git rebase --continue
 ```
 
+
 - 修改 commit 时间
 ```
 # 设置为当前时间
@@ -290,10 +308,12 @@ GIT_COMMITTER_DATE="$(date '+%Y-%m-%d %H:%M:%S')" git commit --amend --no-edit -
 GIT_COMMITTER_DATE="Mon 20 Aug 2018 20:19:19 BST" git commit --amend --no-edit --date "Mon 20 Aug 2018 20:19:19 BST"
 ```
 
+
 - 比较两个分支的不同
 ```
 git diff branch_1..branch_2
 ```
+
 
 - merge 时使用指定方代码解决冲突
 ```go
@@ -301,15 +321,18 @@ git merge -X theirs origin/dev
 git merge -X ours origin/dev
 ```
 
+
 - 查看一个文件完整的修改历史
 ```
 git log --follow -p -- _config.yml
 ```
 
+
 - 将当前分支下子目录内容提交至另一个分支
 ```
 git subtree push --prefix dist origin gh-pages
 ```
+
 
 - 删除 submodule
 ```
@@ -318,6 +341,7 @@ git rm <path_to_submodule>
 git commit -m "Removed submodule "
 ```
 
+
 - 合并所有 commit 为一个
 ```
 git rebase --root -i
@@ -325,25 +349,31 @@ git rebase --root -i
 git rebase --ignore-date 303a824f46b497f71582e2e5d493c132b85e3e0a
 ```
 
+
 - 删除所有没有远程分支的本地分支
 ```
 git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d
 ```
+
 
 - 撤销某个 commit
 ```
 git revert --strategy resolve <commit>
 ```
 
+
 - 使用 ssh 替代 https 访问
 ```bash
 git config --global url."git@git.ucloudadmin.com:".insteadOf "https://git.ucloudadmin.com/"
 ```
 
+
 <a name="Qgmi6"></a>
 #### Ansible
 
 - 打印 Ansible 所有的变量 
+
+
 
 ```
 - name: Print some debug information 
@@ -374,7 +404,7 @@ git config --global url."git@git.ucloudadmin.com:".insteadOf "https://git.ucloud
   tags: debug_info
 ```
 
-或者
+<br />或者<br />
 
 ```
 - name: Display all variables/facts known for a host
@@ -382,6 +412,7 @@ git config --global url."git@git.ucloudadmin.com:".insteadOf "https://git.ucloud
     var: hostvars[inventory_hostname]
   tags: debug_info
 ```
+
 
 <a name="uiMU3"></a>
 #### man 查看手册
@@ -394,6 +425,7 @@ man exit
 man 2 exit
 ```
 
+
 <a name="gzyiV"></a>
 #### tcpdump 捕获 http 包
 更多参考：[https://hackertarget.com/tcpdump-examples/](https://hackertarget.com/tcpdump-examples/)
@@ -402,8 +434,10 @@ tcpdump -s 0 -A 'tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420'
 tcpdump -ni ens5f0 -A -s 10240 'tcp port 8056 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' | egrep --line-buffered "^........(GET |HTTP\/|POST |HEAD )|^[A-Za-z0-9-]+: " | sed -r 's/^........(GET |HTTP\/|POST |HEAD )/\n\1/g'
 ```
 
+
 <a name="WZCnh"></a>
 #### mount 查看目录或分区挂载情况
+
 
 ```bash
 cat /proc/mounts
@@ -417,8 +451,10 @@ findmnt
 df -aTh
 ```
 
+
 <a name="1rSZC"></a>
 #### pgrep 进程检索与杀死
+
 
 ```bash
 // 按名称列出进程 ID
@@ -432,8 +468,10 @@ kill -9 3049
 pstree -p
 ```
 
+
 <a name="e1tG9"></a>
 #### fuser 找到正在使用某个文件的进程
+
 
 ```bash
 // fuser 是 file user 的缩写
@@ -443,8 +481,10 @@ fuser -uvm /folder
 fuser -v -n tcp 8000
 ```
 
+
 <a name="lw5hk"></a>
 #### lsof 列出所有打开的文件
+
 
 ```bash
 // lsof 是 list open files 的缩写
@@ -454,20 +494,24 @@ lsof -i -n -P
 lsof .
 ```
 
+
 <a name="70PLT"></a>
 #### strace 跟踪系统调用
-strace 用法参考： [https://www.howtoforge.com/linux-strace-command/](https://www.howtoforge.com/linux-strace-command/)
+strace 用法参考： [https://www.howtoforge.com/linux-strace-command/](https://www.howtoforge.com/linux-strace-command/)<br />
 
 ```
 strace -i ls
 ```
 
+
 <a name="6F4YX"></a>
 #### getent 获取系统用户信息
+
 
 ```
 getent passwd
 ```
+
 
 <a name="zdvyH"></a>
 #### sed
@@ -491,8 +535,15 @@ sed ’s/’$a’/’$b’/’ filename
 sed s/$a/$b/ filename
 ```
 
+- 替换多个空格为一个
+```bash
+sed 's/\s\+/ /g'
+```
+
+
 <a name="tZDa5"></a>
 #### 生成 Linux 用户密码的哈希值
+
 
 ```
 python -c "import crypt, getpass, pwd; print(crypt.crypt('password', '\$6\$saltsalt\$'))"
@@ -512,15 +563,17 @@ func main() {
 }
 ```
 
+
 <a name="uvsm2"></a>
 #### 允许使用 root 用户 ssh 登录
-先删除 `/root/.ssh/authorized_keys` 中的多余限制信息，之后在 `/etc/ssh/sshd_config` 中添加 `PermitRootLogin yes` 后重启 sshd 服务。
+先删除 `/root/.ssh/authorized_keys` 中的多余限制信息，之后在 `/etc/ssh/sshd_config` 中添加 `PermitRootLogin yes` 后重启 sshd 服务。<br />
 
 <a name="vwUdA"></a>
 #### 解决"rtnetlink answers file exists"
 ```
 ip a flush dev eth0
 ```
+
 
 <a name="HPtZj"></a>
 #### ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地
@@ -536,6 +589,7 @@ chmod 600 ~/.ssh/id_rsa
 chmod 644 ~/.ssh/id_rsa.pub
 ```
 
+
 <a name="Ey88A"></a>
 #### 查看登录记录
 ```bash
@@ -547,18 +601,22 @@ last -F
 lastlog --time 90
 ```
 
+
 <a name="g7NoE"></a>
 #### rsync 同步时需要 root 权限
 ```bash
 rsync -aru -e "ssh" --rsync-path="sudo rsync" 172.16.110.215:~/ ~/  --progress --exclude=.cache
 ```
 
+
 <a name="xr010"></a>
 #### rclone 将 http file server 的内容同步到本地
+
 
 ```bash
 rclone sync --http-url http://my.file.server :http:centos/test /repo/test --progress
 ```
+
 
 <a name="hU4cE"></a>
 #### expr 比较字符串大小
@@ -568,6 +626,7 @@ str2='v1.14'
 if [ $(expr ${str3} \<= ${str2}) -eq 1 ]; then    echo "[${str3}] <= [${str2}]"; else    echo "[${str3}] > [${str2}]"; fi
 ```
 
+
 <a name="bjtsD"></a>
 #### tr 移除所有空格
 ```bash
@@ -575,13 +634,14 @@ if [ $(expr ${str3} \<= ${str2}) -eq 1 ]; then    echo "[${str3}] <= [${str2}]";
 kubectl version --short | tail -1 | cut -d':' -f2 | tr -d '[:space:]'
 ```
 
+
 <a name="NBOFH"></a>
 #### vegeta 对 HTTP 服务进行性能测试
 ```go
 echo "GET http://localhost:8080/cephcsi" | vegeta attack -rate=20000 -duration=60s > result.bin
 vegeta report result.bin
 ```
-更多内容参考：[https://www.scaleway.com/en/docs/vegeta-load-testing/](https://www.scaleway.com/en/docs/vegeta-load-testing/)
+更多内容参考：[https://www.scaleway.com/en/docs/vegeta-load-testing/](https://www.scaleway.com/en/docs/vegeta-load-testing/)<br />
 
 <a name="DNQzt"></a>
 #### zip 压缩文件不带顶级目录
@@ -592,11 +652,13 @@ zip -r complete/path/to/name.zip ./*
 popd
 ```
 
+
 <a name="KWEjv"></a>
 #### MySQL 执行单行命令
 ```
 mysql --user="$user" --password="$password" --database="$database" --execute="DROP DATABASE $user; CREATE DATABASE $database;"
 ```
+
 
 <a name="bIf97"></a>
 #### MySQL 导出数据库
@@ -606,6 +668,7 @@ mysqldump -P 3306 -u root --password=password -h 172.30.100.43  keycloak > keycl
 // 导入
 mysql -P 3306 -u root --password=password -h 172.30.100.43  keycloak < keycloak.sql
 ```
+
 
 <a name="csvsg"></a>
 #### ss 列出所有处于监听状态的 socket
@@ -618,6 +681,7 @@ ss -lntu
 -p = name of the program
 ```
 
+
 <a name="1EEnK"></a>
 #### 查看网络中已存在的 IP
 ```bash
@@ -625,6 +689,7 @@ arp-scan -I eth0 192.168.180.0/24
 //或
 nmap -sP -PR 192.168.180.*
 ```
+
 
 <a name="sbDNW"></a>
 #### iostat 查看磁盘读写速度
@@ -634,6 +699,7 @@ nmap -sP -PR 192.168.180.*
 iostat -m
 ```
 
+
 <a name="vWZU0"></a>
 #### Wireshark 过滤表达式
 参考：[https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html](https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html)
@@ -641,11 +707,13 @@ iostat -m
 ip.scr==10.0.0.5 or ip.dst==192.1.1.1
 ```
 
+
 <a name="lX9js"></a>
 #### alpine 修改镜像源
 ```
 sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 ```
+
 
 <a name="52SGW"></a>
 #### tinc 配置 VPN
@@ -682,6 +750,7 @@ ip a add 192.168.120.2/24 dev tinc
 ip r add 10.10.0.0/16 dev tinc
 ```
 
+
 <a name="ttdKC"></a>
 #### 删文件报错 Structure needs cleaning
 ```bash
@@ -695,6 +764,7 @@ umount /dev/sda1
 xfs_repair /dev/sda1
 ```
 
+
 <a name="hh4rr"></a>
 #### coredumpctl 
 ```bash
@@ -705,17 +775,20 @@ coredumpctl -o core.dump dump chrome
 coredumpctl gdb pid
 ```
 
+
 <a name="AUh3a"></a>
 #### 终端设置全局代理，对 ssh 和 http均有效
 ```bash
 export ALL_PROXY=socks5://127.0.0.1:1080
 ```
 
+
 <a name="JiKnX"></a>
 #### nethogs 查看进程网速
 ```bash
 yum install nethogs
 ```
+
 
 <a name="LldNZ"></a>
 #### fpm 制作 deb/rpm 安装包
@@ -724,11 +797,13 @@ yum install nethogs
 fpm -f -s dir -t deb -n iptables -v 1.6.2 -C `pwd` --prefix / --deb-no-default-config-files usr
 ```
 
+
 <a name="aUM4A"></a>
 #### 生成随机值
 ```
 $(awk -v n=1 -v seed="$RANDOM" 'BEGIN { srand(seed); for (i=0; i<n; ++i) printf("%.4f\n", rand()*10) }')
 ```
+
 
 <a name="tiQ7D"></a>
 #### 实用工具
