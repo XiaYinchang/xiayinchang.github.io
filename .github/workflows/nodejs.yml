@@ -35,9 +35,11 @@ jobs:
           PUBLISH_BRANCH: master
           PUBLISH_DIR: ./public
       - name: Deploy to Staging server
-        uses: easingthemes/ssh-deploy@v2.0.7
+        run: |
+          apt -y install sshpass rsync
+          sshpass -p $SSH_PASS rsync $ARGS $REMOTE_USER@$REMOTE_HOST:$SOURCE $TARGET
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PASS: ${{ secrets.SSH_PASS }}
           ARGS: "-avzr"
           SOURCE: "public/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
