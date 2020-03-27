@@ -40,7 +40,7 @@ jobs:
         env:
           SSH_PASS: ${{ secrets.SSH_PASS }}
           ARGS: "-aru"
-          SOURCE: "public/"
+          SOURCE: "public/*"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: "/usr/share/nginx/html/"
