@@ -36,11 +36,10 @@ jobs:
           PUBLISH_DIR: ./public
       - name: Deploy to Staging server
         run: |
-          sudo apt -y install sshpass rsync
           sshpass -p $SSH_PASS rsync $ARGS $REMOTE_USER@$REMOTE_HOST:$SOURCE $TARGET
         env:
           SSH_PASS: ${{ secrets.SSH_PASS }}
-          ARGS: "-avzr"
+          ARGS: "-aru"
           SOURCE: "public/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
