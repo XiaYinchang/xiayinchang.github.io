@@ -36,7 +36,7 @@ jobs:
           PUBLISH_DIR: ./public
       - name: Deploy to Staging server
         run: |
-          apt -y install sshpass rsync
+          sudo apt -y install sshpass rsync
           sshpass -p $SSH_PASS rsync $ARGS $REMOTE_USER@$REMOTE_HOST:$SOURCE $TARGET
         env:
           SSH_PASS: ${{ secrets.SSH_PASS }}
