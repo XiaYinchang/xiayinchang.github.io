@@ -2,7 +2,7 @@
 title: ArchLinux 常用命令
 urlname: egtn5p
 date: '2019-09-04 00:00:00 +0800'
-updated: 'Tue Jan 14 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon Mar 30 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Linux
@@ -17,6 +17,7 @@ abbrlink: bda105fe
 <a name="52t3i"></a>
 #### 更新系统
 
+
 ```
 sudo pacman -Sy archlinux-keyring
 sudo pacman -Syuu
@@ -25,6 +26,7 @@ sudo pacman -S systemd-sysvcompat --overwrite '*'
 // 自动获取最快的镜像源
 sudo reflector --verbose -c 'China' -l 20 -p http --sort rate --save /etc/pacman.d/mirrorlist
 ```
+
 
 <a name="BdT88"></a>
 #### yay 使用相关
@@ -37,9 +39,10 @@ yay -Ql deluge
 yay wechat --sortby <votes|popularity|id|baseid|name|base|submitted|modified>
 ```
 
+
 <a name="aQrbN"></a>
 #### Network-Manage 使用 SSTP VPN 
-需要安装客户端软件： `network-manager-sstp`
+需要安装客户端软件： `network-manager-sstp`<br />
 
 <a name="xaHEP"></a>
 #### 配置 javaws Web 端访问物理服务器终端
@@ -65,7 +68,7 @@ sudo archlinux-java set jre1.8.0_212
 ```javascript
 jdk.tls.disabledAlgorithms=NULL
 ```
-打开 `jcontrol` 程序将物理机终端地址加入白名单，如：`http://192.168.181.134:80`。<br />重新打开浏览器即可。
+打开 `jcontrol` 程序将物理机终端地址加入白名单，如：`http://192.168.181.134:80`。<br />重新打开浏览器即可。<br />
 
 <a name="AM6Pq"></a>
 #### pacman 查看软件包安装的文件
@@ -78,7 +81,7 @@ cni-plugins /usr/lib/cni/
 // 查看文件属于哪个包
 sudo pacman -Qo /bin/pacman-mirrors
 ```
-更多参考：[https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3](https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3)
+更多参考：[https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3](https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3)<br />
 
 <a name="J6u5z"></a>
 #### 清理系统缓存
@@ -89,6 +92,7 @@ sudo pacman -Scc
 sudo journalctl --vacuum-size=50M
 sudo rm /var/lib/systemd/coredump/*
 ```
+
 
 <a name="C8RKE"></a>
 #### 安装 Deepin 桌面
@@ -102,6 +106,7 @@ useradd -m -g users -G wheel -s /bin/bash xyc
 passwd xyc
 ```
 
+
 <a name="PIpHY"></a>
 #### Manjaro 升级内核
 ```bash
@@ -113,7 +118,23 @@ sudo mhwd-kernel -li
 sudo mkwd-kernel -i linux44 rmc
 ```
 
+
 <a name="yORAd"></a>
 #### Manjaro 免密 sudo
-除了更改 `/etc/sudoers` 还要删除 `/etc/sudoers.d/10-installer`。
+除了更改 `/etc/sudoers` 还要删除 `/etc/sudoers.d/10-installer`。<br />
+
+<a name="Z2q9E"></a>
+#### 安装 yay
+在 `/etc/pacman.conf` 中添加以下内容：
+```
+[archlinuxcn]
+SigLevel = Never
+Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+```
+然后执行：
+```
+sudo pacman -S yay
+```
+
+
 
