@@ -644,7 +644,7 @@
 
 <p><a name="bQa14"></a></p>
 <h4 id="NetworkManager-nmcli"><a href="#NetworkManager-nmcli" class="headerlink" title="NetworkManager (nmcli)"></a>NetworkManager (nmcli)</h4><ul>
-<li>设置静态地址<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nmcli connection</span><br><span class="line">nmcli con mod eth1 ipv4.method manual</span><br><span class="line">nmcli con mod eth1 ipv4.addresses 192.168.5.1/24</span><br><span class="line">nmcli con up eth1</span><br></pre></td></tr></table></figure>
+<li>设置静态地址<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nmcli connection</span><br><span class="line">nmcli con mod eth1 ipv4.addresses 192.168.5.1/24</span><br><span class="line">nmcli con mod eth1 ipv4.method manual</span><br><span class="line">nmcli con up eth1</span><br></pre></td></tr></table></figure>
 
 
 </li>

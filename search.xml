@@ -358,7 +358,7 @@
 
 <p><a name="bQa14"></a></p>
 <h4 id="NetworkManager-nmcli"><a href="#NetworkManager-nmcli" class="headerlink" title="NetworkManager (nmcli)"></a>NetworkManager (nmcli)</h4><ul>
-<li>设置静态地址<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nmcli connection</span><br><span class="line">nmcli con mod eth1 ipv4.method manual</span><br><span class="line">nmcli con mod eth1 ipv4.addresses 192.168.5.1/24</span><br><span class="line">nmcli con up eth1</span><br></pre></td></tr></table></figure>
+<li>设置静态地址<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nmcli connection</span><br><span class="line">nmcli con mod eth1 ipv4.addresses 192.168.5.1/24</span><br><span class="line">nmcli con mod eth1 ipv4.method manual</span><br><span class="line">nmcli con up eth1</span><br></pre></td></tr></table></figure>
 
 
 </li>
@@ -426,6 +426,10 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[archlinuxcn]</span><br><span class="line">SigLevel = Never</span><br><span class="line">Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch</span><br></pre></td></tr></table></figure>
 <p>然后执行：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S yay</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="nLhv5"></a></p>
+<h4 id="zsh-手动保存历史记录到本地"><a href="#zsh-手动保存历史记录到本地" class="headerlink" title="zsh 手动保存历史记录到本地"></a>zsh 手动保存历史记录到本地</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">fc</span> -W</span><br></pre></td></tr></table></figure>
 
 
 
@@ -2219,34 +2223,34 @@
 <table>
 <thead>
 <tr>
-<th align="center">比较项<br></th>
+<th align="center">比较项</th>
 <th align="center"><strong>Keystone</strong></th>
 <th align="center"><strong>Keycloak</strong><br></th>
 </tr>
 </thead>
 <tbody><tr>
 <td align="center">开发语言</td>
-<td align="center">Python<br></td>
+<td align="center">Python</td>
 <td align="center">Java</td>
 </tr>
 <tr>
-<td align="center">开源<br></td>
+<td align="center">开源</td>
 <td align="center">是</td>
 <td align="center">是，有商业版</td>
 </tr>
 <tr>
-<td align="center">维护方<br></td>
-<td align="center">OpenStack 社区<br></td>
-<td align="center">RedHat 及社区<br></td>
+<td align="center">维护方</td>
+<td align="center">OpenStack 社区</td>
+<td align="center">RedHat 及社区</td>
 </tr>
 <tr>
-<td align="center">贡献者数量<br></td>
+<td align="center">贡献者数量</td>
 <td align="center">433</td>
 <td align="center">328</td>
 </tr>
 <tr>
 <td align="center">提交数</td>
-<td align="center">14250<br></td>
+<td align="center">14250</td>
 <td align="center">11665</td>
 </tr>
 <tr>
@@ -2255,38 +2259,38 @@
 <td align="center"><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1568554290207-8a67772f-52fc-4d4b-9778-7a934ed22ac6.png#align=left&display=inline&height=140&name=image.png&originHeight=140&originWidth=726&size=5728&status=done&width=726" alt="image.png"></td>
 </tr>
 <tr>
-<td align="center">LDAP 集成<br></td>
-<td align="center">支持<br></td>
-<td align="center">支持<br></td>
+<td align="center">LDAP 集成</td>
+<td align="center">支持</td>
+<td align="center">支持</td>
 </tr>
 <tr>
-<td align="center">支持的数据库<br></td>
+<td align="center">支持的数据库</td>
 <td align="center">MySQL</td>
 <td align="center">h2，MySQL，Postgres</td>
 </tr>
 <tr>
-<td align="center">UI<br></td>
-<td align="center">无独立 UI，界面集成在 Horizon 中<br></td>
-<td align="center">有独立 UI，可以定制主题以适应需要<br></td>
+<td align="center">UI</td>
+<td align="center">无独立 UI，界面集成在 Horizon 中</td>
+<td align="center">有独立 UI，可以定制主题以适应需要</td>
 </tr>
 <tr>
 <td align="center">SDK<br></td>
 <td align="center">不区分 Admin 和 普通用户 SDK ，<a href="https://github.com/openstack/js-openstack-lib" target="_blank" rel="external nofollow noopener noreferrer">js SDK  </a>有但不完善，<a href="https://github.com/openstack/python-keystoneclient" target="_blank" rel="external nofollow noopener noreferrer"> Python SDK </a>最完善，<a href="https://github.com/gophercloud/gophercloud" target="_blank" rel="external nofollow noopener noreferrer">Go SDK </a>相对完善。</td>
-<td align="center">区分 Admin 和 普通用户 SDK ，Admin SDK 提供了管理用户、角色和应用认证等的功能，普用户SDK主要实现认证和授权功能， Admin SDK Java 版本最完善， Node 版次之， <a href="https://github.com/Nerzal/gocloak" target="_blank" rel="external nofollow noopener noreferrer">Go</a> 版为非官方维护，较为完善。普通用户 SDK 同样是 Java最为完善，其次是 JavaScript 、Node、Python等，由于其遵循标准的 OpenID 认证流程，故各种语言已有的 OpenID Client 都可以直接使用。<br><br></td>
+<td align="center">区分 Admin 和 普通用户 SDK ，Admin SDK 提供了管理用户、角色和应用认证等的功能，普用户SDK主要实现认证和授权功能， Admin SDK Java 版本最完善， Node 版次之， <a href="https://github.com/Nerzal/gocloak" target="_blank" rel="external nofollow noopener noreferrer">Go</a> 版为非官方维护，较为完善。普通用户 SDK 同样是 Java最为完善，其次是 JavaScript 、Node、Python等，由于其遵循标准的 OpenID 认证流程，故各种语言已有的 OpenID Client 都可以直接使用。<br></td>
 </tr>
 <tr>
-<td align="center">Rest API <br></td>
+<td align="center">Rest API</td>
 <td align="center"><a href="https://docs.openstack.org/api-ref/identity/v3/" target="_blank" rel="external nofollow noopener noreferrer">v3 </a>版本文档：<a href="https://docs.openstack.org/api-ref/identity/v3/" target="_blank" rel="external nofollow noopener noreferrer">https://docs.openstack.org/api-ref/identity/v3/</a></td>
 <td align="center">7.0 版本的 <a href="https://www.keycloak.org/docs-api/7.0/rest-api/index.html" target="_blank" rel="external nofollow noopener noreferrer">Admin API</a> 文档<br>：<a href="https://www.keycloak.org/docs-api/7.0/rest-api/index.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.keycloak.org/docs-api/7.0/rest-api/index.html</a></td>
 </tr>
 <tr>
-<td align="center">基于 Kubernetes 部署<br></td>
+<td align="center">基于 Kubernetes 部署</td>
 <td align="center">官方有使用 <a href="https://github.com/openstack/openstack-helm" target="_blank" rel="external nofollow noopener noreferrer">Helm charts </a>部署整个 OpenStack 集群的方案，没有专门的使用 Kubernetes 部署Keystone 的方案，可从  OpenStack helm charts 中抽离，但有一定的工作量。<br></td>
 <td align="center">有非官方的 <a href="https://github.com/codecentric/helm-charts" target="_blank" rel="external nofollow noopener noreferrer">Helm charts </a>用于部署高可用 Keycloak 集群，经试用满足需求。另外最近官方新开了 <a href="https://github.com/keycloak/keycloak-operator" target="_blank" rel="external nofollow noopener noreferrer">keycloak-operator</a> 仓库，下一步有可能提供基于 CRD 的部署支持。<br></td>
 </tr>
 <tr>
 <td align="center">非侵入式认证</td>
-<td align="center">未见官方支持方案<br></td>
+<td align="center">未见官方支持方案</td>
 <td align="center">官方提供 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 项目通过 proxy 方式代理前端请求，认证过程由代理完成，业务代码中不需要加入认证处理的内容，方便现有业务的无侵入接入认证。可以结合 Nginx-Ingress 等 API Gateway 使用。<br></td>
 </tr>
 </tbody></table>
@@ -2297,7 +2301,7 @@
 <table>
 <thead>
 <tr>
-<th align="center">比较项<br></th>
+<th align="center">比较项</th>
 <th align="center"><strong>Keystone</strong></th>
 <th align="center"><strong>Keycloak</strong><br></th>
 </tr>
@@ -2319,8 +2323,8 @@
 </tr>
 <tr>
 <td align="center">域</td>
-<td align="center">Domains： 域是项目、用户组、用户的容器，Keystone 提供默认域（Default）。对所有用户、项目和用户组的操作都必须提供域信息。域名全局唯一。<br></td>
-<td align="center">Realms：和 Domains 概念一致，Keycloak 提供默认域（Master）。<br></td>
+<td align="center">Domains： 域是项目、用户组、用户的容器，Keystone 提供默认域（Default）。对所有用户、项目和用户组的操作都必须提供域信息。域名全局唯一。</td>
+<td align="center">Realms：和 Domains 概念一致，Keycloak 提供默认域（Master）。</td>
 </tr>
 <tr>
 <td align="center">角色</td>
@@ -2338,8 +2342,8 @@
 <td align="center">无</td>
 </tr>
 <tr>
-<td align="center">客户端认证<br></td>
-<td align="center">Application Credentials：应用凭证，与用户绑定的一种凭证，拥有与用户一致的权限（Role），也可以在创建时指定，专门给 client 端在无需使用用户和密码进行登录时使用。<br>Credentials：与用户名和密码基本等同的凭证，只不过是以 EC2 方式提供的凭证，包括 accekey 和 secret key。<br></td>
+<td align="center">客户端认证</td>
+<td align="center">Application Credentials：应用凭证，与用户绑定的一种凭证，拥有与用户一致的权限（Role），也可以在创建时指定，专门给 client 端在无需使用用户和密码进行登录时使用。<br>Credentials：与用户名和密码基本等同的凭证，只不过是以 EC2 方式提供的凭证，包括 accekey 和 secret key。</td>
 <td align="center">Clients： 和 OAuth 术语基本一致，只能由管理员用户创建，和普通用户并无绑定关系。使用标准认证协议 OpenID（OAuth 2.0）或者 SAML2 。可以配置成需要用户登录认证或者直接访问。</td>
 </tr>
 <tr>
