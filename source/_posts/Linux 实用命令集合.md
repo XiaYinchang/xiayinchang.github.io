@@ -821,8 +821,8 @@ $(awk -v n=1 -v seed="$RANDOM" 'BEGIN { srand(seed); for (i=0; i<n; ++i) printf(
 - 设置静态地址
 ```bash
 nmcli connection
-nmcli con mod eth1 ipv4.method manual
 nmcli con mod eth1 ipv4.addresses 192.168.5.1/24
+nmcli con mod eth1 ipv4.method manual
 nmcli con up eth1
 ```
 

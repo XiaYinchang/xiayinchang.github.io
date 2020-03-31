@@ -137,4 +137,11 @@ sudo pacman -S yay
 ```
 
 
+<a name="nLhv5"></a>
+#### zsh 手动保存历史记录到本地
+```bash
+fc -W
+```
+
+
 
