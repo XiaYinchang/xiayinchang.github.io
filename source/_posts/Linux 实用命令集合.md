@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Fri Mar 27 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Mar 31 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -278,6 +278,16 @@ dpkg -l | grep linux
 - 下载包不安装
 ```
 apt-get download docker-ce
+```
+
+
+<a name="PHSFv"></a>
+#### Raspberry
+
+- 清理桌面环境
+```bash
+sudo apt-get purge desktop-base lightdm lxappearance lxde-common lxde-icon-theme lxinput lxpanel lxpolkit lxrandr lxsession-edit lxshortcut lxtask lxterminal obconf openbox raspberrypi-artwork xarchiver xinit xserver-xorg xserver-xorg-video-fbdev
+sudo apt-get autoremove --purge
 ```
 
 
@@ -802,6 +812,18 @@ fpm -f -s dir -t deb -n iptables -v 1.6.2 -C `pwd` --prefix / --deb-no-default-c
 #### 生成随机值
 ```
 $(awk -v n=1 -v seed="$RANDOM" 'BEGIN { srand(seed); for (i=0; i<n; ++i) printf("%.4f\n", rand()*10) }')
+```
+
+
+<a name="bQa14"></a>
+#### NetworkManager (nmcli)
+
+- 设置静态地址
+```bash
+nmcli connection
+nmcli con mod eth1 ipv4.method manual
+nmcli con mod eth1 ipv4.addresses 192.168.5.1/24
+nmcli con up eth1
 ```
 
 
