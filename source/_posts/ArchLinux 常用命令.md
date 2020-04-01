@@ -153,6 +153,10 @@ sudo downgrade wine
 ```
 
 
+<a name="oijw0"></a>
+#### 桌面快捷方式的存储位置
+/usr/share/applications/<br />
+
 <a name="Uf6Hh"></a>
 #### 错误及解决方法
 
@@ -161,5 +165,7 @@ sudo downgrade wine
 sudo pacman -S base-devel
 ```
 
+- 搜狗输入法候选栏乱码
 
+参考：[https://www.lulinux.com/archives/5526](https://www.lulinux.com/archives/5526)
 
