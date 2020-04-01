@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ArchLinux 常用命令</title>
+    <url>/post/bda105fe.html</url>
+    <content><![CDATA[<p><a name="52t3i"></a></p><h4 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -Sy archlinux-keyring</span><br><span class="line">sudo pacman -Syuu</span><br><span class="line">sudo pacman -S systemd --overwrite &apos;*&apos;</span><br><span class="line">sudo pacman -S systemd-sysvcompat --overwrite &apos;*&apos;</span><br><span class="line">// 自动获取最快的镜像源</span><br><span class="line">sudo reflector --verbose -c &apos;China&apos; -l 20 -p http --sort rate --save /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p><a name="BdT88"></a></p>
+<h4 id="yay-使用相关"><a href="#yay-使用相关" class="headerlink" title="yay 使用相关"></a>yay 使用相关</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装包时覆盖本地已存在文件</span></span><br><span class="line">yay deluge --force</span><br><span class="line"><span class="comment"># 查看所有安装的文件及其路径</span></span><br><span class="line">yay -Ql deluge</span><br><span class="line"><span class="comment"># 查找时按照指定 filed 排序</span></span><br><span class="line">yay wechat --sortby &lt;votes|popularity|id|baseid|name|base|submitted|modified&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="aQrbN"></a></p>
+<h4 id="Network-Manage-使用-SSTP-VPN"><a href="#Network-Manage-使用-SSTP-VPN" class="headerlink" title="Network-Manage 使用 SSTP VPN"></a>Network-Manage 使用 SSTP VPN</h4><p>需要安装客户端软件： <code>network-manager-sstp</code><br></p>
+<p><a name="xaHEP"></a></p>
+<h4 id="配置-javaws-Web-端访问物理服务器终端"><a href="#配置-javaws-Web-端访问物理服务器终端" class="headerlink" title="配置 javaws Web 端访问物理服务器终端"></a>配置 javaws Web 端访问物理服务器终端</h4><p>到<a href="https://github.com/frekele/oracle-java/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载 Oracle JDK 并解压，将解压得到的文件夹移动至 jvm 目录，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">wget https:<span class="comment">//github.com/frekele/oracle-java/releases/download/8u212-b10/jre-8u212-linux-x64.tar.gz</span></span><br><span class="line">tar zxvf jre<span class="number">-8</span>u212-linux-x64.tar.gz</span><br><span class="line">sudo mv /home/xyc/Downloads/jre1<span class="number">.8</span><span class="number">.0</span>_212 /usr/lib/jvm/</span><br></pre></td></tr></table></figure>
+<p>查看已有的 JDK：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">➜  Downloads archlinux-java status                                                                             </span><br><span class="line">Available Java environments:</span><br><span class="line">  java<span class="number">-13</span>-openjdk</span><br><span class="line">  java<span class="number">-8</span>-openjdk/jre</span><br><span class="line">  jre1<span class="number">.8</span><span class="number">.0</span>_212 (<span class="keyword">default</span>)</span><br></pre></td></tr></table></figure>
+<p>设置默认 Java 环境为新添加的 JDK：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">sudo archlinux-java <span class="keyword">set</span> jre1.8.0_212</span><br></pre></td></tr></table></figure>
+<p>修改 <code>/usr/lib/jvm/jre1.8.0_212/lib/security/java.security</code> 文件调整设置为：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">jdk.tls.disabledAlgorithms=NULL</span><br></pre></td></tr></table></figure>
+<p>打开 <code>jcontrol</code> 程序将物理机终端地址加入白名单，如：<code>http://192.168.181.134:80</code>。<br>重新打开浏览器即可。<br></p>
+<p><a name="AM6Pq"></a></p>
+<h4 id="pacman-查看软件包安装的文件"><a href="#pacman-查看软件包安装的文件" class="headerlink" title="pacman 查看软件包安装的文件"></a>pacman 查看软件包安装的文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -Ql cni-plugins</span><br><span class="line">cni-plugins /usr/</span><br><span class="line">cni-plugins /usr/lib/</span><br><span class="line">cni-plugins /usr/lib/cni/</span><br><span class="line">...</span><br><span class="line">// 查看文件属于哪个包</span><br><span class="line">sudo pacman -Qo /bin/pacman-mirrors</span><br></pre></td></tr></table></figure>
+<p>更多参考：<a href="https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3" target="_blank" rel="external nofollow noopener noreferrer">https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3</a><br></p>
+<p><a name="J6u5z"></a></p>
+<h4 id="清理系统缓存"><a href="#清理系统缓存" class="headerlink" title="清理系统缓存"></a>清理系统缓存</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo paccache -r</span><br><span class="line">sudo paccache -ruk0</span><br><span class="line">sudo pacman -Scc</span><br><span class="line">sudo journalctl --vacuum-size=50M</span><br><span class="line">sudo rm /var/lib/systemd/coredump/*</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="C8RKE"></a></p>
+<h4 id="安装-Deepin-桌面"><a href="#安装-Deepin-桌面" class="headerlink" title="安装 Deepin 桌面"></a>安装 Deepin 桌面</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">vim /etc/lightdm/lightdm.conf</span><br><span class="line">greeter-session=lightdm-deepin-greeter</span><br><span class="line">systemctl <span class="built_in">enable</span> lightdm.service</span><br><span class="line">systemctl <span class="built_in">enable</span> NetworkManager</span><br><span class="line">useradd -m -g users -G wheel -s /bin/bash xyc</span><br><span class="line">passwd xyc</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="PIpHY"></a></p>
+<h4 id="Manjaro-升级内核"><a href="#Manjaro-升级内核" class="headerlink" title="Manjaro 升级内核"></a>Manjaro 升级内核</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 列出可用内核</span><br><span class="line">sudo mhwd-kernel -l</span><br><span class="line">// 列出已安装内核</span><br><span class="line">sudo mhwd-kernel -li</span><br><span class="line">// 安装新内核并移除当前内核</span><br><span class="line">sudo mkwd-kernel -i linux44 rmc</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="yORAd"></a></p>
+<h4 id="Manjaro-免密-sudo"><a href="#Manjaro-免密-sudo" class="headerlink" title="Manjaro 免密 sudo"></a>Manjaro 免密 sudo</h4><p>除了更改 <code>/etc/sudoers</code> 还要删除 <code>/etc/sudoers.d/10-installer</code>。<br></p>
+<p><a name="Z2q9E"></a></p>
+<h4 id="安装-yay"><a href="#安装-yay" class="headerlink" title="安装 yay"></a>安装 yay</h4><p>在 <code>/etc/pacman.conf</code> 中添加以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[archlinuxcn]</span><br><span class="line">SigLevel = Never</span><br><span class="line">Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch</span><br></pre></td></tr></table></figure>
+<p>然后执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S yay</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="nLhv5"></a></p>
+<h4 id="zsh-手动保存历史记录到本地"><a href="#zsh-手动保存历史记录到本地" class="headerlink" title="zsh 手动保存历史记录到本地"></a>zsh 手动保存历史记录到本地</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">fc</span> -W</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="Uf6Hh"></a></p>
+<h4 id="错误及解决方法"><a href="#错误及解决方法" class="headerlink" title="错误及解决方法"></a>错误及解决方法</h4><ul>
+<li>Cannot find the strip binary required for object file stripping<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo pacman -S base-devel</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>ArchLinux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 实用命令集合</title>
     <url>/post/b489449e.html</url>
     <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS<br></h4><ul>
@@ -379,67 +447,6 @@
       <tags>
         <tag>Linux</tag>
         <tag> 云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ArchLinux 常用命令</title>
-    <url>/post/bda105fe.html</url>
-    <content><![CDATA[<p><a name="52t3i"></a></p><h4 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -Sy archlinux-keyring</span><br><span class="line">sudo pacman -Syuu</span><br><span class="line">sudo pacman -S systemd --overwrite &apos;*&apos;</span><br><span class="line">sudo pacman -S systemd-sysvcompat --overwrite &apos;*&apos;</span><br><span class="line">// 自动获取最快的镜像源</span><br><span class="line">sudo reflector --verbose -c &apos;China&apos; -l 20 -p http --sort rate --save /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-<p><a name="BdT88"></a></p>
-<h4 id="yay-使用相关"><a href="#yay-使用相关" class="headerlink" title="yay 使用相关"></a>yay 使用相关</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装包时覆盖本地已存在文件</span></span><br><span class="line">yay deluge --force</span><br><span class="line"><span class="comment"># 查看所有安装的文件及其路径</span></span><br><span class="line">yay -Ql deluge</span><br><span class="line"><span class="comment"># 查找时按照指定 filed 排序</span></span><br><span class="line">yay wechat --sortby &lt;votes|popularity|id|baseid|name|base|submitted|modified&gt;</span><br></pre></td></tr></table></figure>
-
-
-<p><a name="aQrbN"></a></p>
-<h4 id="Network-Manage-使用-SSTP-VPN"><a href="#Network-Manage-使用-SSTP-VPN" class="headerlink" title="Network-Manage 使用 SSTP VPN"></a>Network-Manage 使用 SSTP VPN</h4><p>需要安装客户端软件： <code>network-manager-sstp</code><br></p>
-<p><a name="xaHEP"></a></p>
-<h4 id="配置-javaws-Web-端访问物理服务器终端"><a href="#配置-javaws-Web-端访问物理服务器终端" class="headerlink" title="配置 javaws Web 端访问物理服务器终端"></a>配置 javaws Web 端访问物理服务器终端</h4><p>到<a href="https://github.com/frekele/oracle-java/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载 Oracle JDK 并解压，将解压得到的文件夹移动至 jvm 目录，例如：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">wget https:<span class="comment">//github.com/frekele/oracle-java/releases/download/8u212-b10/jre-8u212-linux-x64.tar.gz</span></span><br><span class="line">tar zxvf jre<span class="number">-8</span>u212-linux-x64.tar.gz</span><br><span class="line">sudo mv /home/xyc/Downloads/jre1<span class="number">.8</span><span class="number">.0</span>_212 /usr/lib/jvm/</span><br></pre></td></tr></table></figure>
-<p>查看已有的 JDK：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">➜  Downloads archlinux-java status                                                                             </span><br><span class="line">Available Java environments:</span><br><span class="line">  java<span class="number">-13</span>-openjdk</span><br><span class="line">  java<span class="number">-8</span>-openjdk/jre</span><br><span class="line">  jre1<span class="number">.8</span><span class="number">.0</span>_212 (<span class="keyword">default</span>)</span><br></pre></td></tr></table></figure>
-<p>设置默认 Java 环境为新添加的 JDK：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">sudo archlinux-java <span class="keyword">set</span> jre1.8.0_212</span><br></pre></td></tr></table></figure>
-<p>修改 <code>/usr/lib/jvm/jre1.8.0_212/lib/security/java.security</code> 文件调整设置为：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">jdk.tls.disabledAlgorithms=NULL</span><br></pre></td></tr></table></figure>
-<p>打开 <code>jcontrol</code> 程序将物理机终端地址加入白名单，如：<code>http://192.168.181.134:80</code>。<br>重新打开浏览器即可。<br></p>
-<p><a name="AM6Pq"></a></p>
-<h4 id="pacman-查看软件包安装的文件"><a href="#pacman-查看软件包安装的文件" class="headerlink" title="pacman 查看软件包安装的文件"></a>pacman 查看软件包安装的文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -Ql cni-plugins</span><br><span class="line">cni-plugins /usr/</span><br><span class="line">cni-plugins /usr/lib/</span><br><span class="line">cni-plugins /usr/lib/cni/</span><br><span class="line">...</span><br><span class="line">// 查看文件属于哪个包</span><br><span class="line">sudo pacman -Qo /bin/pacman-mirrors</span><br></pre></td></tr></table></figure>
-<p>更多参考：<a href="https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3" target="_blank" rel="external nofollow noopener noreferrer">https://note.yuchaoshui.com/blog/post/yuziyue/pacman-%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3</a><br></p>
-<p><a name="J6u5z"></a></p>
-<h4 id="清理系统缓存"><a href="#清理系统缓存" class="headerlink" title="清理系统缓存"></a>清理系统缓存</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo paccache -r</span><br><span class="line">sudo paccache -ruk0</span><br><span class="line">sudo pacman -Scc</span><br><span class="line">sudo journalctl --vacuum-size=50M</span><br><span class="line">sudo rm /var/lib/systemd/coredump/*</span><br></pre></td></tr></table></figure>
-
-
-<p><a name="C8RKE"></a></p>
-<h4 id="安装-Deepin-桌面"><a href="#安装-Deepin-桌面" class="headerlink" title="安装 Deepin 桌面"></a>安装 Deepin 桌面</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">vim /etc/lightdm/lightdm.conf</span><br><span class="line">greeter-session=lightdm-deepin-greeter</span><br><span class="line">systemctl <span class="built_in">enable</span> lightdm.service</span><br><span class="line">systemctl <span class="built_in">enable</span> NetworkManager</span><br><span class="line">useradd -m -g users -G wheel -s /bin/bash xyc</span><br><span class="line">passwd xyc</span><br></pre></td></tr></table></figure>
-
-
-<p><a name="PIpHY"></a></p>
-<h4 id="Manjaro-升级内核"><a href="#Manjaro-升级内核" class="headerlink" title="Manjaro 升级内核"></a>Manjaro 升级内核</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 列出可用内核</span><br><span class="line">sudo mhwd-kernel -l</span><br><span class="line">// 列出已安装内核</span><br><span class="line">sudo mhwd-kernel -li</span><br><span class="line">// 安装新内核并移除当前内核</span><br><span class="line">sudo mkwd-kernel -i linux44 rmc</span><br></pre></td></tr></table></figure>
-
-
-<p><a name="yORAd"></a></p>
-<h4 id="Manjaro-免密-sudo"><a href="#Manjaro-免密-sudo" class="headerlink" title="Manjaro 免密 sudo"></a>Manjaro 免密 sudo</h4><p>除了更改 <code>/etc/sudoers</code> 还要删除 <code>/etc/sudoers.d/10-installer</code>。<br></p>
-<p><a name="Z2q9E"></a></p>
-<h4 id="安装-yay"><a href="#安装-yay" class="headerlink" title="安装 yay"></a>安装 yay</h4><p>在 <code>/etc/pacman.conf</code> 中添加以下内容：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[archlinuxcn]</span><br><span class="line">SigLevel = Never</span><br><span class="line">Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch</span><br></pre></td></tr></table></figure>
-<p>然后执行：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S yay</span><br></pre></td></tr></table></figure>
-
-
-<p><a name="nLhv5"></a></p>
-<h4 id="zsh-手动保存历史记录到本地"><a href="#zsh-手动保存历史记录到本地" class="headerlink" title="zsh 手动保存历史记录到本地"></a>zsh 手动保存历史记录到本地</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">fc</span> -W</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>ArchLinux</tag>
       </tags>
   </entry>
   <entry>
