@@ -133,6 +133,7 @@ Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
 ```
 然后执行：
 ```
+sudo pacman -S archlinuxcn-keyring
 sudo pacman -S yay
 ```
 
