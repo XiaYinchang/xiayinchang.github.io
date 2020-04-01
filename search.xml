@@ -60,6 +60,8 @@
 <p><a name="L7JpX"></a></p>
 <h4 id="安装微信和企业微信"><a href="#安装微信和企业微信" class="headerlink" title="安装微信和企业微信"></a>安装微信和企业微信</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S deepin-wine deepin-wine-wechat deepin-wxwork</span><br></pre></td></tr></table></figure>
 <p>如果企业微信无法启动，则可尝试将 wine 降级至 5.3 版本，降级后仍有错误可参考：<a href="https://forum.winehq.org/viewtopic.php?f=8&t=30964#p117330" target="_blank" rel="external nofollow noopener noreferrer">https://forum.winehq.org/viewtopic.php?f=8&amp;t=30964#p117330</a><br></p>
+<p><a name="Tml80"></a></p>
+<h4 id="字体配置"><a href="#字体配置" class="headerlink" title="字体配置"></a>字体配置</h4><p>参考：<a href="http://panqiincs.me/2019/06/05/after-installing-manjaro/" target="_blank" rel="external nofollow noopener noreferrer">http://panqiincs.me/2019/06/05/after-installing-manjaro/</a><br></p>
 <p><a name="Uf6Hh"></a></p>
 <h4 id="错误及解决方法"><a href="#错误及解决方法" class="headerlink" title="错误及解决方法"></a>错误及解决方法</h4><ul>
 <li><p>Cannot find the strip binary required for object file stripping</p>
