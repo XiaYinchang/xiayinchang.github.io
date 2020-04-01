@@ -2,7 +2,7 @@
 title: ArchLinux 常用命令
 urlname: egtn5p
 date: '2019-09-04 00:00:00 +0800'
-updated: 'Mon Mar 30 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Mar 31 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Linux
@@ -141,6 +141,15 @@ sudo pacman -S yay
 #### zsh 手动保存历史记录到本地
 ```bash
 fc -W
+```
+
+
+<a name="Uf6Hh"></a>
+#### 错误及解决方法
+
+- Cannot find the strip binary required for object file stripping
+```bash
+sudo pacman -S base-devel
 ```
 
 
