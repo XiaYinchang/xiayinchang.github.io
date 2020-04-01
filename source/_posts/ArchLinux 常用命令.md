@@ -155,7 +155,14 @@ sudo downgrade wine
 
 <a name="oijw0"></a>
 #### 桌面快捷方式的存储位置
-/usr/share/applications/<br />
+/usr/share/applications/
+
+<a name="L7JpX"></a>
+#### 安装微信和企业微信
+```
+yay -S deepin-wine deepin-wine-wechat deepin-wxwork
+```
+如果企业微信无法启动，则可尝试将 wine 降级至 5.3 版本，降级后仍有错误可参考：[https://forum.winehq.org/viewtopic.php?f=8&t=30964#p117330](https://forum.winehq.org/viewtopic.php?f=8&t=30964#p117330)<br />
 
 <a name="Uf6Hh"></a>
 #### 错误及解决方法
