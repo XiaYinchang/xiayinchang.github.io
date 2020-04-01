@@ -31,7 +31,7 @@
 
 
 <p><a name="C8RKE"></a></p>
-<h4 id="安装-Deepin-桌面"><a href="#安装-Deepin-桌面" class="headerlink" title="安装 Deepin 桌面"></a>安装 Deepin 桌面</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">vim /etc/lightdm/lightdm.conf</span><br><span class="line">greeter-session=lightdm-deepin-greeter</span><br><span class="line">systemctl <span class="built_in">enable</span> lightdm.service</span><br><span class="line">systemctl <span class="built_in">enable</span> NetworkManager</span><br><span class="line">useradd -m -g users -G wheel -s /bin/bash xyc</span><br><span class="line">passwd xyc</span><br></pre></td></tr></table></figure>
+<h4 id="安装-Deepin-桌面sogou-qimpanel"><a href="#安装-Deepin-桌面sogou-qimpanel" class="headerlink" title="安装 Deepin 桌面sogou-qimpanel"></a>安装 Deepin 桌面sogou-qimpanel</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">vim /etc/lightdm/lightdm.conf</span><br><span class="line">greeter-session=lightdm-deepin-greeter</span><br><span class="line">systemctl <span class="built_in">enable</span> lightdm.service</span><br><span class="line">systemctl <span class="built_in">enable</span> NetworkManager</span><br><span class="line">useradd -m -g users -G wheel -s /bin/bash xyc</span><br><span class="line">passwd xyc</span><br></pre></td></tr></table></figure>
 
 
 <p><a name="PIpHY"></a></p>
@@ -70,7 +70,7 @@
 <li><p>搜狗输入法候选栏乱码</p>
 </li>
 </ul>
-<p>参考：<a href="https://www.lulinux.com/archives/5526" target="_blank" rel="external nofollow noopener noreferrer">https://www.lulinux.com/archives/5526</a></p>
+<p>参考：<a href="https://www.lulinux.com/archives/5526" target="_blank" rel="external nofollow noopener noreferrer">https://www.lulinux.com/archives/5526</a> ，修复措施不起作用时可执行 <code>sogou-qimpanel</code> 查看错误输出，安装相应的包解决问题。</p>
 ]]></content>
       <categories>
         <category>Linux</category>
