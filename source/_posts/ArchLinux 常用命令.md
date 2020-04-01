@@ -95,7 +95,7 @@ sudo rm /var/lib/systemd/coredump/*
 
 
 <a name="C8RKE"></a>
-#### 安装 Deepin 桌面
+#### 安装 Deepin 桌面sogou-qimpanel
 ```bash
 pacman -S xorg xorg-server deepin deepin-extra
 vim /etc/lightdm/lightdm.conf
@@ -164,6 +164,10 @@ yay -S deepin-wine deepin-wine-wechat deepin-wxwork
 ```
 如果企业微信无法启动，则可尝试将 wine 降级至 5.3 版本，降级后仍有错误可参考：[https://forum.winehq.org/viewtopic.php?f=8&t=30964#p117330](https://forum.winehq.org/viewtopic.php?f=8&t=30964#p117330)<br />
 
+<a name="Tml80"></a>
+#### 字体配置
+参考：[http://panqiincs.me/2019/06/05/after-installing-manjaro/](http://panqiincs.me/2019/06/05/after-installing-manjaro/)<br />
+
 <a name="Uf6Hh"></a>
 #### 错误及解决方法
 
@@ -174,5 +178,5 @@ sudo pacman -S base-devel
 
 - 搜狗输入法候选栏乱码
 
-参考：[https://www.lulinux.com/archives/5526](https://www.lulinux.com/archives/5526)
+参考：[https://www.lulinux.com/archives/5526](https://www.lulinux.com/archives/5526) ，修复措施不起作用时可执行 `sogou-qimpanel` 查看错误输出，安装相应的包解决问题。
 
