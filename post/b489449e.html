@@ -60,7 +60,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&amp;display=inline&amp;height=230&amp;name=image.png&amp;originHeight=230&amp;originWidth=716&amp;size=13999&amp;status=done&amp;style=none&amp;width=716">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&amp;display=inline&amp;height=25&amp;name=image.png&amp;originHeight=25&amp;originWidth=160&amp;size=2640&amp;status=done&amp;style=none&amp;width=160">
-<meta property="og:updated_time" content="2020-03-30T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-04-02T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&amp;display=inline&amp;height=230&amp;name=image.png&amp;originHeight=230&amp;originWidth=716&amp;size=13999&amp;status=done&amp;style=none&amp;width=716">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-31 00:00:00" itemprop="dateModified" datetime="2020-03-31T00:00:00+08:00">2020-03-31</time>
+                <time title="修改时间：2020-04-03 00:00:00" itemprop="dateModified" datetime="2020-04-03T00:00:00+08:00">2020-04-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -308,8 +308,7 @@
 <p>可以直接在配置文件修改，如下创建网桥 br0：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-br0 </span></span><br><span class="line">TYPE=Bridge</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">NAME=br0</span><br><span class="line">DEVICE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.180.136</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.180.254</span><br><span class="line">DNS1=114.114.114.114</span><br></pre></td></tr></table></figure>
 
-
-<p><br>加入物理网卡 em1 到网桥<br></p>
+<p>加入物理网卡 em1 到网桥</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-em1</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=no</span><br><span class="line">NAME=em1</span><br><span class="line">DEVICE=em1</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BRIDGE=br0</span><br></pre></td></tr></table></figure>
 
 
@@ -317,29 +316,29 @@
 <ul>
 <li>创建 veth 并持久化</li>
 </ul>
-<p>创建两对 veth 并加入到网桥，脚本如下：<br></p>
+<p>创建两对 veth 并加入到网桥，脚本如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /root/config_veth.sh </span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">ip link add dev veth0 <span class="built_in">type</span> veth peer name veth1</span><br><span class="line">ip link add dev veth2 <span class="built_in">type</span> veth peer name veth3</span><br><span class="line">ip link <span class="built_in">set</span> dev veth0 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth1 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth2 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth3 up</span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
 
-<p><br>执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：<br></p>
+<p><br>执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /usr/lib/systemd/system/veth.service </span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Create veths</span><br><span class="line">After=network-pre.target dbus.service</span><br><span class="line">Before=network.target network.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/root/config_veth.sh</span><br><span class="line">Restart=on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
 
-<p><br>创建完上述文件，不要忘了执行 systemctl enable –now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：<br></p>
+<p><br>创建完上述文件，不要忘了执行 systemctl enable –now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth0</span></span><br><span class="line">DEVICE=veth0</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth1</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth1</span></span><br><span class="line">DEVICE=veth1</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">IPADDR=192.168.180.211</span><br><span class="line">MTU=1500</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth2</span></span><br><span class="line">DEVICE=veth2</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth3</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth3</span></span><br><span class="line">DEVICE=veth3</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth2</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
 
 <p><br>现在，就算重启系统虚拟网卡也会被自动重建了。<br></p>
 <ul>
 <li>自动加载内核模块</li>
 </ul>
-<p>以下示例加载 ipvs 内核模块:<br></p>
+<p>以下示例加载 ipvs 内核模块:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/modules-load.d/ipvs.conf</span><br><span class="line">ip_vs</span><br><span class="line">ip_vs_lc</span><br><span class="line">ip_vs_wlc</span><br><span class="line">ip_vs_rr</span><br><span class="line">ip_vs_wrr</span><br><span class="line">ip_vs_lblc</span><br><span class="line">ip_vs_lblcr</span><br><span class="line">ip_vs_dh</span><br><span class="line">ip_vs_sh</span><br><span class="line">ip_vs_nq</span><br><span class="line">ip_vs_sed</span><br><span class="line">ip_vs_ftp</span><br><span class="line">nf_conntrack</span><br></pre></td></tr></table></figure>
 
 
 <ul>
-<li>自动设置内核参数<br>以下示例启用 ipv4 转发功能：<br></li>
+<li>自动设置内核参数<br>以下示例启用 ipv4 转发功能：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/sysctl.conf</span><br><span class="line">net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables=1</span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">vm.swappiness=0</span><br><span class="line">net.core.somaxconn=32768</span><br><span class="line">net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.conf.all.rp_filter=1</span><br><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+
+
+</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/sysctl.conf</span><br><span class="line">net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables=1</span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">vm.swappiness=0</span><br><span class="line">net.core.somaxconn=32768</span><br><span class="line">net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.conf.all.rp_filter=1</span><br><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
-
-
 <ul>
 <li>磁盘性能测试</li>
 </ul>
@@ -378,6 +377,12 @@
 </ul>
 <ul>
 <li>查看包安装信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep nginx</span><br><span class="line">rpm -qf /usr/sbin/nginx</span><br><span class="line">rpm -ql nginx</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>安装指定版本<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum --showduplicate list kubeadm</span><br><span class="line">yum install kubeadm-1.17.4-0</span><br></pre></td></tr></table></figure>
 
 
 </li>
