@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Tue Mar 31 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Apr 03 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -53,9 +53,7 @@ GATEWAY=192.168.180.254
 DNS1=114.114.114.114
 ```
 
-
-<br />加入物理网卡 em1 到网桥<br />
-
+加入物理网卡 em1 到网桥
 ```bash
 # cat /etc/sysconfig/network-scripts/ifcfg-em1
 TYPE=Ethernet
@@ -71,8 +69,7 @@ BRIDGE=br0
 
 - 创建 veth 并持久化
 
-创建两对 veth 并加入到网桥，脚本如下：<br />
-
+创建两对 veth 并加入到网桥，脚本如下：
 ```bash
 # cat /root/config_veth.sh 
 #!/bin/bash
@@ -87,8 +84,7 @@ ip link set dev veth3 up
 exit 0
 ```
 
-<br />执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：<br />
-
+<br />执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：
 ```bash
 # cat /usr/lib/systemd/system/veth.service 
 [Unit]
@@ -104,8 +100,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-<br />创建完上述文件，不要忘了执行 systemctl enable --now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：<br />
-
+<br />创建完上述文件，不要忘了执行 systemctl enable --now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：
 ```bash
 # cat /etc/sysconfig/network-scripts/ifcfg-veth0
 DEVICE=veth0
@@ -142,8 +137,7 @@ ONBOOT=yes
 
 - 自动加载内核模块
 
-以下示例加载 ipvs 内核模块:<br />
-
+以下示例加载 ipvs 内核模块:
 ```bash
 $ cat /etc/modules-load.d/ipvs.conf
 ip_vs
@@ -163,8 +157,7 @@ nf_conntrack
 
 
 - 自动设置内核参数
-以下示例启用 ipv4 转发功能：<br />
-
+以下示例启用 ipv4 转发功能：
 ```bash
 $ cat /etc/sysctl.conf
 net.bridge.bridge-nf-call-iptables=1
@@ -257,6 +250,13 @@ yum downgrade httpd-2.2.3-22.el5
 rpm -qa | grep nginx
 rpm -qf /usr/sbin/nginx
 rpm -ql nginx
+```
+
+
+- 安装指定版本
+```
+yum --showduplicate list kubeadm
+yum install kubeadm-1.17.4-0
 ```
 
 
