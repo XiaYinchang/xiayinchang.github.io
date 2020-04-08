@@ -508,6 +508,10 @@
 
 </li>
 </ul>
+<p><a name="s8j4z"></a></p>
+<h4 id="base64-编码"><a href="#base64-编码" class="headerlink" title="base64 编码"></a>base64 编码</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo -n &apos;test&apos; | base64</span><br></pre></td></tr></table></figure>
+
+
 <p><a name="tiQ7D"></a></p>
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
