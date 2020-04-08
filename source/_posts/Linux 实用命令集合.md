@@ -827,6 +827,13 @@ nmcli con up eth1
 ```
 
 
+<a name="s8j4z"></a>
+#### base64 编码
+```
+echo -n 'test' | base64
+```
+
+
 <a name="tiQ7D"></a>
 #### 实用工具
 
