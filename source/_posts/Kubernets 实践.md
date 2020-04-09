@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Tue Mar 10 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Apr 09 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -15,8 +15,10 @@ abbrlink: 9caa466a
 ---
 
 
+
 <a name="BdT88"></a>
 #### taint
+
 
 ```bash
 # 去除所有节点 mater taint 使之可调度
@@ -25,14 +27,17 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 kubectl taint nodes node1 node-role.kubernetes.io=master:NoSchedule
 ```
 
+
 <a name="O6MDK"></a>
 #### toleration
+
 
 ```bash
 # 容忍所有
 tolerations:
 - operator: "Exists"
 ```
+
 
 <a name="QJzQf"></a>
 #### etcd
@@ -49,10 +54,12 @@ etcdctl get "" --prefix=true
 etcdctl get "" --from-key
 ```
 
+
 - 备份
 ```
 etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt --key=/etc/kubernetes/pki/etcd/healthcheck-client.key snapshot save etcd-snapshot.db
 ```
+
 
 - 磁盘读写速度过慢造成的故障
 
@@ -64,10 +71,12 @@ etcdctl member list
 etcdctl member remove member_id
 ```
 
+
 - check cluster health
 ```bash
 etcdctl endpoint health
 ```
+
 
 <a name="xcw1D"></a>
 #### Kubernetes-go-client
@@ -100,6 +109,7 @@ _, err = common.AppsClient.Deployments(config.UMStorInfraNamespace).Update(&k8s_
 })
 ```
 
+
 <a name="kPMVq"></a>
 #### 证书
 
@@ -115,6 +125,7 @@ HOST=kubernetes-dashboard.test
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ${KEY_FILE} -out ${CERT_FILE} -subj "/CN=${HOST}/O=${HOST}"
 kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
 ```
+
 
   - 定制
 
@@ -150,18 +161,25 @@ openssl x509 -req -in ingress.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -
 kubectl create secret tls gitlab-ce-gitlab-tls --key ingress-key.pem --cert ingress.pem -n gitlab-ce
 ```
 
+
 - 查看证书内容
+
+
 
 ```
 openssl x509 -in ca.crt -text -noout
 openssl s_client -showcerts -connect www.baidu.com:443
 ```
 
+
 - 检查证书过期时间
+
+
 
 ```
 kubeadm alpha certs check-expiration
 ```
+
 
 <a name="xUZC5"></a>
 #### Kubeadm
@@ -182,6 +200,7 @@ ntpdate cn.pool.ntp.org
 // 如果找不到 ntp 命令，可以使用如下的命令进行安装
 yum instal ntp
 ```
+
 
 - kubeadm 部署时 config 文件
 
@@ -245,6 +264,7 @@ failSwapOn: false
 kind: KubeletConfiguration
 ```
 
+
 - 内核配置参考
 ```bash
 [xyc-pc ~]# cat /etc/modules-load.d/ipvs.conf 
@@ -281,6 +301,7 @@ net.core.default_qdisc=fq_codel
 sysctl -p /etc/sysctl.conf
 ```
 
+
 <a name="UYIkL"></a>
 #### Helm
 
@@ -295,6 +316,7 @@ helm template --output-dir './yamls' './redis' #redis dir (local helm chart), ex
 ```
 helm fetch ucloud/uk8s-etcd-backup
 ```
+
 
 <a name="b94zX"></a>
 #### 添加自定义 DNS 记录
@@ -355,6 +377,7 @@ subsets:
         protocol: TCP
 ```
 
+
 <a name="9BV58"></a>
 #### 向容器添加 hosts 记录
 ```bash
@@ -381,6 +404,7 @@ spec:
     args:
     - "/etc/hosts"
 ```
+
 
 <a name="O0gNe"></a>
 #### ingress-nginx
@@ -436,9 +460,10 @@ nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 ```
 
+
 <a name="pCtvi"></a>
 #### CronJob
-建议设置 startingDeadlineSeconds 值以防止从最后一次调度到当前时间错过的调度次数超过 100 导致不再进行调度（使用 etcd 备份数据恢复集群时可能出现这种情况），参考：[https://www.jianshu.com/p/3e3b18414e45](https://www.jianshu.com/p/3e3b18414e45)。
+建议设置 startingDeadlineSeconds 值以防止从最后一次调度到当前时间错过的调度次数超过 100 导致不再进行调度（使用 etcd 备份数据恢复集群时可能出现这种情况），参考：[https://www.jianshu.com/p/3e3b18414e45](https://www.jianshu.com/p/3e3b18414e45)。<br />
 
 <a name="d24JT"></a>
 #### field-selector 和 labels-selector
@@ -454,6 +479,7 @@ kubectl get pods -l 'environment in (production),tier in (frontend)'
 kubectl get pods -l 'environment in (production, qa)'
 kubectl get pods -l 'environment,environment notin (frontend)'
 ```
+
 
 <a name="sM7pt"></a>
 #### 使用 subPath 挂载 Volume
@@ -496,6 +522,7 @@ spec:
             path: binlog_format.cnf
 ```
 
+
 <a name="rN7rK"></a>
 #### 创建并使用 imagePullSecrets
 ```
@@ -514,15 +541,20 @@ secrets:
 - name: default-token-l9xgs
 ```
 
+
 <a name="Fq6Wa"></a>
 #### sealos 部署 Kubernetes
 开发测试可以使用 [sealos](https://github.com/fanux/sealos) 这个工具，通过离线安装包部署 Kubernetes，省心实用，但是作者在改过的 Kubeadm 代码里夹杂了一些私货令人不喜。
 
 - 离线安装包下载链接
 
+
+
+
 | 1.17.0 | [https://sealyun.oss-cn-beijing.aliyuncs.com/413bd3624b2fb9e466601594b4f72072-1.17.0/kube1.17.0.tar.gz](https://sealyun.oss-cn-beijing.aliyuncs.com/413bd3624b2fb9e466601594b4f72072-1.17.0/kube1.17.0.tar.gz) |
 | --- | --- |
 | 1.17.1 | [https://sealyun.oss-cn-beijing.aliyuncs.com/9347ea4e446ce514dbba6f686034a363-1.17.1/kube1.17.1.tar.gz](https://sealyun.oss-cn-beijing.aliyuncs.com/9347ea4e446ce514dbba6f686034a363-1.17.1/kube1.17.1.tar.gz) |
+
 
 
 - 添加 master 节点
@@ -547,6 +579,7 @@ kubeadm join apiserver.cluster.local:6443 --control-plane --certificate-key $CER
 // 加入成功后替换解析地址为本机 IP
 ```
 
+
 <a name="XIbTO"></a>
 #### 优雅地删除节点
  删除 master 节点时注意可能需要手动修改 kubeadm-config 中的配置，同时手动修改 /etc/kubernetes/manifests/etcd.yaml 文件移除相关 IP。
@@ -557,6 +590,7 @@ kubectl drain <node-name> --ignore-daemonsets --delete-local-data
 kubectl delete node <node-name>
 ```
 
+
 <a name="z42bx"></a>
 #### 重启容器而非删除
 删除容器后会重新进行调度，如果希望在同一个宿主机上重新拉起容器可以执行如下命令：
@@ -564,7 +598,53 @@ kubectl delete node <node-name>
 # 在容器中执行如下命令，会使容器重新创建，但不会重新调度
 kill 1
 ```
-但需要注意的是，上述命令会造成容器重建，所以在容器中进行的非持久修改均会丢失，若想保留临时修改，可先找到容器所在宿主机，然后登录到宿主机上执行 `docker restart` 重启会保留临时修改，往往用于调试场景。
+但需要注意的是，上述命令会造成容器重建，所以在容器中进行的非持久修改均会丢失，若想保留临时修改，可先找到容器所在宿主机，然后登录到宿主机上执行 `docker restart` 重启会保留临时修改，往往用于调试场景。<br />
+
+<a name="05Wmk"></a>
+#### ServiceAccountTokenVolumeProjection 生成有时效的 Token
+参考：[https://developer.aliyun.com/article/742572](https://developer.aliyun.com/article/742572)，[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection)<br />kube-apiserver<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#align=left&display=inline&height=824&name=image.png&originHeight=824&originWidth=983&size=117967&status=done&style=none&width=983)<br />
+
+```
+--service-account-issuer=kubernetes.default.svc \
+--service-account-signing-key-file=/etc/kubernetes/ssl/ca-key.pem \
+--api-audiences=kubernetes.default.svc \
+--feature-gates=BoundServiceAccountTokenVolume=true \
+```
+
+<br />kube-controller-manager<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#align=left&display=inline&height=363&name=image.png&originHeight=363&originWidth=924&size=65129&status=done&style=none&width=924)<br />
+
+```
+--controllers=*,bootstrapsigner,tokencleaner,root-ca-cert-publisher \
+--feature-gates=BoundServiceAccountTokenVolume=true \
+```
+
+<br />示例
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - image: uhub.service.ucloud.cn/wxyz/etcd:3.4.3
+    command: ["ping"]
+    args:
+    - 10.13.97.88
+    name: etcd
+    volumeMounts:
+    - mountPath: /var/run/secrets/tokens
+      name: vault-token
+  serviceAccountName: build-robot
+  volumes:
+  - name: vault-token
+    projected:
+      sources:
+      - serviceAccountToken:
+          path: vault-token
+          expirationSeconds: 600
+          audience: vault
+```
+
 
 <a name="iiFsk"></a>
 #### 十二因素应用
@@ -587,26 +667,36 @@ kill 1
 | Admin processes<br />管理进程 | Run admin/management tasks as one-off processes<br />后台管理任务当作一次性进程运行 |
 
 
+
 <a name="COum0"></a>
 #### 常用操作
 
 - helm init 使用 azure 镜像
+
+
 
 ```
 helm init --stable-repo-url  http://mirror.azure.cn/kubernetes/charts/
 helm repo add incubator http://mirror.azure.cn/kubernetes/charts-incubator/
 ```
 
+
 - awk 打印第一列
+
+
 
 ```
 kubectl get pods -n rook-ceph -owide |grep -i Evicted | awk '{print $1}'| xargs kubectl delete pod -n rook-ceph
 ```
 
+
 - cut 获取第一列
+
+
 
 ```
 kubectl get pods -n rook-ceph | grep -i Evicted | sed 's/\s\s*/ /g' |cut -d" " -f1 | xargs kubectl delete pod -n rook-ceph --force --grace-period=0
 ```
+
 
 
