@@ -602,7 +602,7 @@ kill 1
 
 <a name="05Wmk"></a>
 #### ServiceAccountTokenVolumeProjection 生成有时效的 Token
-参考：[https://developer.aliyun.com/article/742572](https://developer.aliyun.com/article/742572)，[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection)<br />kube-apiserver<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#align=left&display=inline&height=824&name=image.png&originHeight=824&originWidth=983&size=117967&status=done&style=none&width=983)<br />
+参考：[https://developer.aliyun.com/article/742572](https://developer.aliyun.com/article/742572)，[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection),[https://www.alibabacloud.com/help/zh/doc-detail/160384.htm](https://www.alibabacloud.com/help/zh/doc-detail/160384.htm)<br />kube-apiserver<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#align=left&display=inline&height=824&name=image.png&originHeight=824&originWidth=983&size=117967&status=done&style=none&width=983)<br />
 
 ```
 --service-account-issuer=kubernetes.default.svc \
