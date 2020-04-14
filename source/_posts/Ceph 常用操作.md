@@ -2,7 +2,7 @@
 title: Ceph 常用操作
 urlname: asu9v3
 date: '2019-09-03 00:00:00 +0800'
-updated: 'Sat Apr 04 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Apr 14 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Ceph
@@ -472,5 +472,14 @@ ceph-volume inventory /dev/sda
 
 <a name="Jdhp4"></a>
 #### ceph dashboard 303 状态码
-需要代理网关的后端服务设置为处于 active 状态的 mgr 节点，参考：[https://docs.ceph.com/docs/master/mgr/dashboard/#proxy-configuration](https://docs.ceph.com/docs/master/mgr/dashboard/#proxy-configuration)
+需要代理网关的后端服务设置为处于 active 状态的 mgr 节点，参考：[https://docs.ceph.com/docs/master/mgr/dashboard/#proxy-configuration](https://docs.ceph.com/docs/master/mgr/dashboard/#proxy-configuration)<br />
+
+<a name="I8hPM"></a>
+#### pools have many more objects per pg than average
+反应的问题是各个存储池 pg 数据量不均衡，可参考：[https://www.dazhuanlan.com/2019/08/23/5d5f27fe6de04/](https://www.dazhuanlan.com/2019/08/23/5d5f27fe6de04/)，[https://blog.csdn.net/ygtlovezf/article/details/60778091](https://blog.csdn.net/ygtlovezf/article/details/60778091)<br />临时解决，关闭不均衡告警，参考：[https://github.com/rook/rook/issues/4739](https://github.com/rook/rook/issues/4739)
+```yaml
+ceph config set mgr mon_pg_warn_max_object_skew 0
+```
+
+
 
