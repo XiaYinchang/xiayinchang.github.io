@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Tue Apr 14 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Wed Apr 15 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -843,6 +843,43 @@ wget -P /tmp http://cluster-api.cn-bj.ufileos.com/cluster-api-uk8s-init.tar.gz
 tar -zxvf /tmp/cluster-api-uk8s-init.tar.gz -C /usr/local/bin
 ```
 <a name="Eo8vV"></a>
+#### 判断发行版
+通过 `/etc/os-release`
+```yaml
+ssh $ip "sed -n 's/^ID= *//p' /etc/os-release | xargs"
+if [ "$result" = "centos" ]; then
+  echo "=========current linux distribution is centos========"
+  # do something
+elif [ "$result" = "debian" ]; then
+  echo "=========current linux distribution is debian========"
+  ssh $ip "cat /etc/debian_version"
+  if [ "$result" = "8.2" ]; then
+    # do something
+  fi
+else
+  echo "=========current linux distribution not support========"
+  exit 1
+fi
+```
+通过文件，参考：[https://stackoverflow.com/a/3792848](https://stackoverflow.com/a/3792848)
+```yaml
+if [ -f /etc/centos-release ]; then
+  # do something
+elif [ -f /etc/debian_version ]; then
+  VERSION=$(cat /etc/debian_version)
+  if [ "${VERSION}" = "8.2" ]; then
+    echo "debian 8.2"
+  fi
+fi
+```
+使用 lsb_release
+```yaml
+# centos 需要安装支持软件
+yum install redhat-lsb-core
+# debian 可以直接使用
+lsb_release -is
+```
+<a name="whPpY"></a>
 #### 实用工具
 
 - 一个在线渲染代码为图片的网站：[https://carbon.now.sh/](https://carbon.now.sh/) ， 可以通过设置修改边框等信息。
