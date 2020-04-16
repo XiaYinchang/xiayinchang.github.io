@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Thu Apr 09 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Wed Apr 15 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -602,7 +602,7 @@ kill 1
 
 <a name="05Wmk"></a>
 #### ServiceAccountTokenVolumeProjection 生成有时效的 Token
-参考：[https://developer.aliyun.com/article/742572](https://developer.aliyun.com/article/742572)，[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection),[https://www.alibabacloud.com/help/zh/doc-detail/160384.htm](https://www.alibabacloud.com/help/zh/doc-detail/160384.htm)<br />kube-apiserver<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#align=left&display=inline&height=824&name=image.png&originHeight=824&originWidth=983&size=117967&status=done&style=none&width=983)<br />
+参考：[https://developer.aliyun.com/article/742572](https://developer.aliyun.com/article/742572)，[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection),[https://www.alibabacloud.com/help/zh/doc-detail/160384.htm](https://www.alibabacloud.com/help/zh/doc-detail/160384.htm)<br />kube-apiserver<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#align=left&display=inline&height=824&margin=%5Bobject%20Object%5D&name=image.png&originHeight=824&originWidth=983&size=117967&status=done&style=none&width=983)<br />
 
 ```
 --service-account-issuer=kubernetes.default.svc \
@@ -611,7 +611,7 @@ kill 1
 --feature-gates=BoundServiceAccountTokenVolume=true \
 ```
 
-<br />kube-controller-manager<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#align=left&display=inline&height=363&name=image.png&originHeight=363&originWidth=924&size=65129&status=done&style=none&width=924)<br />
+<br />kube-controller-manager<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#align=left&display=inline&height=363&margin=%5Bobject%20Object%5D&name=image.png&originHeight=363&originWidth=924&size=65129&status=done&style=none&width=924)<br />
 
 ```
 --controllers=*,bootstrapsigner,tokencleaner,root-ca-cert-publisher \
@@ -643,6 +643,12 @@ spec:
           path: vault-token
           expirationSeconds: 600
           audience: vault
+```
+<a name="lFBTT"></a>
+#### kube-controller-manager 10252 port in use 
+在一定的概率下启动 kube-controller 会出现所需端口已被 kube-apiserver 占用的情况，这是因为 kube-apiserver 向内核申请一个随机端口用于和 etcd 通信，而恰好该端口是稍后 kube-controller-manger 所需的，由于多次出现这种巧合情况，所以对随机算法仍存疑？临时解决方法是调整随机端口范围，避开 10252 端口：
+```yaml
+net.ipv4.ip_local_port_range="12000 65535"
 ```
 
 
