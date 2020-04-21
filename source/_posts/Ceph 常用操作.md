@@ -2,7 +2,7 @@
 title: Ceph 常用操作
 urlname: asu9v3
 date: '2019-09-03 00:00:00 +0800'
-updated: 'Tue Apr 14 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Apr 21 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Ceph
@@ -262,7 +262,7 @@ ansible-playbook -i hosts infrastructure-playbooks/purge-cluster.yml
 ```
 cd /opt/ceph-ansible
 cp infrastructure-playbooks/add-osd.yml ./
-// 修改 group_vars/all.yml 磁盘信息
+// 修改 group_vars/osd.yml 磁盘信息
 ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml
 // 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样
 // 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决

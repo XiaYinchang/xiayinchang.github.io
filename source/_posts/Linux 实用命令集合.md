@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Wed Apr 15 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Apr 21 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -843,7 +843,7 @@ wget -P /tmp http://cluster-api.cn-bj.ufileos.com/cluster-api-uk8s-init.tar.gz
 tar -zxvf /tmp/cluster-api-uk8s-init.tar.gz -C /usr/local/bin
 ```
 <a name="Eo8vV"></a>
-#### 判断发行版
+#### 判断 Linux 发行版
 通过 `/etc/os-release`
 ```yaml
 ssh $ip "sed -n 's/^ID= *//p' /etc/os-release | xargs"
@@ -879,7 +879,15 @@ yum install redhat-lsb-core
 # debian 可以直接使用
 lsb_release -is
 ```
-<a name="whPpY"></a>
+
+
+<a name="MRxpZ"></a>
+#### 查看 NVIDIA GPU 工作情况
+```
+lspci | grep -i nvidia
+nvidia-smi
+```
+<a name="wTTGW"></a>
 #### 实用工具
 
 - 一个在线渲染代码为图片的网站：[https://carbon.now.sh/](https://carbon.now.sh/) ， 可以通过设置修改边框等信息。
