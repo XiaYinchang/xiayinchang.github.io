@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录使用 Ceph 过程中常用的命令。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-13T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-04-20T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/e8bac896.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 00:00:00" itemprop="dateModified" datetime="2020-04-14T00:00:00+08:00">2020-04-14</time>
+                <time title="修改时间：2020-04-21 00:00:00" itemprop="dateModified" datetime="2020-04-21T00:00:00+08:00">2020-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -342,7 +342,7 @@
 
 
 <p><a name="BMg3M"></a></p>
-<h4 id="ceph-ansible-添加-osd"><a href="#ceph-ansible-添加-osd" class="headerlink" title="ceph-ansible 添加 osd"></a>ceph-ansible 添加 osd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/ceph-ansible</span><br><span class="line">cp infrastructure-playbooks/add-osd.yml ./</span><br><span class="line">// 修改 group_vars/all.yml 磁盘信息</span><br><span class="line">ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml</span><br><span class="line">// 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样</span><br><span class="line">// 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决</span><br><span class="line">ceph osd unset noup</span><br></pre></td></tr></table></figure>
+<h4 id="ceph-ansible-添加-osd"><a href="#ceph-ansible-添加-osd" class="headerlink" title="ceph-ansible 添加 osd"></a>ceph-ansible 添加 osd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/ceph-ansible</span><br><span class="line">cp infrastructure-playbooks/add-osd.yml ./</span><br><span class="line">// 修改 group_vars/osd.yml 磁盘信息</span><br><span class="line">ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml</span><br><span class="line">// 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样</span><br><span class="line">// 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决</span><br><span class="line">ceph osd unset noup</span><br></pre></td></tr></table></figure>
 
 
 <p><a name="knNuf"></a></p>
@@ -442,7 +442,7 @@
       <div class="popular-posts-title"><a href="/post/9caa466a.html" rel="bookmark">Kubernetes 实践</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/b489449e.html" rel="bookmark">Linux 实用命令集合</a></div>
+      <div class="popular-posts-title"><a href="/post/c957e495.html" rel="bookmark">Linux 文件系统基础知识</a></div>
     </li>
   </ul>
 
