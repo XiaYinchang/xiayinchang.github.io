@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="Docker 相关的基础知识与常用操作记录。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-03-26T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-04-21T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/f8a08eb2.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-27 00:00:00" itemprop="dateModified" datetime="2020-03-27T00:00:00+08:00">2020-03-27</time>
+                <time title="修改时间：2020-04-22 00:00:00" itemprop="dateModified" datetime="2020-04-22T00:00:00+08:00">2020-04-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -314,7 +314,7 @@
 </tr>
 </tbody></table>
 <p><a name="O158z"></a></p>
-<h4 id="使用镜像源下载-docker-image"><a href="#使用镜像源下载-docker-image" class="headerlink" title="使用镜像源下载 docker image"></a>使用镜像源下载 docker image</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker pull golang:1.13.0 =&gt; docker pull dockerhub.azk8s.cn/library/golang:1.13.0</span><br><span class="line">docker pull rook/ceph:v1.0.6 =&gt; docker pull dockerhub.azk8s.cn/rook/ceph:v1.0.6</span><br><span class="line">docker pull gcr.io/kubernetes-helm/tiller:v2.9.1 =&gt; docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.9.1</span><br><span class="line">docker pull k8s.gcr.io/kube-apiserver:v1.14.1 =&gt; docker pull gcr.azk8s.cn/google-containers/kube-apiserver:v1.14.1</span><br><span class="line">docker pull quay.io/k8scsi/csi-node-driver-registrar:v1.1.0 =&gt; docker pull quay.azk8s.cn/k8scsi/csi-node-driver-registrar:v1.1.0</span><br></pre></td></tr></table></figure>
+<h4 id="使用镜像源下载-docker-image"><a href="#使用镜像源下载-docker-image" class="headerlink" title="使用镜像源下载 docker image"></a>使用镜像源下载 docker image</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker pull golang:1.13.0 =&gt; docker pull docker.mirrors.ustc.edu.cn/library/golang:1.13.0</span><br><span class="line">docker pull rook/ceph:v1.0.6 =&gt; docker pull dockerhub.azk8s.cn/rook/ceph:v1.0.6</span><br><span class="line">docker pull gcr.io/kubernetes-helm/tiller:v2.9.1 =&gt; docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.9.1</span><br><span class="line">docker pull k8s.gcr.io/kube-apiserver:v1.14.1 =&gt; docker pull gcr.azk8s.cn/google-containers/kube-apiserver:v1.14.1</span><br><span class="line">docker pull quay.io/k8scsi/csi-node-driver-registrar:v1.1.0 =&gt; docker pull quay-mirror.qiniu.com/k8scsi/csi-node-driver-registrar:v1.1.0</span><br></pre></td></tr></table></figure>
 
 
 <p><a name="hY2FJ"></a></p>
