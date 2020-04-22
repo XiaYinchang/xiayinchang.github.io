@@ -883,11 +883,14 @@ lsb_release -is
 
 <a name="MRxpZ"></a>
 #### 查看 NVIDIA GPU 工作情况
+下载 P40 驱动：[http://us.download.nvidia.com/tesla/440.64.00/NVIDIA-Linux-x86_64-440.64.00.run](http://us.download.nvidia.com/tesla/440.64.00/NVIDIA-Linux-x86_64-440.64.00.run)
 ```
 lspci | grep -i nvidia
 nvidia-smi
 ```
-<a name="wTTGW"></a>
+
+
+<a name="EsaA7"></a>
 #### 实用工具
 
 - 一个在线渲染代码为图片的网站：[https://carbon.now.sh/](https://carbon.now.sh/) ， 可以通过设置修改边框等信息。
@@ -896,4 +899,5 @@ nvidia-smi
 - Github dispatch 使用示例：[https://alejandroandr.eu/posts/manual-trigger-github-workflows/](https://alejandroandr.eu/posts/manual-trigger-github-workflows/)
 - deepin-wine 安装微软雅黑字体 : [https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722](https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722)
 - 配置 Linux 为一个简单的路由器：[https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/](https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/)
+- 安装 cuda 参考：[https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux](https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux)
 
