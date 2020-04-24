@@ -105,29 +105,6 @@
   </entry>
   
   <entry>
-    <title>IO 同步、异步及阻塞、非阻塞</title>
-    <link href="https://www.xiayinchang.top/post/d830a7d8.html"/>
-    <id>https://www.xiayinchang.top/post/d830a7d8.html</id>
-    <published>2019-12-07T16:00:00.000Z</published>
-    <updated>2019-12-07T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      理清 Linux 网络 IO 的各种概念。
-    
-    </summary>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
-    
-      <category term="IO" scheme="https://www.xiayinchang.top/tags/IO/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Go 实现长轮询：一个服务端超时设置的故事</title>
     <link href="https://www.xiayinchang.top/post/46e95013.html"/>
     <id>https://www.xiayinchang.top/post/46e95013.html</id>
@@ -147,6 +124,29 @@
       <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
     
       <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IO 同步、异步及阻塞、非阻塞</title>
+    <link href="https://www.xiayinchang.top/post/d830a7d8.html"/>
+    <id>https://www.xiayinchang.top/post/d830a7d8.html</id>
+    <published>2019-12-07T16:00:00.000Z</published>
+    <updated>2019-12-07T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      理清 Linux 网络 IO 的各种概念。
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+      <category term="IO" scheme="https://www.xiayinchang.top/tags/IO/"/>
     
   </entry>
   
