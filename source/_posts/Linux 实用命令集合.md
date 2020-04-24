@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Tue Apr 21 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Apr 24 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -296,8 +296,11 @@ sudo apt-get autoremove --purge
 
 - 替换空格为换行
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&margin=%5Bobject%20Object%5D&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&style=none&width=160)<br />
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&margin=%5Bobject%20Object%5D&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&style=none&width=160)
 
+- 替换 tab 为空格
+
+`:%s/\t/  /g`
 <a name="FfBcn"></a>
 #### Git
 
