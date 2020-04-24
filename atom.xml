@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2020-04-20T16:00:00.000Z</updated>
+  <updated>2020-04-23T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://www.xiayinchang.top/post/5fddf106.html"/>
     <id>https://www.xiayinchang.top/post/5fddf106.html</id>
     <published>2020-04-20T16:00:00.000Z</published>
-    <updated>2020-04-20T16:00:00.000Z</updated>
+    <updated>2020-04-23T16:00:00.000Z</updated>
     
     <summary type="html">
     
@@ -105,29 +105,6 @@
   </entry>
   
   <entry>
-    <title>Go 实现长轮询：一个服务端超时设置的故事</title>
-    <link href="https://www.xiayinchang.top/post/46e95013.html"/>
-    <id>https://www.xiayinchang.top/post/46e95013.html</id>
-    <published>2019-12-07T16:00:00.000Z</published>
-    <updated>2019-12-07T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP/1.1 API 添加实时获取数据的特性，使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时关于服务端超时时间设置的讨论。
-    
-    </summary>
-    
-    
-      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
-    
-    
-      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
     <title>IO 同步、异步及阻塞、非阻塞</title>
     <link href="https://www.xiayinchang.top/post/d830a7d8.html"/>
     <id>https://www.xiayinchang.top/post/d830a7d8.html</id>
@@ -147,6 +124,29 @@
       <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
     
       <category term="IO" scheme="https://www.xiayinchang.top/tags/IO/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Go 实现长轮询：一个服务端超时设置的故事</title>
+    <link href="https://www.xiayinchang.top/post/46e95013.html"/>
+    <id>https://www.xiayinchang.top/post/46e95013.html</id>
+    <published>2019-12-07T16:00:00.000Z</published>
+    <updated>2019-12-07T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP/1.1 API 添加实时获取数据的特性，使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时关于服务端超时时间设置的讨论。
+    
+    </summary>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
     
   </entry>
   
