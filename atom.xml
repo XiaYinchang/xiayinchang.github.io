@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2020-04-21T02:31:12.000Z</updated>
+  <updated>2020-04-20T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -20,16 +20,22 @@
     <title>Git 常用命令</title>
     <link href="https://www.xiayinchang.top/post/5fddf106.html"/>
     <id>https://www.xiayinchang.top/post/5fddf106.html</id>
-    <published>2020-04-21T02:31:12.000Z</published>
-    <updated>2020-04-21T02:31:12.000Z</updated>
+    <published>2020-04-20T16:00:00.000Z</published>
+    <updated>2020-04-20T16:00:00.000Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;date: 2020-04-21&lt;br&gt;updated: 2020-04-21&lt;br&gt;layout: post&lt;br&gt;categories: 开发工具&lt;br&gt;tags: [Linux, 开发工具]&lt;br&gt;keywords: Linux, Git&lt;br&gt;description:  Git 常用命令记录。&lt;/p&gt;&lt;hr&gt;&lt;p&gt;&lt;a name=&quot;CYJKi&quot;&gt;&lt;/a&gt;&lt;/p&gt;&lt;h4 id=&quot;修改历史-commit-信息&quot;&gt;&lt;a href=&quot;#修改历史-commit-信息&quot; class=&quot;headerlink&quot; title=&quot;修改历史 commit 信息&quot;&gt;&lt;/a&gt;修改历史 commit 信息&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;git rebase -i HEAD~2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;pick -&amp;gt; edit&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;git commit --amend&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;git rebase --continue&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      Git 常用命令记录。
     
     </summary>
     
     
+      <category term="开发工具" scheme="https://www.xiayinchang.top/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
