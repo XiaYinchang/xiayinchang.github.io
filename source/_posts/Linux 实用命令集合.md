@@ -884,6 +884,13 @@ lsb_release -is
 ```
 
 
+<a name="5xOak"></a>
+#### sshpass 跳过 hostkey 检查
+```bash
+sshpass -p password scp -o StrictHostKeyChecking=no -r test/ root@10.8.53.47:/tmp/test
+```
+
+
 <a name="MRxpZ"></a>
 #### 查看 NVIDIA GPU 工作情况
 下载 P40 驱动：[http://us.download.nvidia.com/tesla/440.64.00/NVIDIA-Linux-x86_64-440.64.00.run](http://us.download.nvidia.com/tesla/440.64.00/NVIDIA-Linux-x86_64-440.64.00.run)
