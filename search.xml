@@ -463,6 +463,9 @@
 <h4 id="查看-NVIDIA-GPU-工作情况"><a href="#查看-NVIDIA-GPU-工作情况" class="headerlink" title="查看 NVIDIA GPU 工作情况"></a>查看 NVIDIA GPU 工作情况</h4><p>下载 P40 驱动：<a href="http://us.download.nvidia.com/tesla/440.64.00/NVIDIA-Linux-x86_64-440.64.00.run" target="_blank" rel="external nofollow noopener noreferrer">http://us.download.nvidia.com/tesla/440.64.00/NVIDIA-Linux-x86_64-440.64.00.run</a></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">lspci | grep -i nvidia</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
 
+<p><br>jq</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 统计 curl 结果中 Info 数组的长度</span><br><span class="line">curl <span class="string">'http://…'</span> | jq <span class="string">'.Infos'</span> | jq length</span><br></pre></td></tr></table></figure>
+
 
 <p><a name="EsaA7"></a></p>
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
