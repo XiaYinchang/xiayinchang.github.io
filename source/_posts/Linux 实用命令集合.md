@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Fri Apr 24 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Sun Apr 26 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -897,6 +897,12 @@ sshpass -p password scp -o StrictHostKeyChecking=no -r test/ root@10.8.53.47:/tm
 ```
 lspci | grep -i nvidia
 nvidia-smi
+```
+
+<br />jq
+```bash
+// 统计 curl 结果中 Info 数组的长度
+curl 'http://…' | jq '.Infos' | jq length
 ```
 
 
