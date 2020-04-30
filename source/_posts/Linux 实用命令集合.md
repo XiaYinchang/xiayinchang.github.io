@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Sun Apr 26 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Apr 30 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -899,10 +899,20 @@ lspci | grep -i nvidia
 nvidia-smi
 ```
 
-<br />jq
+
+<a name="4bqUv"></a>
+#### jq
 ```bash
 // 统计 curl 结果中 Info 数组的长度
 curl 'http://…' | jq '.Infos' | jq length
+```
+rar 解压
+```bash
+sudo apt install unrar
+sudo dnf install unrar
+yay unrar
+unrar e tecmint.rar
+unrar e tecmint.rar /home/
 ```
 
 
