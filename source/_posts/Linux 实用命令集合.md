@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Thu Apr 30 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Sat May 02 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -926,4 +926,5 @@ unrar e tecmint.rar /home/
 - deepin-wine 安装微软雅黑字体 : [https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722](https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722)
 - 配置 Linux 为一个简单的路由器：[https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/](https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/)
 - 安装 cuda 参考：[https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux](https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux)
+- 下载 vscode 使用国内镜像: [https://zhuanlan.zhihu.com/p/112215618](https://zhuanlan.zhihu.com/p/112215618)
 
