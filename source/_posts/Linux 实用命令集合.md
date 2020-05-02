@@ -906,7 +906,8 @@ nvidia-smi
 // 统计 curl 结果中 Info 数组的长度
 curl 'http://…' | jq '.Infos' | jq length
 ```
-rar 解压
+<a name="FXG9d"></a>
+#### rar 解压
 ```bash
 sudo apt install unrar
 sudo dnf install unrar
@@ -914,7 +915,10 @@ yay unrar
 unrar e tecmint.rar
 unrar e tecmint.rar /home/
 ```
-
+<a name="4Os5J"></a>
+#### 部署 STUN 服务
+参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
+<br />
 
 <a name="EsaA7"></a>
 #### 实用工具
