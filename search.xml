@@ -400,7 +400,7 @@
 <p><a name="FXG9d"></a></p>
 <h4 id="rar-解压"><a href="#rar-解压" class="headerlink" title="rar 解压"></a>rar 解压</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install unrar</span><br><span class="line">sudo dnf install unrar</span><br><span class="line">yay unrar</span><br><span class="line">unrar e tecmint.rar</span><br><span class="line">unrar e tecmint.rar /home/</span><br></pre></td></tr></table></figure>
 <p><a name="4Os5J"></a></p>
-<h4 id="部署-STUN-服务"><a href="#部署-STUN-服务" class="headerlink" title="部署 STUN 服务"></a>部署 STUN 服务</h4><p>参考：<a href="https://github.com/coturn/coturn" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/coturn/coturn</a>，<a href="http://www.stunprotocol.org/" target="_blank" rel="external nofollow noopener noreferrer">http://www.stunprotocol.org/</a>，<a href="https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/" target="_blank" rel="external nofollow noopener noreferrer">https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/</a><br><br><br></p>
+<h4 id="部署-STUN-服务"><a href="#部署-STUN-服务" class="headerlink" title="部署 STUN 服务"></a>部署 STUN 服务</h4><p>参考：<a href="https://github.com/coturn/coturn" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/coturn/coturn</a>，<a href="http://www.stunprotocol.org/" target="_blank" rel="external nofollow noopener noreferrer">http://www.stunprotocol.org/</a>，<a href="https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/" target="_blank" rel="external nofollow noopener noreferrer">https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/</a><br></p>
 <p><a name="EsaA7"></a></p>
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
@@ -411,6 +411,11 @@
 <li>配置 Linux 为一个简单的路由器：<a href="https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/" target="_blank" rel="external nofollow noopener noreferrer">https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/</a></li>
 <li>安装 cuda 参考：<a href="https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux" target="_blank" rel="external nofollow noopener noreferrer">https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux</a></li>
 <li>下载 vscode 使用国内镜像: <a href="https://zhuanlan.zhihu.com/p/112215618" target="_blank" rel="external nofollow noopener noreferrer">https://zhuanlan.zhihu.com/p/112215618</a></li>
+</ul>
+<p><a name="Ocuwz"></a></p>
+<h4 id="疑难杂症"><a href="#疑难杂症" class="headerlink" title="疑难杂症"></a>疑难杂症</h4><ul>
+<li>ssh 设置 <code>UseDNS no</code> 后仍然登录慢，依然有可能是 DNS 解析的问题，更改 /etc/resolv.conf 中配置的 nameserver 之后好了。</li>
+<li>centos yum 命令执行到 <code>Loaded plugins: fastestmirror</code> 时很慢，也可能是 DNS 解析的问题。</li>
 </ul>
 ]]></content>
       <categories>
