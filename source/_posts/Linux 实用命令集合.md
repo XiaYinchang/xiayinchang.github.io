@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Sat May 02 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Wed May 06 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -918,7 +918,6 @@ unrar e tecmint.rar /home/
 <a name="4Os5J"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
-<br />
 
 <a name="EsaA7"></a>
 #### 实用工具
@@ -931,4 +930,12 @@ unrar e tecmint.rar /home/
 - 配置 Linux 为一个简单的路由器：[https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/](https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/)
 - 安装 cuda 参考：[https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux](https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux)
 - 下载 vscode 使用国内镜像: [https://zhuanlan.zhihu.com/p/112215618](https://zhuanlan.zhihu.com/p/112215618)
+
+
+
+<a name="Ocuwz"></a>
+#### 疑难杂症
+
+- ssh 设置 `UseDNS no` 后仍然登录慢，依然有可能是 DNS 解析的问题，更改 /etc/resolv.conf 中配置的 nameserver 之后好了。
+- centos yum 命令执行到 `Loaded plugins: fastestmirror` 时很慢，也可能是 DNS 解析的问题。
 
