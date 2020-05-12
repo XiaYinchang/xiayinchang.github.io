@@ -1878,61 +1878,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
-    <url>/post/f901e5ff.html</url>
-    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
-
-
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
-<p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
-<p><a name="kEL2C"></a></p>
-<h3 id="Authentication-Annotations"><a href="#Authentication-Annotations" class="headerlink" title="Authentication Annotations"></a>Authentication Annotations</h3><p><a name="0hiT0"></a></p>
-<h4 id="auth-url"><a href="#auth-url" class="headerlink" title="auth-url"></a>auth-url</h4><p>Nginx-inkress 是一个相当成熟的为部署在 kubernetes 上的工作流提供外部入口的解决方案，它带有很多开箱即用的特性。这些特性大多数都可以通过简单地向服务的 ingress yaml 文件中添加注解来使用。这里需要使用其中专门用于对接外部认证的注解 ‘auth-url’ 。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/auth-url: <span class="string">"url to auth service"</span></span><br></pre></td></tr></table></figure>
-<p>这个注解告诉 ingress-nginx 控制器先将传入的请求转发给认证服务，然后如果认证服务返回状态码为 200 OK 的响应，则将请求继续转发到下游服务。例如:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-<p>上面的 ingress 配置指示 ingress-nginx 将所有路径为 <code>api.microservice-1.myapp.com/secure/</code> 的外部请求首先转发到部署在集群内的认证服务的 <code>/authenticate</code> 端点，其基本过程如下：</p>
-<ol>
-<li>客户端向 <code>api.microservice-1.myapp.com/secure/*</code> 发起 API 请求；</li>
-<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 <code>/authenticate</code> 端点；</li>
-<li>如果认证服务返回 <code>200 Ok</code> 则继续讲该请求转给 <code>microservice-1</code> 服务。</li>
-</ol>
-<p><a name="Zd1lp"></a></p>
-<h4 id="auth-response-headers"><a href="#auth-response-headers" class="headerlink" title="auth-response-headers"></a>auth-response-headers</h4><p>我们可以使用  auth-response-headers 注解让认证服务传递一些信息到下游的业务应用。例如，认证服务在进行认证的过程中可以解析出用户名或用户 ID ，并将用户信息传递给  <code>microservice-1</code> 服务：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">    nginx.ingress.kubernetes.io/auth-response-headers: UserID</span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>客户端向 api.microservice-1.myapp.com/secure/* 发起 API 请求；</li>
-<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；</li>
-<li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
-<li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
-</ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248" alt="image.png"></p>
-<p><a name="xK7hi"></a></p>
-<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
-<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
-<ol>
-<li>移除反向代理相关代码。</li>
-<li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
-<li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
-<li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
-</ol>
-<p><a name="pWbqx"></a></p>
-<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
-<p><a name="elPJY"></a></p>
-<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
-<p><a name="dh0i1"></a></p>
-<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>译文</tag>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Kubernetes CSI</title>
     <url>/post/d1098827.html</url>
     <content><![CDATA[<p><a name="ekedR"></a></p><h4 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h4><p>在 Kubernetes 中，容器运行结束后其文件系统也随即被销毁，因此无法在容器中直接存储需要持久化的数据；另一方面，Kubernetes 以 Pod 为单位管理多个有一定关联关系的容器，这些容器之间的数据共享也是一个需要解决的一个问题。为此，Kubernetes 中引入了 Volume 的概念，与 Docker 中 Volume 概念的不同之处在于 Kubernetes 中的 Volume 有着完善的生命周期管理，一个 Volume 的生命周期和对应的 Pod 的一致，因此 Pod 中的容器的重启不会造成 Volume 中数据的丢失，且多个容器可以通过挂载同一个 Volume 共享数据，另外单个 Pod 支持使用多个多种类型的 Volume。通过 Volume 的抽象，容器只需要挂载 Volume 到文件系统的某个目录使用它而不必关心 Volume 的存储后端到底是什么类型。<br><a name="P9ayc"></a></p><a id="more"></a>
@@ -1997,6 +1942,61 @@
       <tags>
         <tag>Kubernetes</tag>
         <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
+    <url>/post/f901e5ff.html</url>
+    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
+
+
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
+<p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
+<p><a name="kEL2C"></a></p>
+<h3 id="Authentication-Annotations"><a href="#Authentication-Annotations" class="headerlink" title="Authentication Annotations"></a>Authentication Annotations</h3><p><a name="0hiT0"></a></p>
+<h4 id="auth-url"><a href="#auth-url" class="headerlink" title="auth-url"></a>auth-url</h4><p>Nginx-inkress 是一个相当成熟的为部署在 kubernetes 上的工作流提供外部入口的解决方案，它带有很多开箱即用的特性。这些特性大多数都可以通过简单地向服务的 ingress yaml 文件中添加注解来使用。这里需要使用其中专门用于对接外部认证的注解 ‘auth-url’ 。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/auth-url: <span class="string">"url to auth service"</span></span><br></pre></td></tr></table></figure>
+<p>这个注解告诉 ingress-nginx 控制器先将传入的请求转发给认证服务，然后如果认证服务返回状态码为 200 OK 的响应，则将请求继续转发到下游服务。例如:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<p>上面的 ingress 配置指示 ingress-nginx 将所有路径为 <code>api.microservice-1.myapp.com/secure/</code> 的外部请求首先转发到部署在集群内的认证服务的 <code>/authenticate</code> 端点，其基本过程如下：</p>
+<ol>
+<li>客户端向 <code>api.microservice-1.myapp.com/secure/*</code> 发起 API 请求；</li>
+<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 <code>/authenticate</code> 端点；</li>
+<li>如果认证服务返回 <code>200 Ok</code> 则继续讲该请求转给 <code>microservice-1</code> 服务。</li>
+</ol>
+<p><a name="Zd1lp"></a></p>
+<h4 id="auth-response-headers"><a href="#auth-response-headers" class="headerlink" title="auth-response-headers"></a>auth-response-headers</h4><p>我们可以使用  auth-response-headers 注解让认证服务传递一些信息到下游的业务应用。例如，认证服务在进行认证的过程中可以解析出用户名或用户 ID ，并将用户信息传递给  <code>microservice-1</code> 服务：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">    nginx.ingress.kubernetes.io/auth-response-headers: UserID</span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>客户端向 api.microservice-1.myapp.com/secure/* 发起 API 请求；</li>
+<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；</li>
+<li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
+<li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248" alt="image.png"></p>
+<p><a name="xK7hi"></a></p>
+<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
+<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
+<ol>
+<li>移除反向代理相关代码。</li>
+<li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
+<li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
+<li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
+</ol>
+<p><a name="pWbqx"></a></p>
+<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
+<p><a name="elPJY"></a></p>
+<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
+<p><a name="dh0i1"></a></p>
+<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
+]]></content>
+      <categories>
+        <category>译文</category>
+      </categories>
+      <tags>
+        <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -2887,6 +2887,80 @@
       </tags>
   </entry>
   <entry>
+    <title>VMware Workstation 虚拟机 root 分区扩容</title>
+    <url>/post/eca5e5f3.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">26/05/2019</td>
+<td align="center">初始版本.</td>
+</tr>
+</tbody></table><p><a name="b072c805"></a></p><h3 id="解决什么问题"><a href="#解决什么问题" class="headerlink" title="解决什么问题"></a>解决什么问题</h3><p>本文尝试解决的问题：</p><ul>
+<li>在使用 VMware Workstation 安装 Centos 虚拟机后，发现根分区大小不够用，在不进行系统重装的前提下对根分区进行扩容。</li>
+</ul><p><a name="fb370aed"></a></p><h3 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h3><p>基本过程是先通过 VMware Workstations 对虚拟物理磁盘设备进行扩容，然后进入系统后新建 LVM 分区，新建 PV，分配 PV 给 VG，扩容 LV，最后扩容文件系统。<br><br><a name="bb27f7bd"></a></p><a id="more"></a>
+
+
+
+
+
+<h4 id="物理磁盘扩容"><a href="#物理磁盘扩容" class="headerlink" title="物理磁盘扩容"></a>物理磁盘扩容</h4><p>在 VMware Workstation 虚拟机详情中，对虚拟物理盘扩容，如图：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1558855276765-9429af86-29d5-4e67-9dd1-2b5901f41d76.png#align=left&display=inline&height=521&name=image.png&originHeight=623&originWidth=892&size=90730&status=done&width=746" alt="image.png"></p>
+<p>此时进入操作系统查看块设备详情，目标是增加 centos-root 容量：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lsblk</span></span><br><span class="line">NAME            MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda               8:0    0  300G  0 disk </span><br><span class="line">├─sda1            8:1    0    1G  0 part /boot</span><br><span class="line">└─sda2            8:2    0   39G  0 part </span><br><span class="line">  ├─centos-root 253:0    0 35.1G  0 lvm  /</span><br><span class="line">  └─centos-swap 253:1    0  3.9G  0 lvm  [SWAP]</span><br><span class="line">sr0              11:0    1 1024M  0 rom</span><br></pre></td></tr></table></figure>
+
+<p><a name="9NJvT"></a></p>
+<h4 id="新建-LVM-分区"><a href="#新建-LVM-分区" class="headerlink" title="新建 LVM 分区"></a>新建 LVM 分区</h4><p>使用 fsdik 在 /dev/sda 上新建分区。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># fdisk /dev/sda</span></span><br><span class="line">Welcome to fdisk (util-linux 2.23.2).</span><br><span class="line"></span><br><span class="line">Changes will remain <span class="keyword">in</span> memory only, until you decide to write them.</span><br><span class="line">Be careful before using the write <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): n</span><br></pre></td></tr></table></figure>
+
+<p>根据提示， 一直 Enter 采用默认设置即可，直到出现类似以下输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Partition 3 of <span class="built_in">type</span> Linux and of size 260 GiB is <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
+
+<p>之后，键入 t 进行分区类型设置，依次输入 3、8e 设置 LVM 分区：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): t</span><br><span class="line">Partition number (1-3, default 3): 3</span><br><span class="line">Hex code (<span class="built_in">type</span> L to list all codes): 8e</span><br><span class="line">Changed <span class="built_in">type</span> of partition <span class="string">'Linux'</span> to <span class="string">'Linux LVM'</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，键入 w 保存分区。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): w</span><br><span class="line">The partition table has been altered!</span><br><span class="line"></span><br><span class="line">Calling ioctl() to re-read partition table.</span><br><span class="line"></span><br><span class="line">WARNING: Re-reading the partition table failed with error 16: Device or resource busy.</span><br><span class="line">The kernel still uses the old table. The new table will be used at</span><br><span class="line">the next reboot or after you run partprobe(8) or kpartx(8)</span><br><span class="line">Syncing disks.</span><br></pre></td></tr></table></figure>
+
+<p>使用以下命令扫描出新创建的分区：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># partprobe -s</span></span><br><span class="line">/dev/sda: msdos partitions 1 2 3</span><br></pre></td></tr></table></figure>
+
+<p>或者如下命令扫描：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># partx -v -a /dev/sda</span></span><br></pre></td></tr></table></figure>
+
+<p>此时，查看块设备详情可以看到新建的 /dev/sda3 分区：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lsblk</span></span><br><span class="line">NAME            MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda               8:0    0  300G  0 disk </span><br><span class="line">├─sda1            8:1    0    1G  0 part /boot</span><br><span class="line">├─sda2            8:2    0   39G  0 part </span><br><span class="line">│ ├─centos-root 253:0    0 35.1G  0 lvm  /</span><br><span class="line">│ └─centos-swap 253:1    0  3.9G  0 lvm  [SWAP]</span><br><span class="line">└─sda3            8:3    0  260G  0 part </span><br><span class="line">sr0              11:0    1 1024M  0 rom</span><br></pre></td></tr></table></figure>
+
+<p><a name="6kVFX"></a></p>
+<h4 id="使用新分区扩容-LV"><a href="#使用新分区扩容-LV" class="headerlink" title="使用新分区扩容 LV"></a>使用新分区扩容 LV</h4><p>在磁盘分区的基础上创建物理卷：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvcreate /dev/sda3</span></span><br><span class="line">Physical volume <span class="string">"/dev/sda3"</span> successfully created</span><br></pre></td></tr></table></figure>
+
+<p>使用新建的物理卷扩展卷组：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgextend centos /dev/sda3</span></span><br><span class="line">  Volume group <span class="string">"centos"</span> successfully extended</span><br></pre></td></tr></table></figure>
+
+<p>扩容逻辑卷：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#  lvextend /dev/centos/root /dev/sda3</span></span><br><span class="line">  Size of logical volume centos/root changed from 35.12 GiB (8991 extents) to &lt;295.12 GiB (75550 extents).</span><br><span class="line">  Logical volume centos/root successfully resized.</span><br></pre></td></tr></table></figure>
+
+<p>扩容文件系统：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># xfs_growfs /dev/mapper/centos-root</span></span><br><span class="line">meta-data=/dev/mapper/centos-root isize=512    agcount=4, agsize=2301440 blks</span><br><span class="line">         =                       sectsz=512   attr=2, projid32bit=1</span><br><span class="line">         =                       crc=1        finobt=0 spinodes=0</span><br><span class="line">data     =                       bsize=4096   blocks=9205760, imaxpct=25</span><br><span class="line">         =                       sunit=0      swidth=0 blks</span><br><span class="line">naming   =version 2              bsize=4096   ascii-ci=0 ftype=1</span><br><span class="line"><span class="built_in">log</span>      =internal               bsize=4096   blocks=4495, version=2</span><br><span class="line">         =                       sectsz=512   sunit=0 blks, lazy-count=1</span><br><span class="line">realtime =none                   extsz=4096   blocks=0, rtextents=0</span><br><span class="line">data blocks changed from 9205760 to 77363200</span><br></pre></td></tr></table></figure>
+
+<p>最后查看块设备详情，扩容成功：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lsblk</span></span><br><span class="line">NAME            MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda               8:0    0   300G  0 disk </span><br><span class="line">├─sda1            8:1    0     1G  0 part /boot</span><br><span class="line">├─sda2            8:2    0    39G  0 part </span><br><span class="line">│ ├─centos-root 253:0    0 295.1G  0 lvm  /</span><br><span class="line">│ └─centos-swap 253:1    0   3.9G  0 lvm  [SWAP]</span><br><span class="line">└─sda3            8:3    0   260G  0 part </span><br><span class="line">  └─centos-root 253:0    0 295.1G  0 lvm  /</span><br><span class="line">sr0              11:0    1  1024M  0 rom</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>Virtualization</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>Virtaulization</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用 kolla-ansible 部署 OpenStack</title>
     <url>/post/43354256.html</url>
     <content><![CDATA[<table>
@@ -3008,80 +3082,6 @@
       <tags>
         <tag> 云计算</tag>
         <tag>OpenStack</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VMware Workstation 虚拟机 root 分区扩容</title>
-    <url>/post/eca5e5f3.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">26/05/2019</td>
-<td align="center">初始版本.</td>
-</tr>
-</tbody></table><p><a name="b072c805"></a></p><h3 id="解决什么问题"><a href="#解决什么问题" class="headerlink" title="解决什么问题"></a>解决什么问题</h3><p>本文尝试解决的问题：</p><ul>
-<li>在使用 VMware Workstation 安装 Centos 虚拟机后，发现根分区大小不够用，在不进行系统重装的前提下对根分区进行扩容。</li>
-</ul><p><a name="fb370aed"></a></p><h3 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h3><p>基本过程是先通过 VMware Workstations 对虚拟物理磁盘设备进行扩容，然后进入系统后新建 LVM 分区，新建 PV，分配 PV 给 VG，扩容 LV，最后扩容文件系统。<br><br><a name="bb27f7bd"></a></p><a id="more"></a>
-
-
-
-
-
-<h4 id="物理磁盘扩容"><a href="#物理磁盘扩容" class="headerlink" title="物理磁盘扩容"></a>物理磁盘扩容</h4><p>在 VMware Workstation 虚拟机详情中，对虚拟物理盘扩容，如图：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1558855276765-9429af86-29d5-4e67-9dd1-2b5901f41d76.png#align=left&display=inline&height=521&name=image.png&originHeight=623&originWidth=892&size=90730&status=done&width=746" alt="image.png"></p>
-<p>此时进入操作系统查看块设备详情，目标是增加 centos-root 容量：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lsblk</span></span><br><span class="line">NAME            MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda               8:0    0  300G  0 disk </span><br><span class="line">├─sda1            8:1    0    1G  0 part /boot</span><br><span class="line">└─sda2            8:2    0   39G  0 part </span><br><span class="line">  ├─centos-root 253:0    0 35.1G  0 lvm  /</span><br><span class="line">  └─centos-swap 253:1    0  3.9G  0 lvm  [SWAP]</span><br><span class="line">sr0              11:0    1 1024M  0 rom</span><br></pre></td></tr></table></figure>
-
-<p><a name="9NJvT"></a></p>
-<h4 id="新建-LVM-分区"><a href="#新建-LVM-分区" class="headerlink" title="新建 LVM 分区"></a>新建 LVM 分区</h4><p>使用 fsdik 在 /dev/sda 上新建分区。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># fdisk /dev/sda</span></span><br><span class="line">Welcome to fdisk (util-linux 2.23.2).</span><br><span class="line"></span><br><span class="line">Changes will remain <span class="keyword">in</span> memory only, until you decide to write them.</span><br><span class="line">Be careful before using the write <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): n</span><br></pre></td></tr></table></figure>
-
-<p>根据提示， 一直 Enter 采用默认设置即可，直到出现类似以下输出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Partition 3 of <span class="built_in">type</span> Linux and of size 260 GiB is <span class="built_in">set</span></span><br></pre></td></tr></table></figure>
-
-<p>之后，键入 t 进行分区类型设置，依次输入 3、8e 设置 LVM 分区：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): t</span><br><span class="line">Partition number (1-3, default 3): 3</span><br><span class="line">Hex code (<span class="built_in">type</span> L to list all codes): 8e</span><br><span class="line">Changed <span class="built_in">type</span> of partition <span class="string">'Linux'</span> to <span class="string">'Linux LVM'</span></span><br></pre></td></tr></table></figure>
-
-<p>然后，键入 w 保存分区。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): w</span><br><span class="line">The partition table has been altered!</span><br><span class="line"></span><br><span class="line">Calling ioctl() to re-read partition table.</span><br><span class="line"></span><br><span class="line">WARNING: Re-reading the partition table failed with error 16: Device or resource busy.</span><br><span class="line">The kernel still uses the old table. The new table will be used at</span><br><span class="line">the next reboot or after you run partprobe(8) or kpartx(8)</span><br><span class="line">Syncing disks.</span><br></pre></td></tr></table></figure>
-
-<p>使用以下命令扫描出新创建的分区：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># partprobe -s</span></span><br><span class="line">/dev/sda: msdos partitions 1 2 3</span><br></pre></td></tr></table></figure>
-
-<p>或者如下命令扫描：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># partx -v -a /dev/sda</span></span><br></pre></td></tr></table></figure>
-
-<p>此时，查看块设备详情可以看到新建的 /dev/sda3 分区：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lsblk</span></span><br><span class="line">NAME            MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda               8:0    0  300G  0 disk </span><br><span class="line">├─sda1            8:1    0    1G  0 part /boot</span><br><span class="line">├─sda2            8:2    0   39G  0 part </span><br><span class="line">│ ├─centos-root 253:0    0 35.1G  0 lvm  /</span><br><span class="line">│ └─centos-swap 253:1    0  3.9G  0 lvm  [SWAP]</span><br><span class="line">└─sda3            8:3    0  260G  0 part </span><br><span class="line">sr0              11:0    1 1024M  0 rom</span><br></pre></td></tr></table></figure>
-
-<p><a name="6kVFX"></a></p>
-<h4 id="使用新分区扩容-LV"><a href="#使用新分区扩容-LV" class="headerlink" title="使用新分区扩容 LV"></a>使用新分区扩容 LV</h4><p>在磁盘分区的基础上创建物理卷：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvcreate /dev/sda3</span></span><br><span class="line">Physical volume <span class="string">"/dev/sda3"</span> successfully created</span><br></pre></td></tr></table></figure>
-
-<p>使用新建的物理卷扩展卷组：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgextend centos /dev/sda3</span></span><br><span class="line">  Volume group <span class="string">"centos"</span> successfully extended</span><br></pre></td></tr></table></figure>
-
-<p>扩容逻辑卷：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#  lvextend /dev/centos/root /dev/sda3</span></span><br><span class="line">  Size of logical volume centos/root changed from 35.12 GiB (8991 extents) to &lt;295.12 GiB (75550 extents).</span><br><span class="line">  Logical volume centos/root successfully resized.</span><br></pre></td></tr></table></figure>
-
-<p>扩容文件系统：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># xfs_growfs /dev/mapper/centos-root</span></span><br><span class="line">meta-data=/dev/mapper/centos-root isize=512    agcount=4, agsize=2301440 blks</span><br><span class="line">         =                       sectsz=512   attr=2, projid32bit=1</span><br><span class="line">         =                       crc=1        finobt=0 spinodes=0</span><br><span class="line">data     =                       bsize=4096   blocks=9205760, imaxpct=25</span><br><span class="line">         =                       sunit=0      swidth=0 blks</span><br><span class="line">naming   =version 2              bsize=4096   ascii-ci=0 ftype=1</span><br><span class="line"><span class="built_in">log</span>      =internal               bsize=4096   blocks=4495, version=2</span><br><span class="line">         =                       sectsz=512   sunit=0 blks, lazy-count=1</span><br><span class="line">realtime =none                   extsz=4096   blocks=0, rtextents=0</span><br><span class="line">data blocks changed from 9205760 to 77363200</span><br></pre></td></tr></table></figure>
-
-<p>最后查看块设备详情，扩容成功：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lsblk</span></span><br><span class="line">NAME            MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda               8:0    0   300G  0 disk </span><br><span class="line">├─sda1            8:1    0     1G  0 part /boot</span><br><span class="line">├─sda2            8:2    0    39G  0 part </span><br><span class="line">│ ├─centos-root 253:0    0 295.1G  0 lvm  /</span><br><span class="line">│ └─centos-swap 253:1    0   3.9G  0 lvm  [SWAP]</span><br><span class="line">└─sda3            8:3    0   260G  0 part </span><br><span class="line">  └─centos-root 253:0    0 295.1G  0 lvm  /</span><br><span class="line">sr0              11:0    1  1024M  0 rom</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>Virtualization</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>Virtaulization</tag>
       </tags>
   </entry>
   <entry>
