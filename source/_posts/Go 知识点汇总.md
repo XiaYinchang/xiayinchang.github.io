@@ -1,16 +1,24 @@
 ---
 title: Go 知识点汇总
 urlname: sfexfo
-date: '2019-10-12 00:00:00 +0800'
-updated: 'Thu Jan 16 2020 00:00:00 GMT+0800 (China Standard Time)'
+date: '2019-10-12 10:19:35 +0800'
+tags: []
+abbrlink: defe85e8
+---
+
+<br />
+<br />title: Go 知识点汇总
+date: 2019-10-12
+updated: 2020-05-13
 layout: post
 comments: true
 categories: Go
-tags:
-  - Go
+tags: [Go]
 keywords: Go
 description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
-abbrlink: defe85e8
+
+
+
 ---
 
 <a name="YEnn3"></a>
@@ -76,6 +84,7 @@ value: [0 0 0]   type: []int    len: 3    cap: 3    underlay: 0x4140a0
 value: [0 0 0]   type: []int    len: 3    cap: 8    underlay: 0x45e040
 ```
 
+
 <a name="J5JDU"></a>
 #### 切片拷贝
 以下代码：
@@ -140,11 +149,11 @@ func main() {
 [1 3 3 0 0 0 0 0 0 0 0]
 [1 3 3 5 0 0 0 0 0 0 0 1]
 ```
-综上，我们不能依靠拷贝切片之间的联系来获取排序后的元素值（除非是原地排序，不需要增加切片大小），即不能像 C 语言使用指针一样，而应当每次返回一个新的切片存储排好序的值。
+综上，我们不能依靠拷贝切片之间的联系来获取排序后的元素值（除非是原地排序，不需要增加切片大小），即不能像 C 语言使用指针一样，而应当每次返回一个新的切片存储排好序的值。<br />
 
 <a name="IWVp8"></a>
 #### 包导入过程
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&display=inline&height=424&name=image.png&originHeight=424&originWidth=953&size=146883&status=done&style=none&width=953)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&display=inline&height=424&margin=%5Bobject%20Object%5D&name=image.png&originHeight=424&originWidth=953&size=146883&status=done&style=none&width=953)
 <a name="ifRex"></a>
 #### godoc 与 go doc
 从 go 1.12 开始， godoc 不再提供各种子命令，仅作为一个 http server 提供 GOPATH 和 GOROOT 下 pkg 的在线文档，而 go doc 命令可以用来查看本地程序的文档。
@@ -170,6 +179,7 @@ GOPATH="/home/xyc/go"
 GOPRIVATE="git.ucloudadmin.com/*,git.umcloud.io/*"
 ...
 ```
+
 
 <a name="EA3XH"></a>
 ### 编程方法
@@ -268,6 +278,7 @@ the len is 5 and cap is 5
 underlay: 0x456000
 ```
 
+
 <a name="XLO09"></a>
 #### 反向代理
 在 Go 语言中可以很方便地构建反向代理服务器：
@@ -290,6 +301,7 @@ func serveReverseProxy(target string, res http.ResponseWriter, req *http.Request
 	proxy.ServeHTTP(res, req)
 }
 ```
+
 
 <a name="yfmQE"></a>
 #### 从静态文件生成 go code 并 serve
@@ -335,6 +347,7 @@ func main() {
 }
 ```
 
+
 <a name="q6Eoo"></a>
 #### HTTP Response Status
 有两种标准写法可用：
@@ -355,6 +368,7 @@ func yourFuncHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
+
 <a name="RkIX9"></a>
 #### 写入文件
 当待写入的文件已经存在时，应该以可写模式打开它进行写入；当待写入文件不存在时，应该创建该文件并进行写入。直觉上，我们应当首先判断文件是否存在，可以使用如下代码：
@@ -374,7 +388,7 @@ if _, err := os.Stat("/path/to/whatever"); err == nil {
   // Therefore, do *NOT* use !os.IsNotExist(err) to test for file existence
 }
 ```
-也就是说使用 `os.Stat` 无法确定文件是否存在，因此写入文件时先使用 `os.Stat` 判断文件是否存在，不存在时则使用 `os.Create` 创建文件的写法是错误的（尽管大多数时候能够成功写入）。正确的写入文件的方法是 `os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0666)` ，这个函数通过 sys_openat 系统调用依据传入的 Flag 打开文件，如果文件不存在则创建，如果文件存在则直接打开，使用这个函数的另一个好处是不会产生竞争条件（即使另外一个操作正在创建该文件？），参见 [https://stackoverflow.com/questions/12518876/how-to-check-if-a-file-exists-in-go](https://stackoverflow.com/questions/12518876/how-to-check-if-a-file-exists-in-go) 中的一系列回答和讨论。<br />另一种选择是使用 `ioutil.WriteFile()` ，其内部同样是调用了 `os.OpenFile`，只不过只适用于一次性全量写入。
+也就是说使用 `os.Stat` 无法确定文件是否存在，因此写入文件时先使用 `os.Stat` 判断文件是否存在，不存在时则使用 `os.Create` 创建文件的写法是错误的（尽管大多数时候能够成功写入）。正确的写入文件的方法是 `os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0666)` ，这个函数通过 sys_openat 系统调用依据传入的 Flag 打开文件，如果文件不存在则创建，如果文件存在则直接打开，使用这个函数的另一个好处是不会产生竞争条件（即使另外一个操作正在创建该文件？），参见 [https://stackoverflow.com/questions/12518876/how-to-check-if-a-file-exists-in-go](https://stackoverflow.com/questions/12518876/how-to-check-if-a-file-exists-in-go) 中的一系列回答和讨论。<br />另一种选择是使用 `ioutil.WriteFile()` ，其内部同样是调用了 `os.OpenFile`，只不过只适用于一次性全量写入。<br />
 
 <a name="ZC8Wn"></a>
 #### Template 中判断 range 最后一个元素
@@ -400,7 +414,7 @@ func main() {
     t.Execute(os.Stdout, a)
 }
 ```
-关于 Template 的使用可以参考：[https://github.com/grpc-ecosystem/grpc-gateway/blob/master/protoc-gen-grpc-gateway/gengateway/template.go](https://github.com/grpc-ecosystem/grpc-gateway/blob/master/protoc-gen-grpc-gateway/gengateway/template.go)
+关于 Template 的使用可以参考：[https://github.com/grpc-ecosystem/grpc-gateway/blob/master/protoc-gen-grpc-gateway/gengateway/template.go](https://github.com/grpc-ecosystem/grpc-gateway/blob/master/protoc-gen-grpc-gateway/gengateway/template.go)<br />
 
 <a name="0UUJH"></a>
 #### 生成 zip 文件并返回给 http response
@@ -480,6 +494,7 @@ func handleZip(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
+
 <a name="vNzvG"></a>
 #### 从 http request body 中解析出 go 对象
 ```go
@@ -499,6 +514,7 @@ if err := json.NewDecoder(req.Body).Decode(&info); err != nil {
     w.Write([]byte("parse info from request body failed!"))
 }
 ```
+
 
 <a name="CtPsq"></a>
 #### 按行读取文本
@@ -531,6 +547,7 @@ if err != nil {
 scanner := bufio.NewScanner(stdout)
 for scanner.Scan() {}
 ```
+
 
 <a name="zJv1y"></a>
 #### json unmarshal 时保留 raw message
@@ -596,6 +613,7 @@ func getFoo(bar Bar) {
 //124
 ```
 
+
 <a name="Ep42i"></a>
 #### 编译时自动添加版本和日期信息
 简单的做法是把版本信息放到 main 包中，如下：
@@ -653,15 +671,17 @@ now=$(date +'%Y-%m-%d_%T')
 commit=$(git rev-parse HEAD)
 ```
 
-<a name="CTcih"></a>
-#### go module 相关问题
-etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/archives/571](https://aiops.red/archives/571)
 
+<a name="CTcih"></a>
+#### go 编译相关问题
+etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/archives/571](https://aiops.red/archives/571)<br />编译完成的程序在容器内运行时提示：`exec user process caused "no such file or directory"`，一般是因为程序编译时没有禁用 CGO :  `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go `。
 <a name="utDk1"></a>
 ### WebAssembly
 
 1. 作者通过一系列 hack 过程成功实现了将一个 go 语言写的工具 [pdfcpu](https://github.com/pdfcpu/pdfcpu) 编译为 wasm 文件并运行在浏览器中，其中有使用到一个浏览器端基于内存的文件系统 [BrowserFS](https://github.com/jvilk/BrowserFS) （实现了 Node JS 的 fs 库的 API）对 pdf 文件进行操作，很有意思。博客地址：[https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn](https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn)，代码地址：[https://github.com/wcchoi/go-wasm-pdfcpu](https://github.com/wcchoi/go-wasm-pdfcpu)。
 1. vugu 使用 go 实现的类似于 vue 的前端框架，用 go 替代 JavaScript 写逻辑：[https://github.com/vugu/vugu](https://github.com/vugu/vugu)。
+
+
 
 <a name="ttykc"></a>
 ### 开源库
@@ -673,11 +693,15 @@ etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/arch
 1. 一个 Markdown 转 PDF 的库，只是不支持中文字符：[https://github.com/mandolyte/mdtopdf](https://github.com/mandolyte/mdtopdf)。
 
 
+<br />
+
 <a name="ymvvh"></a>
 ### 书籍
 
 1. 《Go 语言从入门到进阶实战》名字俗了点，但是内容还是值得一读，作者对 Go 语言的使用还是很熟练的。
 1. 《Go 语言高级编程》 [https://github.com/chai2010/advanced-go-programming-book](https://github.com/chai2010/advanced-go-programming-book) rpc 相关的内容可以一读。
 1. Concurrency in Go
+
+
 
 
