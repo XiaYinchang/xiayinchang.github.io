@@ -674,8 +674,8 @@ commit=$(git rev-parse HEAD)
 
 <a name="CTcih"></a>
 #### go 编译相关问题
-etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/archives/571](https://aiops.red/archives/571)<br />编译完成的程序在容器内运行时提示：`exec user process caused "no such file or directory"`，一般是因为程序编译时没有禁用 CGO :  `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go `。
-<a name="utDk1"></a>
+etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/archives/571](https://aiops.red/archives/571)<br />编译完成的程序在容器内运行时提示：`exec user process caused "no such file or directory"`，一般是因为程序编译时没有禁用 CGO :  `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go `。<br />在已经指定使用 `-mod=vendor` 进行编译时仍提示 `build uk8s/uk8s-report: cannot load github.com/montanaflynn/stats: no Go source files`，可能是因为 `github.com/montanaflynn/stats` 是个subemodule。
+<a name="4ZVWj"></a>
 ### WebAssembly
 
 1. 作者通过一系列 hack 过程成功实现了将一个 go 语言写的工具 [pdfcpu](https://github.com/pdfcpu/pdfcpu) 编译为 wasm 文件并运行在浏览器中，其中有使用到一个浏览器端基于内存的文件系统 [BrowserFS](https://github.com/jvilk/BrowserFS) （实现了 Node JS 的 fs 库的 API）对 pdf 文件进行操作，很有意思。博客地址：[https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn](https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn)，代码地址：[https://github.com/wcchoi/go-wasm-pdfcpu](https://github.com/wcchoi/go-wasm-pdfcpu)。
