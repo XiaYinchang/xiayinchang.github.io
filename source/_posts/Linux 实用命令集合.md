@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Wed May 06 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon May 18 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -916,6 +916,14 @@ unrar e tecmint.rar
 unrar e tecmint.rar /home/
 ```
 <a name="4Os5J"></a>
+#### Python & pip
+出现安装错误：<br />`Cannot uninstall 'ipython'. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.`<br />可尝试通过以下命令解决：
+```
+pip install --ignore-installed -U ipython
+```
+
+
+<a name="hyl9k"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
 
