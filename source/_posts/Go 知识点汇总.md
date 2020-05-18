@@ -9,7 +9,7 @@ abbrlink: defe85e8
 <br />
 <br />title: Go 知识点汇总
 date: 2019-10-12
-updated: 2020-05-13
+updated: 2020-05-18
 layout: post
 comments: true
 categories: Go
@@ -21,8 +21,8 @@ description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
 
 ---
 
-<a name="YEnn3"></a>
-### 基本理解
+
+
 <a name="szYLf"></a>
 #### 关于 slice 的初始化
 执行代码：
@@ -180,9 +180,8 @@ GOPRIVATE="git.ucloudadmin.com/*,git.umcloud.io/*"
 ...
 ```
 
+<br />
 
-<a name="EA3XH"></a>
-### 编程方法
 <a name="2qLn1"></a>
 #### 获取变量类型
 
@@ -675,16 +674,25 @@ commit=$(git rev-parse HEAD)
 <a name="CTcih"></a>
 #### go 编译相关问题
 etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/archives/571](https://aiops.red/archives/571)<br />编译完成的程序在容器内运行时提示：`exec user process caused "no such file or directory"`，一般是因为程序编译时没有禁用 CGO :  `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go `。<br />在已经指定使用 `-mod=vendor` 进行编译时仍提示 `build uk8s/uk8s-report: cannot load github.com/montanaflynn/stats: no Go source files`，可能是因为 `github.com/montanaflynn/stats` 是个subemodule。
-<a name="4ZVWj"></a>
-### WebAssembly
+
+<a name="Ddd3z"></a>
+#### Unicode 字符编码
+Unicode 定义了一种编码规则，为每个（语言或表情）符号指定了一个数值。而 UTF-8 是该编码规则在计算机上进行存储时的一种实现。在使用 UTF-8 进行编解码时依据的仍然是 Unicode 编码规则。参见 [字符编码笔记：ASCII，Unicode 和 UTF-8](http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html)。在 Go 语言中，字符编码使用 UTF-8。在下述代码中，`你好` 在计算机中使用 UTF-8 编码进行存储时保存的是 `E4BDA0E5A5BD` 二进制值，而在解释这个二进制值时会按照 UTF-8 规则转换后得到 `4F60597D` ，然后根据 Unicode 编码表，最后获知这是中文字符 `你好` 。可使用该工具观察编码转换：[https://www.qqxiuzi.cn/bianma/Unicode-UTF.php](https://www.qqxiuzi.cn/bianma/Unicode-UTF.php)。
+```
+string([]byte{'\xe4', '\xbd', '\xa0', '\xe5', '\xa5', '\xbd'}) // 你好
+string([]rune{'\u4F60', '\u597D'}) // 你好
+```
+<br />
+<a name="2EBTq"></a>
+#### WebAssembly
 
 1. 作者通过一系列 hack 过程成功实现了将一个 go 语言写的工具 [pdfcpu](https://github.com/pdfcpu/pdfcpu) 编译为 wasm 文件并运行在浏览器中，其中有使用到一个浏览器端基于内存的文件系统 [BrowserFS](https://github.com/jvilk/BrowserFS) （实现了 Node JS 的 fs 库的 API）对 pdf 文件进行操作，很有意思。博客地址：[https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn](https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn)，代码地址：[https://github.com/wcchoi/go-wasm-pdfcpu](https://github.com/wcchoi/go-wasm-pdfcpu)。
 1. vugu 使用 go 实现的类似于 vue 的前端框架，用 go 替代 JavaScript 写逻辑：[https://github.com/vugu/vugu](https://github.com/vugu/vugu)。
 
 
 
-<a name="ttykc"></a>
-### 开源库
+<a name="1aiBl"></a>
+#### 开源库
 
 1. Linux 操作系统功能调用 [osutil](https://github.com/tredoe/osutil)， 可以用以生成 Linux 用户密码的 Hash。
 1. 一个强大的请求限速库 [https://github.com/didip/tollbooth](https://github.com/didip/tollbooth)，可以根据请求头或者源 IP 限速。
@@ -695,8 +703,8 @@ etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/arch
 
 <br />
 
-<a name="ymvvh"></a>
-### 书籍
+<a name="cCStY"></a>
+#### 书籍
 
 1. 《Go 语言从入门到进阶实战》名字俗了点，但是内容还是值得一读，作者对 Go 语言的使用还是很熟练的。
 1. 《Go 语言高级编程》 [https://github.com/chai2010/advanced-go-programming-book](https://github.com/chai2010/advanced-go-programming-book) rpc 相关的内容可以一读。
