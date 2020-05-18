@@ -877,7 +877,7 @@
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>13 分钟</span>
+              <span>14 分钟</span>
             </span>
 
         </div>
@@ -889,7 +889,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <br><br><hr><p><a name="YEnn3"></a></p><h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <br><br><hr><p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/post/defe85e8.html#more" rel="contents">
@@ -1210,7 +1210,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:11</span>
+    <span title="站点阅读时长">3:12</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>

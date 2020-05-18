@@ -2161,17 +2161,16 @@
   <entry>
     <title>Go 知识点汇总</title>
     <url>/post/defe85e8.html</url>
-    <content><![CDATA[<br><br><hr><p><a name="YEnn3"></a></p><h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
+    <content><![CDATA[<br><br><hr><p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
 title: Go 知识点汇总
 date: 2019-10-12
-updated: 2020-05-13
+updated: 2020-05-18
 layout: post
 comments: true
 categories: Go
 tags: [Go]
 keywords: Go
 description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
-
 
 
 
@@ -2203,9 +2202,9 @@ description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
 <h4 id="GOPRIVATE"><a href="#GOPRIVATE" class="headerlink" title="GOPRIVATE"></a>GOPRIVATE</h4><p>从 go 1.13 开始，增加了 GOPRIVATE 环境变量的配置用以跳过对私有仓库的 checksum 检查：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> GOPRIVATE=<span class="string">"git.ucloudadmin.com/*,git.umcloud.io/*"</span></span><br><span class="line"><span class="comment"># 设置完之后，通过 go env 可以看到 GONOSUMDB 和 GONOPROXY 环境变量也被自动更新了</span></span><br><span class="line">GO111MODULE=<span class="string">"on"</span></span><br><span class="line">GOARCH=<span class="string">"amd64"</span></span><br><span class="line">GOBIN=<span class="string">""</span></span><br><span class="line">GOCACHE=<span class="string">"/home/xyc/.cache/go-build"</span></span><br><span class="line">GOENV=<span class="string">"/home/xyc/.config/go/env"</span></span><br><span class="line">GOEXE=<span class="string">""</span></span><br><span class="line">GOFLAGS=<span class="string">""</span></span><br><span class="line">GOHOSTARCH=<span class="string">"amd64"</span></span><br><span class="line">GOHOSTOS=<span class="string">"linux"</span></span><br><span class="line">GONOPROXY=<span class="string">"git.ucloudadmin.com/*,git.umcloud.io/*"</span></span><br><span class="line">GONOSUMDB=<span class="string">"git.ucloudadmin.com/*,git.umcloud.io/*"</span></span><br><span class="line">GOOS=<span class="string">"linux"</span></span><br><span class="line">GOPATH=<span class="string">"/home/xyc/go"</span></span><br><span class="line">GOPRIVATE=<span class="string">"git.ucloudadmin.com/*,git.umcloud.io/*"</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
+<br>
 
-<p><a name="EA3XH"></a></p>
-<h3 id="编程方法"><a href="#编程方法" class="headerlink" title="编程方法"></a>编程方法</h3><p><a name="2qLn1"></a></p>
+<p><a name="2qLn1"></a></p>
 <h4 id="获取变量类型"><a href="#获取变量类型" class="headerlink" title="获取变量类型"></a>获取变量类型</h4><ul>
 <li><p>fmt</p>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    v := <span class="string">"hello world"</span></span><br><span class="line">    fmt.Println(typeof(v))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">typeof</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> fmt.Sprintf(<span class="string">"%T"</span>, v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2292,13 +2291,20 @@ description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
 
 
 <p><a name="CTcih"></a></p>
-<h4 id="go-编译相关问题"><a href="#go-编译相关问题" class="headerlink" title="go 编译相关问题"></a>go 编译相关问题</h4><p>etcd 编译时 GO 依赖包版本报错的解决方法: <a href="https://aiops.red/archives/571" target="_blank" rel="external nofollow noopener noreferrer">https://aiops.red/archives/571</a><br>编译完成的程序在容器内运行时提示：<code>exec user process caused &quot;no such file or directory&quot;</code>，一般是因为程序编译时没有禁用 CGO :  <code>CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go</code>。<br>在已经指定使用 <code>-mod=vendor</code> 进行编译时仍提示 <code>build uk8s/uk8s-report: cannot load github.com/montanaflynn/stats: no Go source files</code>，可能是因为 <code>github.com/montanaflynn/stats</code> 是个subemodule。<br><a name="4ZVWj"></a></p>
-<h3 id="WebAssembly"><a href="#WebAssembly" class="headerlink" title="WebAssembly"></a>WebAssembly</h3><ol>
+<h4 id="go-编译相关问题"><a href="#go-编译相关问题" class="headerlink" title="go 编译相关问题"></a>go 编译相关问题</h4><p>etcd 编译时 GO 依赖包版本报错的解决方法: <a href="https://aiops.red/archives/571" target="_blank" rel="external nofollow noopener noreferrer">https://aiops.red/archives/571</a><br>编译完成的程序在容器内运行时提示：<code>exec user process caused &quot;no such file or directory&quot;</code>，一般是因为程序编译时没有禁用 CGO :  <code>CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go</code>。<br>在已经指定使用 <code>-mod=vendor</code> 进行编译时仍提示 <code>build uk8s/uk8s-report: cannot load github.com/montanaflynn/stats: no Go source files</code>，可能是因为 <code>github.com/montanaflynn/stats</code> 是个subemodule。</p>
+<p><a name="Ddd3z"></a></p>
+<h4 id="Unicode-字符编码"><a href="#Unicode-字符编码" class="headerlink" title="Unicode 字符编码"></a>Unicode 字符编码</h4><p>Unicode 定义了一种编码规则，为每个（语言或表情）符号指定了一个数值。而 UTF-8 是该编码规则在计算机上进行存储时的一种实现。在使用 UTF-8 进行编解码时依据的仍然是 Unicode 编码规则。参见 <a href="http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html" target="_blank" rel="external nofollow noopener noreferrer">字符编码笔记：ASCII，Unicode 和 UTF-8</a>。在 Go 语言中，字符编码使用 UTF-8。在下述代码中，<code>你好</code> 在计算机中使用 UTF-8 编码进行存储时保存的是 <code>E4BDA0E5A5BD</code> 二进制值，而在解释这个二进制值时会按照 UTF-8 规则转换后得到 <code>4F60597D</code> ，然后根据 Unicode 编码表，最后获知这是中文字符 <code>你好</code> 。可使用该工具观察编码转换：<a href="https://www.qqxiuzi.cn/bianma/Unicode-UTF.php" target="_blank" rel="external nofollow noopener noreferrer">https://www.qqxiuzi.cn/bianma/Unicode-UTF.php</a>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">string([]byte&#123;&apos;\xe4&apos;, &apos;\xbd&apos;, &apos;\xa0&apos;, &apos;\xe5&apos;, &apos;\xa5&apos;, &apos;\xbd&apos;&#125;) // 你好</span><br><span class="line">string([]rune&#123;&apos;\u4F60&apos;, &apos;\u597D&apos;&#125;) // 你好</span><br></pre></td></tr></table></figure>
+<br>
+<a name="2EBTq"></a>
+#### WebAssembly
+
+<ol>
 <li>作者通过一系列 hack 过程成功实现了将一个 go 语言写的工具 <a href="https://github.com/pdfcpu/pdfcpu" target="_blank" rel="external nofollow noopener noreferrer">pdfcpu</a> 编译为 wasm 文件并运行在浏览器中，其中有使用到一个浏览器端基于内存的文件系统 <a href="https://github.com/jvilk/BrowserFS" target="_blank" rel="external nofollow noopener noreferrer">BrowserFS</a> （实现了 Node JS 的 fs 库的 API）对 pdf 文件进行操作，很有意思。博客地址：<a href="https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn" target="_blank" rel="external nofollow noopener noreferrer">https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn</a>，代码地址：<a href="https://github.com/wcchoi/go-wasm-pdfcpu" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/wcchoi/go-wasm-pdfcpu</a>。</li>
 <li>vugu 使用 go 实现的类似于 vue 的前端框架，用 go 替代 JavaScript 写逻辑：<a href="https://github.com/vugu/vugu" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/vugu/vugu</a>。</li>
 </ol>
-<p><a name="ttykc"></a></p>
-<h3 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h3><ol>
+<p><a name="1aiBl"></a></p>
+<h4 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h4><ol>
 <li>Linux 操作系统功能调用 <a href="https://github.com/tredoe/osutil" target="_blank" rel="external nofollow noopener noreferrer">osutil</a>， 可以用以生成 Linux 用户密码的 Hash。</li>
 <li>一个强大的请求限速库 <a href="https://github.com/didip/tollbooth" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/didip/tollbooth</a>，可以根据请求头或者源 IP 限速。</li>
 <li>Go 社区提供的实现了令牌桶算法的限速包 <a href="https://godoc.org/golang.org/x/time/rate" target="_blank" rel="external nofollow noopener noreferrer">https://godoc.org/golang.org/x/time/rate</a>，一个简单的例子 <a href="https://pliutau.com/rate-limit-http-requests/" target="_blank" rel="external nofollow noopener noreferrer">https://pliutau.com/rate-limit-http-requests/</a> 。</li>
@@ -2307,8 +2313,8 @@ description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
 </ol>
 <br>
 
-<p><a name="ymvvh"></a></p>
-<h3 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h3><ol>
+<p><a name="cCStY"></a></p>
+<h4 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h4><ol>
 <li>《Go 语言从入门到进阶实战》名字俗了点，但是内容还是值得一读，作者对 Go 语言的使用还是很熟练的。</li>
 <li>《Go 语言高级编程》 <a href="https://github.com/chai2010/advanced-go-programming-book" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/chai2010/advanced-go-programming-book</a> rpc 相关的内容可以一读。</li>
 <li>Concurrency in Go</li>
