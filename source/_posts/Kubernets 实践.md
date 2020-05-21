@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Wed Apr 15 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu May 21 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -651,6 +651,10 @@ spec:
 net.ipv4.ip_local_port_range="12000 65535"
 ```
 
+
+<a name="RC1F0"></a>
+#### kubelet 启动时持续报错 node not found
+一般在经过几次报错后等节点注册成功就会正常，但是有些时候会出现持续报错，此时需要注意的是在 node not found 之前出现的错误，一般解决了这些前置错误就可以了。<br />
 
 <a name="iiFsk"></a>
 #### 十二因素应用
