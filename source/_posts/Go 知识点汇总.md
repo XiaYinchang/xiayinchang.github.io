@@ -9,7 +9,7 @@ abbrlink: defe85e8
 <br />
 <br />title: Go 知识点汇总
 date: 2019-10-12
-updated: 2020-05-18
+updated: 2020-05-21
 layout: post
 comments: true
 categories: Go
@@ -610,6 +610,50 @@ func getFoo(bar Bar) {
 //输出
 //123
 //124
+```
+
+
+<a name="YaySB"></a>
+#### json unmarshal 时会保留对象已有的值
+结论：<br />json unmarshal 会忽略结构体中小写字母开头的字段；对同一对象执行多次 unmarshal 会覆盖与前一次 unmarshal 同名的字段，前一次 unmarshal 得到的非同名字段会被保留。<br />代码：
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type Foo struct {
+    // 如果是 val1，将无法在 json.unmarshal 时被赋值成功
+	Val1 string
+	Val2 string
+	Val3Ptr *string
+}
+
+func main() {
+	var foo Foo
+	foo.Val1 = "val1"
+	foo.Val2 = "val2"
+	fmt.Printf("%+v\n", foo)
+	fooBytes, _ := json.Marshal(foo)
+	fmt.Printf("%+v\n", fooBytes)
+	fmt.Printf("%s\n", fooBytes)
+	json.Unmarshal([]byte(`{"Val1": "val1"}`), &foo)
+	fmt.Printf("%+v\n", foo)
+	json.Unmarshal([]byte(`{"val1": "val1-1", "val2": "val2", "val3ptr": "val3"}`), &foo)
+	fmt.Printf("%s\n", *foo.Val3Ptr)
+	fmt.Printf("%+v\n", foo)
+}
+```
+输出：
+```bash
+{Val1:val1 Val2:val2 Val3Ptr:<nil>}
+[123 34 86 97 108 49 34 58 34 118 97 108 49 34 44 34 86 97 108 50 34 58 34 118 97 108 50 34 44 34 86 97 108 51 80 116 114 34 58 110 117 108 108 125]
+{"Val1":"val1","Val2":"val2","Val3Ptr":null}
+{Val1:val1 Val2:val2 Val3Ptr:<nil>}
+val3
+{Val1:val1-1 Val2:val2 Val3Ptr:0xc000010370}
 ```
 
 
