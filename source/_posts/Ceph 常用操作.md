@@ -2,7 +2,7 @@
 title: Ceph 常用操作
 urlname: asu9v3
 date: '2019-09-03 00:00:00 +0800'
-updated: 'Tue Apr 21 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon May 25 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Ceph
@@ -479,6 +479,16 @@ ceph-volume inventory /dev/sda
 反应的问题是各个存储池 pg 数据量不均衡，可参考：[https://www.dazhuanlan.com/2019/08/23/5d5f27fe6de04/](https://www.dazhuanlan.com/2019/08/23/5d5f27fe6de04/)，[https://blog.csdn.net/ygtlovezf/article/details/60778091](https://blog.csdn.net/ygtlovezf/article/details/60778091)<br />临时解决，关闭不均衡告警，参考：[https://github.com/rook/rook/issues/4739](https://github.com/rook/rook/issues/4739)
 ```yaml
 ceph config set mgr mon_pg_warn_max_object_skew 0
+```
+
+
+<a name="DfzLB"></a>
+#### rgw 多个存储池的数据分布情况
+参考：[https://docs.ceph.com/docs/master/radosgw/layout/](https://docs.ceph.com/docs/master/radosgw/layout/)<br />如果需要快速清除所有 rgw 数据，可手动删除并重建 default.rgw.meta , default.rgw.buckets.index, default.rgw.buckets.data 存储池，需要执行 application enable 并重建用户和存储桶。
+```bash
+ceph osd pool application enable default.rgw.buckets.data rgw
+ceph osd pool ls detail
+radosgw-admin -n client.admin user create --uid=test --access-key=test --secret-key=test --display-name=test
 ```
 
 

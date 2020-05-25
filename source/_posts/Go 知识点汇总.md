@@ -730,6 +730,8 @@ string([]rune{'\u4F60', '\u597D'}) // 你好
 #### 使用 dlv 调试 Go 程序
 参考：[https://github.com/go-delve/delve/blob/master/Documentation/cli/expr.md](https://github.com/go-delve/delve/blob/master/Documentation/cli/expr.md)，[https://github.com/go-delve/delve/tree/master/Documentation/cli](https://github.com/go-delve/delve/tree/master/Documentation/cli)
 ```bash
+// 安装 dlv
+go get github.com/go-delve/delve/cmd/dlv
 // 编译带有 Debug 信息的程序
 CGO_ENABLED=0 go build -mod vendor -gcflags="all=-N -l" -o test main.go
 // 带参数启动调试

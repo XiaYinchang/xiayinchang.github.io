@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Mon May 18 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu May 21 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -926,6 +926,13 @@ pip install --ignore-installed -U ipython
 <a name="hyl9k"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
+
+<a name="xBMMc"></a>
+#### 常见工具的 IPV6 模式
+```bash
+scp -6 hyperkube root@[2003:da8:2004:1000:0a09:6ec4:0006:ed49]:/tmp
+```
+
 
 <a name="EsaA7"></a>
 #### 实用工具
