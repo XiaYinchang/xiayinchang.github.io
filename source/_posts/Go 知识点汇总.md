@@ -9,7 +9,7 @@ abbrlink: defe85e8
 <br />
 <br />title: Go 知识点汇总
 date: 2019-10-12
-updated: 2020-05-21
+updated: 2020-05-25
 layout: post
 comments: true
 categories: Go
@@ -725,6 +725,34 @@ Unicode 定义了一种编码规则，为每个（语言或表情）符号指定
 ```
 string([]byte{'\xe4', '\xbd', '\xa0', '\xe5', '\xa5', '\xbd'}) // 你好
 string([]rune{'\u4F60', '\u597D'}) // 你好
+```
+<a name="8UcUS"></a>
+#### 使用 dlv 调试 Go 程序
+参考：[https://github.com/go-delve/delve/blob/master/Documentation/cli/expr.md](https://github.com/go-delve/delve/blob/master/Documentation/cli/expr.md)，[https://github.com/go-delve/delve/tree/master/Documentation/cli](https://github.com/go-delve/delve/tree/master/Documentation/cli)
+```bash
+// 编译带有 Debug 信息的程序
+CGO_ENABLED=0 go build -mod vendor -gcflags="all=-N -l" -o test main.go
+// 带参数启动调试
+dlv exec ./test -- --log-level debug --config conf/config.toml
+// 查看文件路径
+sources
+// 通过文件名设置断点
+b /home/xyc/Development/test/main.go:34
+// 通过函数名设置断点
+// 在函数入口处设置断点
+b logic.getClusterInfo
+// 在函数内第一行代码处设置断点
+b logic.getClusterInfo:1 
+// 打印当前执行环境的所有局部变量
+locals
+// 打印指定的变量
+p tmpBytes
+// []byte转换为字符串打印
+p string(tmpBytes)
+// 每次执行到断点 1 处自动执行某种操作
+on 1 print tmpBytes
+// 当满足某个条件时触发断点
+condition 1 tmpTimes > 6
 ```
 <br />
 <a name="2EBTq"></a>
