@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Thu May 21 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue May 26 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -300,86 +300,7 @@ sudo apt-get autoremove --purge
 
 - 替换 tab 为空格
 
-`:%s/\t/  /g`
-<a name="FfBcn"></a>
-#### Git
-
-- 修改历史 commit 信息
-```
-git rebase -i HEAD~2
-pick -> edit
-git commit --amend
-git rebase --continue
-```
-
-
-- 修改 commit 时间
-```
-# 设置为当前时间
-GIT_COMMITTER_DATE="$(date '+%Y-%m-%d %H:%M:%S')" git commit --amend --no-edit --date "$(date)"
-# 设置为指定时间
-GIT_COMMITTER_DATE="Mon 20 Aug 2018 20:19:19 BST" git commit --amend --no-edit --date "Mon 20 Aug 2018 20:19:19 BST"
-```
-
-
-- 比较两个分支的不同
-```
-git diff branch_1..branch_2
-```
-
-
-- merge 时使用指定方代码解决冲突
-```go
-git merge -X theirs origin/dev
-git merge -X ours origin/dev
-```
-
-
-- 查看一个文件完整的修改历史
-```
-git log --follow -p -- _config.yml
-```
-
-
-- 将当前分支下子目录内容提交至另一个分支
-```
-git subtree push --prefix dist origin gh-pages
-```
-
-
-- 删除 submodule
-```
-git submodule deinit <path_to_submodule>
-git rm <path_to_submodule>
-git commit -m "Removed submodule "
-```
-
-
-- 合并所有 commit 为一个
-```
-git rebase --root -i
-// 使用以下命令可以将需要 rebase 的 commit 的时间全部设置为当前时间
-git rebase --ignore-date 303a824f46b497f71582e2e5d493c132b85e3e0a
-```
-
-
-- 删除所有没有远程分支的本地分支
-```
-git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d
-```
-
-
-- 撤销某个 commit
-```
-git revert --strategy resolve <commit>
-```
-
-
-- 使用 ssh 替代 https 访问
-```bash
-git config --global url."git@git.ucloudadmin.com:".insteadOf "https://git.ucloudadmin.com/"
-```
-
+`:%s/\t/  /g`<br />
 
 <a name="Qgmi6"></a>
 #### Ansible
@@ -923,7 +844,44 @@ pip install --ignore-installed -U ipython
 ```
 
 
-<a name="hyl9k"></a>
+<a name="TYmp4"></a>
+#### head/tail/dd 截取文件中部分内容
+```bash
+head -n 100 file   # 前 100 行
+head -c 100 file   # 前 100 字符
+tail -n 100 file   # 后 100 行
+tail -c 100 file   # 后 100 字符
+head -n 10 /var/log/pacman.log | tail -n 1                    # 第 10 行
+dd count=5 bs=1 if=/var/log/pacman.log 2>/dev/null            # 前 5 个字符
+head -n 10 /var/log/pacman.log | tail -n 1 | cut -c 10-15     # 第 10 行的第 10 到 15 个字符
+```
+<a name="vc5dh"></a>
+#### 快速生成大文件用于占位空间
+参见：[https://askubuntu.com/questions/506910/creating-a-large-size-file-in-less-time](https://askubuntu.com/questions/506910/creating-a-large-size-file-in-less-time)
+```bash
+# 仅对支持该操作的文件系统有效，仅为一次系统调用，无 IO 读写，预分配空间，速度快，使用 du 查看确实占用了 5G 空间
+fallocate -l 5G example_file
+# 仅对支持该操作的文件系统有效，仅在文件末尾写入一个字节，使用 du 查看未见占用 10G 空间，有效性存疑
+dd if=/dev/zero of=zeros.img count=1 bs=1 seek=$((10 * 1024 * 1024 * 1024 - 1)) 
+# 常规的做法
+dd if=/dev/urandom of=test1 bs=1M count=10240   # 用随机数填充文件
+dd if=/dev/zero of=zero.img count=1024 bs=10M # 用 0 填充文件
+
+```
+<a name="NyjiF"></a>
+#### /dev/null、/dev/zero、/dev/random和/dev/urandom
+参考：[https://blog.csdn.net/sinat_26058371/article/details/86754683](https://blog.csdn.net/sinat_26058371/article/details/86754683)
+```bash
+# /dev/null “空”设备，又称黑洞。任何输入到这个“设备”的数据都将被直接丢弃。最常用的用法是把不需要的输出重定向到这个文件。
+run.sh 1>/dev/null 2>&1  #将标准输出和错误输出重定向到/dev/null，运行这个脚本不会输出任何信息到终端
+# /dev/zero “零”设备，可以无限的提供空字符（0x00，ASCII代码NUL）。常用来生成一个特定大小的文件。
+dd if=/dev/zero of=./output.txt bs=1024 count=1 #产生一个1k大小的文件output.txt
+# /dev/random 和 /dev/urandom 是随机数设备，提供不间断的随机字节流。
+# /dev/random 产生随机数据依赖系统中断，当系统中断不足时，/dev/random 设备会“挂起”，因而产生数据速度较慢，但随机性好；
+# /dev/urandom 不依赖系统中断，数据产生速度快，但随机性较低。
+str=$(cat /dev/urandom | od -x | tr -d ' ' | head -n 1) # 利用 /dev/urandom 设备产生一个 128 位的随机字符串
+```
+<a name="HuRwm"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
 
