@@ -50,15 +50,16 @@
   };
 </script>
 
-  <meta name="description" content="关于 slice 的初始化执行代码：123456789101112package mainimport (	&quot;fmt&quot;)func main() &amp;#123;	var tmpSlice []int	fmt.Printf(&quot;value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n&quot;, tmpSlice, len(tmpSlic">
+  <meta name="description" content="汇总对 Go 语言的基本理解、编程方法和开源库等。">
+<meta name="keywords" content="Go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go 知识点汇总">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;defe85e8.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="关于 slice 的初始化执行代码：123456789101112package mainimport (	&quot;fmt&quot;)func main() &amp;#123;	var tmpSlice []int	fmt.Printf(&quot;value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n&quot;, tmpSlice, len(tmpSlic">
+<meta property="og:description" content="汇总对 Go 语言的基本理解、编程方法和开源库等。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&amp;display=inline&amp;height=424&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=424&amp;originWidth=953&amp;size=146883&amp;status=done&amp;style=none&amp;width=953">
-<meta property="og:updated_time" content="2019-10-12T02:19:35.000Z">
+<meta property="og:updated_time" content="2020-05-24T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&amp;display=inline&amp;height=424&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=424&amp;originWidth=953&amp;size=146883&amp;status=done&amp;style=none&amp;width=953">
 
@@ -233,7 +234,25 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-10-12 10:19:35" itemprop="dateCreated datePublished" datetime="2019-10-12T10:19:35+08:00">2019-10-12</time>
+              <time title="创建时间：2019-10-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-12T00:00:00+08:00">2019-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-25 00:00:00" itemprop="dateModified" datetime="2020-05-25T00:00:00+08:00">2020-05-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
+                  </a>
+                </span>
             </span>
 
           
@@ -258,6 +277,7 @@
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>15 分钟</span>
             </span>
+            <div class="post-description">汇总对 Go 语言的基本理解、编程方法和开源库等。</div>
 
         </div>
       </header>
@@ -268,21 +288,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <br><br><hr><p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
-title: Go 知识点汇总
-date: 2019-10-12
-updated: 2020-05-25
-layout: post
-comments: true
-categories: Go
-tags: [Go]
-keywords: Go
-description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
-
-
-
-
-
+        <p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
 <p>输出：</p>
@@ -443,6 +449,24 @@ description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
     
     
       
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/46e95013.html" rel="bookmark">Go 实现长轮询：一个服务端超时设置的故事</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/d2033f7a.html" rel="bookmark">Go 语言流式 IO</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/35963400.html" rel="bookmark">Go整洁架构实践</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/f901e5ff.html" rel="bookmark">Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/ab759786.html" rel="bookmark">gRPC snippets</a></div>
+    </li>
+  </ul>
 
         <div class="reward-container">
   <div></div>
@@ -478,6 +502,9 @@ description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
       </script>
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
 
         
 
