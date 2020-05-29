@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Tue May 26 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri May 29 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -882,6 +882,16 @@ dd if=/dev/zero of=./output.txt bs=1024 count=1 #产生一个1k大小的文件ou
 str=$(cat /dev/urandom | od -x | tr -d ' ' | head -n 1) # 利用 /dev/urandom 设备产生一个 128 位的随机字符串
 ```
 <a name="HuRwm"></a>
+#### iptables
+```bash
+// 备份 filter 表
+iptables-save -t filter > iptables.bak
+// 从备份恢复
+iptables-restor < iptables.bak
+```
+
+
+<a name="y3vg8"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
 
