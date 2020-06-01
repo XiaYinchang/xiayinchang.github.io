@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Fri May 29 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Mon Jun 01 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -805,6 +805,12 @@ lsb_release -is
 ```
 
 
+<a name="kMFK1"></a>
+#### 判断文件是否存在
+```bash
+// -f 判断文件存在
+if [ ! -f "/usr/local/bin/hyperkube.bak" ]; then cp /usr/local/bin/hyperkube /usr/local/bin/hyperkube.bak; fi
+```
 <a name="5xOak"></a>
 #### sshpass 跳过 hostkey 检查
 ```bash
