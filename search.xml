@@ -320,6 +320,8 @@
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># centos 需要安装支持软件</span></span><br><span class="line"><span class="string">yum</span> <span class="string">install</span> <span class="string">redhat-lsb-core</span></span><br><span class="line"><span class="comment"># debian 可以直接使用</span></span><br><span class="line"><span class="string">lsb_release</span> <span class="string">-is</span></span><br></pre></td></tr></table></figure>
 
 
+<p><a name="kMFK1"></a></p>
+<h4 id="判断文件是否存在"><a href="#判断文件是否存在" class="headerlink" title="判断文件是否存在"></a>判断文件是否存在</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// -f 判断文件存在</span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">"/usr/local/bin/hyperkube.bak"</span> ]; <span class="keyword">then</span> cp /usr/<span class="built_in">local</span>/bin/hyperkube /usr/<span class="built_in">local</span>/bin/hyperkube.bak; <span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 <p><a name="5xOak"></a></p>
 <h4 id="sshpass-跳过-hostkey-检查"><a href="#sshpass-跳过-hostkey-检查" class="headerlink" title="sshpass 跳过 hostkey 检查"></a>sshpass 跳过 hostkey 检查</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sshpass -p password scp -o StrictHostKeyChecking=no -r <span class="built_in">test</span>/ root@10.8.53.47:/tmp/<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 
