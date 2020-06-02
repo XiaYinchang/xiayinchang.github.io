@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Mon May 25 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Jun 02 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -114,7 +114,7 @@ _, err = common.AppsClient.Deployments(config.UMStorInfraNamespace).Update(&k8s_
 #### 证书
 
 - 为 Ingress Host 生成自签名证书
-  - 简易方法
+   - 简易方法
 
 参考：[https://kubernetes.github.io/ingress-nginx/user-guide/tls/](https://kubernetes.github.io/ingress-nginx/user-guide/tls/)
 ```bash
@@ -127,7 +127,7 @@ kubectl create secret tls ${CERT_NAME} --key ${KEY_FILE} --cert ${CERT_FILE}
 ```
 
 
-  - 定制
+   - 定制
 
 参考： [https://mritd.me/2017/03/04/how-to-use-nginx-ingress/](https://mritd.me/2017/03/04/how-to-use-nginx-ingress/)
 ```bash
@@ -658,7 +658,7 @@ net.ipv4.ip_local_port_range="12000 65535"
 
 <a name="HFden"></a>
 #### 编译带 debug 信息的 kubernetes 组件
-修改 `hack/lib/golang.sh b/hack/lib/golang.sh` 文件，将 `goldflags="${GOLDFLAGS:-} -s -w $(kube::version::ldflags)"` 修改为 `goldflags="${GOLDFLAGS:-} $(kube::version::ldflags)"`。<br />
+修改 `hack/lib/golang.sh b/hack/lib/golang.sh` 文件，将 `goldflags="${GOLDFLAGS:-} -s -w $(kube::version::ldflags)"` 修改为 `goldflags="${GOLDFLAGS:-} $(kube::version::ldflags)"`。
 ```bash
 // 执行以下命令编译所需二进制程序：
 make hyperkube GOGCFLAGS="all=-N -l"
@@ -717,6 +717,12 @@ kubectl get pods -n rook-ceph -owide |grep -i Evicted | awk '{print $1}'| xargs 
 
 ```
 kubectl get pods -n rook-ceph | grep -i Evicted | sed 's/\s\s*/ /g' |cut -d" " -f1 | xargs kubectl delete pod -n rook-ceph --force --grace-period=0
+```
+
+
+- 列出所有位于指定节点的 pod
+```bash
+kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=10.25.150.64
 ```
 
 
