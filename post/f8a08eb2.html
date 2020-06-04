@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="Docker 相关的基础知识与常用操作记录。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-19T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-06-03T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/f8a08eb2.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-20 00:00:00" itemprop="dateModified" datetime="2020-05-20T00:00:00+08:00">2020-05-20</time>
+                <time title="修改时间：2020-06-04 00:00:00" itemprop="dateModified" datetime="2020-06-04T00:00:00+08:00">2020-06-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,14 +266,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.4k</span>
+              <span>2.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
             <div class="post-description">Docker 相关的基础知识与常用操作记录。</div>
 
@@ -343,6 +343,11 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker $USER</span><br><span class="line">newgrp docker</span><br></pre></td></tr></table></figure>
 <p><a name="89GwP"></a></p>
 <h4 id="使用远程服务器的-docker-服务"><a href="#使用远程服务器的-docker-服务" class="headerlink" title="使用远程服务器的 docker 服务"></a>使用远程服务器的 docker 服务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker context create my-remote-docker-machine --docker &quot;host=ssh://username@host:port&quot;</span><br></pre></td></tr></table></figure>
+<p><a name="kolPW"></a></p>
+<h4 id="限制容器-rootfs-可用的磁盘大小"><a href="#限制容器-rootfs-可用的磁盘大小" class="headerlink" title="限制容器 rootfs 可用的磁盘大小"></a>限制容器 rootfs 可用的磁盘大小</h4><p>参见：<a href="https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/" target="_blank" rel="external nofollow noopener noreferrer">https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/</a>，<a href="https://www.thegeekdiary.com/how-to-enable-disk-quotas-on-an-xfs-file-system/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/how-to-enable-disk-quotas-on-an-xfs-file-system/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先 /var/lib/docker 所在分区挂载时应添加 pquota 选项</span></span><br><span class="line">UUID=.... /home xfs defaults,uquota,pquota 0 0</span><br><span class="line"><span class="comment"># 在创建容器时添加指定相关参数</span></span><br><span class="line">$ sudo docker run -it --storage-opt size=12m alpine:latest /bin/df -h | grep overlay</span><br><span class="line">overlay 12.0M 8.0K 12.0M 0% /</span><br></pre></td></tr></table></figure>
+
+
 
 
     </div>
@@ -467,7 +472,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按指定格式输出Images信息"><span class="nav-number">2.</span> <span class="nav-text">按指定格式输出Images信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用镜像源下载-docker-image"><span class="nav-number">3.</span> <span class="nav-text">使用镜像源下载 docker image</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新建容器时加入已有容器网络"><span class="nav-number">4.</span> <span class="nav-text">新建容器时加入已有容器网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-容器的四种网络模型"><span class="nav-number">5.</span> <span class="nav-text">docker 容器的四种网络模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看-docker-registry-中的镜像信息"><span class="nav-number">6.</span> <span class="nav-text">查看 docker registry 中的镜像信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-指定-tcp-监听地址"><span class="nav-number">7.</span> <span class="nav-text">docker 指定 tcp 监听地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除私有-registry-中损坏的镜像"><span class="nav-number">8.</span> <span class="nav-text">删除私有 registry 中损坏的镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-push-时报错-file-integrity-checksum-failed"><span class="nav-number">9.</span> <span class="nav-text">docker push 时报错 file integrity checksum failed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#允许非-root-用户使用-docker"><span class="nav-number">10.</span> <span class="nav-text">允许非 root 用户使用 docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用远程服务器的-docker-服务"><span class="nav-number">11.</span> <span class="nav-text">使用远程服务器的 docker 服务</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按指定格式输出Images信息"><span class="nav-number">2.</span> <span class="nav-text">按指定格式输出Images信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用镜像源下载-docker-image"><span class="nav-number">3.</span> <span class="nav-text">使用镜像源下载 docker image</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新建容器时加入已有容器网络"><span class="nav-number">4.</span> <span class="nav-text">新建容器时加入已有容器网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-容器的四种网络模型"><span class="nav-number">5.</span> <span class="nav-text">docker 容器的四种网络模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看-docker-registry-中的镜像信息"><span class="nav-number">6.</span> <span class="nav-text">查看 docker registry 中的镜像信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-指定-tcp-监听地址"><span class="nav-number">7.</span> <span class="nav-text">docker 指定 tcp 监听地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除私有-registry-中损坏的镜像"><span class="nav-number">8.</span> <span class="nav-text">删除私有 registry 中损坏的镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-push-时报错-file-integrity-checksum-failed"><span class="nav-number">9.</span> <span class="nav-text">docker push 时报错 file integrity checksum failed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#允许非-root-用户使用-docker"><span class="nav-number">10.</span> <span class="nav-text">允许非 root 用户使用 docker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用远程服务器的-docker-服务"><span class="nav-number">11.</span> <span class="nav-text">使用远程服务器的 docker 服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限制容器-rootfs-可用的磁盘大小"><span class="nav-number">12.</span> <span class="nav-text">限制容器 rootfs 可用的磁盘大小</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -551,7 +556,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:15</span>
+    <span title="站点阅读时长">3:16</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
