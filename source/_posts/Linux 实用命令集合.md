@@ -930,6 +930,14 @@ findmnt -o FSTYPE
 ```
 
 
+<a name="1FJ0W"></a>
+#### systemctl
+```bash
+# 判断服务是否存活
+systemctl is-active --quiet service
+```
+
+
 <a name="y3vg8"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
