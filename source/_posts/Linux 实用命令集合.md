@@ -906,6 +906,19 @@ awk '$2~"^/home$"{$4="acl,"$4}1' OFS="\t" /etc/fstab
 ```
 
 
+<a name="LtjCm"></a>
+#### 判断字符串包含子串
+参见：[https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash](https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash)
+```bash
+string='My string';
+# 会进行整个字符串的匹配，不需要加通配符
+if [[ $string =~ "My" ]]
+then
+   echo "It's there!"
+fi
+```
+
+
 <a name="y3vg8"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
