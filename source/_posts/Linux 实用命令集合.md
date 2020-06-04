@@ -895,8 +895,6 @@ iptables-save -t filter > iptables.bak
 // 从备份恢复
 iptables-restor < iptables.bak
 ```
-
-
 <a name="UtLof"></a>
 #### awk
 修改 fstab ，添加 mount option，参见： [https://stackoverflow.com/a/9119317](https://stackoverflow.com/a/9119317)
@@ -904,9 +902,7 @@ iptables-restor < iptables.bak
 // 为 /home 挂载添加 acl 配置
 awk '$2~"^/home$"{$4="acl,"$4}1' OFS="\t" /etc/fstab
 ```
-
-
-<a name="LtjCm"></a>
+<a name="C3YgL"></a>
 #### 判断字符串包含子串
 参见：[https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash](https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash)
 ```bash
@@ -916,6 +912,20 @@ if [[ $string =~ "My" ]]
 then
    echo "It's there!"
 fi
+```
+<a name="ujq6H"></a>
+#### findmnt
+```bash
+# 列出所有 ext4 文件系统
+findmnt -t ext4
+# 查找 /data 挂载点
+findmnt -T /data
+# 在 /etc/fstab 中查找挂载点
+findmnt -s
+# 隐藏打印的信息列头
+findmnt -n
+# 指定输出的列
+findmnt -o FSTYPE
 ```
 
 
