@@ -436,6 +436,10 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出所有 ext4 文件系统</span></span><br><span class="line">findmnt -t ext4</span><br><span class="line"><span class="comment"># 查找 /data 挂载点</span></span><br><span class="line">findmnt -T /data</span><br><span class="line"><span class="comment"># 在 /etc/fstab 中查找挂载点</span></span><br><span class="line">findmnt -s</span><br><span class="line"><span class="comment"># 隐藏打印的信息列头</span></span><br><span class="line">findmnt -n</span><br><span class="line"><span class="comment"># 指定输出的列</span></span><br><span class="line">findmnt -o FSTYPE</span><br></pre></td></tr></table></figure>
 
 
+<p><a name="1FJ0W"></a></p>
+<h4 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 判断服务是否存活</span></span><br><span class="line">systemctl is-active --quiet service</span><br></pre></td></tr></table></figure>
+
+
 <p><a name="y3vg8"></a></p>
 <h4 id="部署-STUN-服务"><a href="#部署-STUN-服务" class="headerlink" title="部署 STUN 服务"></a>部署 STUN 服务</h4><p>参考：<a href="https://github.com/coturn/coturn" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/coturn/coturn</a>，<a href="http://www.stunprotocol.org/" target="_blank" rel="external nofollow noopener noreferrer">http://www.stunprotocol.org/</a>，<a href="https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/" target="_blank" rel="external nofollow noopener noreferrer">https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/</a><br></p>
 <p><a name="xBMMc"></a></p>
@@ -3553,8 +3557,8 @@
         <category>读书笔记</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>读书</tag>
+        <tag>笔记</tag>
         <tag>物联网</tag>
       </tags>
   </entry>
