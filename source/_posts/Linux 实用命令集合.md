@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Mon Jun 01 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Thu Jun 04 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -894,6 +894,15 @@ str=$(cat /dev/urandom | od -x | tr -d ' ' | head -n 1) # 利用 /dev/urandom �
 iptables-save -t filter > iptables.bak
 // 从备份恢复
 iptables-restor < iptables.bak
+```
+
+
+<a name="UtLof"></a>
+#### awk
+修改 fstab ，添加 mount option，参见： [https://stackoverflow.com/a/9119317](https://stackoverflow.com/a/9119317)
+```bash
+// 为 /home 挂载添加 acl 配置
+awk '$2~"^/home$"{$4="acl,"$4}1' OFS="\t" /etc/fstab
 ```
 
 
