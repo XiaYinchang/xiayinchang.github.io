@@ -915,6 +915,7 @@ fi
 ```
 <a name="ujq6H"></a>
 #### findmnt
+参见： [https://www.tecmint.com/find-mounted-file-systems-in-linux/](https://www.tecmint.com/find-mounted-file-systems-in-linux/)
 ```bash
 # 列出所有 ext4 文件系统
 findmnt -t ext4
