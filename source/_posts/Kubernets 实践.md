@@ -2,7 +2,7 @@
 title: "Kubernetes\_实践"
 urlname: kgmvfu
 date: '2019-11-13 00:00:00 +0800'
-updated: 'Tue Jun 02 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Fri Jun 05 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Kubernetes
@@ -666,6 +666,7 @@ make hyperkube GOGCFLAGS="all=-N -l"
 dlv exec ./hyperkube
 ```
 
+<br />subpath 挂载 configmap 文件不能自动更新的问题<br />参考：[https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-391888999](https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-391888999)，不使用 subpath，另建一个目录专门挂载 configmap，从而不会覆盖原目录及其文件，在原目录建一个符号链接指向 confgimap 挂载路径，从而能够利用到自动更新机制。<br />
 
 <a name="iiFsk"></a>
 #### 十二因素应用
