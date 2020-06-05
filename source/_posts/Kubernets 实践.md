@@ -666,7 +666,15 @@ make hyperkube GOGCFLAGS="all=-N -l"
 dlv exec ./hyperkube
 ```
 
-<br />subpath 挂载 configmap 文件不能自动更新的问题<br />参考：[https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-391888999](https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-391888999)，不使用 subpath，另建一个目录专门挂载 configmap，从而不会覆盖原目录及其文件，在原目录建一个符号链接指向 confgimap 挂载路径，从而能够利用到自动更新机制。<br />
+
+<a name="TWId1"></a>
+#### subpath 挂载 configmap 文件不能自动更新的问题
+参考：[https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-391888999](https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-391888999)，不使用 subpath，另建一个目录专门挂载 configmap，从而不会覆盖原目录及其文件，在原目录建一个符号链接指向 confgimap 挂载路径，从而能够利用到自动更新机制。<br />
+
+<a name="WPYBb"></a>
+#### OOM 时 PreStop 钩子无法发挥作用
+当 Pod 内存使用超出 Limit 时，会被内核 oom_killer 杀死，此时由于不是通过 apiserver 发出的删除 pod 调用也不是 Pod 自身的主动终止，所以 PreStop 并不会被触发，为了能够在内存使用超限被杀死前触发 PreStop，一种 walkaround 是通过一个监测内存使用量的程序在内存即将超限（例如 95% ）之前实施自杀，从而能够触发 PreStop ，可参考 ：[https://github.com/16Bitt/kubemem](https://github.com/16Bitt/kubemem)。<br />
+<br />
 
 <a name="iiFsk"></a>
 #### 十二因素应用
