@@ -59,7 +59,7 @@
 <meta property="og:description" content="汇总对 Go 语言的基本理解、编程方法和开源库等。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&amp;display=inline&amp;height=424&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=424&amp;originWidth=953&amp;size=146883&amp;status=done&amp;style=none&amp;width=953">
-<meta property="og:updated_time" content="2020-05-24T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-06-08T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&amp;display=inline&amp;height=424&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=424&amp;originWidth=953&amp;size=146883&amp;status=done&amp;style=none&amp;width=953">
 
@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-25 00:00:00" itemprop="dateModified" datetime="2020-05-25T00:00:00+08:00">2020-05-25</time>
+                <time title="修改时间：2020-06-09 00:00:00" itemprop="dateModified" datetime="2020-06-09T00:00:00+08:00">2020-06-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -275,7 +275,7 @@
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>15 分钟</span>
+              <span>16 分钟</span>
             </span>
             <div class="post-description">汇总对 Go 语言的基本理解、编程方法和开源库等。</div>
 
@@ -418,6 +418,11 @@
 <p><a name="8UcUS"></a></p>
 <h4 id="使用-dlv-调试-Go-程序"><a href="#使用-dlv-调试-Go-程序" class="headerlink" title="使用 dlv 调试 Go 程序"></a>使用 dlv 调试 Go 程序</h4><p>参考：<a href="https://github.com/go-delve/delve/blob/master/Documentation/cli/expr.md" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/go-delve/delve/blob/master/Documentation/cli/expr.md</a>，<a href="https://github.com/go-delve/delve/tree/master/Documentation/cli" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/go-delve/delve/tree/master/Documentation/cli</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// 安装 dlv</span><br><span class="line">go get github.com/go-delve/delve/cmd/dlv</span><br><span class="line">// 编译带有 Debug 信息的程序</span><br><span class="line">CGO_ENABLED=0 go build -mod vendor -gcflags=<span class="string">"all=-N -l"</span> -o <span class="built_in">test</span> main.go</span><br><span class="line">// 带参数启动调试</span><br><span class="line">dlv <span class="built_in">exec</span> ./<span class="built_in">test</span> -- --<span class="built_in">log</span>-level debug --config conf/config.toml</span><br><span class="line">// 查看文件路径</span><br><span class="line">sources</span><br><span class="line">// 通过文件名设置断点</span><br><span class="line">b /home/xyc/Development/<span class="built_in">test</span>/main.go:34</span><br><span class="line">// 通过函数名设置断点</span><br><span class="line">// 在函数入口处设置断点</span><br><span class="line">b logic.getClusterInfo</span><br><span class="line">// 在函数内第一行代码处设置断点</span><br><span class="line">b logic.getClusterInfo:1 </span><br><span class="line">// 打印当前执行环境的所有局部变量</span><br><span class="line">locals</span><br><span class="line">// 打印指定的变量</span><br><span class="line">p tmpBytes</span><br><span class="line">// []byte转换为字符串打印</span><br><span class="line">p string(tmpBytes)</span><br><span class="line">// 每次执行到断点 1 处自动执行某种操作</span><br><span class="line">on 1 <span class="built_in">print</span> tmpBytes</span><br><span class="line">// 当满足某个条件时触发断点</span><br><span class="line">condition 1 tmpTimes &gt; 6</span><br></pre></td></tr></table></figure>
+<br>
+<a name="iHfra"></a>
+#### 检查字符串是否符合 base64 编码
+参考：[https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not](https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not)
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func CheckValidBase64(src string) bool &#123;</span><br><span class="line">	matched, _ := regexp.Match(`^([A-Za-z0-9+/]&#123;4&#125;)*([A-Za-z0-9+/]&#123;3&#125;=|[A-Za-z0-9+/]&#123;2&#125;==)?$`, []byte(src))</span><br><span class="line">	<span class="built_in">return</span> matched</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <br>
 <a name="2EBTq"></a>
 #### WebAssembly
@@ -642,13 +647,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">216k</span>
+    <span title="站点总字数">217k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:16</span>
+    <span title="站点阅读时长">3:17</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
