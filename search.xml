@@ -371,8 +371,9 @@
 
 
 <p><a name="y3vg8"></a></p>
-<h4 id="部署-STUN-服务"><a href="#部署-STUN-服务" class="headerlink" title="部署 STUN 服务"></a>部署 STUN 服务</h4><p>参考：<a href="https://github.com/coturn/coturn" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/coturn/coturn</a>，<a href="http://www.stunprotocol.org/" target="_blank" rel="external nofollow noopener noreferrer">http://www.stunprotocol.org/</a>，<a href="https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/" target="_blank" rel="external nofollow noopener noreferrer">https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/</a><br><br><br>常见工具的 IPV6 模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp -6 hyperkube root@[2003:da8:2004:1000:0a09:6ec4:0006:ed49]:/tmp</span><br></pre></td></tr></table></figure>
+<h4 id="部署-STUN-服务"><a href="#部署-STUN-服务" class="headerlink" title="部署 STUN 服务"></a>部署 STUN 服务</h4><p>参考：<a href="https://github.com/coturn/coturn" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/coturn/coturn</a>，<a href="http://www.stunprotocol.org/" target="_blank" rel="external nofollow noopener noreferrer">http://www.stunprotocol.org/</a>，<a href="https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/" target="_blank" rel="external nofollow noopener noreferrer">https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/</a><br></p>
+<p><a name="d8YOA"></a></p>
+<h4 id="常见工具的-IPV6-模式"><a href="#常见工具的-IPV6-模式" class="headerlink" title="常见工具的 IPV6 模式"></a>常见工具的 IPV6 模式</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp -6 hyperkube root@[2003:da8:2004:1000:0a09:6ec4:0006:ed49]:/tmp</span><br><span class="line">ping6 2003:da8:2004:1000:0a2a:1e5e:0122:d75b</span><br></pre></td></tr></table></figure>
 
 
 <p><a name="EsaA7"></a></p>
@@ -3569,8 +3570,8 @@
         <category>读书笔记</category>
       </categories>
       <tags>
-        <tag>读书</tag>
         <tag>笔记</tag>
+        <tag>读书</tag>
         <tag>物联网</tag>
       </tags>
   </entry>
