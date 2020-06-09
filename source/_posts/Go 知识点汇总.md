@@ -2,7 +2,7 @@
 title: Go 知识点汇总
 urlname: sfexfo
 date: '2019-10-12 00:00:00 +0800'
-updated: 'Mon May 25 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Jun 09 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 comments: true
 categories: Go
@@ -747,6 +747,16 @@ p string(tmpBytes)
 on 1 print tmpBytes
 // 当满足某个条件时触发断点
 condition 1 tmpTimes > 6
+```
+<br />
+<a name="iHfra"></a>
+#### 检查字符串是否符合 base64 编码
+参考：[https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not](https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not)
+```bash
+func CheckValidBase64(src string) bool {
+	matched, _ := regexp.Match(`^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$`, []byte(src))
+	return matched
+}
 ```
 <br />
 <a name="2EBTq"></a>

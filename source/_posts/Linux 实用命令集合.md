@@ -357,6 +357,8 @@ man man
 man exit
 // 查看 exit 系统调用使用说明，指定 section 为 2（系统调用手册所在区）
 man 2 exit
+// 如果提示 No entry in section 2 ，可尝试安装 man-pages
+yay -S man-pages
 ```
 
 
