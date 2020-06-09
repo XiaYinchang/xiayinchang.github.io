@@ -951,9 +951,12 @@ shellcheck tmp.sh
 <a name="y3vg8"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
-<br />常见工具的 IPV6 模式
+
+<a name="d8YOA"></a>
+#### 常见工具的 IPV6 模式
 ```bash
 scp -6 hyperkube root@[2003:da8:2004:1000:0a09:6ec4:0006:ed49]:/tmp
+ping6 2003:da8:2004:1000:0a2a:1e5e:0122:d75b
 ```
 
 
