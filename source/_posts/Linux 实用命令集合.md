@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Thu Jun 04 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Jun 09 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -938,12 +938,20 @@ systemctl is-active --quiet service
 ```
 
 
+<a name="5f7Ry"></a>
+#### shell 脚本语法校验
+参考：[https://stackoverflow.com/questions/171924/how-do-i-syntax-check-a-bash-script-without-running-it](https://stackoverflow.com/questions/171924/how-do-i-syntax-check-a-bash-script-without-running-it)
+```bash
+bash -n tmp.sh
+// 或者安装 shellcheck 工具
+shellcheck tmp.sh
+```
+
+
 <a name="y3vg8"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
-
-<a name="xBMMc"></a>
-#### 常见工具的 IPV6 模式
+<br />常见工具的 IPV6 模式
 ```bash
 scp -6 hyperkube root@[2003:da8:2004:1000:0a09:6ec4:0006:ed49]:/tmp
 ```
