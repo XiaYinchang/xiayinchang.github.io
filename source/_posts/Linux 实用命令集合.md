@@ -950,6 +950,22 @@ shellcheck tmp.sh
 ```
 
 
+<a name="vcsBE"></a>
+#### 带超时的循环
+参考：[https://stackoverflow.com/questions/27555727/timeouting-a-while-loop-in-linux-shell-script](https://stackoverflow.com/questions/27555727/timeouting-a-while-loop-in-linux-shell-script)
+```bash
+timeout 5 bash -c -- 'while true; do printf ".";done'
+```
+
+
+<a name="EvNGL"></a>
+#### shell 中打印带日期的日志
+参考：[https://serverfault.com/a/310099](https://serverfault.com/a/310099)
+```bash
+echo $(date -u) "Some message or other"
+```
+
+
 <a name="y3vg8"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
