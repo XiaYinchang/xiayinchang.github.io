@@ -380,6 +380,11 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> $(date -u) <span class="string">"Some message or other"</span></span><br></pre></td></tr></table></figure>
 
 
+<p><a name="EdMy4"></a></p>
+<h4 id="ssh-debug-带时间戳"><a href="#ssh-debug-带时间戳" class="headerlink" title="ssh debug 带时间戳"></a>ssh debug 带时间戳</h4><p>参考： <a href="https://blog.csdn.net/sinat_38723234/article/details/103216464" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/sinat_38723234/article/details/103216464</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">time ssh -v 192.168.255.128 id 2&gt;&amp;1  | perl -pe <span class="string">'use Time::HiRes qw( time ); $_ = sprintf("%.6f %s", time(), $_)'</span></span><br></pre></td></tr></table></figure>
+
+
 <p><a name="y3vg8"></a></p>
 <h4 id="部署-STUN-服务"><a href="#部署-STUN-服务" class="headerlink" title="部署 STUN 服务"></a>部署 STUN 服务</h4><p>参考：<a href="https://github.com/coturn/coturn" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/coturn/coturn</a>，<a href="http://www.stunprotocol.org/" target="_blank" rel="external nofollow noopener noreferrer">http://www.stunprotocol.org/</a>，<a href="https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/" target="_blank" rel="external nofollow noopener noreferrer">https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/</a><br></p>
 <p><a name="d8YOA"></a></p>
