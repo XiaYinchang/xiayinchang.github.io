@@ -667,7 +667,7 @@
 
 
 <p><a name="EdMy4"></a></p>
-<h4 id="ssh-debug-带时间戳"><a href="#ssh-debug-带时间戳" class="headerlink" title="ssh debug 带时间戳"></a>ssh debug 带时间戳</h4><p>参考： <a href="https://blog.csdn.net/sinat_38723234/article/details/103216464" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/sinat_38723234/article/details/103216464</a></p>
+<h4 id="ssh-debug-带时间戳"><a href="#ssh-debug-带时间戳" class="headerlink" title="ssh debug 带时间戳"></a>ssh debug 带时间戳</h4><p>参考：<a href="https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/" target="_blank" rel="external nofollow noopener noreferrer">https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/</a>, <a href="https://blog.csdn.net/sinat_38723234/article/details/103216464" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/sinat_38723234/article/details/103216464</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time ssh -v 192.168.255.128 id 2&gt;&amp;1  | perl -pe <span class="string">'use Time::HiRes qw( time ); $_ = sprintf("%.6f %s", time(), $_)'</span></span><br></pre></td></tr></table></figure>
 
 
