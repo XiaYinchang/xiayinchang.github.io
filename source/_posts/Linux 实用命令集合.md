@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Tue Jun 09 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Wed Jun 10 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -960,7 +960,7 @@ timeout 5 bash -c -- 'while true; do printf ".";done'
 
 <a name="EvNGL"></a>
 #### shell 中打印带日期的日志
-参考：[https://serverfault.com/a/310099](https://serverfault.com/a/310099)
+参考：[https://serverfault.com/a/310099](https://serverfault.com/a/310099),[https://stackoverflow.com/a/1705761](https://stackoverflow.com/a/1705761)
 ```bash
 echo $(date -u) "Some message or other"
 ```
@@ -995,6 +995,6 @@ ping6 2003:da8:2004:1000:0a2a:1e5e:0122:d75b
 <a name="Ocuwz"></a>
 #### 疑难杂症
 
-- ssh 设置 `UseDNS no` 后仍然登录慢，依然有可能是 DNS 解析的问题，更改 /etc/resolv.conf 中配置的 nameserver 之后好了。
+- ssh 设置 `UseDNS no` 后仍然登录慢，依然有可能是 DNS 解析的问题，更改 /etc/resolv.conf 中配置的 nameserver 之后好了，更多可能参考：[https://jrs-s.net/2017/07/01/slow-ssh-logins/#:~:text=It's%20usually%20DNS.,restart%20ssh%2C%20etc%20as%20appropriate.](https://jrs-s.net/2017/07/01/slow-ssh-logins/#:~:text=It's%20usually%20DNS.,restart%20ssh%2C%20etc%20as%20appropriate.)。
 - centos yum 命令执行到 `Loaded plugins: fastestmirror` 时很慢，也可能是 DNS 解析的问题。
 
