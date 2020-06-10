@@ -966,6 +966,14 @@ echo $(date -u) "Some message or other"
 ```
 
 
+<a name="EdMy4"></a>
+#### ssh debug 带时间戳
+参考：[https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/](https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/), [https://blog.csdn.net/sinat_38723234/article/details/103216464](https://blog.csdn.net/sinat_38723234/article/details/103216464)
+```bash
+time ssh -v 192.168.255.128 id 2>&1  | perl -pe 'use Time::HiRes qw( time ); $_ = sprintf("%.6f %s", time(), $_)'
+```
+
+
 <a name="y3vg8"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
