@@ -24,7 +24,7 @@ abbrlink: 9caa466a
 # 去除所有节点 mater taint 使之可调度
 kubectl taint nodes --all node-role.kubernetes.io/master-
 # 为节点添加 taint
-kubectl taint nodes node1 node-role.kubernetes.io=master:NoSchedule
+kubectl taint nodes node1 node-role.kubernetes.io/master=:NoSchedule
 ```
 
 
