@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Wed Jun 10 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Tue Jun 16 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -964,19 +964,38 @@ timeout 5 bash -c -- 'while true; do printf ".";done'
 ```bash
 echo $(date -u) "Some message or other"
 ```
-
-
-<a name="EdMy4"></a>
-#### ssh debug 带时间戳
-参考：[https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/](https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/), [https://blog.csdn.net/sinat_38723234/article/details/103216464](https://blog.csdn.net/sinat_38723234/article/details/103216464)
+<a name="KLbMp"></a>
+#### ssh
+ssh debug 带时间戳<br />参考：[https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/](https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/), [https://blog.csdn.net/sinat_38723234/article/details/103216464](https://blog.csdn.net/sinat_38723234/article/details/103216464)
 ```bash
 time ssh -v 192.168.255.128 id 2>&1  | perl -pe 'use Time::HiRes qw( time ); $_ = sprintf("%.6f %s", time(), $_)'
+```
+ssh 保持连接存活<br />可以在客户端设置 ServerAliveInterval 或者在服务端设置 ServerAliveInterval，其效果是一样的，即在一段时间没有收到对方的数据后，发送探活消息，确保连接存活。分别配合ServerAliveCountMax（默认为 3 ） 和 ClientAliveCountMax （默认为 3 ）使用，超过三次探活包没有得到回应则关闭会话。与 TCPKeepAlive 的一个不同是，ssh 的探活消息是加密传输的。
+```bash
+echo "ClientAliveInterval 60" | sudo tee -a /etc/ssh/sshd_config
+echo "ServerAliveInterval 60" >> ~/.ssh/config 
 ```
 
 
 <a name="y3vg8"></a>
 #### 部署 STUN 服务
 参考：[https://github.com/coturn/coturn](https://github.com/coturn/coturn)，[http://www.stunprotocol.org/](http://www.stunprotocol.org/)，[https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)<br />
+
+<a name="AnexS"></a>
+#### 安装 ruby
+```bash
+gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+curl -sSL get.rvm.io | bash -s stable
+source /etc/profile.d/rvm.sh
+echo "ruby_url=https://cache.ruby-china.com/pub/ruby" > /usr/local/rvm/user/db
+rvm list known
+rvm install 2.3.1
+rvm use 2.3.1 --default
+gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ --remove https://rubygems.org/
+gem sources -l
+gem install --no-document fpm
+```
+
 
 <a name="d8YOA"></a>
 #### 常见工具的 IPV6 模式
