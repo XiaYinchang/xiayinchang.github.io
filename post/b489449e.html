@@ -60,7 +60,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&amp;display=inline&amp;height=230&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=230&amp;originWidth=716&amp;size=13999&amp;status=done&amp;style=none&amp;width=716">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&amp;display=inline&amp;height=25&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=25&amp;originWidth=160&amp;size=2640&amp;status=done&amp;style=none&amp;width=160">
-<meta property="og:updated_time" content="2020-06-15T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-06-16T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&amp;display=inline&amp;height=230&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=230&amp;originWidth=716&amp;size=13999&amp;status=done&amp;style=none&amp;width=716">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-16 00:00:00" itemprop="dateModified" datetime="2020-06-16T00:00:00+08:00">2020-06-16</time>
+                <time title="修改时间：2020-06-17 00:00:00" itemprop="dateModified" datetime="2020-06-17T00:00:00+08:00">2020-06-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -276,7 +276,7 @@
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>15 分钟</span>
+              <span>16 分钟</span>
             </span>
             <div class="post-description">在云计算场景下常用的 Linux 命令记录。</div>
 
@@ -471,7 +471,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">'s/\(前一部分\)要替换的部分\(后一部分\)/\1替换后的字符串\2/'</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用环境变量</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> sed ’s/<span class="variable">$a</span>/<span class="variable">$b</span>/’ filename</span><br><span class="line">sed <span class="string">"s/<span class="variable">$a</span>/<span class="variable">$b</span>/"</span> filename</span><br><span class="line">sed ’s/’<span class="variable">$a</span>’/’<span class="variable">$b</span>’/’ filename </span><br><span class="line">sed s/<span class="variable">$a</span>/<span class="variable">$b</span>/ filename</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> sed <span class="string">'s/$a/$b/'</span> filename</span><br><span class="line">sed <span class="string">"s/<span class="variable">$a</span>/<span class="variable">$b</span>/"</span> filename</span><br><span class="line">sed <span class="string">'s/'</span><span class="variable">$a</span><span class="string">'/'</span><span class="variable">$b</span><span class="string">'/'</span> filename </span><br><span class="line">sed s/<span class="variable">$a</span>/<span class="variable">$b</span>/ filename</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>替换多个空格为一个</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">'s/\s\+/ /g'</span></span><br></pre></td></tr></table></figure>
@@ -696,6 +696,7 @@
 <h4 id="疑难杂症"><a href="#疑难杂症" class="headerlink" title="疑难杂症"></a>疑难杂症</h4><ul>
 <li>ssh 设置 <code>UseDNS no</code> 后仍然登录慢，依然有可能是 DNS 解析的问题，更改 /etc/resolv.conf 中配置的 nameserver 之后好了，更多可能参考：<a href="https://jrs-s.net/2017/07/01/slow-ssh-logins/#:~:text=It' target=" _blank" rel="external nofollow noopener noreferrer" s%20usually%20dns.,restart%20ssh%2c%20etc%20as%20appropriate." target="_blank">https://jrs-s.net/2017/07/01/slow-ssh-logins/#:~:text=It’s%20usually%20DNS.,restart%20ssh%2C%20etc%20as%20appropriate.</a>。</li>
 <li>centos yum 命令执行到 <code>Loaded plugins: fastestmirror</code> 时很慢，也可能是 DNS 解析的问题。</li>
+<li>在 while 循环中使用 ssh 命令时，发现 while 循环提前结束了，其原因是 ssh 命令会从标准输入中读取内容，因此后续脚本被 ssh 读入了，所以无法继续执行，解决办法就是重定向 ssh 命令的标准输入为 /dev/null，参考：<a href="https://stackoverflow.com/a/9393147" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/9393147</a>。</li>
 </ul>
 
     </div>
