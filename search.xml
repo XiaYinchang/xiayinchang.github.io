@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>macOS 使用相关</title>
+    <url>/post/e9aa727.html</url>
+    <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="安装-source-code-pro-字体"><a href="#安装-source-code-pro-字体" class="headerlink" title="安装 source-code-pro 字体"></a>安装 source-code-pro 字体</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew tap homebrew/cask-fonts &amp;&amp; brew cask install font-source-code-pro</span><br></pre></td></tr></table></figure><p><a name="KVEG2"></a></p><h4 id="解决字体模糊"><a href="#解决字体模糊" class="headerlink" title="解决字体模糊"></a>解决字体模糊</h4><p>开启 HiDPI 参考：<a href="https://github.com/xzhih/one-key-hidpi" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/xzhih/one-key-hidpi</a><br><a name="viaH3"></a></p><a id="more"></a>
+
+
+
+<h4 id="VMware-fusion-开机启动虚拟机"><a href="#VMware-fusion-开机启动虚拟机" class="headerlink" title="VMware fusion 开机启动虚拟机"></a>VMware fusion 开机启动虚拟机</h4><p>参考：<a href="https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e" target="_blank" rel="external nofollow noopener noreferrer">https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e</a><br><a name="yTj2o"></a></p>
+<h4 id="homebrew-使用国内镜像源"><a href="#homebrew-使用国内镜像源" class="headerlink" title="homebrew 使用国内镜像源"></a>homebrew 使用国内镜像源</h4><p>需先安装 homebrew ，然后配置国内镜像源，参考：<a href="https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob" target="_blank" rel="external nofollow noopener noreferrer">https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob</a>，<a href="https://blog.csdn.net/iroguel/article/details/93481795" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/iroguel/article/details/93481795</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/bin/ruby -e <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>开发工具</tag>
+        <tag>macOS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 实用命令集合</title>
     <url>/post/b489449e.html</url>
     <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS<br></h4><ul>
@@ -257,7 +279,7 @@
 
 
 <p><a name="1EEnK"></a></p>
-<h4 id="查看网络中已存在的-IP"><a href="#查看网络中已存在的-IP" class="headerlink" title="查看网络中已存在的 IP"></a>查看网络中已存在的 IP</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">arp-scan -I eth0 192.168.180.0/24</span><br><span class="line">//或</span><br><span class="line">nmap -sP -PR 192.168.180.*</span><br></pre></td></tr></table></figure>
+<h4 id="查看网段中已使用-IP"><a href="#查看网段中已使用-IP" class="headerlink" title="查看网段中已使用 IP"></a>查看网段中已使用 IP</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">arp-scan -I eth0 192.168.180.0/24</span><br><span class="line">//或</span><br><span class="line">nmap -sP -PR 192.168.180.*</span><br></pre></td></tr></table></figure>
 
 
 <p><a name="sbDNW"></a></p>
@@ -1308,23 +1330,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>开发工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>macOS 使用相关</title>
-    <url>/post/e9aa727.html</url>
-    <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="安装-source-code-pro-字体"><a href="#安装-source-code-pro-字体" class="headerlink" title="安装 source-code-pro 字体"></a>安装 source-code-pro 字体</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew tap homebrew/cask-fonts &amp;&amp; brew cask install font-source-code-pro</span><br></pre></td></tr></table></figure><p><a name="KVEG2"></a></p><h4 id="解决字体模糊"><a href="#解决字体模糊" class="headerlink" title="解决字体模糊"></a>解决字体模糊</h4><p>开启 HiDPI 参考：<a href="https://github.com/xzhih/one-key-hidpi" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/xzhih/one-key-hidpi</a><br><a name="viaH3"></a></p><a id="more"></a>
-
-
-
-<h4 id="VMware-fusion-开机启动虚拟机"><a href="#VMware-fusion-开机启动虚拟机" class="headerlink" title="VMware fusion 开机启动虚拟机"></a>VMware fusion 开机启动虚拟机</h4><p>参考：<a href="https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e" target="_blank" rel="external nofollow noopener noreferrer">https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e</a></p>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>开发工具</tag>
-        <tag>macOS</tag>
       </tags>
   </entry>
   <entry>
