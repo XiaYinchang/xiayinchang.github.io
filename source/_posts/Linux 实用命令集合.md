@@ -2,7 +2,7 @@
 title: Linux 实用命令集合
 urlname: qyggmq
 date: '2019-11-09 00:00:00 +0800'
-updated: 'Tue Jun 16 2020 00:00:00 GMT+0800 (China Standard Time)'
+updated: 'Wed Jun 17 2020 00:00:00 GMT+0800 (China Standard Time)'
 layout: post
 categories: Linux
 tags:
@@ -465,9 +465,9 @@ sed 's/\(前一部分\)要替换的部分\(后一部分\)/\1替换后的字符�
 
 - 使用环境变量
 ```bash
-eval sed ’s/$a/$b/’ filename
+eval sed 's/$a/$b/' filename
 sed "s/$a/$b/" filename
-sed ’s/’$a’/’$b’/’ filename 
+sed 's/'$a'/'$b'/' filename 
 sed s/$a/$b/ filename
 ```
 
@@ -1024,4 +1024,5 @@ ping6 2003:da8:2004:1000:0a2a:1e5e:0122:d75b
 
 - ssh 设置 `UseDNS no` 后仍然登录慢，依然有可能是 DNS 解析的问题，更改 /etc/resolv.conf 中配置的 nameserver 之后好了，更多可能参考：[https://jrs-s.net/2017/07/01/slow-ssh-logins/#:~:text=It's%20usually%20DNS.,restart%20ssh%2C%20etc%20as%20appropriate.](https://jrs-s.net/2017/07/01/slow-ssh-logins/#:~:text=It's%20usually%20DNS.,restart%20ssh%2C%20etc%20as%20appropriate.)。
 - centos yum 命令执行到 `Loaded plugins: fastestmirror` 时很慢，也可能是 DNS 解析的问题。
+- 在 while 循环中使用 ssh 命令时，发现 while 循环提前结束了，其原因是 ssh 命令会从标准输入中读取内容，因此后续脚本被 ssh 读入了，所以无法继续执行，解决办法就是重定向 ssh 命令的标准输入为 /dev/null，参考：[https://stackoverflow.com/a/9393147](https://stackoverflow.com/a/9393147)。
 
