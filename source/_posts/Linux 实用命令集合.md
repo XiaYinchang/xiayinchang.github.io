@@ -476,8 +476,42 @@ sed s/$a/$b/ filename
 sed 's/\s\+/ /g'
 ```
 
+- 打印指定行
+```bash
+# -n 不打印输入内容; -e 多项操作或; p 表示打印
+sed -n 8p file  #print line 8
+sed -n -e 1p -e 8p file   #print line 1 and line 8
+sed -n 1,8p file    #print line 1 to line 8
+sed -n -e 1,8p -e 20p file   #print line 1-8 and line 20
+```
+<a name="uNsB7"></a>
+#### grep
+```bash
+# -i 不区分大小写; -n 显示文件行号; -e 多项查询条件，或操作
+grep -in -e 'AddNode' -e 'checkpara' -r .
+```
+<a name="UtLof"></a>
+#### awk
+修改 fstab ，添加 mount option，参见： [https://stackoverflow.com/a/9119317](https://stackoverflow.com/a/9119317)
+```bash
+# 为 /home 挂载添加 acl 配置
+awk '$2~"^/home$"{$4="acl,"$4}1' OFS="\t" /etc/fstab
+```
+打印指定列，参考：[https://www.cnblogs.com/liuyihua1992/p/9689308.html](https://www.cnblogs.com/liuyihua1992/p/9689308.html)
+```bash
+# $0 表示所有列; -F 指定解析时使用的分隔符; $(NF) 表示最后一列，$(NF-1) 表示倒数第二列，以此类推
+awk '{print $0}' file    #打印所有列
+awk '{print $1}' file  #打印第一列
+awk '{print $1, $3}' file   #打印第一和第三列
+cat file | awk '{print $3, $1}'   #打印第三列和第一列，注意先后顺序。
+cat file | awk '{print $3, $NF}' #打印第三列和最后一列
+awk -F ":" '{print $1, $3}'  #以“:”为分隔符分割列，然后打印第一列和第三列
+# 一种打印N列之后的所有列的方法：把前N列都赋值为空，然后打印所有列
+awk '{for(i=1;i<=N;i++){$i=""}; print $0}' file
+```
 
-<a name="tZDa5"></a>
+
+<a name="ccsvC"></a>
 #### 生成 Linux 用户密码的哈希值
 
 
@@ -897,13 +931,8 @@ iptables-save -t filter > iptables.bak
 // 从备份恢复
 iptables-restor < iptables.bak
 ```
-<a name="UtLof"></a>
-#### awk
-修改 fstab ，添加 mount option，参见： [https://stackoverflow.com/a/9119317](https://stackoverflow.com/a/9119317)
-```bash
-// 为 /home 挂载添加 acl 配置
-awk '$2~"^/home$"{$4="acl,"$4}1' OFS="\t" /etc/fstab
-```
+<a name="xPkE2"></a>
+#### 
 <a name="C3YgL"></a>
 #### 判断字符串包含子串
 参见：[https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash](https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash)
@@ -1005,7 +1034,7 @@ find . -name "*.txt" | xargs rm
 ```bash
 find . -name "*.txt" -print0 | xargs -0 rm
 ```
-其中，-print0 用于告诉 find 在每个查询到的结果后加一个 NULL 字符而不是默认的加一个换行符，-0 告诉 xargs 使用 NULL 来分切字符串而不是默认的空格或换行符。<br />另一种简单可行的方法是：
+其中，-print0 用于告诉 find 在每个查询到的结果后加一个 NULL 字符而不是默认的加一个换行符，-0 告诉 xargs 使用 NULL 来分切字符串而不是默认的空格或换行符。参考：[https://www.cnblogs.com/liuyihua1992/p/9689314.html](https://www.cnblogs.com/liuyihua1992/p/9689314.html)<br />另一种简单可行的方法是：
 ```bash
 find . -name "*.txt" | xargs -i rm {}
 # 或者
