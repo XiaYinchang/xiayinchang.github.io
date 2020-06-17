@@ -653,7 +653,7 @@ ss -lntu
 
 
 <a name="1EEnK"></a>
-#### 查看网络中已存在的 IP
+#### 查看网段中已使用 IP
 ```bash
 arp-scan -I eth0 192.168.180.0/24
 //或
