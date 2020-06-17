@@ -995,9 +995,24 @@ gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ --remove https:
 gem sources -l
 gem install --no-document fpm
 ```
-
-
-<a name="d8YOA"></a>
+<a name="pX5oq"></a>
+#### find -print0 与 xargs -0
+一般会有下列用法：
+```bash
+find . -name "*.txt" | xargs rm
+```
+上述用法在大多数时候是有效的，而当文件名称重包含空格或换行符时则会出错，这是因为 xargs 默认将空格或换行符作为切分字符串的标识。一种有效的改进方法是使用 NULL 作为分隔符，如下：
+```bash
+find . -name "*.txt" -print0 | xargs -0 rm
+```
+其中，-print0 用于告诉 find 在每个查询到的结果后加一个 NULL 字符而不是默认的加一个换行符，-0 告诉 xargs 使用 NULL 来分切字符串而不是默认的空格或换行符。<br />另一种简单可行的方法是：
+```bash
+find . -name "*.txt" | xargs -i rm {}
+# 或者
+find . -name "*.txt" | xargs -I {} rm {}
+```
+其中 -i 默认使用 {} 作为替换符号， -I 可以自行指定其他的替换符号，其能够生效的原因是该选项使得 xargs 以换行符为结尾的每一项直接去替换 {} ，而不再使用换行符或空格去解析字符内容。
+<a name="Ym2yl"></a>
 #### 常见工具的 IPV6 模式
 ```bash
 scp -6 hyperkube root@[2003:da8:2004:1000:0a09:6ec4:0006:ed49]:/tmp
