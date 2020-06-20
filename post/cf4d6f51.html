@@ -63,7 +63,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1571898730049-ed53082d-e336-42cd-aa59-7233ebb6d57c.png#align=left&amp;display=inline&amp;height=913&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1475&amp;originWidth=1205&amp;size=325485&amp;status=done&amp;style=none&amp;width=746">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576386544299-80e5dc93-9f94-475c-9c4e-ba06248e534e.png#align=left&amp;display=inline&amp;height=474&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=559&amp;originWidth=879&amp;size=160518&amp;status=done&amp;style=none&amp;width=746">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576386832999-494d3049-2e09-4f79-a962-d68a84ff1820.png#align=left&amp;display=inline&amp;height=341&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=341&amp;originWidth=521&amp;size=21678&amp;status=done&amp;style=none&amp;width=521">
-<meta property="og:updated_time" content="2020-06-15T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-06-19T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1571478423292-36b18cb8-3312-42ed-940e-40b15315d38d.png#align=left&amp;display=inline&amp;height=793&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=793&amp;originWidth=796&amp;size=62072&amp;status=done&amp;style=none&amp;width=796">
 
@@ -245,7 +245,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-16 00:00:00" itemprop="dateModified" datetime="2020-06-16T00:00:00+08:00">2020-06-16</time>
+                <time title="修改时间：2020-06-20 00:00:00" itemprop="dateModified" datetime="2020-06-20T00:00:00+08:00">2020-06-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,14 +272,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>13k</span>
+              <span>15k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>12 分钟</span>
+              <span>13 分钟</span>
             </span>
             <div class="post-description">本文记录需要掌握的基础网络知识。</div>
 
@@ -364,12 +364,20 @@
 <h4 id="TUN-TAP"><a href="#TUN-TAP" class="headerlink" title="TUN/TAP"></a>TUN/TAP</h4><p>根据 Linux 内核文档: TUN/TAP 为用户空间程序提供分组接收和传输功能。它可以被看作是一个简单的点对点或以太网设备，它不是从物理媒体接收数据包，而是从用户空间程序接收数据包，并且不是通过物理媒体发送数据包，而是将数据包写入用户空间程序。<br>也就是说，TUN/TAP 接口是虚拟接口，没有相关的物理设备。用户空间程序可以连接到 TUN/TAP 接口，并处理发送到接口的流量。<br>TUN 接口是虚拟 IP 点对点接口，而 TAP 接口是虚拟以太网接口。 这意味着用户程序只能从 / 向 TUN 接口读 / 写 IP 数据包，从 / 向 TAP 接口读 / 写以太网帧。<br>TUN 接口的典型用例是 IP 隧道。 例如，OpenVPN 从 tun0 等 TUN 接口接收数据包，并在将其发送到真正的以太网接口 eth0 之前对其进行加密。 然后，对端网络上的 OpenVPN 客户端接收来自 eth0 的数据包，并在将其发送到 tun0 之前对其进行解密。 换句话说，OpenVPN 作为 tun0 和 eth0 之间的代理工作，并在两个主机之间通过互联网创建加密的 UDP 连接。<br><img src="/images/1576386544299-80e5dc93-9f94-475c-9c4e-ba06248e534e.png" alt="image.png"><br>TAP 接口的典型用例是虚拟网络。 例如，在 Linux Bridge Part 1 中，我们已经看到，当我们使用桥接网络在 KVM 中创建一个 VM 时，它会创建一个类似 vnet0 的 TAP 接口，并将其添加到 Linux 桥。 在这种情况下，KVM 是用于读取和写入 TAP 接口的 usersapce 程序。 当 VM0 向它的 eth0 发送一个数据包时，KVM 将其发送到 TAP 接口 vnet0，以便桥接器将其转发到 vnet1。 然后 KVM 接收它并将其发送给 VM1 的 eth0。<br><img src="/images/1576386832999-494d3049-2e09-4f79-a962-d68a84ff1820.png" alt="image.png"><br><code>ip tuntap</code> 命令可用于管理 TUN/TAP 接口。例如:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ip tuntap <span class="built_in">help</span></span><br><span class="line">Usage: ip tuntap &#123; add | del | show | list | lst | <span class="built_in">help</span> &#125; [ dev PHYS_DEV ]</span><br><span class="line">          [ mode &#123; tun | tap &#125; ] [ user USER ] [ group GROUP ]</span><br><span class="line">          [ one_queue ] [ pi ] [ vnet_hdr ] [ multi_queue ]</span><br><span class="line"></span><br><span class="line">Where: USER  := &#123; STRING | NUMBER &#125;</span><br><span class="line">       GROUP := &#123; STRING | NUMBER &#125;</span><br></pre></td></tr></table></figure>
 <p>参考：<a href="https://hechao.li/2018/05/21/Tun-Tap-Interface/" target="_blank" rel="external nofollow noopener noreferrer">https://hechao.li/2018/05/21/Tun-Tap-Interface/</a><br></p>
+<p><a name="ruaHY"></a></p>
+<h4 id="TCP-连接的意外情况"><a href="#TCP-连接的意外情况" class="headerlink" title="TCP 连接的意外情况"></a>TCP 连接的意外情况</h4><ul>
+<li>服务端连接处于建立状态，但收到 SYN 包</li>
+</ul>
+<p>当 TCP 连接建立后，如果客户端意外断电（没有主动关闭 TCP 连接的过程），此时服务端连接状态仍为 established，客户端重启后如果恰好使用了之前一样的端口重新发起建立 TCP 连接的请求，服务端会收到 SYN 包，并将其作为一个合法的包，返回 ACK ；客户端此时处于 SYN_SENT 状态，却收到了一个不带 SYN 标志的 ACK 包，由此客户端可以确定这是来自于遗留连接的包，因此会发出 RST 包。服务端收到 RST 包则会清理掉遗留连接的信息。服务端在稍后可以重新尝试建立连接。<br>导致建立状态的服务端收到 SYN 包情况有多种，可参考：<a href="https://serverfault.com/a/733727" target="_blank" rel="external nofollow noopener noreferrer">https://serverfault.com/a/733727</a><br></p>
+<p><a name="djmiu"></a></p>
+<h4 id="TCP-连接能存活多久"><a href="#TCP-连接能存活多久" class="headerlink" title="TCP 连接能存活多久"></a>TCP 连接能存活多久</h4><p>理论上讲，一旦连接建立，将永远存活下去，哪怕一直没有数据传输，即使是其中一端故障，另一端仍保持连接建立状态。如果开启了 keepalive 特性（Linux 中在 setsockopt 时传入 SO_KEEPALIVE 参数)，则操作系统（ Linux 内核协议栈）会自动在空闲一断时间后发送探测包，帮助一直保持连接状态或者在故障时及时发现并关闭连接。但实际上会有各种规则或意外会使连接无法持续维持：一种情况是通过 DHCP 获取的 IP 地址到期，IP 地址可能发生变化；还有一些需要经过 NAT 的连接则可能由于存储空间不足丢弃老的 TCP 连接状态；Linux conntrack 表的大小也是有限的，如果连接数太多到超过表的存储上限，老的不活跃的 TCP 连接状态也会被丢弃；还有的防火墙能够识别出 keepalive 探测包和数据包，会根据用户配置的规则在连接空闲一段时间后强制关闭连接。参考：<a href="https://stackoverflow.com/a/419491" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/419491</a>，<a href="https://networkengineering.stackexchange.com/a/30961" target="_blank" rel="external nofollow noopener noreferrer">https://networkengineering.stackexchange.com/a/30961</a>，<a href="https://notes.shichao.io/unp/ch7/" target="_blank" rel="external nofollow noopener noreferrer">https://notes.shichao.io/unp/ch7/</a>。<br></p>
+<p><a name="8MNXx"></a></p>
+<h4 id="查看网络统计信息的几种工具"><a href="#查看网络统计信息的几种工具" class="headerlink" title="查看网络统计信息的几种工具"></a>查看网络统计信息的几种工具</h4><p>参考：<a href="https://www.cyberciti.biz/faq/network-statistics-tools-rhel-centos-debian-linux/" target="_blank" rel="external nofollow noopener noreferrer">https://www.cyberciti.biz/faq/network-statistics-tools-rhel-centos-debian-linux/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 查看每个网卡的统计信息，以下三种命令结果类似,主要包括发送和接收的包量和比特数，MTU，发送和接收的出错数量</span><br><span class="line">netstat -i</span><br><span class="line">ifconfig</span><br><span class="line">ip -s link</span><br><span class="line"># 查看所有协议栈信息的汇总</span><br><span class="line">netstat -s</span><br><span class="line"># 查看发送接收速率</span><br><span class="line">sar -n DEV 1 3</span><br><span class="line">sar -n DEV</span><br><span class="line"># 使用 dropwatch（Kernel dropped packet monitor） 可以监测内核丢包信息 ，执行以下命令，然后输入 start</span><br><span class="line">dropwatch -l kas</span><br></pre></td></tr></table></figure>
+
+
 <p><a name="JsS9S"></a></p>
-<h4 id="阅读资料"><a href="#阅读资料" class="headerlink" title="阅读资料"></a>阅读资料</h4><br>
-<br>
-<br>
-
-
+<h4 id="阅读资料"><a href="#阅读资料" class="headerlink" title="阅读资料"></a>阅读资料</h4><p><a href="https://notes.shichao.io/unp/ch7/" target="_blank" rel="external nofollow noopener noreferrer">https://notes.shichao.io</a><br><br><br><br><br><br><br></p>
 
     </div>
 
@@ -493,7 +501,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS-域名服务器数量"><span class="nav-number">1.</span> <span class="nav-text">DNS 域名服务器数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NO-CARRIER-网卡故障"><span class="nav-number">2.</span> <span class="nav-text">NO-CARRIER 网卡故障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket-和-Socket的区别"><span class="nav-number">3.</span> <span class="nav-text">WebSocket 和 Socket的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket-通信建立过程"><span class="nav-number">4.</span> <span class="nav-text">WebSocket 通信建立过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接建立与断开"><span class="nav-number">5.</span> <span class="nav-text">TCP 连接建立与断开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-内核网络相关函数调用关系图"><span class="nav-number">6.</span> <span class="nav-text">Linux 内核网络相关函数调用关系图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Qdisc-在-Linux-网络栈中的位置"><span class="nav-number">7.</span> <span class="nav-text">Qdisc 在 Linux 网络栈中的位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络路由过程"><span class="nav-number">8.</span> <span class="nav-text">网络路由过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#端口与套接字的区别与联系"><span class="nav-number">9.</span> <span class="nav-text">端口与套接字的区别与联系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-bridge"><span class="nav-number">10.</span> <span class="nav-text">Linux bridge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TUN-TAP"><span class="nav-number">11.</span> <span class="nav-text">TUN/TAP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阅读资料"><span class="nav-number">12.</span> <span class="nav-text">阅读资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS-域名服务器数量"><span class="nav-number">1.</span> <span class="nav-text">DNS 域名服务器数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NO-CARRIER-网卡故障"><span class="nav-number">2.</span> <span class="nav-text">NO-CARRIER 网卡故障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket-和-Socket的区别"><span class="nav-number">3.</span> <span class="nav-text">WebSocket 和 Socket的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket-通信建立过程"><span class="nav-number">4.</span> <span class="nav-text">WebSocket 通信建立过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接建立与断开"><span class="nav-number">5.</span> <span class="nav-text">TCP 连接建立与断开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-内核网络相关函数调用关系图"><span class="nav-number">6.</span> <span class="nav-text">Linux 内核网络相关函数调用关系图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Qdisc-在-Linux-网络栈中的位置"><span class="nav-number">7.</span> <span class="nav-text">Qdisc 在 Linux 网络栈中的位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络路由过程"><span class="nav-number">8.</span> <span class="nav-text">网络路由过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#端口与套接字的区别与联系"><span class="nav-number">9.</span> <span class="nav-text">端口与套接字的区别与联系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-bridge"><span class="nav-number">10.</span> <span class="nav-text">Linux bridge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TUN-TAP"><span class="nav-number">11.</span> <span class="nav-text">TUN/TAP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接的意外情况"><span class="nav-number">12.</span> <span class="nav-text">TCP 连接的意外情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接能存活多久"><span class="nav-number">13.</span> <span class="nav-text">TCP 连接能存活多久</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看网络统计信息的几种工具"><span class="nav-number">14.</span> <span class="nav-text">查看网络统计信息的几种工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阅读资料"><span class="nav-number">15.</span> <span class="nav-text">阅读资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -571,13 +579,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">224k</span>
+    <span title="站点总字数">225k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:24</span>
+    <span title="站点阅读时长">3:25</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
