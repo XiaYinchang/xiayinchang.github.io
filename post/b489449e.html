@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在云计算场景下常用的 Linux 命令记录。">
+<meta name="keywords" content="Linux, Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 实用命令集合">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;b489449e.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="在云计算场景下常用的 Linux 命令记录。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&amp;display=inline&amp;height=230&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=230&amp;originWidth=716&amp;size=13999&amp;status=done&amp;style=none&amp;width=716">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&amp;display=inline&amp;height=25&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=25&amp;originWidth=160&amp;size=2640&amp;status=done&amp;style=none&amp;width=160">
+<meta property="og:updated_time" content="2020-06-19T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&amp;display=inline&amp;height=230&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=230&amp;originWidth=716&amp;size=13999&amp;status=done&amp;style=none&amp;width=716">
+
+<link rel="canonical" href="https://www.xiayinchang.top/post/b489449e.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Linux 实用命令集合 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="external nofollow noopener noreferrer" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/b489449e.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Linux 实用命令集合
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-09 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-09T00:00:00+08:00">2019-11-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-20 00:00:00" itemprop="dateModified" datetime="2020-06-20T00:00:00+08:00">2020-06-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>19k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>18 分钟</span>
+            </span>
+            <div class="post-description">在云计算场景下常用的 Linux 命令记录。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a name="CYJKi"></a></p><h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS<br></h4><ul>
+<li>升级系统内核<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</span><br><span class="line">rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</span><br><span class="line">yum --enablerepo=elrepo-kernel install kernel-ml</span><br><span class="line">awk -F\<span class="string">' '</span><span class="variable">$1</span>==<span class="string">"menuentry "</span> &#123;<span class="built_in">print</span> i++ <span class="string">" : "</span> <span class="variable">$2</span>&#125;<span class="string">' /etc/grub2.cfg</span></span><br><span class="line"><span class="string">grub2-set-default 0</span></span><br><span class="line"><span class="string">grub2-mkconfig -o /boot/grub2/grub.cfg</span></span><br><span class="line"><span class="string">reboot</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul><a id="more"></a>
+
+<ul>
+<li>安装fish<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/yum.repos.d/</span><br><span class="line">wget https://download.opensuse.org/repositories/shells:fish:release:2/CentOS_7/shells:fish:release:2.repo</span><br><span class="line">yum install fish -y</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>创建网桥</li>
+</ul>
+<p>可以直接在配置文件修改，如下创建网桥 br0：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-br0 </span></span><br><span class="line">TYPE=Bridge</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">NAME=br0</span><br><span class="line">DEVICE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.180.136</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.180.254</span><br><span class="line">DNS1=114.114.114.114</span><br></pre></td></tr></table></figure>
+
+<p>加入物理网卡 em1 到网桥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-em1</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=no</span><br><span class="line">NAME=em1</span><br><span class="line">DEVICE=em1</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BRIDGE=br0</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>创建 veth 并持久化</li>
+</ul>
+<p>创建两对 veth 并加入到网桥，脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /root/config_veth.sh </span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">ip link add dev veth0 <span class="built_in">type</span> veth peer name veth1</span><br><span class="line">ip link add dev veth2 <span class="built_in">type</span> veth peer name veth3</span><br><span class="line">ip link <span class="built_in">set</span> dev veth0 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth1 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth2 up</span><br><span class="line">ip link <span class="built_in">set</span> dev veth3 up</span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+<p><br>执行上述脚本，只是临时创建虚拟网卡，系统重启后又会消失，目前没找到持久化方法，所以只能退而求其次，将上述脚本做成一个服务，在每次系统启动时自动执行以上操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /usr/lib/systemd/system/veth.service </span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Create veths</span><br><span class="line">After=network-pre.target dbus.service</span><br><span class="line">Before=network.target network.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/root/config_veth.sh</span><br><span class="line">Restart=on-failure</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p><br>创建完上述文件，不要忘了执行 systemctl enable –now veth 启用服务；而对于虚拟网卡设备的配置仍然放在网络配置文件目录下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth0</span></span><br><span class="line">DEVICE=veth0</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth1</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth1</span></span><br><span class="line">DEVICE=veth1</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth0</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">IPADDR=192.168.180.211</span><br><span class="line">MTU=1500</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth2</span></span><br><span class="line">DEVICE=veth2</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth3</span><br><span class="line">BRIDGE=br0</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-veth3</span></span><br><span class="line">DEVICE=veth3</span><br><span class="line">DEVICETYPE=veth</span><br><span class="line">VETH_PEER=veth2</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
+
+<p><br>现在，就算重启系统虚拟网卡也会被自动重建了。<br></p>
+<ul>
+<li>自动加载内核模块</li>
+</ul>
+<p>以下示例加载 ipvs 内核模块:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/modules-load.d/ipvs.conf</span><br><span class="line">ip_vs</span><br><span class="line">ip_vs_lc</span><br><span class="line">ip_vs_wlc</span><br><span class="line">ip_vs_rr</span><br><span class="line">ip_vs_wrr</span><br><span class="line">ip_vs_lblc</span><br><span class="line">ip_vs_lblcr</span><br><span class="line">ip_vs_dh</span><br><span class="line">ip_vs_sh</span><br><span class="line">ip_vs_nq</span><br><span class="line">ip_vs_sed</span><br><span class="line">ip_vs_ftp</span><br><span class="line">nf_conntrack</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>自动设置内核参数<br>以下示例启用 ipv4 转发功能：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/sysctl.conf</span><br><span class="line">net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables=1</span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">vm.swappiness=0</span><br><span class="line">net.core.somaxconn=32768</span><br><span class="line">net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.conf.all.rp_filter=1</span><br><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>磁盘性能测试</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release</span><br><span class="line">yum install fio</span><br><span class="line">fio --randrepeat=1 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=<span class="built_in">test</span> --filename=<span class="built_in">test</span> --bs=4k --iodepth=64 --size=4G --readwrite=randrw --rwmixread=75</span><br><span class="line"></span><br><span class="line">//latnecy</span><br><span class="line">yum install epel-release</span><br><span class="line">yum install ioping</span><br><span class="line">ioping -c 10 .</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>安装 MariaDB</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加 MariaDB 仓库</span></span><br><span class="line">cat /etc/yum.repos.d/MariaDB.repo</span><br><span class="line">[mariadb]</span><br><span class="line">name = MariaDB</span><br><span class="line">baseurl = http://yum.mariadb.org/10.4/centos7-amd64</span><br><span class="line">gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck=1</span><br><span class="line">  </span><br><span class="line"><span class="comment"># 执行安装</span></span><br><span class="line">yum -y install MariaDB-server MariaDB-client</span><br><span class="line">systemctl <span class="built_in">enable</span> --now mariadb</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><p>在 grub 引导界面临时编辑内核启动参数</p>
+<p>   首先，选中要编辑的内核项，按 <strong>e</strong> 进入编辑页面，编辑完成后按 <strong>Ctrl + x</strong>  启动系统。下图为编辑内核参数直接进入救援模式。</p>
+</li>
+</ul>
+<p><img src="/images/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png" alt="image.png"><br></p>
+<ul>
+<li>在操作系统中编辑内核启动参数并重新生成 grub 引导</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 修改 /etc/default/grub 中的参数设置</span><br><span class="line">[root@umstor03 ~]<span class="comment"># cat /etc/default/grub </span></span><br><span class="line">GRUB_TIMEOUT=5</span><br><span class="line">GRUB_DISTRIBUTOR=<span class="string">"<span class="variable">$(sed 's, release .*$,,g' /etc/system-release)</span>"</span></span><br><span class="line">GRUB_DEFAULT=saved</span><br><span class="line">GRUB_DISABLE_SUBMENU=<span class="literal">true</span></span><br><span class="line">GRUB_TERMINAL_OUTPUT=<span class="string">"console"</span></span><br><span class="line">GRUB_CMDLINE_LINUX=<span class="string">"crashkernel=auto rd.lvm.lv=centos_umstor03/root video=640x480 nomodeset"</span></span><br><span class="line">GRUB_DISABLE_RECOVERY=<span class="string">"true"</span></span><br><span class="line"></span><br><span class="line">// 执行以下命令生成新的 grub 引导文件</span><br><span class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</span><br><span class="line">// 重启系统时参数生效</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>netinstall  centos 1804 可用如下镜像源<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 不要遗漏最后的反斜线</span><br><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos-vault/7.5.1804/os/x86_64/</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>包版本降级<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum downgrade httpd-2.2.3-22.el5</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>查看包安装信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep nginx</span><br><span class="line">rpm -qf /usr/sbin/nginx</span><br><span class="line">rpm -ql nginx</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>安装指定版本<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum --showduplicate list kubeadm</span><br><span class="line">yum install kubeadm-1.17.4-0</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p><a name="Y0lD3"></a></p>
+<h4 id="Debian"><a href="#Debian" class="headerlink" title="Debian"></a>Debian</h4><ul>
+<li><p>按关键字检索安装包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt-cache search linux-image</span><br><span class="line">apt-cache madison iptables</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看已安装软件包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpkg -l | grep linux</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载包不安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get download docker-ce</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p><a name="PHSFv"></a></p>
+<h4 id="Raspberry"><a href="#Raspberry" class="headerlink" title="Raspberry"></a>Raspberry</h4><ul>
+<li>清理桌面环境<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge desktop-base lightdm lxappearance lxde-common lxde-icon-theme lxinput lxpanel lxpolkit lxrandr lxsession-edit lxshortcut lxtask lxterminal obconf openbox raspberrypi-artwork xarchiver xinit xserver-xorg xserver-xorg-video-fbdev</span><br><span class="line">sudo apt-get autoremove --purge</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p><a name="3HTPv"></a></p>
+<h4 id="VIM"><a href="#VIM" class="headerlink" title="VIM"></a>VIM</h4><ul>
+<li>替换空格为换行</li>
+</ul>
+<p><img src="/images/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png" alt="image.png"></p>
+<ul>
+<li>替换 tab 为空格</li>
+</ul>
+<p><code>:%s/\t/  /g</code><br></p>
+<p><a name="Qgmi6"></a></p>
+<h4 id="Ansible"><a href="#Ansible" class="headerlink" title="Ansible"></a>Ansible</h4><ul>
+<li>打印 Ansible 所有的变量 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- name: Print some debug information </span><br><span class="line">  vars: </span><br><span class="line">    msg: |</span><br><span class="line">        Module Variables (&quot;vars&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; vars | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">        Environment Variables (&quot;environment&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; environment | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">        GROUP NAMES Variables (&quot;group_names&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; group_names | to_nice_json &#125;&#125;</span><br><span class="line"> </span><br><span class="line">        GROUPS Variables (&quot;groups&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; groups | to_nice_json &#125;&#125;</span><br><span class="line"> </span><br><span class="line">        HOST Variables (&quot;hostvars&quot;):</span><br><span class="line">        --------------------------------</span><br><span class="line">        &#123;&#123; hostvars | to_nice_json &#125;&#125; </span><br><span class="line"> </span><br><span class="line">  debug: </span><br><span class="line">    msg: &quot;&#123;&#123; msg.split(&apos;\n&apos;) &#125;&#125;&quot;       </span><br><span class="line">  tags: debug_info</span><br></pre></td></tr></table></figure>
+
+<p><br>或者<br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- name: Display all variables/facts known for a host</span><br><span class="line">  debug:</span><br><span class="line">    var: hostvars[inventory_hostname]</span><br><span class="line">  tags: debug_info</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="uiMU3"></a></p>
+<h4 id="man"><a href="#man" class="headerlink" title="man"></a>man</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 查看 man 命令使用说明</span><br><span class="line">man man</span><br><span class="line">// 查看 exit bash 命令使用说明</span><br><span class="line">man exit</span><br><span class="line">// 查看 exit 系统调用使用说明，指定 section 为 2（系统调用手册所在区）</span><br><span class="line">man 2 exit</span><br><span class="line">// 默认情况 man 会找到最佳匹配结果并显示，若需要显示所有匹配结果可使用 -a 参数</span><br><span class="line">man -a socket</span><br><span class="line">// 如果提示 No entry in section 2 ，可尝试安装 man-pages</span><br><span class="line">yay -S man-pages</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="gzyiV"></a></p>
+<h4 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h4><p>捕获 http 包，更多参考：<a href="https://hackertarget.com/tcpdump-examples/" target="_blank" rel="external nofollow noopener noreferrer">https://hackertarget.com/tcpdump-examples/</a>，<a href="https://danielmiessler.com/study/tcpdump/" target="_blank" rel="external nofollow noopener noreferrer">https://danielmiessler.com/study/tcpdump/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -s 0 -A <span class="string">'tcp[((tcp[12:1] &amp; 0xf0) &gt;&gt; 2):4] = 0x47455420'</span></span><br><span class="line">tcpdump -ni ens5f0 -A -s 10240 <span class="string">'tcp port 8056 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'</span> | egrep --line-buffered <span class="string">"^........(GET |HTTP\/|POST |HEAD )|^[A-Za-z0-9-]+: "</span> | sed -r <span class="string">'s/^........(GET |HTTP\/|POST |HEAD )/\n\1/g'</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a name="WZCnh"></a></p>
+<h4 id="mount-查看目录或分区挂载情况"><a href="#mount-查看目录或分区挂载情况" class="headerlink" title="mount 查看目录或分区挂载情况"></a>mount 查看目录或分区挂载情况</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/mounts</span><br><span class="line">// or</span><br><span class="line">cat /proc/self/mountinfo</span><br><span class="line">// or</span><br><span class="line">mount -l</span><br><span class="line">// or</span><br><span class="line">findmnt</span><br><span class="line">// or</span><br><span class="line">df -aTh</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="1rSZC"></a></p>
+<h4 id="pgrep-进程检索与杀死"><a href="#pgrep-进程检索与杀死" class="headerlink" title="pgrep 进程检索与杀死"></a>pgrep 进程检索与杀死</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 按名称列出进程 ID</span><br><span class="line">pgrep chrome</span><br><span class="line">// 按名称杀死进程</span><br><span class="line">pkill -9 fish</span><br><span class="line">killall -9 fish</span><br><span class="line">// 杀死指定 ID 的进程</span><br><span class="line"><span class="built_in">kill</span> -9 3049</span><br><span class="line">// 列出进程树</span><br><span class="line">pstree -p</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="e1tG9"></a></p>
+<h4 id="fuser-找到正在使用某个文件的进程"><a href="#fuser-找到正在使用某个文件的进程" class="headerlink" title="fuser 找到正在使用某个文件的进程"></a>fuser 找到正在使用某个文件的进程</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// fuser 是 file user 的缩写</span><br><span class="line">fuser -uv &lt;filename&gt;</span><br><span class="line">fuser -uvm /folder</span><br><span class="line">// 查看哪个程序在占用 8000 端口</span><br><span class="line">fuser -v -n tcp 8000</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="lw5hk"></a></p>
+<h4 id="lsof-列出所有打开的文件"><a href="#lsof-列出所有打开的文件" class="headerlink" title="lsof 列出所有打开的文件"></a>lsof 列出所有打开的文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// lsof 是 list open files 的缩写</span><br><span class="line">// -i 代表列出正在打开的 IPV4[6] 文件； -n 表示不进行 DNS 反解； -P 表示不进行端口反解</span><br><span class="line">lsof -i -n -P</span><br><span class="line">// 查看当前目录下打开的文件</span><br><span class="line">lsof .</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="70PLT"></a></p>
+<h4 id="strace-跟踪系统调用"><a href="#strace-跟踪系统调用" class="headerlink" title="strace 跟踪系统调用"></a>strace 跟踪系统调用</h4><p>strace 用法参考： <a href="https://www.howtoforge.com/linux-strace-command/" target="_blank" rel="external nofollow noopener noreferrer">https://www.howtoforge.com/linux-strace-command/</a><br></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strace -i ls</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="6F4YX"></a></p>
+<h4 id="getent-获取系统用户信息"><a href="#getent-获取系统用户信息" class="headerlink" title="getent 获取系统用户信息"></a>getent 获取系统用户信息</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getent passwd</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="zdvyH"></a></p>
+<h4 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h4><ul>
+<li><p>删除所有以 # 开头的行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">'/^#/ d'</span></span><br></pre></td></tr></table></figure>
+<p>更多使用方法参考：<a href="https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.folkstalk.com/2013/03/sed-remove-lines-file-unix-examples.html</a><br></p>
+</li>
+<li><p>替换一个匹配字符串的其中一部分</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">'s/\(前一部分\)要替换的部分\(后一部分\)/\1替换后的字符串\2/'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> sed <span class="string">'s/$a/$b/'</span> filename</span><br><span class="line">sed <span class="string">"s/<span class="variable">$a</span>/<span class="variable">$b</span>/"</span> filename</span><br><span class="line">sed <span class="string">'s/'</span><span class="variable">$a</span><span class="string">'/'</span><span class="variable">$b</span><span class="string">'/'</span> filename </span><br><span class="line">sed s/<span class="variable">$a</span>/<span class="variable">$b</span>/ filename</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>替换多个空格为一个</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">'s/\s\+/ /g'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打印指定行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -n 不打印输入内容; -e 多项操作或; p 表示打印</span></span><br><span class="line">sed -n 8p file  <span class="comment">#print line 8</span></span><br><span class="line">sed -n -e 1p -e 8p file   <span class="comment">#print line 1 and line 8</span></span><br><span class="line">sed -n 1,8p file    <span class="comment">#print line 1 to line 8</span></span><br><span class="line">sed -n -e 1,8p -e 20p file   <span class="comment">#print line 1-8 and line 20</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除指定行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">'2d'</span> filename                <span class="comment"># 删除第二行</span></span><br><span class="line">sed -i <span class="string">'2,5d'</span> filename					    <span class="comment"># 删除第 2 至第 5 行</span></span><br><span class="line">var1=7</span><br><span class="line">var2=9</span><br><span class="line">sed -i <span class="string">"<span class="variable">$&#123;var1&#125;</span>,<span class="variable">$&#123;var2&#125;</span>d"</span> filename	<span class="comment"># 这里引号必须为双引号，删除第 7 到第 9 行</span></span><br><span class="line">sed -i <span class="string">'$d'</span> filename                <span class="comment"># 删除最后一行</span></span><br><span class="line">sed -i <span class="string">'/xxx/d'</span> filename            <span class="comment"># 删除包含 xxx 的行</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p><a name="o7YRJ"></a></p>
+<h4 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -i 不区分大小写; -n 显示文件行号; -e 多项查询条件，或操作</span></span><br><span class="line">grep -<span class="keyword">in</span> -e <span class="string">'AddNode'</span> -e <span class="string">'checkpara'</span> -r .</span><br><span class="line"><span class="comment"># -v 匹配不符合指定条件的内容</span></span><br><span class="line">grep -<span class="keyword">in</span> -v <span class="string">'AddUK8SClusterNode'</span> -r .</span><br></pre></td></tr></table></figure>
+<p><a name="UtLof"></a></p>
+<h4 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h4><p>修改 fstab ，添加 mount option，参见： <a href="https://stackoverflow.com/a/9119317" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/9119317</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为 /home 挂载添加 acl 配置</span></span><br><span class="line">awk <span class="string">'$2~"^/home$"&#123;$4="acl,"$4&#125;1'</span> OFS=<span class="string">"\t"</span> /etc/fstab</span><br></pre></td></tr></table></figure>
+<p>打印指定列，参考：<a href="https://www.cnblogs.com/liuyihua1992/p/9689308.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/liuyihua1992/p/9689308.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># $0 表示所有列; -F 指定解析时使用的分隔符; $(NF) 表示最后一列，$(NF-1) 表示倒数第二列，以此类推</span></span><br><span class="line">awk <span class="string">'&#123;print $0&#125;'</span> file    <span class="comment">#打印所有列</span></span><br><span class="line">awk <span class="string">'&#123;print $1&#125;'</span> file  <span class="comment">#打印第一列</span></span><br><span class="line">awk <span class="string">'&#123;print $1, $3&#125;'</span> file   <span class="comment">#打印第一和第三列</span></span><br><span class="line">cat file | awk <span class="string">'&#123;print $3, $1&#125;'</span>   <span class="comment">#打印第三列和第一列，注意先后顺序。</span></span><br><span class="line">cat file | awk <span class="string">'&#123;print $3, $NF&#125;'</span> <span class="comment">#打印第三列和最后一列</span></span><br><span class="line">awk -F <span class="string">":"</span> <span class="string">'&#123;print $1, $3&#125;'</span>  <span class="comment">#以“:”为分隔符分割列，然后打印第一列和第三列</span></span><br><span class="line"><span class="comment"># 一种打印N列之后的所有列的方法：把前N列都赋值为空，然后打印所有列</span></span><br><span class="line">awk <span class="string">'&#123;for(i=1;i&lt;=N;i++)&#123;$i=""&#125;; print $0&#125;'</span> file</span><br></pre></td></tr></table></figure>
+<p><a name="yFkfU"></a></p>
+<h4 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h4><p>sar 可用于获取进程和网络等各种系统活动统计信息，参考：<a href="https://www.computerhope.com/unix/usar.htm#:~:text=The%20sar%20command%20extracts%20and,data%20of%20that%20days%20ago." target="_blank" rel="external nofollow noopener noreferrer">https://www.computerhope.com/unix/usar.htm#:~:text=The%20sar%20command%20extracts%20and,data%20of%20that%20days%20ago.</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取 CPU 利用率信息</span></span><br><span class="line">sar -u 2 5</span><br><span class="line"><span class="comment"># 获取 127 号中断向量统计信息</span></span><br><span class="line">sar -I 127 1 10</span><br><span class="line"><span class="comment"># 获取内存统计信息</span></span><br><span class="line">sar -r 1 2</span><br><span class="line"><span class="comment"># 获取网卡统计信息</span></span><br><span class="line">sar -n DEV 1 2</span><br><span class="line"><span class="comment"># 获取所有系统统计信息</span></span><br><span class="line">sar -A 1 2</span><br></pre></td></tr></table></figure>
+<p><a name="ccsvC"></a></p>
+<h4 id="生成-Linux-用户密码的哈希值"><a href="#生成-Linux-用户密码的哈希值" class="headerlink" title="生成 Linux 用户密码的哈希值"></a>生成 Linux 用户密码的哈希值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">python -c &quot;import crypt, getpass, pwd; print(crypt.crypt(&apos;password&apos;, &apos;\$6\$saltsalt\$&apos;))&quot;</span><br><span class="line">// 或者使用 go</span><br><span class="line">package main                                                </span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;github.com/tredoe/osutil/user/crypt/sha512_crypt&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">    c := sha512_crypt.New()</span><br><span class="line">    hash, err := c.Generate([]byte(&quot;rasmuslerdorf&quot;), []byte(&quot;$6$usesomesillystringforsalt&quot;))</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        panic(err)</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(hash)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="uvsm2"></a></p>
+<h4 id="允许使用-root-用户-ssh-登录"><a href="#允许使用-root-用户-ssh-登录" class="headerlink" title="允许使用 root 用户 ssh 登录"></a>允许使用 root 用户 ssh 登录</h4><p>先删除 <code>/root/.ssh/authorized_keys</code> 中的多余限制信息，之后在 <code>/etc/ssh/sshd_config</code> 中添加 <code>PermitRootLogin yes</code> 后重启 sshd 服务。<br></p>
+<p><a name="vwUdA"></a></p>
+<h4 id="解决”rtnetlink-answers-file-exists”"><a href="#解决”rtnetlink-answers-file-exists”" class="headerlink" title="解决”rtnetlink answers file exists”"></a>解决”rtnetlink answers file exists”</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip a flush dev eth0</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="Ey88A"></a></p>
+<h4 id="查看登录记录"><a href="#查看登录记录" class="headerlink" title="查看登录记录"></a>查看登录记录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前登录用户</span></span><br><span class="line">who</span><br><span class="line"><span class="comment"># 查看最近登录记录</span></span><br><span class="line">last -F</span><br><span class="line"><span class="comment"># 查看最近90天所有用户的最后登录时间</span></span><br><span class="line">lastlog --time 90</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="g7NoE"></a></p>
+<h4 id="rsync-同步时需要-root-权限"><a href="#rsync-同步时需要-root-权限" class="headerlink" title="rsync 同步时需要 root 权限"></a>rsync 同步时需要 root 权限</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rsync -aru -e <span class="string">"ssh"</span> --rsync-path=<span class="string">"sudo rsync"</span> 172.16.110.215:~/ ~/  --progress --exclude=.cache</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="xr010"></a></p>
+<h4 id="rclone-将-http-file-server-的内容同步到本地"><a href="#rclone-将-http-file-server-的内容同步到本地" class="headerlink" title="rclone 将 http file server 的内容同步到本地"></a>rclone 将 http file server 的内容同步到本地</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rclone sync --http-url http://my.file.server :http:centos/<span class="built_in">test</span> /repo/<span class="built_in">test</span> --progress</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="hU4cE"></a></p>
+<h4 id="expr-比较字符串大小"><a href="#expr-比较字符串大小" class="headerlink" title="expr 比较字符串大小"></a>expr 比较字符串大小</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str3=<span class="string">'v1.13'</span></span><br><span class="line">str2=<span class="string">'v1.14'</span></span><br><span class="line"><span class="keyword">if</span> [ $(expr <span class="variable">$&#123;str3&#125;</span> \&lt;= <span class="variable">$&#123;str2&#125;</span>) -eq 1 ]; <span class="keyword">then</span>    <span class="built_in">echo</span> <span class="string">"[<span class="variable">$&#123;str3&#125;</span>] &lt;= [<span class="variable">$&#123;str2&#125;</span>]"</span>; <span class="keyword">else</span>    <span class="built_in">echo</span> <span class="string">"[<span class="variable">$&#123;str3&#125;</span>] &gt; [<span class="variable">$&#123;str2&#125;</span>]"</span>; <span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a name="bjtsD"></a></p>
+<h4 id="tr-移除所有空格"><a href="#tr-移除所有空格" class="headerlink" title="tr 移除所有空格"></a>tr 移除所有空格</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 获取 kubernetes 版本</span><br><span class="line">kubectl version --short | tail -1 | cut -d<span class="string">':'</span> -f2 | tr -d <span class="string">'[:space:]'</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a name="NBOFH"></a></p>
+<h4 id="vegeta-对-HTTP-服务进行性能测试"><a href="#vegeta-对-HTTP-服务进行性能测试" class="headerlink" title="vegeta 对 HTTP 服务进行性能测试"></a>vegeta 对 HTTP 服务进行性能测试</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="string">"GET http://localhost:8080/cephcsi"</span> | vegeta attack -rate=<span class="number">20000</span> -duration=<span class="number">60</span>s &gt; result.bin</span><br><span class="line">vegeta report result.bin</span><br></pre></td></tr></table></figure>
+<p>更多内容参考：<a href="https://www.scaleway.com/en/docs/vegeta-load-testing/" target="_blank" rel="external nofollow noopener noreferrer">https://www.scaleway.com/en/docs/vegeta-load-testing/</a><br></p>
+<p><a name="DNQzt"></a></p>
+<h4 id="zip-压缩文件不带顶级目录"><a href="#zip-压缩文件不带顶级目录" class="headerlink" title="zip 压缩文件不带顶级目录"></a>zip 压缩文件不带顶级目录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pushd /Users/me/development/something</span><br><span class="line">cd path/to/parent/dir/;</span><br><span class="line">zip -r complete/path/to/name.zip ./*</span><br><span class="line">popd</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="KWEjv"></a></p>
+<h4 id="MySQL-执行单行命令"><a href="#MySQL-执行单行命令" class="headerlink" title="MySQL 执行单行命令"></a>MySQL 执行单行命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql --user=&quot;$user&quot; --password=&quot;$password&quot; --database=&quot;$database&quot; --execute=&quot;DROP DATABASE $user; CREATE DATABASE $database;&quot;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="bIf97"></a></p>
+<h4 id="MySQL-导出数据库"><a href="#MySQL-导出数据库" class="headerlink" title="MySQL 导出数据库"></a>MySQL 导出数据库</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 导出</span><br><span class="line">mysqldump -P 3306 -u root --password=password -h 172.30.100.43  keycloak &gt; keycloak-3.sql</span><br><span class="line">// 导入</span><br><span class="line">mysql -P 3306 -u root --password=password -h 172.30.100.43  keycloak &lt; keycloak.sql</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="csvsg"></a></p>
+<h4 id="ss-列出所有处于监听状态的-socket"><a href="#ss-列出所有处于监听状态的-socket" class="headerlink" title="ss 列出所有处于监听状态的 socket"></a>ss 列出所有处于监听状态的 socket</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ss -lntu</span><br><span class="line">-l = only services which are listening on some port</span><br><span class="line">-n = show port number, don<span class="string">'t try to resolve the service name</span></span><br><span class="line"><span class="string">-t = tcp ports</span></span><br><span class="line"><span class="string">-u = udp ports</span></span><br><span class="line"><span class="string">-p = name of the program</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a name="1EEnK"></a></p>
+<h4 id="查看网段中已使用-IP"><a href="#查看网段中已使用-IP" class="headerlink" title="查看网段中已使用 IP"></a>查看网段中已使用 IP</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arp-scan -I eth0 192.168.180.0/24</span><br><span class="line">//或</span><br><span class="line">nmap -sP -PR 192.168.180.*</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="sbDNW"></a></p>
+<h4 id="iostat-查看磁盘读写速度"><a href="#iostat-查看磁盘读写速度" class="headerlink" title="iostat 查看磁盘读写速度"></a>iostat 查看磁盘读写速度</h4><p>参考：<a href="https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/" target="_blank" rel="external nofollow noopener noreferrer">https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 以 MB 为单位显示速度</span><br><span class="line">iostat -m</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="vWZU0"></a></p>
+<h4 id="Wireshark-过滤表达式"><a href="#Wireshark-过滤表达式" class="headerlink" title="Wireshark 过滤表达式"></a>Wireshark 过滤表达式</h4><p>参考：<a href="https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.wireshark.org/docs/wsug_html_chunked/ChWorkBuildDisplayFilterSection.html</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip.scr==10.0.0.5 or ip.dst==192.1.1.1</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="lX9js"></a></p>
+<h4 id="alpine-修改镜像源"><a href="#alpine-修改镜像源" class="headerlink" title="alpine 修改镜像源"></a>alpine 修改镜像源</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&apos; /etc/apk/repositories</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="52SGW"></a></p>
+<h4 id="tinc-配置-VPN"><a href="#tinc-配置-VPN" class="headerlink" title="tinc 配置 VPN"></a>tinc 配置 VPN</h4><p>首先要有一个有公网 IP 的服务器作为交换节点。该节点进行如下配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yum install -y tinc</span><br><span class="line">mkdir -p /etc/tinc/vpn/hosts</span><br><span class="line">vim /etc/tinc/vpn/tinc.conf</span><br><span class="line">  Name = vpn</span><br><span class="line">  Interface = tinc</span><br><span class="line">  Mode = switch</span><br><span class="line">tincd -n vpn -K</span><br><span class="line"> // 启动服务</span><br><span class="line">tincd -n vpn -D</span><br><span class="line">ip link <span class="built_in">set</span> tinc up</span><br><span class="line">ip a add 192.168.120.1/24 dev tinc</span><br></pre></td></tr></table></figure>
+<p>客户端配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /etc/tinc/`hostname`/hosts</span><br><span class="line">vim /etc/tinc/`hostname`/tinc.conf</span><br><span class="line">  Name = hostname</span><br><span class="line">  Interface = tinc</span><br><span class="line">  Mode = switch</span><br><span class="line">  ConnectTo = vpn</span><br><span class="line">tincd -n `hostname` -K</span><br><span class="line">scp vpn-public-ip:/etc/tinc/vpn/hosts/vpn /etc/tinc/`hostname`/hosts</span><br><span class="line">vim /etc/tinc/`hostname`/hosts/vpn <span class="comment"># 第一行加上 Address = vpn-public-ip</span></span><br><span class="line">scp /etc/tinc/vpn/hosts/`hostname` vpn-public-ip:/etc/tinc/vpn/hosts/</span><br><span class="line"> // 启动服务</span><br><span class="line">tincd -n `hostname` -D</span><br><span class="line">ip link <span class="built_in">set</span> tinc up</span><br><span class="line">ip a add 192.168.120.2/24 dev tinc</span><br><span class="line">ip r add 10.10.0.0/16 dev tinc</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="ttdKC"></a></p>
+<h4 id="删文件报错-Structure-needs-cleaning"><a href="#删文件报错-Structure-needs-cleaning" class="headerlink" title="删文件报错 Structure needs cleaning"></a>删文件报错 Structure needs cleaning</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -fR hourly.5/</span><br><span class="line"></span><br><span class="line">rm: cannot remove <span class="string">'hourly.5/snapshot_root/mnt/Vancouver/temp/temp - old/temp - 09 (Dec 07, 2014 - Sep 02, 2015)/a_OLD-gmail/victoria.a.stuart@gmail.com/[Gmail]/LINUX/rsync, rsnapshot; Other backups/19.bak'</span>: Structure needs cleaning</span><br></pre></td></tr></table></figure>
+<p>原因可能是文件系统损坏，xfs 文件系统可以使用 Live 系统登陆后使用以下命令尝试修复：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">umount /dev/sda1</span><br><span class="line">xfs_repair /dev/sda1</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="hh4rr"></a></p>
+<h4 id="coredumpctl"><a href="#coredumpctl" class="headerlink" title="coredumpctl"></a>coredumpctl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">coredumpctl list</span><br><span class="line">coredumpctl dump pid</span><br><span class="line">coredumpctl dump chrome</span><br><span class="line">coredumpctl -o core.dump dump chrome</span><br><span class="line">coredumpctl gdb pid</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="AUh3a"></a></p>
+<h4 id="终端设置全局代理，对-ssh-和-http均有效"><a href="#终端设置全局代理，对-ssh-和-http均有效" class="headerlink" title="终端设置全局代理，对 ssh 和 http均有效"></a>终端设置全局代理，对 ssh 和 http均有效</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ALL_PROXY=socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="JiKnX"></a></p>
+<h4 id="nethogs-查看进程网速"><a href="#nethogs-查看进程网速" class="headerlink" title="nethogs 查看进程网速"></a>nethogs 查看进程网速</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nethogs</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="LldNZ"></a></p>
+<h4 id="fpm-制作-deb-rpm-安装包"><a href="#fpm-制作-deb-rpm-安装包" class="headerlink" title="fpm 制作 deb/rpm 安装包"></a>fpm 制作 deb/rpm 安装包</h4><p>参考：<a href="https://askubuntu.com/a/1121733" target="_blank" rel="external nofollow noopener noreferrer">https://askubuntu.com/a/1121733</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fpm -f -s dir -t deb -n iptables -v 1.6.2 -C `pwd` --prefix / --deb-no-default-config-files usr</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="aUM4A"></a></p>
+<h4 id="生成随机值"><a href="#生成随机值" class="headerlink" title="生成随机值"></a>生成随机值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(awk -v n=1 -v seed=&quot;$RANDOM&quot; &apos;BEGIN &#123; srand(seed); for (i=0; i&lt;n; ++i) printf(&quot;%.4f\n&quot;, rand()*10) &#125;&apos;)</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="bQa14"></a></p>
+<h4 id="NetworkManager-nmcli"><a href="#NetworkManager-nmcli" class="headerlink" title="NetworkManager (nmcli)"></a>NetworkManager (nmcli)</h4><ul>
+<li>设置静态地址<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nmcli connection</span><br><span class="line">nmcli con mod eth1 ipv4.addresses 192.168.5.1/24</span><br><span class="line">nmcli con mod eth1 ipv4.method manual</span><br><span class="line">nmcli con up eth1</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p><a name="s8j4z"></a></p>
+<h4 id="base64-编码"><a href="#base64-编码" class="headerlink" title="base64 编码"></a>base64 编码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -n &apos;test&apos; | base64</span><br></pre></td></tr></table></figure>
+<p><a name="fVXHJ"></a></p>
+<h4 id="wget-到指定目录"><a href="#wget-到指定目录" class="headerlink" title="wget 到指定目录"></a>wget 到指定目录</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">wget</span> <span class="string">-P</span> <span class="string">/tmp</span> <span class="string">http://cluster-api.cn-bj.ufileos.com/cluster-api-uk8s-init.tar.gz</span></span><br></pre></td></tr></table></figure>
+<p><a name="tiQ7D"></a></p>
+<h4 id="tar-解压到指定目录"><a href="#tar-解压到指定目录" class="headerlink" title="tar 解压到指定目录"></a>tar 解压到指定目录</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">tar</span> <span class="string">-zxvf</span> <span class="string">/tmp/cluster-api-uk8s-init.tar.gz</span> <span class="string">-C</span> <span class="string">/usr/local/bin</span></span><br></pre></td></tr></table></figure>
+<p><a name="Eo8vV"></a></p>
+<h4 id="判断-Linux-发行版"><a href="#判断-Linux-发行版" class="headerlink" title="判断 Linux 发行版"></a>判断 Linux 发行版</h4><p>通过 <code>/etc/os-release</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">ssh</span> <span class="string">$ip</span> <span class="string">"sed -n 's/^ID= *//p' /etc/os-release | xargs"</span></span><br><span class="line"><span class="string">if</span> <span class="string">[</span> <span class="string">"$result"</span> <span class="string">=</span> <span class="string">"centos"</span> <span class="string">];</span> <span class="string">then</span></span><br><span class="line">  <span class="string">echo</span> <span class="string">"=========current linux distribution is centos========"</span></span><br><span class="line">  <span class="comment"># do something</span></span><br><span class="line"><span class="string">elif</span> <span class="string">[</span> <span class="string">"$result"</span> <span class="string">=</span> <span class="string">"debian"</span> <span class="string">];</span> <span class="string">then</span></span><br><span class="line">  <span class="string">echo</span> <span class="string">"=========current linux distribution is debian========"</span></span><br><span class="line">  <span class="string">ssh</span> <span class="string">$ip</span> <span class="string">"cat /etc/debian_version"</span></span><br><span class="line">  <span class="string">if</span> <span class="string">[</span> <span class="string">"$result"</span> <span class="string">=</span> <span class="string">"8.2"</span> <span class="string">];</span> <span class="string">then</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line">  <span class="string">fi</span></span><br><span class="line"><span class="string">else</span></span><br><span class="line">  <span class="string">echo</span> <span class="string">"=========current linux distribution not support========"</span></span><br><span class="line">  <span class="string">exit</span> <span class="number">1</span></span><br><span class="line"><span class="string">fi</span></span><br></pre></td></tr></table></figure>
+<p>通过文件，参考：<a href="https://stackoverflow.com/a/3792848" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/3792848</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">if</span> <span class="string">[</span> <span class="string">-f</span> <span class="string">/etc/centos-release</span> <span class="string">];</span> <span class="string">then</span></span><br><span class="line">  <span class="comment"># do something</span></span><br><span class="line"><span class="string">elif</span> <span class="string">[</span> <span class="string">-f</span> <span class="string">/etc/debian_version</span> <span class="string">];</span> <span class="string">then</span></span><br><span class="line">  <span class="string">VERSION=$(cat</span> <span class="string">/etc/debian_version)</span></span><br><span class="line">  <span class="string">if</span> <span class="string">[</span> <span class="string">"$&#123;VERSION&#125;"</span> <span class="string">=</span> <span class="string">"8.2"</span> <span class="string">];</span> <span class="string">then</span></span><br><span class="line">    <span class="string">echo</span> <span class="string">"debian 8.2"</span></span><br><span class="line">  <span class="string">fi</span></span><br><span class="line"><span class="string">fi</span></span><br></pre></td></tr></table></figure>
+<p>使用 lsb_release</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># centos 需要安装支持软件</span></span><br><span class="line"><span class="string">yum</span> <span class="string">install</span> <span class="string">redhat-lsb-core</span></span><br><span class="line"><span class="comment"># debian 可以直接使用</span></span><br><span class="line"><span class="string">lsb_release</span> <span class="string">-is</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a name="kMFK1"></a></p>
+<h4 id="判断文件是否存在"><a href="#判断文件是否存在" class="headerlink" title="判断文件是否存在"></a>判断文件是否存在</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// -f 判断文件存在</span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">"/usr/local/bin/hyperkube.bak"</span> ]; <span class="keyword">then</span> cp /usr/<span class="built_in">local</span>/bin/hyperkube /usr/<span class="built_in">local</span>/bin/hyperkube.bak; <span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p><a name="5xOak"></a></p>
+<h4 id="sshpass-跳过-hostkey-检查"><a href="#sshpass-跳过-hostkey-检查" class="headerlink" title="sshpass 跳过 hostkey 检查"></a>sshpass 跳过 hostkey 检查</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sshpass -p password scp -o StrictHostKeyChecking=no -r <span class="built_in">test</span>/ root@10.8.53.47:/tmp/<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a name="MRxpZ"></a></p>
+<h4 id="查看-NVIDIA-GPU-工作情况"><a href="#查看-NVIDIA-GPU-工作情况" class="headerlink" title="查看 NVIDIA GPU 工作情况"></a>查看 NVIDIA GPU 工作情况</h4><p>下载 P40 驱动：<a href="http://us.download.nvidia.com/tesla/440.64.00/NVIDIA-Linux-x86_64-440.64.00.run" target="_blank" rel="external nofollow noopener noreferrer">http://us.download.nvidia.com/tesla/440.64.00/NVIDIA-Linux-x86_64-440.64.00.run</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lspci | grep -i nvidia</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
+<p><a name="5ODvg"></a></p>
+<h4 id="fio"><a href="#fio" class="headerlink" title="fio"></a>fio</h4><p>可指定 fio 测试输出结果格式为 json ，然后使用 jq 按需解析，参考：<a href="https://boke.wsfnk.com/archives/293.html" target="_blank" rel="external nofollow noopener noreferrer">https://boke.wsfnk.com/archives/293.html</a><br><a name="4bqUv"></a></p>
+<h4 id="jq"><a href="#jq" class="headerlink" title="jq"></a>jq</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 统计 curl 结果中 Info 数组的长度</span><br><span class="line">curl <span class="string">'http://…'</span> | jq <span class="string">'.Infos'</span> | jq length</span><br></pre></td></tr></table></figure>
+<p><a name="FXG9d"></a></p>
+<h4 id="rar-解压"><a href="#rar-解压" class="headerlink" title="rar 解压"></a>rar 解压</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install unrar</span><br><span class="line">sudo dnf install unrar</span><br><span class="line">yay unrar</span><br><span class="line">unrar e tecmint.rar</span><br><span class="line">unrar e tecmint.rar /home/</span><br></pre></td></tr></table></figure>
+<p><a name="4Os5J"></a></p>
+<h4 id="Python-amp-pip"><a href="#Python-amp-pip" class="headerlink" title="Python &amp; pip"></a>Python &amp; pip</h4><p>出现安装错误：<br><code>Cannot uninstall &#39;ipython&#39;. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.</code><br>可尝试通过以下命令解决：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --ignore-installed -U ipython</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="TYmp4"></a></p>
+<h4 id="head-tail-dd-截取文件中部分内容"><a href="#head-tail-dd-截取文件中部分内容" class="headerlink" title="head/tail/dd 截取文件中部分内容"></a>head/tail/dd 截取文件中部分内容</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">head -n 100 file   <span class="comment"># 前 100 行</span></span><br><span class="line">head -c 100 file   <span class="comment"># 前 100 字符</span></span><br><span class="line">tail -n 100 file   <span class="comment"># 后 100 行</span></span><br><span class="line">tail -c 100 file   <span class="comment"># 后 100 字符</span></span><br><span class="line">head -n 10 /var/<span class="built_in">log</span>/pacman.log | tail -n 1                    <span class="comment"># 第 10 行</span></span><br><span class="line">dd count=5 bs=1 <span class="keyword">if</span>=/var/<span class="built_in">log</span>/pacman.log 2&gt;/dev/null            <span class="comment"># 前 5 个字符</span></span><br><span class="line">head -n 10 /var/<span class="built_in">log</span>/pacman.log | tail -n 1 | cut -c 10-15     <span class="comment"># 第 10 行的第 10 到 15 个字符</span></span><br></pre></td></tr></table></figure>
+<p><a name="vc5dh"></a></p>
+<h4 id="快速生成大文件用于占位空间"><a href="#快速生成大文件用于占位空间" class="headerlink" title="快速生成大文件用于占位空间"></a>快速生成大文件用于占位空间</h4><p>参见：<a href="https://askubuntu.com/questions/506910/creating-a-large-size-file-in-less-time" target="_blank" rel="external nofollow noopener noreferrer">https://askubuntu.com/questions/506910/creating-a-large-size-file-in-less-time</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 仅对支持该操作的文件系统有效，仅为一次系统调用，无 IO 读写，预分配空间，速度快，使用 du 查看确实占用了 5G 空间</span></span><br><span class="line">fallocate -l 5G example_file</span><br><span class="line"><span class="comment"># 仅对支持该操作的文件系统有效，仅在文件末尾写入一个字节，使用 du 查看未见占用 10G 空间，有效性存疑</span></span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=zeros.img count=1 bs=1 seek=$((10 * 1024 * 1024 * 1024 - 1)) </span><br><span class="line"><span class="comment"># 常规的做法</span></span><br><span class="line">dd <span class="keyword">if</span>=/dev/urandom of=test1 bs=1M count=10240   <span class="comment"># 用随机数填充文件</span></span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=zero.img count=1024 bs=10M <span class="comment"># 用 0 填充文件</span></span><br></pre></td></tr></table></figure>
+<p><a name="NyjiF"></a></p>
+<h4 id="dev-null、-dev-zero、-dev-random和-dev-urandom"><a href="#dev-null、-dev-zero、-dev-random和-dev-urandom" class="headerlink" title="/dev/null、/dev/zero、/dev/random和/dev/urandom"></a>/dev/null、/dev/zero、/dev/random和/dev/urandom</h4><p>参考：<a href="https://blog.csdn.net/sinat_26058371/article/details/86754683" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/sinat_26058371/article/details/86754683</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /dev/null “空”设备，又称黑洞。任何输入到这个“设备”的数据都将被直接丢弃。最常用的用法是把不需要的输出重定向到这个文件。</span></span><br><span class="line">run.sh 1&gt;/dev/null 2&gt;&amp;1  <span class="comment">#将标准输出和错误输出重定向到/dev/null，运行这个脚本不会输出任何信息到终端</span></span><br><span class="line"><span class="comment"># /dev/zero “零”设备，可以无限的提供空字符（0x00，ASCII代码NUL）。常用来生成一个特定大小的文件。</span></span><br><span class="line">dd <span class="keyword">if</span>=/dev/zero of=./output.txt bs=1024 count=1 <span class="comment">#产生一个1k大小的文件output.txt</span></span><br><span class="line"><span class="comment"># /dev/random 和 /dev/urandom 是随机数设备，提供不间断的随机字节流。</span></span><br><span class="line"><span class="comment"># /dev/random 产生随机数据依赖系统中断，当系统中断不足时，/dev/random 设备会“挂起”，因而产生数据速度较慢，但随机性好；</span></span><br><span class="line"><span class="comment"># /dev/urandom 不依赖系统中断，数据产生速度快，但随机性较低。</span></span><br><span class="line">str=$(cat /dev/urandom | od -x | tr -d <span class="string">' '</span> | head -n 1) <span class="comment"># 利用 /dev/urandom 设备产生一个 128 位的随机字符串</span></span><br></pre></td></tr></table></figure>
+<p><a name="HuRwm"></a></p>
+<h4 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 备份 filter 表</span><br><span class="line">iptables-save -t filter &gt; iptables.bak</span><br><span class="line">// 从备份恢复</span><br><span class="line">iptables-restor &lt; iptables.bak</span><br></pre></td></tr></table></figure>
+<p><a name="C3YgL"></a></p>
+<h4 id="判断字符串包含子串"><a href="#判断字符串包含子串" class="headerlink" title="判断字符串包含子串"></a>判断字符串包含子串</h4><p>参见：<a href="https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">string=<span class="string">'My string'</span>;</span><br><span class="line"><span class="comment"># 会进行整个字符串的匹配，不需要加通配符</span></span><br><span class="line"><span class="keyword">if</span> [[ <span class="variable">$string</span> =~ <span class="string">"My"</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">   <span class="built_in">echo</span> <span class="string">"It's there!"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p><a name="ujq6H"></a></p>
+<h4 id="findmnt"><a href="#findmnt" class="headerlink" title="findmnt"></a>findmnt</h4><p>参见： <a href="https://www.tecmint.com/find-mounted-file-systems-in-linux/" target="_blank" rel="external nofollow noopener noreferrer">https://www.tecmint.com/find-mounted-file-systems-in-linux/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出所有 ext4 文件系统</span></span><br><span class="line">findmnt -t ext4</span><br><span class="line"><span class="comment"># 查找 /data 挂载点</span></span><br><span class="line">findmnt -T /data</span><br><span class="line"><span class="comment"># 在 /etc/fstab 中查找挂载点</span></span><br><span class="line">findmnt -s</span><br><span class="line"><span class="comment"># 隐藏打印的信息列头</span></span><br><span class="line">findmnt -n</span><br><span class="line"><span class="comment"># 指定输出的列</span></span><br><span class="line">findmnt -o FSTYPE</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="1FJ0W"></a></p>
+<h4 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断服务是否存活</span></span><br><span class="line">systemctl is-active --quiet service</span><br></pre></td></tr></table></figure>
+<p><a name="qqWj3"></a></p>
+<h4 id="conntrack"><a href="#conntrack" class="headerlink" title="conntrack"></a>conntrack</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示时间戳</span></span><br><span class="line">conntrack -E -o timestamp</span><br></pre></td></tr></table></figure>
+<p><a name="5f7Ry"></a></p>
+<h4 id="shell-脚本语法校验"><a href="#shell-脚本语法校验" class="headerlink" title="shell 脚本语法校验"></a>shell 脚本语法校验</h4><p>参考：<a href="https://stackoverflow.com/questions/171924/how-do-i-syntax-check-a-bash-script-without-running-it" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/171924/how-do-i-syntax-check-a-bash-script-without-running-it</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash -n tmp.sh</span><br><span class="line">// 或者安装 shellcheck 工具</span><br><span class="line">shellcheck tmp.sh</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="vcsBE"></a></p>
+<h4 id="带超时的循环"><a href="#带超时的循环" class="headerlink" title="带超时的循环"></a>带超时的循环</h4><p>参考：<a href="https://stackoverflow.com/questions/27555727/timeouting-a-while-loop-in-linux-shell-script" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/27555727/timeouting-a-while-loop-in-linux-shell-script</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timeout 5 bash -c -- <span class="string">'while true; do printf ".";done'</span></span><br></pre></td></tr></table></figure>
+
+
+<p><a name="EvNGL"></a></p>
+<h4 id="shell-中打印带日期的日志"><a href="#shell-中打印带日期的日志" class="headerlink" title="shell 中打印带日期的日志"></a>shell 中打印带日期的日志</h4><p>参考：<a href="https://serverfault.com/a/310099" target="_blank" rel="external nofollow noopener noreferrer">https://serverfault.com/a/310099</a>,<a href="https://stackoverflow.com/a/1705761" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/1705761</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> $(date -u) <span class="string">"Some message or other"</span></span><br></pre></td></tr></table></figure>
+<p><a name="KLbMp"></a></p>
+<h4 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h4><ul>
+<li>ssh debug 带时间戳</li>
+</ul>
+<p>参考：<a href="https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/" target="_blank" rel="external nofollow noopener noreferrer">https://www.depesz.com/2010/12/13/a-tale-of-slow-ssh-connections/</a>, <a href="https://blog.csdn.net/sinat_38723234/article/details/103216464" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/sinat_38723234/article/details/103216464</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time ssh -v 192.168.255.128 id 2&gt;&amp;1  | perl -pe <span class="string">'use Time::HiRes qw( time ); $_ = sprintf("%.6f %s", time(), $_)'</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ssh 保持连接存活</li>
+</ul>
+<p>可以在客户端设置 ServerAliveInterval 或者在服务端设置 ServerAliveInterval，其效果是一样的，即在一段时间没有收到对方的数据后，发送探活消息，确保连接存活。分别配合ServerAliveCountMax（默认为 3 ） 和 ClientAliveCountMax （默认为 3 ）使用，超过三次探活包没有得到回应则关闭会话。与 TCPKeepAlive 的一个不同是，ssh 的探活消息是加密传输的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"ClientAliveInterval 60"</span> | sudo tee -a /etc/ssh/sshd_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"	ServerAliveInterval 30"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"ServerAliveInterval 60"</span> &gt;&gt; ~/.ssh/config</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ssh 取消 StrictHostKeyChecking 并从环境变量读取 ssh key 到本地<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"Host *"</span> &gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"  StrictHostKeyChecking=no"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"  UserKnownHostsFile=/dev/null"</span> &gt;&gt; /etc/ssh/ssh_config</span><br><span class="line">mkdir -p ~/.ssh</span><br><span class="line">chmod 700 ~/.ssh</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PRIVATE_KEY</span>"</span> | tr -d <span class="string">'\r'</span> &gt; ~/.ssh/id_rsa</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PUBLIC_KEY</span>"</span> &gt; ~/.ssh/id_rsa.pub</span><br><span class="line">chmod 600 ~/.ssh/id_rsa</span><br><span class="line">chmod 644 ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+<a name="FnP2J"></a><h4 id="按行读取文件并处理"><a href="#按行读取文件并处理" class="headerlink" title="按行读取文件并处理"></a>按行读取文件并处理</h4>参考：<a href="https://stackoverflow.com/questions/10929453/read-a-file-line-by-line-assigning-the-value-to-a-variable" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/10929453/read-a-file-line-by-line-assigning-the-value-to-a-variable</a><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># IFS= (or IFS='') 不去除行头和行尾的空格，一般可不加</span></span><br><span class="line"><span class="comment"># -r 不进行反斜线转义，原样输出</span></span><br><span class="line"><span class="keyword">while</span> IFS= <span class="built_in">read</span> -r line; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Text read from file: <span class="variable">$line</span>"</span></span><br><span class="line"><span class="keyword">done</span> &lt; my_filename.txt</span><br></pre></td></tr></table></figure>
+<a name="DDe9k"></a><h4 id="浮点数运算"><a href="#浮点数运算" class="headerlink" title="浮点数运算"></a>浮点数运算</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'scale=2; 3/2'</span> | bc -l</span><br></pre></td></tr></table></figure>
+<a name="y3vg8"></a><h4 id="部署-STUN-服务"><a href="#部署-STUN-服务" class="headerlink" title="部署 STUN 服务"></a>部署 STUN 服务</h4>参考：<a href="https://github.com/coturn/coturn" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/coturn/coturn</a>，<a href="http://www.stunprotocol.org/" target="_blank" rel="external nofollow noopener noreferrer">http://www.stunprotocol.org/</a>，<a href="https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/" target="_blank" rel="external nofollow noopener noreferrer">https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/</a><br></li>
+</ul>
+<p><a name="AnexS"></a></p>
+<h4 id="安装-ruby"><a href="#安装-ruby" class="headerlink" title="安装 ruby"></a>安装 ruby</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span><br><span class="line">curl -sSL get.rvm.io | bash -s stable</span><br><span class="line"><span class="built_in">source</span> /etc/profile.d/rvm.sh</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"ruby_url=https://cache.ruby-china.com/pub/ruby"</span> &gt; /usr/<span class="built_in">local</span>/rvm/user/db</span><br><span class="line">rvm list known</span><br><span class="line">rvm install 2.3.1</span><br><span class="line">rvm use 2.3.1 --default</span><br><span class="line">gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ --remove https://rubygems.org/</span><br><span class="line">gem sources -l</span><br><span class="line">gem install --no-document fpm</span><br></pre></td></tr></table></figure>
+<p><a name="pX5oq"></a></p>
+<h4 id="find-print0-与-xargs-0"><a href="#find-print0-与-xargs-0" class="headerlink" title="find -print0 与 xargs -0"></a>find -print0 与 xargs -0</h4><p>一般会有下列用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -name <span class="string">"*.txt"</span> | xargs rm</span><br></pre></td></tr></table></figure>
+<p>上述用法在大多数时候是有效的，而当文件名称重包含空格或换行符时则会出错，这是因为 xargs 默认将空格或换行符作为切分字符串的标识。一种有效的改进方法是使用 NULL 作为分隔符，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -name <span class="string">"*.txt"</span> -print0 | xargs -0 rm</span><br></pre></td></tr></table></figure>
+<p>其中，-print0 用于告诉 find 在每个查询到的结果后加一个 NULL 字符而不是默认的加一个换行符，-0 告诉 xargs 使用 NULL 来分切字符串而不是默认的空格或换行符。参考：<a href="https://www.cnblogs.com/liuyihua1992/p/9689314.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/liuyihua1992/p/9689314.html</a><br>另一种简单可行的方法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find . -name <span class="string">"*.txt"</span> | xargs -i rm &#123;&#125;</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">find . -name <span class="string">"*.txt"</span> | xargs -I &#123;&#125; rm &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>其中 -i 默认使用 {} 作为替换符号， -I 可以自行指定其他的替换符号，其能够生效的原因是该选项使得 xargs 以换行符为结尾的每一项直接去替换 {} ，而不再使用换行符或空格去解析字符内容。<br><a name="Ym2yl"></a></p>
+<h4 id="常见工具的-IPV6-模式"><a href="#常见工具的-IPV6-模式" class="headerlink" title="常见工具的 IPV6 模式"></a>常见工具的 IPV6 模式</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -6 hyperkube root@[2003:da8:2004:1000:0a09:6ec4:0006:ed49]:/tmp</span><br><span class="line">ping6 2003:da8:2004:1000:0a2a:1e5e:0122:d75b</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="EsaA7"></a></p>
+<h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
+<li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
+<li>pandoc 可以借助第三方引擎实现各种文档格式之间的转换：<a href="https://pandoc.org/" target="_blank" rel="external nofollow noopener noreferrer">https://pandoc.org/</a>。</li>
+<li>MOBI 转 PDF 的在线网站：<a href="https://ebook2pdf.com/" target="_blank" rel="external nofollow noopener noreferrer">https://ebook2pdf.com/</a></li>
+<li>Github dispatch 使用示例：<a href="https://alejandroandr.eu/posts/manual-trigger-github-workflows/" target="_blank" rel="external nofollow noopener noreferrer">https://alejandroandr.eu/posts/manual-trigger-github-workflows/</a></li>
+<li>deepin-wine 安装微软雅黑字体 : <a href="https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722</a></li>
+<li>配置 Linux 为一个简单的路由器：<a href="https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/" target="_blank" rel="external nofollow noopener noreferrer">https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/</a></li>
+<li>安装 cuda 参考：<a href="https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux" target="_blank" rel="external nofollow noopener noreferrer">https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux</a></li>
+<li>下载 vscode 使用国内镜像: <a href="https://zhuanlan.zhihu.com/p/112215618" target="_blank" rel="external nofollow noopener noreferrer">https://zhuanlan.zhihu.com/p/112215618</a></li>
+</ul>
+<p><a name="Ocuwz"></a></p>
+<h4 id="疑难杂症"><a href="#疑难杂症" class="headerlink" title="疑难杂症"></a>疑难杂症</h4><ul>
+<li>ssh 设置 <code>UseDNS no</code> 后仍然登录慢，依然有可能是 DNS 解析的问题，更改 /etc/resolv.conf 中配置的 nameserver 之后好了，更多可能参考：<a href="https://jrs-s.net/2017/07/01/slow-ssh-logins/#:~:text=It' target=" _blank" rel="external nofollow noopener noreferrer" s%20usually%20dns.,restart%20ssh%2c%20etc%20as%20appropriate." target="_blank">https://jrs-s.net/2017/07/01/slow-ssh-logins/#:~:text=It’s%20usually%20DNS.,restart%20ssh%2C%20etc%20as%20appropriate.</a>。</li>
+<li>centos yum 命令执行到 <code>Loaded plugins: fastestmirror</code> 时很慢，也可能是 DNS 解析的问题。</li>
+<li>在 while 循环中使用 ssh 命令时，发现 while 循环提前结束了，其原因是 ssh 命令会从标准输入中读取内容，因此后续脚本被 ssh 读入了，所以无法继续执行，解决办法就是重定向 ssh 命令的标准输入为 /dev/null，参考：<a href="https://stackoverflow.com/a/9393147" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/9393147</a>。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/6c44975c.html" rel="bookmark">为 Proxmox 制作包含 cloud-init 的虚拟机模板</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/e8bac896.html" rel="bookmark">Ceph 常用操作</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/5fddf106.html" rel="bookmark">Git 常用命令</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">#  云计算</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/c957e495.html" rel="next" title="Linux 文件系统基础知识">
+                  <i class="fa fa-chevron-left"></i> Linux 文件系统基础知识
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/post/9caa466a.html" rel="prev" title="Kubernetes 实践">
+                  Kubernetes 实践 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#CentOS"><span class="nav-number">1.</span> <span class="nav-text">CentOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Debian"><span class="nav-number">2.</span> <span class="nav-text">Debian</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Raspberry"><span class="nav-number">3.</span> <span class="nav-text">Raspberry</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VIM"><span class="nav-number">4.</span> <span class="nav-text">VIM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ansible"><span class="nav-number">5.</span> <span class="nav-text">Ansible</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#man"><span class="nav-number">6.</span> <span class="nav-text">man</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tcpdump"><span class="nav-number">7.</span> <span class="nav-text">tcpdump</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount-查看目录或分区挂载情况"><span class="nav-number">8.</span> <span class="nav-text">mount 查看目录或分区挂载情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pgrep-进程检索与杀死"><span class="nav-number">9.</span> <span class="nav-text">pgrep 进程检索与杀死</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fuser-找到正在使用某个文件的进程"><span class="nav-number">10.</span> <span class="nav-text">fuser 找到正在使用某个文件的进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lsof-列出所有打开的文件"><span class="nav-number">11.</span> <span class="nav-text">lsof 列出所有打开的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#strace-跟踪系统调用"><span class="nav-number">12.</span> <span class="nav-text">strace 跟踪系统调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getent-获取系统用户信息"><span class="nav-number">13.</span> <span class="nav-text">getent 获取系统用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sed"><span class="nav-number">14.</span> <span class="nav-text">sed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grep"><span class="nav-number">15.</span> <span class="nav-text">grep</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#awk"><span class="nav-number">16.</span> <span class="nav-text">awk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sar"><span class="nav-number">17.</span> <span class="nav-text">sar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-Linux-用户密码的哈希值"><span class="nav-number">18.</span> <span class="nav-text">生成 Linux 用户密码的哈希值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#允许使用-root-用户-ssh-登录"><span class="nav-number">19.</span> <span class="nav-text">允许使用 root 用户 ssh 登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决”rtnetlink-answers-file-exists”"><span class="nav-number">20.</span> <span class="nav-text">解决”rtnetlink answers file exists”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看登录记录"><span class="nav-number">21.</span> <span class="nav-text">查看登录记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rsync-同步时需要-root-权限"><span class="nav-number">22.</span> <span class="nav-text">rsync 同步时需要 root 权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rclone-将-http-file-server-的内容同步到本地"><span class="nav-number">23.</span> <span class="nav-text">rclone 将 http file server 的内容同步到本地</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#expr-比较字符串大小"><span class="nav-number">24.</span> <span class="nav-text">expr 比较字符串大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tr-移除所有空格"><span class="nav-number">25.</span> <span class="nav-text">tr 移除所有空格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vegeta-对-HTTP-服务进行性能测试"><span class="nav-number">26.</span> <span class="nav-text">vegeta 对 HTTP 服务进行性能测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zip-压缩文件不带顶级目录"><span class="nav-number">27.</span> <span class="nav-text">zip 压缩文件不带顶级目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-执行单行命令"><span class="nav-number">28.</span> <span class="nav-text">MySQL 执行单行命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-导出数据库"><span class="nav-number">29.</span> <span class="nav-text">MySQL 导出数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ss-列出所有处于监听状态的-socket"><span class="nav-number">30.</span> <span class="nav-text">ss 列出所有处于监听状态的 socket</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看网段中已使用-IP"><span class="nav-number">31.</span> <span class="nav-text">查看网段中已使用 IP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iostat-查看磁盘读写速度"><span class="nav-number">32.</span> <span class="nav-text">iostat 查看磁盘读写速度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Wireshark-过滤表达式"><span class="nav-number">33.</span> <span class="nav-text">Wireshark 过滤表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#alpine-修改镜像源"><span class="nav-number">34.</span> <span class="nav-text">alpine 修改镜像源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tinc-配置-VPN"><span class="nav-number">35.</span> <span class="nav-text">tinc 配置 VPN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删文件报错-Structure-needs-cleaning"><span class="nav-number">36.</span> <span class="nav-text">删文件报错 Structure needs cleaning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#coredumpctl"><span class="nav-number">37.</span> <span class="nav-text">coredumpctl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#终端设置全局代理，对-ssh-和-http均有效"><span class="nav-number">38.</span> <span class="nav-text">终端设置全局代理，对 ssh 和 http均有效</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nethogs-查看进程网速"><span class="nav-number">39.</span> <span class="nav-text">nethogs 查看进程网速</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fpm-制作-deb-rpm-安装包"><span class="nav-number">40.</span> <span class="nav-text">fpm 制作 deb/rpm 安装包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成随机值"><span class="nav-number">41.</span> <span class="nav-text">生成随机值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NetworkManager-nmcli"><span class="nav-number">42.</span> <span class="nav-text">NetworkManager (nmcli)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#base64-编码"><span class="nav-number">43.</span> <span class="nav-text">base64 编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wget-到指定目录"><span class="nav-number">44.</span> <span class="nav-text">wget 到指定目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tar-解压到指定目录"><span class="nav-number">45.</span> <span class="nav-text">tar 解压到指定目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断-Linux-发行版"><span class="nav-number">46.</span> <span class="nav-text">判断 Linux 发行版</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断文件是否存在"><span class="nav-number">47.</span> <span class="nav-text">判断文件是否存在</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sshpass-跳过-hostkey-检查"><span class="nav-number">48.</span> <span class="nav-text">sshpass 跳过 hostkey 检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看-NVIDIA-GPU-工作情况"><span class="nav-number">49.</span> <span class="nav-text">查看 NVIDIA GPU 工作情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fio"><span class="nav-number">50.</span> <span class="nav-text">fio</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jq"><span class="nav-number">51.</span> <span class="nav-text">jq</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rar-解压"><span class="nav-number">52.</span> <span class="nav-text">rar 解压</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-amp-pip"><span class="nav-number">53.</span> <span class="nav-text">Python &amp; pip</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#head-tail-dd-截取文件中部分内容"><span class="nav-number">54.</span> <span class="nav-text">head/tail/dd 截取文件中部分内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快速生成大文件用于占位空间"><span class="nav-number">55.</span> <span class="nav-text">快速生成大文件用于占位空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dev-null、-dev-zero、-dev-random和-dev-urandom"><span class="nav-number">56.</span> <span class="nav-text">/dev/null、/dev/zero、/dev/random和/dev/urandom</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iptables"><span class="nav-number">57.</span> <span class="nav-text">iptables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断字符串包含子串"><span class="nav-number">58.</span> <span class="nav-text">判断字符串包含子串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#findmnt"><span class="nav-number">59.</span> <span class="nav-text">findmnt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#systemctl"><span class="nav-number">60.</span> <span class="nav-text">systemctl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#conntrack"><span class="nav-number">61.</span> <span class="nav-text">conntrack</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shell-脚本语法校验"><span class="nav-number">62.</span> <span class="nav-text">shell 脚本语法校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#带超时的循环"><span class="nav-number">63.</span> <span class="nav-text">带超时的循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shell-中打印带日期的日志"><span class="nav-number">64.</span> <span class="nav-text">shell 中打印带日期的日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh"><span class="nav-number">65.</span> <span class="nav-text">ssh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按行读取文件并处理"><span class="nav-number">66.</span> <span class="nav-text">按行读取文件并处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#浮点数运算"><span class="nav-number">67.</span> <span class="nav-text">浮点数运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署-STUN-服务"><span class="nav-number">68.</span> <span class="nav-text">部署 STUN 服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-ruby"><span class="nav-number">69.</span> <span class="nav-text">安装 ruby</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#find-print0-与-xargs-0"><span class="nav-number">70.</span> <span class="nav-text">find -print0 与 xargs -0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见工具的-IPV6-模式"><span class="nav-number">71.</span> <span class="nav-text">常见工具的 IPV6 模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实用工具"><span class="nav-number">72.</span> <span class="nav-text">实用工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#疑难杂症"><span class="nav-number">73.</span> <span class="nav-text">疑难杂症</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌" src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="external nofollow noopener noreferrer" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">228k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:27</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;" z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="153,153,153" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>
