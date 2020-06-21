@@ -266,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -298,7 +298,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">systemctl <span class="built_in">enable</span> --now meshcentral</span><br><span class="line"><span class="comment"># 检查服务状态，若无异常则服务已经启动</span></span><br><span class="line">systemctl status meshcentral</span><br></pre></td></tr></table></figure>
 <p>meshcentral 默认监听在 8080 和 8443 端口，8080 端口可使用 http 访问，8443 端口需使用 https 访问，默认情况下，http 访问 8080 端口会重定向至 8443 https 访问。由于我们使用的私有证书，浏览器会提示非安全链接，忽略即可。初次登录时由于无用户，所以会提示创建用户，并授予该用户管理员权限。<br>登录后需要先创建设备组，填好设备组名称，设备组类型使用默认的 “Manage using a software agent” 即可， 如下：<br><img src="/images/1592724691670-56251d09-9d0d-4e45-841a-1d84cdbd5ddf.png" alt="image.png"><br>然后向设备组中添加设备，根据操作系统选择部署 MeshAgent 的方式，若远程节点操作系统为 Linux ，则会生成一个脚本，到远程节点上去执行该脚本即可，Windows 和 macOS 则是下载一个安装包到节点上部署。<br><img src="/images/1592725026046-9d018b1f-9b75-423f-8915-7421a188e5f9.png" alt="image.png"><br><a name="vXUgr"></a></p>
 <h4 id="开启-WebRTC"><a href="#开启-WebRTC" class="headerlink" title="开启 WebRTC"></a>开启 WebRTC</h4><p><a name="jNUcW"></a></p>
-<h4 id="操作使用体验"><a href="#操作使用体验" class="headerlink" title="操作使用体验"></a>操作使用体验</h4><p>远程桌面<br><img src="/images/1592725895076-877202e7-75d8-4421-9563-43a098870059.png" alt="image.png"><br>终端<br><img src="/images/1592725982695-c2d7c4e7-39b3-492a-b4cd-30609eecbbff.png" alt="image.png"><br>文件传输<br><img src="/images/1592726016995-65c4a6eb-da88-4d68-be49-564918406ee1.png" alt="image.png"><br></p>
+<h4 id="操作使用体验"><a href="#操作使用体验" class="headerlink" title="操作使用体验"></a>操作使用体验</h4><p>远程桌面<br><img src="/images/1592725895076-877202e7-75d8-4421-9563-43a098870059.png" alt="image.png"><br>终端<br><img src="/images/1592725982695-c2d7c4e7-39b3-492a-b4cd-30609eecbbff.png" alt="image.png"><br>文件传输<br><img src="/images/1592726016995-65c4a6eb-da88-4d68-be49-564918406ee1.png" alt="image.png"><br><a name="Ysdks"></a></p>
+<h4 id="WebRTC-阅读材料"><a href="#WebRTC-阅读材料" class="headerlink" title="WebRTC 阅读材料"></a>WebRTC 阅读材料</h4><p>参考：<a href="https://zhuanlan.zhihu.com/p/86759357" target="_blank" rel="external nofollow noopener noreferrer">https://zhuanlan.zhihu.com/p/86759357</a><br></p>
 
     </div>
 
@@ -410,7 +411,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装部署"><span class="nav-number">2.</span> <span class="nav-text">安装部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启-WebRTC"><span class="nav-number">3.</span> <span class="nav-text">开启 WebRTC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作使用体验"><span class="nav-number">4.</span> <span class="nav-text">操作使用体验</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装部署"><span class="nav-number">2.</span> <span class="nav-text">安装部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启-WebRTC"><span class="nav-number">3.</span> <span class="nav-text">开启 WebRTC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作使用体验"><span class="nav-number">4.</span> <span class="nav-text">操作使用体验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebRTC-阅读材料"><span class="nav-number">5.</span> <span class="nav-text">WebRTC 阅读材料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
