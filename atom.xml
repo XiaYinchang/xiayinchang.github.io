@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2020-06-17T16:00:00.000Z</updated>
+  <updated>2020-06-19T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MeshCentral - 管理远程设备的利器</title>
+    <link href="https://www.xiayinchang.top/post/f5428d95.html"/>
+    <id>https://www.xiayinchang.top/post/f5428d95.html</id>
+    <published>2020-06-19T16:00:00.000Z</published>
+    <updated>2020-06-19T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      MeshCentral 是一款开源的可私有化部署的 Web 端远程设备管理工具，功能强大，可以登录远程桌面或者直接打开终端，也可以传输文件，既可以通过中心服务器连接远程设备，也支持 WebRTC，通过 NAT 穿透实现 Peer To Peer 的连接，对于使用羊毛版公有云服务器的群体无疑是极其友好的，唯一不足的地方就是界面观感不佳，一眼看去让人心生复杂。
+    
+    </summary>
+    
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="MeshCentral" scheme="https://www.xiayinchang.top/tags/MeshCentral/"/>
+    
+  </entry>
   
   <entry>
     <title>macOS 使用相关</title>
@@ -438,27 +461,6 @@
     
     
       <category term="VSCode" scheme="https://www.xiayinchang.top/tags/VSCode/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Envoy 知识汇总</title>
-    <link href="https://www.xiayinchang.top/post/111604be.html"/>
-    <id>https://www.xiayinchang.top/post/111604be.html</id>
-    <published>2019-10-17T16:00:00.000Z</published>
-    <updated>2019-10-17T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      汇总 Envoy 基础知识和用法等。
-    
-    </summary>
-    
-    
-      <category term="Envoy" scheme="https://www.xiayinchang.top/categories/Envoy/"/>
-    
-    
-      <category term="Envoy" scheme="https://www.xiayinchang.top/tags/Envoy/"/>
     
   </entry>
   

@@ -764,6 +764,25 @@
       </tags>
   </entry>
   <entry>
+    <title>MeshCentral - 管理远程设备的利器</title>
+    <url>/post/f5428d95.html</url>
+    <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h4><p>仓库地址：<a href="https://github.com/Ylianst/MeshCentral" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/Ylianst/MeshCentral</a><br>官方首页：<a href="https://www.meshcommander.com/meshcentral2" target="_blank" rel="external nofollow noopener noreferrer">https://www.meshcommander.com/meshcentral2</a><br>开发语言：MeshCentral 中心服务器采用 NodeJS 开发（UI 是 JavaScript），另外需要在每个远程设备上安装 MeshAgent 用于控制设备，该组件使用 C 语言开发。<br>工作原理：MeshCentral 作为中心服务器应当部署在具有公网 IP 的节点上，这样方便随时随地管理远程设备；如果你只需要在本地局域网内管理其它设备，也可以部署在本地节点；如果你的家用宽带有自己固定的公网 IP ，部署在家里的电脑上也是可以的；总之，你需要部署一个具有广泛可达的通信地址的中心服务器，这里推荐使用公有云厂商的羊毛版服务器。MeshAgent 安装在你的远程节点上，远程节点的操作系统可以是 macOS 、Windows 或者 Linux。MeshAgent 向中心服务器注册自己的基本信息并通过 WebSocket 协议与中心服务器保持通信，如果开启了 WebRTC 模式，还会使用 STUN 协议获取节点的公网通信地址并上报给中心服务器。当你在笔记本电脑上通过浏览器打开控制界面尝试去连接远程节点时，若未开启 WebRTC，所有的通信流量都要经过中心服务器中转，这样不仅会增加中心服务器的负担，通信速率也将受到中心服务器带宽能力的限制，而在 WebRTC 模式下，你的笔记本可以和远程节点直连，这无疑是一种更高效地工作模式，在运气好的情况下（两端上行带宽都比较高）可以获得极佳的远程桌面清晰度和流畅度。<br>官方文档：该项目的另一大优点是文档较为详细，安装指南：<a href="http://info.meshcentral.com/downloads/MeshCentral2/MeshCentral2InstallGuide-0.0.9.pdf" target="_blank" rel="external nofollow noopener noreferrer">MeshCentral2InstallGuide-0.0.9.pdf</a>；用户手册：<a href="http://info.meshcentral.com/downloads/MeshCentral2/MeshCentral2UserGuide-0.2.9.pdf" target="_blank" rel="external nofollow noopener noreferrer">MeshCentral2UserGuide-0.2.9.pdf</a>。<br><a name="LTu3q"></a></p><a id="more"></a>
+
+<h4 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h4><p>MeshCentral 的功能较为丰富，这里我仅结合自己的使用需求实施较为简单的部署。MeshCentral 部署在我之前购买的阿里云虚拟机上，其基本信息如下，目前已稳定运行了两年，我的博客也部署在同一台虚拟机上：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/182657/1592718150625-fce9a72d-93b0-4421-a548-2bae46f3ccbc.png#align=left&display=inline&height=268&margin=%5Bobject%20Object%5D&name=image.png&originHeight=536&originWidth=2676&size=133276&status=done&style=none&width=1338" alt="image.png"><br>使用 nvm 安装 NodeJS ，如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash</span><br><span class="line">cat&gt;&gt;/root/.bashrc&lt;&lt;EOF</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>开发工具</tag>
+        <tag>MeshCentral</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>基础网络知识</title>
     <url>/post/cf4d6f51.html</url>
     <content><![CDATA[<p><a name="ueZuz"></a></p><h4 id="DNS-域名服务器数量"><a href="#DNS-域名服务器数量" class="headerlink" title="DNS 域名服务器数量"></a>DNS 域名服务器数量</h4><p>通常，在 Linux 系统中，可在 /etc/resolv.conf 中配置 DNS 域名服务器，如下：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /etc/resolv.conf</span></span><br><span class="line">nameserver 10.23.255.1</span><br><span class="line">nameserver 10.23.255.2</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure><a id="more"></a>
