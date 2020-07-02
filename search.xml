@@ -20,45 +20,27 @@
 </ul>
 <p>Linux 系统调用的 API 是以 POSIX 标准为基础实现的。传统的系统调用是通过 int 0x80 软中断实现的，但是现代的 CPU 中也提供了如 syscall/sysexit 指令级的支持以加快系统调用执行速度。<br>系统调用总体上可分为六个类别：</p>
 <ul>
-<li><p>进程控制：创建和终止进程，获取或设置进程属性，等待设定时间，等待事件，信号操作，分配和释放内存；</p>
-</li>
-<li><p>文件管理：创建、删除、打开、关闭和读写文件，设置文件属性；</p>
-</li>
-<li><p>设备管理：请求设备，释放设备，读写设备，设置设备属性， attach 或 detach 设备；</p>
-</li>
-<li><p>信息维护：获取或设置系统时间和日期，获取或设置系统数据；</p>
-</li>
-<li><p>通信：创建通信连接，发送接收消息，传输状态信息，attach 或 detach 远程设备；</p>
-</li>
-<li><p>保护：获取或者文件权限。<br><a name="7PxeC"></a></p>
-<h4 id="信号处理机制"><a href="#信号处理机制" class="headerlink" title="信号处理机制"></a>信号处理机制</h4><p>如果想要进程捕获某个信号，然后作出相应的处理，就需要注册信号处理函数。同中断类似，内核也为每个进程准备了一个信号向量表，信号向量表中记录着每个信号所对应的处理机制，默认情况下是调用默认处理机制。当进程为某个信号注册了信号处理程序后，发生该信号时，内核就会调用注册的函数。<br>信号是异步的，一个进程不可能等待信号的到来，也不知道信号会到来，那么，进程是如何发现和接受信号呢？实际上，信号的接收不是由用户进程来完成的，而是由内核代理。当一个进程 P2 向另一个进程 P1 发送信号后，内核接收到信号，并将其放在 P1 的信号队列当中。当 P1 再次陷入内核态时，会检查信号队列，并根据相应的信号调取相应的信号处理函数。<br><a name="y8pn9"></a></p>
-<h4 id="Linux-中的常见信号"><a href="#Linux-中的常见信号" class="headerlink" title="Linux 中的常见信号"></a>Linux 中的常见信号</h4><p>Linux 支持标准的 POSIX 信号定义，使用 <code>man 7  signal</code> 可以查看信号的详细信息。每种信号都有预定义的默认行为。常见的几种：当用户退出 shell 时，由该 shell 启动的所有进程将收到 SIGHUP 信号，默认动作为终止进程，SIGHUP 也常用于重启进程，若需要进程忽略该信号，可通过 nohup 启动程序；SIGINT 信号由用户发送 INTR 字符( Ctrl+C )触发；SIGKILL 信号无条件结束程序（不能被捕获、阻塞或忽略），可通过 <code>kill -9 pid</code> 向进程发出信号，强制杀死进程；SIGTERM 信号默认动作也是终止进程，但该信号可以被捕获也可以被忽略，可用于优雅关闭进程，让进程有足够的时间去清理资源，在 Kubernetes 中删除 Pod 时，首先容器中 1 号进程会接收到 SIGTERM 信号开始优雅关闭，超过设定的优雅关闭限时后，进程会收到 SIGKILL 信号强制关闭。<br><a name="xrPrU"></a></p>
-<h4 id="进程调度和进程切换"><a href="#进程调度和进程切换" class="headerlink" title="进程调度和进程切换"></a>进程调度和进程切换</h4><p>Linux 既支持普通的分时进程，也支持实时进程。Linux 中的调度是多种混合调度策略和调度算法的混合。Linux 中的调度是基于分时和优先级，且优先级是动态的，会根据进程的行为周期性调整。<br>Linux 通过 schedule() 函数实现进程调度。schedule () 是内核函数，也不是一个系统调用，所以在用户态时是无法直接调用 schedule () 的，只能间接地调用，通过中断。<br>进程调度的时机：中断处理过程（时钟中断、I/O 中断、系统调用、异常）中直接调用 schedule ()，或者返回用户态时根据 need_resched（）标记调用 schedule ()。<br>用户态进程只能被动调度，内核线程可以直接调用 schedule () 进行进程切换，也可以在中断处理过程中进行调度，也就是说内核线程作为一类的特殊的进程可以主动调度，也可以被动调度；用户态进程无法实现主动调度，仅能通过陷入内核态后的某个时机点进行调度，即在中断处理过程中进行调度。<br><a name="9SkaJ"></a></p>
-<h4 id="进程切换与模式切换"><a href="#进程切换与模式切换" class="headerlink" title="进程切换与模式切换"></a>进程切换与模式切换</h4><p>当一个进程在执行时，CPU 的所有寄存器中的值、进程的状态以及堆栈中的内容被称为该进程的上下文。当内核需要切换到另一个进程时，它需要保存当前进程的所有状态，即保存当前进程的上下文，以便在再次执行该进程时，能够根据切换前的状态执行下去。在 Linux 中，当前进程上下文均保存在进程的任务数据结构中。系统调用进行的是模式切换 (mode switch)。模式切换与进程切换比较起来，容易很多，而且节省时间，因为模式切换最主要的任务只是进行进程寄存器上下文的切换。在发生中断时，内核就在被中断进程的上下文中，在内核态下执行中断服务例程。但同时会保留所有需要用到的资源，以便中继服务结束时能恢复被中断进程的执行。中断的执行过程类似于系统调用，它复用了当前进程的内核栈，但不代表当前进程运行，而一般是代表硬件运行。<br><a name="nItpP"></a></p>
-<h4 id="进程-OOM"><a href="#进程-OOM" class="headerlink" title="进程 OOM"></a>进程 OOM</h4><p>一般来讲，进程意外终止有两种常见情况：程序本身的 Bug，出现访问非法地址的情况，接收到 SIGSEGV 信号而终止；另一种情况是系统磁盘空间不足或内存空间不足，而内存空间不足又更为常见。内存空间不足时，操作系统为了保护系统本身不致崩溃，会通过 oom killer 选择一些进程将其终止，被选中的进程会接收到 SIGKILL 信号。选择进程时的一个考虑是尽量牺牲最少的进程释放足够的空间，所以一些拥有较多子进程且内存消耗极大的进程（例如 PostgreSQL / Apache / MySQL ）会有更大的可能性被选中终止，而系统关键进程则基本不会被选中。oom killer 本身并不是常驻的内核线程，而是只有在内存不足时才会触发调用的一组内核函数。<br><a name="EnmcH"></a></p>
-<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4></li>
-<li><p><a href="http://abcdxyzk.github.io/blog/2018/01/10/kernel-task-thread/" target="_blank" rel="external nofollow noopener noreferrer">http://abcdxyzk.github.io/blog/2018/01/10/kernel-task-thread/</a></p>
-</li>
-<li><p><a href="https://blog.csdn.net/gatieme/article/details/50779184" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/gatieme/article/details/50779184</a></p>
-</li>
-<li><p><a href="https://learn-linux.readthedocs.io/zh_CN/latest/system-programming/syscall/principle.html" target="_blank" rel="external nofollow noopener noreferrer">https://learn-linux.readthedocs.io/zh_CN/latest/system-programming/syscall/principle.html</a></p>
-</li>
-<li><p><a href="https://xnerv.wang/linux-process-kernel-and-file-system-summary/" target="_blank" rel="external nofollow noopener noreferrer">https://xnerv.wang/linux-process-kernel-and-file-system-summary/</a></p>
-</li>
-<li><p>内核态与用户态：<a href="https://www.cnblogs.com/viviwind/archive/2012/09/22/2698450.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/viviwind/archive/2012/09/22/2698450.html</a></p>
-</li>
-<li><p><a href="https://www.wikiwand.com/en/System_call" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/System_call</a></p>
-</li>
-<li><p>进程切换：<a href="https://www.jianshu.com/p/c68de44edb98" target="_blank" rel="external nofollow noopener noreferrer">https://www.jianshu.com/p/c68de44edb98</a></p>
-</li>
-<li><p>进程切换：<a href="https://blog.csdn.net/Hatsune_Miku_/article/details/77851218" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/Hatsune_Miku_/article/details/77851218</a></p>
-</li>
-<li><p><a href="https://www.cnblogs.com/Anker/p/3269106.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/Anker/p/3269106.html</a></p>
-</li>
-<li><p><a href="https://docs.memset.com/other/linux-s-oom-process-killer#:~:text=The%20%22OOM%20Killer%22%20or%20%22,is%20critically%20low%20on%20memory.&text=This%20maximises%20the%20use%20of,processes%20is%20being%20actively%20used." target="_blank" rel="external nofollow noopener noreferrer">Linux’s OOM Process Killer</a> 描述了进程查看是否有进程 OOM 和如何优化</p>
-</li>
-<li><p><a href="https://linux-mm.org/OOM_Killer" target="_blank" rel="external nofollow noopener noreferrer">LinuxMM: OOM_Killer</a> 中描述了 oom killer 相关函数的一些细节</p>
-</li>
+<li>进程控制：创建和终止进程，获取或设置进程属性，等待设定时间，等待事件，信号操作，分配和释放内存；</li>
+<li>文件管理：创建、删除、打开、关闭和读写文件，设置文件属性；</li>
+<li>设备管理：请求设备，释放设备，读写设备，设置设备属性， attach 或 detach 设备；</li>
+<li>信息维护：获取或设置系统时间和日期，获取或设置系统数据；</li>
+<li>通信：创建通信连接，发送接收消息，传输状态信息，attach 或 detach 远程设备；</li>
+<li>保护：获取或者文件权限。<br><a name="7PxeC"></a><h4 id="信号处理机制"><a href="#信号处理机制" class="headerlink" title="信号处理机制"></a>信号处理机制</h4>如果想要进程捕获某个信号，然后作出相应的处理，就需要注册信号处理函数。同中断类似，内核也为每个进程准备了一个信号向量表，信号向量表中记录着每个信号所对应的处理机制，默认情况下是调用默认处理机制。当进程为某个信号注册了信号处理程序后，发生该信号时，内核就会调用注册的函数。<br>信号是异步的，一个进程不可能等待信号的到来，也不知道信号会到来，那么，进程是如何发现和接受信号呢？实际上，信号的接收不是由用户进程来完成的，而是由内核代理。当一个进程 P2 向另一个进程 P1 发送信号后，内核接收到信号，并将其放在 P1 的信号队列当中。当 P1 再次陷入内核态时，会检查信号队列，并根据相应的信号调取相应的信号处理函数。<br><a name="y8pn9"></a><h4 id="Linux-中的常见信号"><a href="#Linux-中的常见信号" class="headerlink" title="Linux 中的常见信号"></a>Linux 中的常见信号</h4>Linux 支持标准的 POSIX 信号定义，使用 <code>man 7 signal</code> 可以查看信号的详细信息。每种信号都有预定义的默认行为。常见的几种：当用户退出 shell 时，由该 shell 启动的所有进程将收到 SIGHUP 信号，默认动作为终止进程，SIGHUP 也常用于重启进程，若需要进程忽略该信号，可通过 nohup 启动程序；SIGINT 信号由用户发送 INTR 字符( Ctrl+C )触发；SIGKILL 信号无条件结束程序（不能被捕获、阻塞或忽略），可通过 <code>kill -9 pid</code> 向进程发出信号，强制杀死进程；SIGTERM 信号默认动作也是终止进程，但该信号可以被捕获也可以被忽略，可用于优雅关闭进程，让进程有足够的时间去清理资源，在 Kubernetes 中删除 Pod 时，首先容器中 1 号进程会接收到 SIGTERM 信号开始优雅关闭，超过设定的优雅关闭限时后，进程会收到 SIGKILL 信号强制关闭。<br><a name="xrPrU"></a><h4 id="进程调度和进程切换"><a href="#进程调度和进程切换" class="headerlink" title="进程调度和进程切换"></a>进程调度和进程切换</h4>Linux 既支持普通的分时进程，也支持实时进程。Linux 中的调度是多种混合调度策略和调度算法的混合。Linux 中的调度是基于分时和优先级，且优先级是动态的，会根据进程的行为周期性调整。<br>Linux 通过 schedule() 函数实现进程调度。schedule () 是内核函数，也不是一个系统调用，所以在用户态时是无法直接调用 schedule () 的，只能间接地调用，通过中断。<br>进程调度的时机：中断处理过程（时钟中断、I/O 中断、系统调用、异常）中直接调用 schedule ()，或者返回用户态时根据 need_resched（）标记调用 schedule ()。<br>用户态进程只能被动调度，内核线程可以直接调用 schedule () 进行进程切换，也可以在中断处理过程中进行调度，也就是说内核线程作为一类的特殊的进程可以主动调度，也可以被动调度；用户态进程无法实现主动调度，仅能通过陷入内核态后的某个时机点进行调度，即在中断处理过程中进行调度。<br><a name="9SkaJ"></a><h4 id="进程切换与模式切换"><a href="#进程切换与模式切换" class="headerlink" title="进程切换与模式切换"></a>进程切换与模式切换</h4>当一个进程在执行时，CPU 的所有寄存器中的值、进程的状态以及堆栈中的内容被称为该进程的上下文。当内核需要切换到另一个进程时，它需要保存当前进程的所有状态，即保存当前进程的上下文，以便在再次执行该进程时，能够根据切换前的状态执行下去。在 Linux 中，当前进程上下文均保存在进程的任务数据结构中。系统调用进行的是模式切换 (mode switch)。模式切换与进程切换比较起来，容易很多，而且节省时间，因为模式切换最主要的任务只是进行进程寄存器上下文的切换。在发生中断时，内核就在被中断进程的上下文中，在内核态下执行中断服务例程。但同时会保留所有需要用到的资源，以便中继服务结束时能恢复被中断进程的执行。中断的执行过程类似于系统调用，它复用了当前进程的内核栈，但不代表当前进程运行，而一般是代表硬件运行。<br><a name="nItpP"></a><h4 id="进程-OOM"><a href="#进程-OOM" class="headerlink" title="进程 OOM"></a>进程 OOM</h4>一般来讲，进程意外终止有两种常见情况：程序本身的 Bug，出现访问非法地址的情况，接收到 SIGSEGV 信号而终止；另一种情况是系统磁盘空间不足或内存空间不足，而内存空间不足又更为常见。内存空间不足时，操作系统为了保护系统本身不致崩溃，会通过 oom killer 选择一些进程将其终止，被选中的进程会接收到 SIGKILL 信号。选择进程时的一个考虑是尽量牺牲最少的进程释放足够的空间，所以一些拥有较多子进程且内存消耗极大的进程（例如 PostgreSQL / Apache / MySQL ）会有更大的可能性被选中终止，而系统关键进程则基本不会被选中。oom killer 本身并不是常驻的内核线程，而是只有在内存不足时才会触发调用的一组内核函数。<br><a name="wNFiy"></a><h4 id="进程间通信机制"><a href="#进程间通信机制" class="headerlink" title="进程间通信机制"></a>进程间通信机制</h4>匿名管道：只能用于具有亲缘关系的进行通信，使用面相对较窄，实际开发中较少使用；<br>命名管道：可以用于任意进程间的通信，对于大块数据的传输效率较高，可应用于单进程大量数据传递，和多个进程向一个进程传递数据；<br>信号：无法传递数据，而且信号的种类有限，只适用于完成一些简单的事件通知任务，如配置跟新信号通知，一个服务通过信号告知另一个服务自身状态；<br>文件锁：不能用来传递数据，用来对操作进行协调，利用文件锁实现多个进程对于某个资源的排队请求，或者多个进程对系统某个全局资源进行读写操作，可以通过文件锁实现进程间读写锁的功能；<br>共享文件：文件的存在与否来当锁，文件内容来交互数据；<br>共享内存：最为高效的进程间通信方式，进程可以直接读写内存，不需要任何数据拷贝，适用于多个进程共享数据，或进程间频繁的进行大量的数据交互，建议使用mmap方式；<br>消息队列：进程间传递简单的命令和控制消息，如配置更新通知，多进程对多进程的通信等，可以简化代码逻辑，建议使用全双工管道替代；<br>信号量：某种资源数为N，多个进程都在使用该资源，为了进行进程间的互斥，可以使用初始值为N的信号量，–建议使用记录锁替代；<br>Unix 套接字：某个服务与多个服务同时通信，此时需要维护多个通信通道，使用 Unix 套接字，可以使用 Linux IO 多路复用功能，建议优先考虑网络套接字；<br>网络套接字：如果系统需要支持分布式部署，服务可能在同一设备或者不同设备，此时使用网络套接字比较合适，提高了扩展性。<br><a name="95Ahv"></a><h4 id="进程间锁"><a href="#进程间锁" class="headerlink" title="进程间锁"></a>进程间锁</h4>进程较线程来说相对独立，进程间同步的粒度一般较大，且多借助分布式消息队列、分布式内存等中间件实现分布式节点之间的同步。单机上多进程间同步相对少见，一种典型的场景是 Nginx 多进程模型中的 woker 进程通过对 accept 加锁实现多 worker 进程之间的协调。进程间锁借助进程间通信机制实现，是进程间通信机制的一种应用实例。进程间锁可借助共享内存、共享文件、信号量等方式实现。借助共享内存实现进程间锁的基本原理是：开辟一块共享内存，使得相关进程均可访问同一块区域，再将互斥锁定义在该区域（即共享内存）上，使得相关进程可以使用该锁。为解决多进程对同一文件的读写冲突，在linux 系统中，提供了 flock 这一系统调用，用来实现对文件的读写保护，即文件锁的功能。文件锁保护文件的功能，与 fork 多进程及 pthread 库中多线程使用读写锁来保护内存资源的方式是类似的。<br><a name="BinYE"></a><h4 id="线程同步机制"><a href="#线程同步机制" class="headerlink" title="线程同步机制"></a>线程同步机制</h4>线程间因为共享资源易产生资源竞争所以需要进行同步。常用的线程同步机制有：互斥锁、读写锁、条件变量等。<br></li>
+</ul>
+<p><a name="EnmcH"></a></p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul>
+<li><a href="http://abcdxyzk.github.io/blog/2018/01/10/kernel-task-thread/" target="_blank" rel="external nofollow noopener noreferrer">http://abcdxyzk.github.io/blog/2018/01/10/kernel-task-thread/</a></li>
+<li><a href="https://blog.csdn.net/gatieme/article/details/50779184" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/gatieme/article/details/50779184</a></li>
+<li><a href="https://learn-linux.readthedocs.io/zh_CN/latest/system-programming/syscall/principle.html" target="_blank" rel="external nofollow noopener noreferrer">https://learn-linux.readthedocs.io/zh_CN/latest/system-programming/syscall/principle.html</a></li>
+<li><a href="https://xnerv.wang/linux-process-kernel-and-file-system-summary/" target="_blank" rel="external nofollow noopener noreferrer">https://xnerv.wang/linux-process-kernel-and-file-system-summary/</a></li>
+<li>内核态与用户态：<a href="https://www.cnblogs.com/viviwind/archive/2012/09/22/2698450.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/viviwind/archive/2012/09/22/2698450.html</a></li>
+<li><a href="https://www.wikiwand.com/en/System_call" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/System_call</a></li>
+<li>进程切换：<a href="https://www.jianshu.com/p/c68de44edb98" target="_blank" rel="external nofollow noopener noreferrer">https://www.jianshu.com/p/c68de44edb98</a></li>
+<li>进程切换：<a href="https://blog.csdn.net/Hatsune_Miku_/article/details/77851218" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/Hatsune_Miku_/article/details/77851218</a></li>
+<li><a href="https://www.cnblogs.com/Anker/p/3269106.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/Anker/p/3269106.html</a></li>
+<li><a href="https://docs.memset.com/other/linux-s-oom-process-killer#:~:text=The%20%22OOM%20Killer%22%20or%20%22,is%20critically%20low%20on%20memory.&text=This%20maximises%20the%20use%20of,processes%20is%20being%20actively%20used." target="_blank" rel="external nofollow noopener noreferrer">Linux’s OOM Process Killer</a> 描述了进程查看是否有进程 OOM 和如何优化</li>
+<li><a href="https://linux-mm.org/OOM_Killer" target="_blank" rel="external nofollow noopener noreferrer">LinuxMM: OOM_Killer</a> 中描述了 oom killer 相关函数的一些细节</li>
+<li><a href="https://blog.csdn.net/weixin_44344462/article/details/97180648" target="_blank" rel="external nofollow noopener noreferrer">Linux进程间互斥锁 （共享内存实现）</a>，<a href="https://blog.csdn.net/u012385733/article/details/80057461" target="_blank" rel="external nofollow noopener noreferrer">进程间同步之mutex锁</a>，<a href="https://blog.csdn.net/jinguangliu/article/details/71773784" target="_blank" rel="external nofollow noopener noreferrer">使用文件锁实现进程间同步</a>，<a href="https://www.zybuluo.com/lishuhuakai/note/562247" target="_blank" rel="external nofollow noopener noreferrer">多进程之间的文件锁</a>，<a href="https://zhuanlan.zhihu.com/p/25134841" target="_blank" rel="external nofollow noopener noreferrer">被遗忘的桃源——flock 文件锁</a>，<a href="https://blog.csdn.net/u011244446/article/details/47313963" target="_blank" rel="external nofollow noopener noreferrer">Linux 进程间互斥锁</a></li>
 </ul>
 ]]></content>
       <categories>
@@ -2086,6 +2068,61 @@
       </tags>
   </entry>
   <entry>
+    <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
+    <url>/post/f901e5ff.html</url>
+    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
+
+
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
+<p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
+<p><a name="kEL2C"></a></p>
+<h3 id="Authentication-Annotations"><a href="#Authentication-Annotations" class="headerlink" title="Authentication Annotations"></a>Authentication Annotations</h3><p><a name="0hiT0"></a></p>
+<h4 id="auth-url"><a href="#auth-url" class="headerlink" title="auth-url"></a>auth-url</h4><p>Nginx-inkress 是一个相当成熟的为部署在 kubernetes 上的工作流提供外部入口的解决方案，它带有很多开箱即用的特性。这些特性大多数都可以通过简单地向服务的 ingress yaml 文件中添加注解来使用。这里需要使用其中专门用于对接外部认证的注解 ‘auth-url’ 。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/auth-url: <span class="string">"url to auth service"</span></span><br></pre></td></tr></table></figure>
+<p>这个注解告诉 ingress-nginx 控制器先将传入的请求转发给认证服务，然后如果认证服务返回状态码为 200 OK 的响应，则将请求继续转发到下游服务。例如:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<p>上面的 ingress 配置指示 ingress-nginx 将所有路径为 <code>api.microservice-1.myapp.com/secure/</code> 的外部请求首先转发到部署在集群内的认证服务的 <code>/authenticate</code> 端点，其基本过程如下：</p>
+<ol>
+<li>客户端向 <code>api.microservice-1.myapp.com/secure/*</code> 发起 API 请求；</li>
+<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 <code>/authenticate</code> 端点；</li>
+<li>如果认证服务返回 <code>200 Ok</code> 则继续讲该请求转给 <code>microservice-1</code> 服务。</li>
+</ol>
+<p><a name="Zd1lp"></a></p>
+<h4 id="auth-response-headers"><a href="#auth-response-headers" class="headerlink" title="auth-response-headers"></a>auth-response-headers</h4><p>我们可以使用  auth-response-headers 注解让认证服务传递一些信息到下游的业务应用。例如，认证服务在进行认证的过程中可以解析出用户名或用户 ID ，并将用户信息传递给  <code>microservice-1</code> 服务：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">    nginx.ingress.kubernetes.io/auth-response-headers: UserID</span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>客户端向 api.microservice-1.myapp.com/secure/* 发起 API 请求；</li>
+<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；</li>
+<li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
+<li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248" alt="image.png"></p>
+<p><a name="xK7hi"></a></p>
+<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
+<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
+<ol>
+<li>移除反向代理相关代码。</li>
+<li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
+<li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
+<li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
+</ol>
+<p><a name="pWbqx"></a></p>
+<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
+<p><a name="elPJY"></a></p>
+<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
+<p><a name="dh0i1"></a></p>
+<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
+]]></content>
+      <categories>
+        <category>译文</category>
+      </categories>
+      <tags>
+        <tag>译文</tag>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Kubernetes CSI</title>
     <url>/post/d1098827.html</url>
     <content><![CDATA[<p><a name="ekedR"></a></p><h4 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h4><p>在 Kubernetes 中，容器运行结束后其文件系统也随即被销毁，因此无法在容器中直接存储需要持久化的数据；另一方面，Kubernetes 以 Pod 为单位管理多个有一定关联关系的容器，这些容器之间的数据共享也是一个需要解决的一个问题。为此，Kubernetes 中引入了 Volume 的概念，与 Docker 中 Volume 概念的不同之处在于 Kubernetes 中的 Volume 有着完善的生命周期管理，一个 Volume 的生命周期和对应的 Pod 的一致，因此 Pod 中的容器的重启不会造成 Volume 中数据的丢失，且多个容器可以通过挂载同一个 Volume 共享数据，另外单个 Pod 支持使用多个多种类型的 Volume。通过 Volume 的抽象，容器只需要挂载 Volume 到文件系统的某个目录使用它而不必关心 Volume 的存储后端到底是什么类型。<br><a name="P9ayc"></a></p><a id="more"></a>
@@ -2150,61 +2187,6 @@
       <tags>
         <tag>Kubernetes</tag>
         <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
-    <url>/post/f901e5ff.html</url>
-    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
-
-
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
-<p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
-<p><a name="kEL2C"></a></p>
-<h3 id="Authentication-Annotations"><a href="#Authentication-Annotations" class="headerlink" title="Authentication Annotations"></a>Authentication Annotations</h3><p><a name="0hiT0"></a></p>
-<h4 id="auth-url"><a href="#auth-url" class="headerlink" title="auth-url"></a>auth-url</h4><p>Nginx-inkress 是一个相当成熟的为部署在 kubernetes 上的工作流提供外部入口的解决方案，它带有很多开箱即用的特性。这些特性大多数都可以通过简单地向服务的 ingress yaml 文件中添加注解来使用。这里需要使用其中专门用于对接外部认证的注解 ‘auth-url’ 。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/auth-url: <span class="string">"url to auth service"</span></span><br></pre></td></tr></table></figure>
-<p>这个注解告诉 ingress-nginx 控制器先将传入的请求转发给认证服务，然后如果认证服务返回状态码为 200 OK 的响应，则将请求继续转发到下游服务。例如:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-<p>上面的 ingress 配置指示 ingress-nginx 将所有路径为 <code>api.microservice-1.myapp.com/secure/</code> 的外部请求首先转发到部署在集群内的认证服务的 <code>/authenticate</code> 端点，其基本过程如下：</p>
-<ol>
-<li>客户端向 <code>api.microservice-1.myapp.com/secure/*</code> 发起 API 请求；</li>
-<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 <code>/authenticate</code> 端点；</li>
-<li>如果认证服务返回 <code>200 Ok</code> 则继续讲该请求转给 <code>microservice-1</code> 服务。</li>
-</ol>
-<p><a name="Zd1lp"></a></p>
-<h4 id="auth-response-headers"><a href="#auth-response-headers" class="headerlink" title="auth-response-headers"></a>auth-response-headers</h4><p>我们可以使用  auth-response-headers 注解让认证服务传递一些信息到下游的业务应用。例如，认证服务在进行认证的过程中可以解析出用户名或用户 ID ，并将用户信息传递给  <code>microservice-1</code> 服务：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">    nginx.ingress.kubernetes.io/auth-response-headers: UserID</span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>客户端向 api.microservice-1.myapp.com/secure/* 发起 API 请求；</li>
-<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；</li>
-<li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
-<li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
-</ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248" alt="image.png"></p>
-<p><a name="xK7hi"></a></p>
-<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
-<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
-<ol>
-<li>移除反向代理相关代码。</li>
-<li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
-<li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
-<li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
-</ol>
-<p><a name="pWbqx"></a></p>
-<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
-<p><a name="elPJY"></a></p>
-<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
-<p><a name="dh0i1"></a></p>
-<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>译文</tag>
-        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
