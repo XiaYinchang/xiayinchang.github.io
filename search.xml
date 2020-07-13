@@ -171,6 +171,10 @@
 <li>一个 Markdown 转 PDF 的库，只是不支持中文字符：<a href="https://github.com/mandolyte/mdtopdf" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/mandolyte/mdtopdf</a>。</li>
 <li>可以从文件中加载环境变量的库 <a href="https://github.com/joho/godotenv" target="_blank" rel="external nofollow noopener noreferrer">github.com/joho/godotenv</a> ，不过使用 <a href="https://github.com/spf13/viper" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/viper</a> 可能更佳，参考：<a href="https://levelup.gitconnected.com/a-no-nonsense-guide-to-environment-variables-in-go-55d7661f09b0" target="_blank" rel="external nofollow noopener noreferrer">https://levelup.gitconnected.com/a-no-nonsense-guide-to-environment-variables-in-go-55d7661f09b0</a>，<a href="https://towardsdatascience.com/use-environment-variable-in-your-next-golang-project-39e17c3aaa66" target="_blank" rel="external nofollow noopener noreferrer">https://towardsdatascience.com/use-environment-variable-in-your-next-golang-project-39e17c3aaa66</a>。</li>
 </ol>
+<p><a name="odVOO"></a></p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ol>
+<li><a href="https://github.com/thrawn01/h2c-golang-example" target="_blank" rel="external nofollow noopener noreferrer">HTTP/2 Cleartext (H2C) golang example</a></li>
+</ol>
 <p><a name="cCStY"></a></p>
 <h4 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h4><ol>
 <li>《Go 语言从入门到进阶实战》名字俗了点，但是内容还是值得一读，作者对 Go 语言的使用还是很熟练的。</li>
