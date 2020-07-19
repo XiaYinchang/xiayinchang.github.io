@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="汇总对 Go 语言的基本理解、编程方法和开源库等。">
+<meta name="keywords" content="Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go 知识点汇总">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;defe85e8.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="汇总对 Go 语言的基本理解、编程方法和开源库等。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&amp;display=inline&amp;height=424&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=424&amp;originWidth=953&amp;size=146883&amp;status=done&amp;style=none&amp;width=953">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;182657&#x2F;1592419877483-67f0c574-00b4-4e50-9b21-801a6ee24604.png#align=left&amp;display=inline&amp;height=591&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1182&amp;originWidth=1918&amp;size=270747&amp;status=done&amp;style=none&amp;width=959">
+<meta property="og:updated_time" content="2020-07-15T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&amp;display=inline&amp;height=424&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=424&amp;originWidth=953&amp;size=146883&amp;status=done&amp;style=none&amp;width=953">
+
+<link rel="canonical" href="https://www.xiayinchang.top/post/defe85e8.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Go 知识点汇总 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="external nofollow noopener noreferrer" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/defe85e8.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Go 知识点汇总
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-12 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-12T00:00:00+08:00">2019-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-16 00:00:00" itemprop="dateModified" datetime="2020-07-16T00:00:00+08:00">2020-07-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>24k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>22 分钟</span>
+            </span>
+            <div class="post-description">汇总对 Go 语言的基本理解、编程方法和开源库等。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">value: []   type: []int    len: 0    cap: 0    underlay: 0x0</span><br><span class="line">value: [1]   type: []int    len: 1    cap: 2    underlay: 0x414028</span><br></pre></td></tr></table></figure>
+<p>上述示例说明 slice 可以不进行初始化，在 append 调用中会自动创建底层数组分配空间，即所谓懒初始化。一般情况下， slice 可通过以下方式产生：<br>输入：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	slice1 := []<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">	printSlice(slice1)</span><br><span class="line">	</span><br><span class="line">	slice2 := []<span class="keyword">int</span>&#123;<span class="number">6</span>:<span class="number">1</span>&#125;</span><br><span class="line">	printSlice(slice2)</span><br><span class="line">	</span><br><span class="line">	underlayArr :=[...]<span class="keyword">int</span>&#123;<span class="number">15</span>:<span class="number">1</span>&#125;</span><br><span class="line">	slice3 := underlayArr[<span class="number">12</span>:]</span><br><span class="line">	printSlice(slice3)</span><br><span class="line">	</span><br><span class="line">	slice4 := <span class="built_in">make</span>([]<span class="keyword">int</span>,<span class="number">3</span>)</span><br><span class="line">	printSlice(slice4)</span><br><span class="line">	</span><br><span class="line">	slice5 := <span class="built_in">make</span>([]<span class="keyword">int</span>,<span class="number">3</span>,<span class="number">8</span>)</span><br><span class="line">	printSlice(slice5)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">printSlice</span><span class="params">(s []<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, s, <span class="built_in">len</span>(s), <span class="built_in">cap</span>(s), s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">value: [1 2 3]   type: []int    len: 3    cap: 3    underlay: 0x414020</span><br><span class="line">value: [0 0 0 0 0 0 1]   type: []int    len: 7    cap: 7    underlay: 0x45e020</span><br><span class="line">value: [0 0 0 1]   type: []int    len: 4    cap: 4    underlay: 0x4300f0</span><br><span class="line">value: [0 0 0]   type: []int    len: 3    cap: 3    underlay: 0x4140a0</span><br><span class="line">value: [0 0 0]   type: []int    len: 3    cap: 8    underlay: 0x45e040</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="J5JDU"></a></p>
+<h4 id="切片拷贝"><a href="#切片拷贝" class="headerlink" title="切片拷贝"></a>切片拷贝</h4><p>以下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	arr := [<span class="number">20</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">	slice1 := arr[<span class="number">2</span>:<span class="number">5</span>]</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice1)</span><br><span class="line">	slice2 := slice1</span><br><span class="line">	slice2[<span class="number">1</span>] = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">	slice2 = <span class="built_in">append</span>(slice2, []<span class="keyword">int</span>&#123;<span class="number">1</span>&#125;...)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice1)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice2)</span><br><span class="line">	slice2[<span class="number">2</span>] = <span class="number">5</span></span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice1)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[0 0 0]</span><br><span class="line">[0 3 0]</span><br><span class="line">[0 3 0 1]</span><br><span class="line">[0 3 5]</span><br><span class="line">[0 3 5 1]</span><br></pre></td></tr></table></figure>
+<p>以上输出说明，整个过程中两个切片的底层数组仍然是同一个，这是因为切片复制完成的瞬间新切片和原切片的底层数组一定是同一个，之后随着 append 操作有可能会造成切片各自的底层数组发生变化，而这种变化并不是一定会出现，只有底层数组的容量不足以容纳新的元素时才会发生，而上面的输出结果表明，由于底层数组的容量仍然足以容纳新的元素，所以切片 append 操作后底层数组仍未变化，也就是说原切片和新切片之间仍然有可能相互影响。<br>下面的例子恰好是由于新切片 append 元素时底层数组不足以容纳新的元素造成底层数组的变化，之后两个切片再无关系：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	slice1 := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">10</span>: <span class="number">0</span>&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice1)</span><br><span class="line">	slice2 := slice1</span><br><span class="line">	slice2[<span class="number">1</span>] = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">	slice2 = <span class="built_in">append</span>(slice2, []<span class="keyword">int</span>&#123;<span class="number">1</span>&#125;...)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice1)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice2)</span><br><span class="line">	slice2[<span class="number">3</span>]=<span class="number">5</span></span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice1)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, slice2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]</span><br><span class="line">[<span class="number">1</span> <span class="number">3</span> <span class="number">3</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]</span><br><span class="line">[<span class="number">1</span> <span class="number">3</span> <span class="number">3</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span>]</span><br><span class="line">[<span class="number">1</span> <span class="number">3</span> <span class="number">3</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]</span><br><span class="line">[<span class="number">1</span> <span class="number">3</span> <span class="number">3</span> <span class="number">5</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p>综上，我们不能依靠拷贝切片之间的联系来获取排序后的元素值（除非是原地排序，不需要增加切片大小），即不能像 C 语言使用指针一样，而应当每次返回一个新的切片存储排好序的值。<br></p>
+<p><a name="IWVp8"></a></p>
+<h4 id="包导入过程"><a href="#包导入过程" class="headerlink" title="包导入过程"></a>包导入过程</h4><p><img src="/images/1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png" alt="image.png"><br><a name="ifRex"></a></p>
+<h4 id="godoc-与-go-doc"><a href="#godoc-与-go-doc" class="headerlink" title="godoc 与 go doc"></a>godoc 与 go doc</h4><p>从 go 1.12 开始， godoc 不再提供各种子命令，仅作为一个 http server 提供 GOPATH 和 GOROOT 下 pkg 的在线文档，而 go doc 命令可以用来查看本地程序的文档。<br><a name="zfykF"></a></p>
+<h4 id="GOPRIVATE"><a href="#GOPRIVATE" class="headerlink" title="GOPRIVATE"></a>GOPRIVATE</h4><p>从 go 1.13 开始，增加了 GOPRIVATE 环境变量的配置用以跳过对私有仓库的 checksum 检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOPRIVATE=<span class="string">"git.ucloudadmin.com/*,git.umcloud.io/*"</span></span><br><span class="line"><span class="comment"># 设置完之后，通过 go env 可以看到 GONOSUMDB 和 GONOPROXY 环境变量也被自动更新了</span></span><br><span class="line">GO111MODULE=<span class="string">"on"</span></span><br><span class="line">GOARCH=<span class="string">"amd64"</span></span><br><span class="line">GOBIN=<span class="string">""</span></span><br><span class="line">GOCACHE=<span class="string">"/home/xyc/.cache/go-build"</span></span><br><span class="line">GOENV=<span class="string">"/home/xyc/.config/go/env"</span></span><br><span class="line">GOEXE=<span class="string">""</span></span><br><span class="line">GOFLAGS=<span class="string">""</span></span><br><span class="line">GOHOSTARCH=<span class="string">"amd64"</span></span><br><span class="line">GOHOSTOS=<span class="string">"linux"</span></span><br><span class="line">GONOPROXY=<span class="string">"git.ucloudadmin.com/*,git.umcloud.io/*"</span></span><br><span class="line">GONOSUMDB=<span class="string">"git.ucloudadmin.com/*,git.umcloud.io/*"</span></span><br><span class="line">GOOS=<span class="string">"linux"</span></span><br><span class="line">GOPATH=<span class="string">"/home/xyc/go"</span></span><br><span class="line">GOPRIVATE=<span class="string">"git.ucloudadmin.com/*,git.umcloud.io/*"</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<p><a name="2qLn1"></a></p>
+<h4 id="获取变量类型"><a href="#获取变量类型" class="headerlink" title="获取变量类型"></a>获取变量类型</h4><ul>
+<li><p>fmt</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    v := <span class="string">"hello world"</span></span><br><span class="line">    fmt.Println(typeof(v))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">typeof</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> fmt.Sprintf(<span class="string">"%T"</span>, v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>reflect</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"reflect"</span></span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    v := <span class="string">"hello world"</span></span><br><span class="line">    fmt.Println(typeof(v))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">typeof</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> reflect.TypeOf(v).String()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a href="https://golang.org/ref/spec#Type_assertions" target="_blank" rel="external nofollow noopener noreferrer">类型断言</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    v := <span class="string">"hello world"</span></span><br><span class="line">    fmt.Println(typeof(v))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">typeof</span><span class="params">(v <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">switch</span> t := v.(<span class="keyword">type</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">int</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"int"</span></span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">float64</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"float64"</span></span><br><span class="line">    <span class="comment">//... etc</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        _ = t</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"unknown"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实前两个都是用了反射，fmt.Printf (“% T”) 里最终调用的还是 <code>reflect.TypeOf()</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *pp)</span> <span class="title">printArg</span><span class="params">(arg <span class="keyword">interface</span>&#123;&#125;, verb <span class="keyword">rune</span>)</span></span> &#123;</span><br><span class="line">    ...</span><br><span class="line">	<span class="comment">// Special processing considerations.</span></span><br><span class="line">	<span class="comment">// %T (the value's type) and %p (its address) are special; we always do them first.</span></span><br><span class="line">	<span class="keyword">switch</span> verb &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">'T'</span>:</span><br><span class="line">		p.fmt.fmt_s(reflect.TypeOf(arg).String())</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	<span class="keyword">case</span> <span class="string">'p'</span>:</span><br><span class="line">		p.fmtPointer(reflect.ValueOf(arg), <span class="string">'p'</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>reflect.TypeOf () 的参数是 <code>v interface{}</code>，golang 的反射是怎么做到的呢？在 golang 中，interface 也是一个结构体，记录了 2 个指针：</p>
+</li>
+<li><p>指针 1，指向该变量的类型</p>
+</li>
+<li><p>指针 2，指向该变量的 value<br><a name="fCmPq"></a></p>
+<h4 id="获取变量地址"><a href="#获取变量地址" class="headerlink" title="获取变量地址"></a>获取变量地址</h4><p>输入：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"reflect"</span></span><br><span class="line">	<span class="string">"unsafe"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	intarr := [<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">12</span>, <span class="number">34</span>, <span class="number">55</span>, <span class="number">66</span>, <span class="number">43</span>&#125;</span><br><span class="line">	slice := intarr[:]</span><br><span class="line">	fmt.Printf(<span class="string">"the len is %d and cap is %d \n"</span>, <span class="built_in">len</span>(slice), <span class="built_in">cap</span>(slice))</span><br><span class="line">	fmt.Printf(<span class="string">"%p   %p   %p   %p\n"</span>, &amp;slice[<span class="number">0</span>], &amp;intarr, slice, &amp;slice)</span><br><span class="line">	fmt.Printf(<span class="string">"underlay: %#x\n"</span>, (*reflect.SliceHeader)(unsafe.Pointer(&amp;slice)).Data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">the len is 5 and cap is 5 </span><br><span class="line">0x456000   0x456000   0x456000   0x40a0e0</span><br><span class="line">underlay: 0x456000</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p><a name="XLO09"></a></p>
+<h4 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h4><p>在 Go 语言中可以很方便地构建反向代理服务器：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Serve a reverse proxy for a given url</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">serveReverseProxy</span><span class="params">(target <span class="keyword">string</span>, res http.ResponseWriter, req *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="comment">// parse the url</span></span><br><span class="line">	url, _ := url.Parse(target)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// create the reverse proxy</span></span><br><span class="line">	proxy := httputil.NewSingleHostReverseProxy(url)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Update the headers to allow for SSL redirection</span></span><br><span class="line">	req.URL.Host = url.Host</span><br><span class="line">	req.URL.Scheme = url.Scheme</span><br><span class="line">	req.Header.Set(<span class="string">"X-Forwarded-Host"</span>, req.Header.Get(<span class="string">"Host"</span>))</span><br><span class="line">	req.Host = url.Host</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Note that ServeHttp is non blocking and uses a go routine under the hood</span></span><br><span class="line">	proxy.ServeHTTP(res, req)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="yfmQE"></a></p>
+<h4 id="从静态文件生成-go-code-并-serve"><a href="#从静态文件生成-go-code-并-serve" class="headerlink" title="从静态文件生成 go code 并 serve"></a>从静态文件生成 go code 并 serve</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 使用两个开源库</span><br><span class="line">go get github.com/jteeuwen/go-bindata</span><br><span class="line">go get github.com/elazarl/go-bindata-assetfs</span><br><span class="line"></span><br><span class="line">// 从本地目录生成 go code</span><br><span class="line">// 会在当前目录生成 bindata.go</span><br><span class="line">go-bindata-assetfs swagger-ui/</span><br></pre></td></tr></table></figure>
+<p>之后就可以使用该文件创建一个 http 静态站点：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里以 swagger-ui 编译之后的文件为例</span></span><br><span class="line"><span class="comment">// 假设生成的 go 代码所属包名为 swagger</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/elazarl/go-bindata-assetfs"</span></span><br><span class="line">  	<span class="string">"fake.local.com/test/swagger"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// FileServer 会自动尝试获取目录下的 index.html 文件返回给用户</span></span><br><span class="line"><span class="comment">// 从而使得一个静态站点能够正常工作</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// Use binary asset FileServer</span></span><br><span class="line">	http.Handle(<span class="string">"/"</span>,</span><br><span class="line">		http.FileServer(&amp;assetfs.AssetFS&#123;</span><br><span class="line">		Asset:    swagger.Asset,</span><br><span class="line">		AssetDir: swagger.AssetDir,</span><br><span class="line">		Prefix:   <span class="string">"swagger-ui"</span>,</span><br><span class="line">	&#125;))</span><br><span class="line"></span><br><span class="line">	log.Println(<span class="string">"http server started on :8000"</span>)</span><br><span class="line">	err := http.ListenAndServe(<span class="string">":8000"</span>, <span class="literal">nil</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">"ListenAndServe: "</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="q6Eoo"></a></p>
+<h4 id="HTTP-Response-Status"><a href="#HTTP-Response-Status" class="headerlink" title="HTTP Response Status"></a>HTTP Response Status</h4><p>有两种标准写法可用：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WriteHeader 用以返回指定状态码的 http 响应。如果在调用 Write 方法前没有显式指定状态码，</span></span><br><span class="line"><span class="comment">// 则第一次调用 Write 时会触发一个隐式的设定状态码操作 WriteHeader(http.StatusOK)。因此，</span></span><br><span class="line"><span class="comment">// 一般不需要显式去设置状态码，大多数情况下只是在出现错误时显式调用 WriteHeader 用以返回错误</span></span><br><span class="line"><span class="comment">// 状态。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ServeHTTP</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    w.WriteHeader(http.StatusInternalServerError)</span><br><span class="line">    w.Write([]<span class="keyword">byte</span>(<span class="string">"500 - Something bad happened!"</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 另一种写法,其实也是调用了 WriteHeader 方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">yourFuncHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    http.Error(w, <span class="string">"my own error message"</span>, http.StatusForbidden)</span><br><span class="line">    <span class="comment">// or using the default message error</span></span><br><span class="line">    http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="RkIX9"></a></p>
+<h4 id="写入文件"><a href="#写入文件" class="headerlink" title="写入文件"></a>写入文件</h4><p>当待写入的文件已经存在时，应该以可写模式打开它进行写入；当待写入文件不存在时，应该创建该文件并进行写入。直觉上，我们应当首先判断文件是否存在，可以使用如下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> _, err := os.Stat(<span class="string">"/path/to/whatever"</span>); os.IsNotExist(err) &#123;</span><br><span class="line">  <span class="comment">// path/to/whatever does not exist</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过跟踪 <code>os.IsNotExist</code> 函数的实现可以发现，它主要处理两类错误： <code>os.ErrNotExist</code> 和 <code>syscall.ENOENT</code> ，也就是只有这两种错误才会使得 <code>os.IsNotExist(err)</code> 返回 <code>true</code>。实际上，仅仅这两种错误是无法确定文件是不存在的，有时 <code>os.Stat</code> 返回 <code>ENOTDIR</code> 而不是 <code>ENOENT</code> ，例如，如果 <code>/etc/bashrc</code> 文件存在，则使用 <code>os.Stat</code> 检查 <code>/etc/bashrc/foobar</code> 是否存在时会返回 <code>ENOTDIR</code> 错误表明 <code>/etc/bashrc</code> 不是一个目录，因此上述写法是有问题的。实际上使用 <code>os.Stat</code> 的可能结果如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> _, err := os.Stat(<span class="string">"/path/to/whatever"</span>); err == <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="comment">// path/to/whatever exists</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> os.IsNotExist(err) &#123;</span><br><span class="line">  <span class="comment">// path/to/whatever does *not* exist</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="comment">// Schrodinger: file may or may not exist. See err for details.</span></span><br><span class="line">  <span class="comment">// Therefore, do *NOT* use !os.IsNotExist(err) to test for file existence</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说使用 <code>os.Stat</code> 无法确定文件是否存在，因此写入文件时先使用 <code>os.Stat</code> 判断文件是否存在，不存在时则使用 <code>os.Create</code> 创建文件的写法是错误的（尽管大多数时候能够成功写入）。正确的写入文件的方法是 <code>os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0666)</code> ，这个函数通过 sys_openat 系统调用依据传入的 Flag 打开文件，如果文件不存在则创建，如果文件存在则直接打开，使用这个函数的另一个好处是不会产生竞争条件（即使另外一个操作正在创建该文件？），参见 <a href="https://stackoverflow.com/questions/12518876/how-to-check-if-a-file-exists-in-go" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/12518876/how-to-check-if-a-file-exists-in-go</a> 中的一系列回答和讨论。<br>另一种选择是使用 <code>ioutil.WriteFile()</code> ，其内部同样是调用了 <code>os.OpenFile</code>，只不过只适用于一次性全量写入。<br></p>
+<p><a name="ZC8Wn"></a></p>
+<h4 id="Template-中判断-range-最后一个元素"><a href="#Template-中判断-range-最后一个元素" class="headerlink" title="Template 中判断 range 最后一个元素"></a>Template 中判断 range 最后一个元素</h4><p>template 中可以使用 if 判断值是否为 0 ，不像在 Go 语法只能对 bool 值执行 if 操作，因此判断是否为第一个元素相对容易一些，使用 <code>{\{if $index\}\},\{\{end\}\}</code> 即可，而且 <code>index</code> 不需要专门声明。判断是否为最后一个元素则需要自定义函数如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"os"</span></span><br><span class="line">    <span class="string">"reflect"</span></span><br><span class="line">    <span class="string">"text/template"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fns = template.FuncMap&#123;</span><br><span class="line">    <span class="string">"last"</span>: <span class="function"><span class="keyword">func</span><span class="params">(x <span class="keyword">int</span>, a <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        <span class="keyword">return</span> x == reflect.ValueOf(a).Len() - <span class="number">1</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    t := template.Must(template.New(<span class="string">"abc"</span>).Funcs(fns).Parse(<span class="string">`\&#123;\&#123;range  $i, $e := .\&#125;\&#125;\&#123;\&#123;if $i\&#125;\&#125;, \&#123;\&#123;end\&#125;\&#125;\&#123;\&#123;if last $i $\&#125;\&#125;and \&#123;\&#123;end\&#125;\&#125;\&#123;\&#123;$e\&#125;\&#125;\&#123;\&#123;end\&#125;\&#125;.`</span>))</span><br><span class="line">    a := []<span class="keyword">string</span>&#123;<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>&#125;</span><br><span class="line">    t.Execute(os.Stdout, a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于 Template 的使用可以参考：<a href="https://github.com/grpc-ecosystem/grpc-gateway/blob/master/protoc-gen-grpc-gateway/gengateway/template.go" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/grpc-ecosystem/grpc-gateway/blob/master/protoc-gen-grpc-gateway/gengateway/template.go</a><br></p>
+<p><a name="0UUJH"></a></p>
+<h4 id="生成-zip-文件并返回给-http-response"><a href="#生成-zip-文件并返回给-http-response" class="headerlink" title="生成 zip 文件并返回给 http response"></a>生成 zip 文件并返回给 http response</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">zipHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    filename := <span class="string">"randomfile.jpg"</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// var buf bytes.Buffer </span></span><br><span class="line">    <span class="comment">// 直接声明一个 buffer 即可用，buffer 开箱即用是因为当调用 Write 写入内容时会自动判断</span></span><br><span class="line">    <span class="comment">// 底层切片是否为 nil，如果为 nil 则会分配一个容量为 smallBufferSize = 64 ,长度</span></span><br><span class="line">    <span class="comment">// 为待写入切片的长度 n （如果满足 n &lt; smallBufferSize，否则转入其它处理逻辑）</span></span><br><span class="line">    buf := <span class="built_in">new</span>(bytes.Buffer)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 其实没有必要使用 Buffer ，可以直接使用 w，如下：</span></span><br><span class="line">    <span class="comment">// writer := zip.NewWriter(w)</span></span><br><span class="line">    <span class="comment">// 因为 net/http 内部类型 *response 实现了 http.ResponseWriter ，而 reponse 内部</span></span><br><span class="line">    <span class="comment">// 使用的 bufferio.Writer 本身就已经有缓冲区</span></span><br><span class="line">    writer := zip.NewWriter(buf)</span><br><span class="line">    </span><br><span class="line">    data, err := ioutil.ReadFile(filename)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    f, err := writer.Create(filename)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    _, err = f.Write([]<span class="keyword">byte</span>(data))</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    err = writer.Close()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 实测可以使用 w.Header().Set("Content-Type", "application/octet-stream")</span></span><br><span class="line">    w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"application/zip"</span>)</span><br><span class="line">    w.Header().Set(<span class="string">"Content-Disposition"</span>, fmt.Sprintf(<span class="string">"attachment; filename=\"%s.zip\""</span>, filename))</span><br><span class="line">    <span class="comment">//io.Copy(w, buf)</span></span><br><span class="line">    w.Write(buf.Bytes())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另一种简单的写法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleZip</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    f, err := os.Open(<span class="string">"main.go"</span>)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> err := f.Close(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">            log.Fatal(err)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// write straight to the http.ResponseWriter</span></span><br><span class="line">    zw := zip.NewWriter(w)</span><br><span class="line">    cf, err := zw.Create(f.Name())</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"application/zip"</span>)</span><br><span class="line">    w.Header().Set(<span class="string">"Content-Disposition"</span>, fmt.Sprintf(<span class="string">"attachment; filename=\"%s.zip\""</span>, f.Name()))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// copy the file contents to the zip Writer</span></span><br><span class="line">    _, err = io.Copy(cf, f)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// close the zip Writer to flush the contents to the ResponseWriter</span></span><br><span class="line">    err = zw.Close()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="vNzvG"></a></p>
+<h4 id="从-http-request-body-中解析出-go-对象"><a href="#从-http-request-body-中解析出-go-对象" class="headerlink" title="从 http request body 中解析出 go 对象"></a>从 http request body 中解析出 go 对象</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> info MyLocalType</span><br><span class="line">data, err := ioutil.ReadAll(req.Body)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">    w.Write([]<span class="keyword">byte</span>(<span class="string">"read data from request body failed!"</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> err = json.Unmarshal(data, &amp;info); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">    w.Write([]<span class="keyword">byte</span>(<span class="string">"parse info from request body failed!"</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 简单点的</span></span><br><span class="line"><span class="keyword">if</span> err := json.NewDecoder(req.Body).Decode(&amp;info); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">    w.Write([]<span class="keyword">byte</span>(<span class="string">"parse info from request body failed!"</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="CtPsq"></a></p>
+<h4 id="按行读取文本"><a href="#按行读取文本" class="headerlink" title="按行读取文本"></a>按行读取文本</h4><p>如果是对一个多行的字符串按行读取，则可以：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, line := <span class="keyword">range</span> strings.Split(strings.TrimSuffix(x, <span class="string">"\n"</span>), <span class="string">"\n"</span>) &#123;</span><br><span class="line">    fmt.Println(line)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果是从文件或者流式管道中按行读取，则可以：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">scanner := bufio.NewScanner(f) <span class="comment">// f is the *os.File</span></span><br><span class="line"><span class="keyword">for</span> scanner.Scan() &#123;</span><br><span class="line">    fmt.Println(scanner.Text()) <span class="comment">// Println will add back the final '\n'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> err := scanner.Err(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">   <span class="comment">// handle error</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 另一个例子</span></span><br><span class="line">args := <span class="string">"-E -eNEW,DESTROY -ptcp --any-nat --buffer-size 1024000 --dport "</span> + fmt.Sprintf(<span class="string">"%d"</span>, serviceNodePort)</span><br><span class="line">cmd := exec.Command(<span class="string">"conntrack"</span>, strings.Split(args, <span class="string">" "</span>)...)</span><br><span class="line"></span><br><span class="line">stdout, _ := cmd.StdoutPipe()</span><br><span class="line">err := cmd.Start()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    common.ZapClient.Fatalf(<span class="string">"start conntrack failed: %s"</span>, err.Error())</span><br><span class="line">    errChan &lt;- err</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">scanner := bufio.NewScanner(stdout)</span><br><span class="line"><span class="keyword">for</span> scanner.Scan() &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="zJv1y"></a></p>
+<h4 id="json-unmarshal-时保留-raw-message"><a href="#json-unmarshal-时保留-raw-message" class="headerlink" title="json unmarshal 时保留 raw message"></a>json unmarshal 时保留 raw message</h4><p>保留 raw message 的一个用途是，针对不同版本的返回值同一字段的结构可能不一样，因此可以先保留 raw message 然后根据版本进行进一步处理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	<span class="string">"encoding/json"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var jsonStrVersion1 = []byte(`&#123;</span><br><span class="line">    <span class="string">"id"</span>  : 15,</span><br><span class="line">    <span class="string">"version"</span> : 1,</span><br><span class="line">    <span class="string">"foo"</span> : &#123; <span class="string">"foo"</span>: 123, <span class="string">"bar"</span>: <span class="string">"baz"</span> &#125;</span><br><span class="line">&#125;`)</span><br><span class="line">var jsonStrVersion2 = []byte(`&#123;</span><br><span class="line">    <span class="string">"id"</span>  : 16,</span><br><span class="line">    <span class="string">"version"</span> : 2,</span><br><span class="line">    <span class="string">"foo"</span> : 124</span><br><span class="line">&#125;`)</span><br><span class="line"></span><br><span class="line"><span class="built_in">type</span> Bar struct &#123;</span><br><span class="line">	Id      int64           `json:<span class="string">"id"</span>`</span><br><span class="line">	Version int64           `json:<span class="string">"version"</span>`</span><br><span class="line">	Foo     json.RawMessage `json:<span class="string">"foo"</span>`</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">type</span> Foo struct &#123;</span><br><span class="line">	Foo int64  `json:<span class="string">"foo"</span>`</span><br><span class="line">	Bar string `json:<span class="string">"bar"</span>`</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">	var bar Bar</span><br><span class="line">	err := json.Unmarshal(jsonStrVersion1, &amp;bar)</span><br><span class="line">	<span class="keyword">if</span> err != nil &#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">	getFoo(bar)</span><br><span class="line">	err = json.Unmarshal(jsonStrVersion2, &amp;bar)</span><br><span class="line">	<span class="keyword">if</span> err != nil &#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">	getFoo(bar)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func getFoo(bar Bar) &#123;</span><br><span class="line">	var num int64</span><br><span class="line">	switch bar.Version &#123;</span><br><span class="line">	<span class="keyword">case</span> 1:</span><br><span class="line">		var foo Foo</span><br><span class="line">		_ = json.Unmarshal(bar.Foo, &amp;foo)</span><br><span class="line">		num = foo.Foo</span><br><span class="line">	<span class="keyword">case</span> 2:</span><br><span class="line">		num, _ = strconv.ParseInt(string(bar.Foo), 10, 64)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(num)</span><br><span class="line">&#125;</span><br><span class="line">//输出</span><br><span class="line">//123</span><br><span class="line">//124</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="YaySB"></a></p>
+<h4 id="json-unmarshal-时会保留对象已有的值"><a href="#json-unmarshal-时会保留对象已有的值" class="headerlink" title="json unmarshal 时会保留对象已有的值"></a>json unmarshal 时会保留对象已有的值</h4><p>结论：<br>json unmarshal 会忽略结构体中小写字母开头的字段；对同一对象执行多次 unmarshal 会覆盖与前一次 unmarshal 同名的字段，前一次 unmarshal 得到的非同名字段会被保留。<br>代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"encoding/json"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="comment">// 如果是 val1，将无法在 json.unmarshal 时被赋值成功</span></span><br><span class="line">	Val1 <span class="keyword">string</span></span><br><span class="line">	Val2 <span class="keyword">string</span></span><br><span class="line">	Val3Ptr *<span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> foo Foo</span><br><span class="line">	foo.Val1 = <span class="string">"val1"</span></span><br><span class="line">	foo.Val2 = <span class="string">"val2"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, foo)</span><br><span class="line">	fooBytes, _ := json.Marshal(foo)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, fooBytes)</span><br><span class="line">	fmt.Printf(<span class="string">"%s\n"</span>, fooBytes)</span><br><span class="line">	json.Unmarshal([]<span class="keyword">byte</span>(<span class="string">`&#123;"Val1": "val1"&#125;`</span>), &amp;foo)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, foo)</span><br><span class="line">	json.Unmarshal([]<span class="keyword">byte</span>(<span class="string">`&#123;"val1": "val1-1", "val2": "val2", "val3ptr": "val3"&#125;`</span>), &amp;foo)</span><br><span class="line">	fmt.Printf(<span class="string">"%s\n"</span>, *foo.Val3Ptr)</span><br><span class="line">	fmt.Printf(<span class="string">"%+v\n"</span>, foo)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;Val1:val1 Val2:val2 Val3Ptr:&lt;nil&gt;&#125;</span><br><span class="line">[123 34 86 97 108 49 34 58 34 118 97 108 49 34 44 34 86 97 108 50 34 58 34 118 97 108 50 34 44 34 86 97 108 51 80 116 114 34 58 110 117 108 108 125]</span><br><span class="line">&#123;<span class="string">"Val1"</span>:<span class="string">"val1"</span>,<span class="string">"Val2"</span>:<span class="string">"val2"</span>,<span class="string">"Val3Ptr"</span>:null&#125;</span><br><span class="line">&#123;Val1:val1 Val2:val2 Val3Ptr:&lt;nil&gt;&#125;</span><br><span class="line">val3</span><br><span class="line">&#123;Val1:val1-1 Val2:val2 Val3Ptr:0xc000010370&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="Ep42i"></a></p>
+<h4 id="编译时自动添加版本和日期信息"><a href="#编译时自动添加版本和日期信息" class="headerlink" title="编译时自动添加版本和日期信息"></a>编译时自动添加版本和日期信息</h4><p>简单的做法是把版本信息放到 main 包中，如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">var</span> GitCommit <span class="keyword">string</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  fmt.Printf(<span class="string">"Hello world, version: %s\n"</span>, GitCommit)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在编译时加上如下参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GIT_COMMIT=$(git rev-list -1 HEAD)</span><br><span class="line"><span class="comment"># go build -ldflags="-X 'package_path.variable_name=new_value'"</span></span><br><span class="line">go build -ldflags <span class="string">"-X main.GitCommit=<span class="variable">$GIT_COMMIT</span>"</span></span><br></pre></td></tr></table></figure>
+<p>如果将 version 信息放到一个单独的包中，如 app/version，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    <span class="string">"app/build"</span></span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var Version = <span class="string">"development"</span></span><br><span class="line"></span><br><span class="line">func <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">    fmt.Println(<span class="string">"Version:\t"</span>, Version)</span><br><span class="line">    fmt.Println(<span class="string">"build.Time:\t"</span>, build.Time)</span><br><span class="line">    fmt.Println(<span class="string">"build.User:\t"</span>, build.User)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>则添加参数时就需要先找到 version 包的路径，可通过如下方式寻找：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先编译得到 app 可执行文件</span></span><br><span class="line">go build</span><br><span class="line"><span class="comment"># 再通过工具找到包的信息</span></span><br><span class="line">go tool nm ./app | grep app</span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line">Output</span><br><span class="line">  55d2c0 D app/build.Time</span><br><span class="line">  55d2d0 D app/build.User</span><br><span class="line">  4069a0 T runtime.appendIntStr</span><br><span class="line">  462580 T strconv.appendEscapedRune</span><br><span class="line"><span class="comment"># 之后就可以使用以下方式添加编译参数</span></span><br><span class="line">go build -v -ldflags=<span class="string">"-X 'main.Version=v1.0.0' -X 'app/build.User=<span class="variable">$(id -u -n)</span>' -X 'app/build.Time=<span class="variable">$(date)</span>'"</span></span><br></pre></td></tr></table></figure>
+<p>常用的版本相关信息有：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">now=$(date +<span class="string">'%Y-%m-%d_%T'</span>)</span><br><span class="line">commit=$(git rev-parse HEAD)</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="CTcih"></a></p>
+<h4 id="go-编译相关问题"><a href="#go-编译相关问题" class="headerlink" title="go 编译相关问题"></a>go 编译相关问题</h4><p>etcd 编译时 GO 依赖包版本报错的解决方法: <a href="https://aiops.red/archives/571" target="_blank" rel="external nofollow noopener noreferrer">https://aiops.red/archives/571</a><br>编译完成的程序在容器内运行时提示：<code>exec user process caused &quot;no such file or directory&quot;</code>，一般是因为程序编译时没有禁用 CGO :  <code>CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go</code>。<br>在已经指定使用 <code>-mod=vendor</code> 进行编译时仍提示 <code>build uk8s/uk8s-report: cannot load github.com/montanaflynn/stats: no Go source files</code>，可能是因为 <code>github.com/montanaflynn/stats</code> 是个subemodule。</p>
+<p><a name="Ddd3z"></a></p>
+<h4 id="Unicode-字符编码"><a href="#Unicode-字符编码" class="headerlink" title="Unicode 字符编码"></a>Unicode 字符编码</h4><p>Unicode 定义了一种编码规则，为每个（语言或表情）符号指定了一个数值。而 UTF-8 是该编码规则在计算机上进行存储时的一种实现。在使用 UTF-8 进行编解码时依据的仍然是 Unicode 编码规则。参见 <a href="http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html" target="_blank" rel="external nofollow noopener noreferrer">字符编码笔记：ASCII，Unicode 和 UTF-8</a>。在 Go 语言中，字符编码使用 UTF-8。在下述代码中，<code>你好</code> 在计算机中使用 UTF-8 编码进行存储时保存的是 <code>E4BDA0E5A5BD</code> 二进制值，而在解释这个二进制值时会按照 UTF-8 规则转换后得到 <code>4F60597D</code> ，然后根据 Unicode 编码表，最后获知这是中文字符 <code>你好</code> 。可使用该工具观察编码转换：<a href="https://www.qqxiuzi.cn/bianma/Unicode-UTF.php" target="_blank" rel="external nofollow noopener noreferrer">https://www.qqxiuzi.cn/bianma/Unicode-UTF.php</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string([]byte&#123;&apos;\xe4&apos;, &apos;\xbd&apos;, &apos;\xa0&apos;, &apos;\xe5&apos;, &apos;\xa5&apos;, &apos;\xbd&apos;&#125;) // 你好</span><br><span class="line">string([]rune&#123;&apos;\u4F60&apos;, &apos;\u597D&apos;&#125;) // 你好</span><br></pre></td></tr></table></figure>
+<p><a name="8UcUS"></a></p>
+<h4 id="使用-dlv-调试-Go-程序"><a href="#使用-dlv-调试-Go-程序" class="headerlink" title="使用 dlv 调试 Go 程序"></a>使用 dlv 调试 Go 程序</h4><p>参考：<a href="https://github.com/go-delve/delve/blob/master/Documentation/cli/expr.md" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/go-delve/delve/blob/master/Documentation/cli/expr.md</a>，<a href="https://github.com/go-delve/delve/tree/master/Documentation/cli" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/go-delve/delve/tree/master/Documentation/cli</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// 安装 dlv</span><br><span class="line">go get github.com/go-delve/delve/cmd/dlv</span><br><span class="line">// 编译带有 Debug 信息的程序</span><br><span class="line">CGO_ENABLED=0 go build -mod vendor -gcflags=<span class="string">"all=-N -l"</span> -o <span class="built_in">test</span> main.go</span><br><span class="line">// 带参数启动调试</span><br><span class="line">dlv <span class="built_in">exec</span> ./<span class="built_in">test</span> -- --<span class="built_in">log</span>-level debug --config conf/config.toml</span><br><span class="line">// 查看文件路径</span><br><span class="line">sources</span><br><span class="line">// 通过文件名设置断点</span><br><span class="line">b /home/xyc/Development/<span class="built_in">test</span>/main.go:34</span><br><span class="line">// 通过函数名设置断点</span><br><span class="line">// 在函数入口处设置断点</span><br><span class="line">b logic.getClusterInfo</span><br><span class="line">// 在函数内第一行代码处设置断点</span><br><span class="line">b logic.getClusterInfo:1 </span><br><span class="line">// 打印当前执行环境的所有局部变量</span><br><span class="line">locals</span><br><span class="line">// 打印指定的变量</span><br><span class="line">p tmpBytes</span><br><span class="line">// []byte转换为字符串打印</span><br><span class="line">p string(tmpBytes)</span><br><span class="line">// 每次执行到断点 1 处自动执行某种操作</span><br><span class="line">on 1 <span class="built_in">print</span> tmpBytes</span><br><span class="line">// 当满足某个条件时触发断点</span><br><span class="line">condition 1 tmpTimes &gt; 6</span><br></pre></td></tr></table></figure>
+<p><a name="iHfra"></a></p>
+<h4 id="检查字符串是否符合-base64-编码"><a href="#检查字符串是否符合-base64-编码" class="headerlink" title="检查字符串是否符合 base64 编码"></a>检查字符串是否符合 base64 编码</h4><p>参考：<a href="https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func CheckValidBase64(src string) bool &#123;</span><br><span class="line">	matched, _ := regexp.Match(`^([A-Za-z0-9+/]&#123;4&#125;)*([A-Za-z0-9+/]&#123;3&#125;=|[A-Za-z0-9+/]&#123;2&#125;==)?$`, []byte(src))</span><br><span class="line">	<span class="built_in">return</span> matched</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="yVXCT"></a></p>
+<h4 id="检查环境变量是否存在"><a href="#检查环境变量是否存在" class="headerlink" title="检查环境变量是否存在"></a>检查环境变量是否存在</h4><p>一般情况下，我们只需要获取环境变量的值，所以使用 <code>username := os.Getenv(&quot;USERNAME&quot;)</code> 即可，当获取到的值为空时，有可能环境变量存在且值为空，也有可能环境变量并不存在，若我们需要知道到底是哪种情况，则可使用 <code>path, exists := os.LookupEnv(&quot;PATH&quot;)</code> 返回的布尔值进行判断。<br><a name="t4Mww"></a></p>
+<h4 id="关于应用配置的思考"><a href="#关于应用配置的思考" class="headerlink" title="关于应用配置的思考"></a>关于应用配置的思考</h4><p>配置的最佳方式是使用环境变量，这是最符合 <strong><em>十二因素应用</em></strong> （Twelve-Factor App）的配置方式；但我们写程序时很多时候会考虑到不同的部署方式和配置方式，所以会有兼容命令行参数配置和配置文件（如 json/yaml ）的需求。使用 <a href="https://github.com/spf13/viper" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/viper</a> 能够满足我们的需求（参考：<a href="https://medium.com/@bnprashanth256/reading-configuration-files-and-environment-variables-in-go-golang-c2607f912b63" target="_blank" rel="external nofollow noopener noreferrer">Reading Configuration Files and Environment Variables in GO </a>），但是对于同一参数的不同配置方式的优先级如何安排需要考虑一下，一般而言配置文件作为静态数据我们认为其优先级最低，但环境变量和命令行参数谁的优先级更多似乎并无定论（在 viper 中可以确定的是环境变量的优先级高于配置文件，但命令行参数还未明确测试），我的考虑是命令行参数的优先级应当高于环境变量，因为命令参数属于更细粒度的控制参数，就像我们在使用常用的 Linux 工具一样，环境变量往往只设置一次且只设置诸如 Token 一类的短期不变且有一定安全需求的配置，而命令行参数则可能每次运行程序都会略作调整，所以命令行参数的优先级更高一些。基于此，结合 viper 库写一些辅助代码可以实现这个需求。<br>补充：后续在 viper 源代码中看到了，确实也是命令行参数的优先级更高，官方文档也有描述，如下<br><img src="/images/1592419877483-67f0c574-00b4-4e50-9b21-801a6ee24604.png" alt="image.png"><br><a name="ehRT1"></a></p>
+<h4 id="当结构体内嵌套的结构体字段重名时"><a href="#当结构体内嵌套的结构体字段重名时" class="headerlink" title="当结构体内嵌套的结构体字段重名时"></a>当结构体内嵌套的结构体字段重名时</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Test1 <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Test2 <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Test <span class="keyword">struct</span> &#123;</span><br><span class="line">	Test1</span><br><span class="line">	Test2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	test := Test&#123;&#125;</span><br><span class="line">	test.Test1.Name = <span class="string">"test1"</span></span><br><span class="line">	test.Test2.Name = <span class="string">"test2"</span></span><br><span class="line">	fmt.Println(test.Test1.Name)</span><br><span class="line">	fmt.Println(test.Test2.Name)</span><br><span class="line"><span class="comment">//	以下代码报错： ambiguous selector test.Name</span></span><br><span class="line"><span class="comment">//	fmt.Println(test.Name)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="2EBTq"></a></p>
+<h4 id="panic-时的退出码"><a href="#panic-时的退出码" class="headerlink" title="panic 时的退出码"></a>panic 时的退出码</h4><p>panic 会被层层向上传播，直到 main 函数；在其中每一个调用层级都可以使用 recover 去捕获，需要注意的是 recover 只能在 defer 中被调用（defer 正常在外围函数 return 后执行，因此有时可以用来修改函数的返回值），因为当程序出现 panic 时原有的执行逻辑会被打断（<strong>特别要注意，recover 只能恢复上层调用者的后续执行，recover 所在外围函数的执行逻辑不能继续进行，外围函数此时返回值为返回类型的默认值即零值</strong>），只有 defer 中的逻辑可以继续执行。当我们想要程序捕获 panic，然后仅打印日志信息后正常退出，仅仅使用 recover 是不够的，需要配合 os.Exit(0) 进行退出。参考：<a href="https://blog.golang.org/defer-panic-and-recover" target="_blank" rel="external nofollow noopener noreferrer">https://blog.golang.org/defer-panic-and-recover</a>，<a href="https://medium.com/rungo/defer-panic-and-recover-in-go-689dfa7f8802" target="_blank" rel="external nofollow noopener noreferrer">https://medium.com/rungo/defer-panic-and-recover-in-go-689dfa7f8802</a>，<a href="https://yourbasic.org/golang/recover-from-panic/" target="_blank" rel="external nofollow noopener noreferrer">https://yourbasic.org/golang/recover-from-panic/</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"end of main"</span>) <span class="comment">// push the call to the stack</span></span><br><span class="line">        <span class="comment">// 注意，如果注释掉下面一行代码则程序退出码仍然为非 0 ，有可能是 2</span></span><br><span class="line">        <span class="comment">// 在使用 k8s 部署程序的时候，我们可能想要捕获所有的异常，只有对于可重入的异常我们才允许退出码为非 0 ，从而通过 Job Controller 自动重试</span></span><br><span class="line">        <span class="comment">// 对于非可重入的异常则打印日志信息后作为正常程序退出</span></span><br><span class="line">		os.Exit(<span class="number">0</span>)</span><br><span class="line">	&#125;()</span><br><span class="line">	fmt.Println(<span class="string">"begining of main"</span>)</span><br><span class="line">	<span class="built_in">panic</span>(<span class="string">"stop here"</span>)</span><br><span class="line">	<span class="comment">// the deffered functions are called as if they where here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="hofLV"></a></p>
+<h4 id="TeeReader"><a href="#TeeReader" class="headerlink" title="TeeReader"></a>TeeReader</h4><p><code>TeeReader(r Reader, w Writer) Reader</code> 提供了复制 Reader 的能力。一般无法从 Reader 中重复读取数据，一次读取完成则 Reader 会被清空，而 TeeReader 可以包装原始 Reader 后返回一个特殊的 Reader，在对该特殊 Reader 进行读取的同时，将成功读到的内容复制写入 Writer 中。我们可以使用 bytes.Buffer 作为 Writer，由于 bytes.Buffer 同时也实现了 Reader 接口，所以可以再次从中读取原始 Reader 的内容。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := strings.NewReader(<span class="string">"some io.Reader stream to be read\n"</span>)</span><br><span class="line">	<span class="keyword">var</span> buf bytes.Buffer</span><br><span class="line">	tee := io.TeeReader(r, &amp;buf)</span><br><span class="line"></span><br><span class="line">	printall := <span class="function"><span class="keyword">func</span><span class="params">(r io.Reader)</span></span> &#123;</span><br><span class="line">		b, err := ioutil.ReadAll(r)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Fatal(err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		fmt.Printf(<span class="string">"%s"</span>, b)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	printall(tee)</span><br><span class="line">	printall(&amp;buf)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="KjMaM"></a></p>
+<h4 id="h2c-h2"><a href="#h2c-h2" class="headerlink" title="h2c/h2"></a>h2c/h2</h4><p>虽然 HTTP/2 协议本身和 TLS 协议并无绑定关系，但现在的很多反向代理工具仅支持在 HTTPS 模式下使用 HTTP/2，而在 Go 语言扩展库 <code>golang.org/x/net/http2</code> 的实现中，构建 HTTP/2 服务端也必须传入 TLS 配置，否则 HTTP/2 服务端将退化为只支持 HTTP/1.x 的协议，如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"html"</span></span><br><span class="line">    <span class="string">"net/http"</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"golang.org/x/net/http2"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> server http.Server</span><br><span class="line">    http2.VerboseLogs = <span class="literal">true</span></span><br><span class="line">    server.Addr = <span class="string">":8080"</span></span><br><span class="line">    http2.ConfigureServer(&amp;server, &amp;http2.Server&#123;&#125;)</span><br><span class="line">    http.HandleFunc(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">        fmt.Fprintf(w, <span class="string">"URL: %q\n"</span>, html.EscapeString(r.URL.Path))</span><br><span class="line">        ShowRequestInfoHandler(w, r)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    server.ListenAndServe() <span class="comment">//不启用 https 则默认只支持http1.x</span></span><br><span class="line">    <span class="comment">//log.Fatal(server.ListenAndServeTLS("localhost.cert", "localhost.key"))</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ShowRequestInfoHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    w.Header().Set(<span class="string">"Content-Type"</span>, <span class="string">"text/plain"</span>)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"Method: %s\n"</span>, r.Method)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"Protocol: %s\n"</span>, r.Proto)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"Host: %s\n"</span>, r.Host)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"RemoteAddr: %s\n"</span>, r.RemoteAddr)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"RequestURI: %q\n"</span>, r.RequestURI)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"URL: %#v\n"</span>, r.URL)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"Body.ContentLength: %d (-1 means unknown)\n"</span>, r.ContentLength)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"Close: %v (relevant for HTTP/1 only)\n"</span>, r.Close)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"TLS: %#v\n"</span>, r.TLS)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"\nHeaders:\n"</span>)</span><br><span class="line">    r.Header.Write(w)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>HTTP/2 客户端可通过启用 AllowHTTP 选项和更改 DialTLS 逻辑实现无需 TLS 的 HTTP/2 请求传输，但由于服务端存在问题，仅仅调整了客户端仍无法工作，以下客户端的请求会导致服务端向客户端响应一个 HTTP/1.1 的请求同时关闭 TCP 连接：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"crypto/tls"</span></span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"io/ioutil"</span></span><br><span class="line">    <span class="string">"log"</span></span><br><span class="line">    <span class="string">"net"</span></span><br><span class="line">    <span class="string">"net/http"</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"golang.org/x/net/http2"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    url := <span class="string">"http://localhost:8080/"</span></span><br><span class="line">    client(url)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">client</span><span class="params">(url <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    log.SetFlags(log.Llongfile)</span><br><span class="line">    tr := &amp;http2.Transport&#123; <span class="comment">//可惜服务端 退化成了 http1.x</span></span><br><span class="line">        AllowHTTP: <span class="literal">true</span>, <span class="comment">//充许非加密的链接</span></span><br><span class="line">        <span class="comment">// TLSClientConfig: &amp;tls.Config&#123;</span></span><br><span class="line">        <span class="comment">//     InsecureSkipVerify: true,</span></span><br><span class="line">        <span class="comment">// &#125;,</span></span><br><span class="line">        DialTLS: <span class="function"><span class="keyword">func</span><span class="params">(netw, addr <span class="keyword">string</span>, cfg *tls.Config)</span> <span class="params">(net.Conn, error)</span></span> &#123;</span><br><span class="line">            <span class="keyword">return</span> net.Dial(netw, addr)</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    httpClient := http.Client&#123;Transport: tr&#125;</span><br><span class="line"></span><br><span class="line">    resp, err := httpClient.Get(url)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> resp.StatusCode != http.StatusOK &#123;</span><br><span class="line">        fmt.Println(<span class="string">"resp StatusCode:"</span>, resp.StatusCode)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    body, err := ioutil.ReadAll(resp.Body)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fmt.Println(<span class="string">"resp.Body:\n"</span>, <span class="keyword">string</span>(body))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是因为客户端发送了 HTTP/2 的请求，而服务端已退化为仅支持 HTTP/1.x。 一种自然而然的做法是改造服务端使其支持无需 TLS 的 HTTP/2 传输，使用 h2c 是可行的解决方案：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/http2"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/http2/h2c"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	handler := http.HandlerFunc(<span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">		fmt.Fprint(w, <span class="string">"Hello world"</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	h2s := &amp;http2.Server&#123;</span><br><span class="line">        IdleTimeout: <span class="number">1</span> * time.Minute,</span><br><span class="line">	&#125;</span><br><span class="line">	h1s := &amp;http.Server&#123;</span><br><span class="line">		Addr: <span class="string">":8972"</span>,</span><br><span class="line">		Handler: h2c.NewHandler(handler, h2s),</span><br><span class="line">	&#125;</span><br><span class="line">	log.Fatal(h1s.ListenAndServe())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述方案的特点是同时支持 HTTP/2 和 HTTP/1.x ，对于客户端来说，可以有三种可能：仅通过 HTTP/1.1 通信；先通过 HTTP/1.1 建立连接，再通过升级协议升级至 HTTP/2；一开始就通过 HTTP/2 建立连接。如果我们本身不需要 HTTP/1.x ，则有更直接的写法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"net/http"</span></span><br><span class="line">	<span class="string">"golang.org/x/net/http2"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    server := http2.Server&#123;&#125;</span><br><span class="line">    l, err := net.Listen(<span class="string">"tcp"</span>, <span class="string">"0.0.0.0:1010"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		level.Error(logger).Log(<span class="string">"msg"</span>, fmt.Sprintf(<span class="string">"start listen failed: %v"</span>, err))</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> l.Close()</span><br><span class="line"></span><br><span class="line">    fmt.Printf(<span class="string">"Listening [0.0.0.0:1010]...\n"</span>)</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        conn, err := l.Accept()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			level.Warn(logger).Log(<span class="string">"msg"</span>, fmt.Sprintf(<span class="string">"accept a new connection failed: %v"</span>, err))</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">go</span> server.ServeConn(conn, &amp;http2.ServeConnOpts&#123;</span><br><span class="line">            Handler: http.HandlerFunc(<span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">                fmt.Fprintf(w, <span class="string">"Hello, %v, http: %v"</span>, r.URL.Path, r.TLS == <span class="literal">nil</span>)</span><br><span class="line">            &#125;),</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="hZSaj"></a></p>
+<h4 id="HTTP-1-1-Keep-Alive"><a href="#HTTP-1-1-Keep-Alive" class="headerlink" title="HTTP/1.1 Keep-Alive"></a>HTTP/1.1 Keep-Alive</h4><p>Go 标准库 net/http 提供的 http.DefaultClient 默认启用了 Keep-Alive，但想要真正复用 TCP 连接，还要在处理请求时注意及时关闭 Response Body，如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">resp, err := http.Post(<span class="string">"https://api.some-web.com/v2/events"</span>, <span class="string">"application/json"</span>, bytes.NewBuffer(eventJson))</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Println(<span class="string">"err"</span>, err)</span><br><span class="line">	<span class="keyword">return</span> defaultErrStatus, err</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 在 Go 1.7 之前需要手动在关闭之前将 Body 中的内容读完，1.7 以后调用 Body.Close() 时会自动处理</span></span><br><span class="line"><span class="comment">// io.Copy(ioutil.Discard, resp.Body)</span></span><br><span class="line"><span class="comment">// 只有及时关闭 response.Body 才能有效复用 TCP 连接</span></span><br><span class="line"><span class="comment">// Go 语言标准库已经确保 resp.Body 不会是 nil，即使并没有数据从对端返回</span></span><br><span class="line"><span class="keyword">defer</span> resp.Body.Close()</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="FidFi"></a></p>
+<h4 id="WebAssembly"><a href="#WebAssembly" class="headerlink" title="WebAssembly"></a>WebAssembly</h4><ol>
+<li>作者通过一系列 hack 过程成功实现了将一个 go 语言写的工具 <a href="https://github.com/pdfcpu/pdfcpu" target="_blank" rel="external nofollow noopener noreferrer">pdfcpu</a> 编译为 wasm 文件并运行在浏览器中，其中有使用到一个浏览器端基于内存的文件系统 <a href="https://github.com/jvilk/BrowserFS" target="_blank" rel="external nofollow noopener noreferrer">BrowserFS</a> （实现了 Node JS 的 fs 库的 API）对 pdf 文件进行操作，很有意思。博客地址：<a href="https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn" target="_blank" rel="external nofollow noopener noreferrer">https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn</a>，代码地址：<a href="https://github.com/wcchoi/go-wasm-pdfcpu" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/wcchoi/go-wasm-pdfcpu</a>。</li>
+<li>vugu 使用 go 实现的类似于 vue 的前端框架，用 go 替代 JavaScript 写逻辑：<a href="https://github.com/vugu/vugu" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/vugu/vugu</a>。</li>
+</ol>
+<p><a name="TqfI1"></a></p>
+<h4 id="QUIC-协议的-Golang-实现"><a href="#QUIC-协议的-Golang-实现" class="headerlink" title="QUIC 协议的 Golang 实现"></a>QUIC 协议的 Golang 实现</h4><ol>
+<li><a href="https://github.com/pion/quic" target="_blank" rel="external nofollow noopener noreferrer">Pion QUIC</a> 实现了 QUIC 协议并可用于 Peer To Peer 通信。</li>
+<li><a href="https://github.com/lucas-clemente/quic-go" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/lucas-clemente/quic-go</a> 是标准的 QUIC 协议实现，基于 IETF QUIC 草稿协议。</li>
+</ol>
+<p><a name="1aiBl"></a></p>
+<h4 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h4><ol>
+<li>Linux 操作系统功能调用 <a href="https://github.com/tredoe/osutil" target="_blank" rel="external nofollow noopener noreferrer">osutil</a>， 可以用以生成 Linux 用户密码的 Hash。</li>
+<li>一个强大的请求限速库 <a href="https://github.com/didip/tollbooth" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/didip/tollbooth</a>，可以根据请求头或者源 IP 限速。</li>
+<li>Go 社区提供的实现了令牌桶算法的限速包 <a href="https://godoc.org/golang.org/x/time/rate" target="_blank" rel="external nofollow noopener noreferrer">https://godoc.org/golang.org/x/time/rate</a>，一个简单的例子 <a href="https://pliutau.com/rate-limit-http-requests/" target="_blank" rel="external nofollow noopener noreferrer">https://pliutau.com/rate-limit-http-requests/</a> 。</li>
+<li>一个创建和解压 zip 文件的库，在调用标准库 <code>archive/zip</code> 基础上做了些友好封装：<a href="https://github.com/pierrre/archivefile" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/pierrre/archivefile</a>。</li>
+<li>一个 Markdown 转 PDF 的库，只是不支持中文字符：<a href="https://github.com/mandolyte/mdtopdf" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/mandolyte/mdtopdf</a>。</li>
+<li>可以从文件中加载环境变量的库 <a href="https://github.com/joho/godotenv" target="_blank" rel="external nofollow noopener noreferrer">github.com/joho/godotenv</a> ，不过使用 <a href="https://github.com/spf13/viper" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/viper</a> 可能更佳，参考：<a href="https://levelup.gitconnected.com/a-no-nonsense-guide-to-environment-variables-in-go-55d7661f09b0" target="_blank" rel="external nofollow noopener noreferrer">https://levelup.gitconnected.com/a-no-nonsense-guide-to-environment-variables-in-go-55d7661f09b0</a>，<a href="https://towardsdatascience.com/use-environment-variable-in-your-next-golang-project-39e17c3aaa66" target="_blank" rel="external nofollow noopener noreferrer">https://towardsdatascience.com/use-environment-variable-in-your-next-golang-project-39e17c3aaa66</a>。</li>
+</ol>
+<p><a name="odVOO"></a></p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ol>
+<li><a href="https://github.com/thrawn01/h2c-golang-example" target="_blank" rel="external nofollow noopener noreferrer">HTTP/2 Cleartext (H2C) golang example</a></li>
+<li><a href="https://mrwaggel.be/post/golang-transfer-a-file-over-a-tcp-socket/" target="_blank" rel="external nofollow noopener noreferrer">https://mrwaggel.be/post/golang-transfer-a-file-over-a-tcp-socket/</a></li>
+</ol>
+<p><a name="cCStY"></a></p>
+<h4 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h4><ol>
+<li>《Go 语言从入门到进阶实战》名字俗了点，但是内容还是值得一读，作者对 Go 语言的使用还是很熟练的。</li>
+<li>《Go 语言高级编程》 <a href="https://github.com/chai2010/advanced-go-programming-book" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/chai2010/advanced-go-programming-book</a> rpc 相关的内容可以一读。</li>
+<li>Concurrency in Go</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/46e95013.html" rel="bookmark">Go 实现长轮询：一个服务端超时设置的故事</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/d2033f7a.html" rel="bookmark">Go 语言流式 IO</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/35963400.html" rel="bookmark">Go整洁架构实践</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/f901e5ff.html" rel="bookmark">Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/ab759786.html" rel="bookmark">gRPC snippets</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/cf4d6f51.html" rel="next" title="基础网络知识">
+                  <i class="fa fa-chevron-left"></i> 基础网络知识
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/post/99dfe25e.html" rel="prev" title="K8S PVC 在线扩容">
+                  K8S PVC 在线扩容 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-slice-的初始化"><span class="nav-number">1.</span> <span class="nav-text">关于 slice 的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切片拷贝"><span class="nav-number">2.</span> <span class="nav-text">切片拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包导入过程"><span class="nav-number">3.</span> <span class="nav-text">包导入过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#godoc-与-go-doc"><span class="nav-number">4.</span> <span class="nav-text">godoc 与 go doc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GOPRIVATE"><span class="nav-number">5.</span> <span class="nav-text">GOPRIVATE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取变量类型"><span class="nav-number">6.</span> <span class="nav-text">获取变量类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取变量地址"><span class="nav-number">7.</span> <span class="nav-text">获取变量地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反向代理"><span class="nav-number">8.</span> <span class="nav-text">反向代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从静态文件生成-go-code-并-serve"><span class="nav-number">9.</span> <span class="nav-text">从静态文件生成 go code 并 serve</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-Response-Status"><span class="nav-number">10.</span> <span class="nav-text">HTTP Response Status</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写入文件"><span class="nav-number">11.</span> <span class="nav-text">写入文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Template-中判断-range-最后一个元素"><span class="nav-number">12.</span> <span class="nav-text">Template 中判断 range 最后一个元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-zip-文件并返回给-http-response"><span class="nav-number">13.</span> <span class="nav-text">生成 zip 文件并返回给 http response</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从-http-request-body-中解析出-go-对象"><span class="nav-number">14.</span> <span class="nav-text">从 http request body 中解析出 go 对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按行读取文本"><span class="nav-number">15.</span> <span class="nav-text">按行读取文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json-unmarshal-时保留-raw-message"><span class="nav-number">16.</span> <span class="nav-text">json unmarshal 时保留 raw message</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json-unmarshal-时会保留对象已有的值"><span class="nav-number">17.</span> <span class="nav-text">json unmarshal 时会保留对象已有的值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译时自动添加版本和日期信息"><span class="nav-number">18.</span> <span class="nav-text">编译时自动添加版本和日期信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-编译相关问题"><span class="nav-number">19.</span> <span class="nav-text">go 编译相关问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unicode-字符编码"><span class="nav-number">20.</span> <span class="nav-text">Unicode 字符编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-dlv-调试-Go-程序"><span class="nav-number">21.</span> <span class="nav-text">使用 dlv 调试 Go 程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查字符串是否符合-base64-编码"><span class="nav-number">22.</span> <span class="nav-text">检查字符串是否符合 base64 编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查环境变量是否存在"><span class="nav-number">23.</span> <span class="nav-text">检查环境变量是否存在</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于应用配置的思考"><span class="nav-number">24.</span> <span class="nav-text">关于应用配置的思考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#当结构体内嵌套的结构体字段重名时"><span class="nav-number">25.</span> <span class="nav-text">当结构体内嵌套的结构体字段重名时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#panic-时的退出码"><span class="nav-number">26.</span> <span class="nav-text">panic 时的退出码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TeeReader"><span class="nav-number">27.</span> <span class="nav-text">TeeReader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#h2c-h2"><span class="nav-number">28.</span> <span class="nav-text">h2c/h2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-1-1-Keep-Alive"><span class="nav-number">29.</span> <span class="nav-text">HTTP/1.1 Keep-Alive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebAssembly"><span class="nav-number">30.</span> <span class="nav-text">WebAssembly</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#QUIC-协议的-Golang-实现"><span class="nav-number">31.</span> <span class="nav-text">QUIC 协议的 Golang 实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开源库"><span class="nav-number">32.</span> <span class="nav-text">开源库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料"><span class="nav-number">33.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#书籍"><span class="nav-number">34.</span> <span class="nav-text">书籍</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌" src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="external nofollow noopener noreferrer" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">247k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:44</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;" z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="153,153,153" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>
