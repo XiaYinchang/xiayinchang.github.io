@@ -269,14 +269,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.9k</span>
+              <span>5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>5 分钟</span>
             </span>
             <div class="post-description">Linux 文件系统基础知识。</div>
 
@@ -330,7 +330,7 @@
 <h4 id="文件的-atime-mtime-ctime"><a href="#文件的-atime-mtime-ctime" class="headerlink" title="文件的 atime/mtime/ctime"></a>文件的 atime/mtime/ctime</h4><p>atime 是文件最后被访问的时间，mtime 是文件最后更新的时间，ctime 是文件权限/所有者等元数据发生变化的时间，<code>ls -l</code> 默认显示文件的 mtime，<code>touch</code> 命令用于更新文件的 atime/mtime/ctime 为当前时间。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 stat 命令可以查看文件的三种时间戳</span></span><br><span class="line"><span class="built_in">stat</span> Dockerfile</span><br><span class="line"><span class="comment"># 输出如下</span></span><br><span class="line">  File: Dockerfile</span><br><span class="line">  Size: 714       	Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: 801h/2049d	Inode: 1730866260  Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/     xyc)   Gid: (  985/   users)</span><br><span class="line">Access: 2020-07-20 18:30:18.011746992 +0800</span><br><span class="line">Modify: 2020-07-20 18:28:45.569930146 +0800</span><br><span class="line">Change: 2020-07-20 18:28:45.569930146 +0800</span><br><span class="line"> Birth: 2020-07-20 18:28:45.569930146 +0800</span><br></pre></td></tr></table></figure>
 <p><a name="6WWtH"></a></p>
-<h4 id="系统启动时加载-initrd-initramfs"><a href="#系统启动时加载-initrd-initramfs" class="headerlink" title="系统启动时加载 initrd (initramfs)"></a>系统启动时加载 initrd (initramfs)</h4><p>grub 在加载内核的同时，还需要加载 initrd (initramfs)，并交给内核进行挂载。grub 完成自己的任务后会把系统启动的工作移交给内核继续进行，initrd 提供了内核执行启动工作所必须的最小资源集，包括网卡驱动、磁盘驱动、各种文件系统驱动和扩展内核模块等，可视为一个临时的根文件系统，当内核从中获取必要的驱动与模块从而有能力操作各种外设后，将会挂载最终的根文件系统来替换掉该临时的文件系统。<br>initrd (initial ram disk) 和 initramfs (initial ram file system) 所承载的内容是一样的，区别在于其工作模式。<br>顾名思义，initrd 是内存盘的镜像，内核在读取其内容时将其作为块设备处理，且这个块设备完整存在于内存中，占用了内存空间，再加上内核从 initrd 中读取数据时分配的空间，相当于同样的数据在内存中存在了两份。initrd 的另一个特点是，既然它是一个块设备，则在其之上必然存在一种系统（一般是 ext2 ）才能承载可供内核读取的数据，同时内核在编译时也必须加入此种文件系统的驱动。<br>显然，initramfs 是一份文件系统的数据镜像，其所使用的文件系统名为 tmpfs，是一种 dummy 文件系统，它提供给 VFS （虚拟文件系统）的接口仅包含了能够保证正常工作的最少功能集。基于 tmpfs 的文件读写均是对内核中同一份数据的操作，且不需要块设备驱动的介入。另外，tmpfs 基于 Linux cache 系统构建，仅增加少量代码，是内核原生支持的文件系统格式，而无需加入额外的驱动支持。<br>参考：<a href="https://stackoverflow.com/a/10604667" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/10604667</a></p>
+<h4 id="系统启动时加载-initrd-initramfs"><a href="#系统启动时加载-initrd-initramfs" class="headerlink" title="系统启动时加载 initrd (initramfs)"></a>系统启动时加载 initrd (initramfs)</h4><p>grub 在加载内核的同时，还需要加载 initrd (initramfs)，并交给内核进行挂载。grub 完成自己的任务后会把系统启动的工作移交给内核继续进行，initrd 提供了内核执行启动工作所必须的最小资源集，包括网卡驱动、磁盘驱动、各种文件系统驱动和扩展内核模块等，可视为一个临时的根文件系统，当内核从中获取必要的驱动与模块从而有能力操作各种外设后，将会挂载最终的根文件系统来替换掉该临时的文件系统。<br>initrd (initial ram disk) 和 initramfs (initial ram file system) 所承载的内容是一样的，区别在于其工作模式。<br>顾名思义，initrd 是内存盘的镜像，内核在读取其内容时将其作为块设备处理，且这个块设备完整存在于内存中，占用了内存空间，再加上内核从块设备读取数据时会将数据拷贝到 page cache（对于文件数据）和 dentry cache（(对于目录项），相当于同样的数据在内存中存在了两份从而造成浪费。initrd 的另一个特点是，既然它是一个块设备，则在其之上必然存在一种系统（一般是 ext2 ）才能承载可供内核读取的数据，同时内核在编译时也必须加入此种文件系统的驱动。块设备大小固定，所以可能存在内存空间浪费或所需空间不足的情况。<br>显然，initramfs 是一份文件系统的数据镜像，其所使用的文件系统名为 tmpfs，是一种 dummy 文件系统，它提供给 VFS （虚拟文件系统）的接口仅包含了能够保证正常工作的最少功能集。基于 tmpfs 的文件读写均是对内核中同一份数据的操作，且不需要块设备驱动的介入。另外，tmpfs 基于 Linux cache 系统构建，仅增加少量代码，是内核原生支持的文件系统格式，而无需加入额外的驱动支持。<br>参考：<a href="https://stackoverflow.com/a/10604667" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/10604667</a></p>
 </li>
 </ul>
 
