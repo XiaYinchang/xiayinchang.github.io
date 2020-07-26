@@ -40,29 +40,6 @@
   </entry>
   
   <entry>
-    <title>TBD</title>
-    <link href="https://www.xiayinchang.top/post/270af770.html"/>
-    <id>https://www.xiayinchang.top/post/270af770.html</id>
-    <published>2020-05-05T16:00:00.000Z</published>
-    <updated>2020-07-09T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      macOS 使用相关。
-    
-    </summary>
-    
-    
-      <category term="开发工具" scheme="https://www.xiayinchang.top/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="开发工具" scheme="https://www.xiayinchang.top/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
-    
-      <category term="macOS" scheme="https://www.xiayinchang.top/tags/macOS/"/>
-    
-  </entry>
-  
-  <entry>
     <title>macOS 使用相关</title>
     <link href="https://www.xiayinchang.top/post/e9aa727.html"/>
     <id>https://www.xiayinchang.top/post/e9aa727.html</id>
@@ -463,6 +440,27 @@
     
     
       <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VSCode 使用技巧</title>
+    <link href="https://www.xiayinchang.top/post/16a650d7.html"/>
+    <id>https://www.xiayinchang.top/post/16a650d7.html</id>
+    <published>2019-10-18T16:00:00.000Z</published>
+    <updated>2019-10-18T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      汇总 VSCode 使用方法和插件等。
+    
+    </summary>
+    
+    
+      <category term="VSCode" scheme="https://www.xiayinchang.top/categories/VSCode/"/>
+    
+    
+      <category term="VSCode" scheme="https://www.xiayinchang.top/tags/VSCode/"/>
     
   </entry>
   
