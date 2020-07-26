@@ -1398,22 +1398,29 @@
 <li><p><code>set -e</code> 出现非零返回值立即退出</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> -e： 执行的时候如果出现了返回值为非零，整个脚本就会立即退出 </span><br><span class="line"><span class="built_in">set</span> +e： 执行的时候如果出现了返回值为非零将会继续执行下面的脚本</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -e 命令用法总结如下：</span><br><span class="line">1. 当命令的返回值为非零状态时，则立即退出脚本的执行。</span><br><span class="line">2. 作用范围只限于脚本执行的当前进行，不作用于其创建的子进程（https://blog.csdn.net/fc34235/article/details/76598448 ）。</span><br><span class="line">3. 另外，当想根据命令执行的返回值，输出对应的<span class="built_in">log</span>时，最好不要采用<span class="built_in">set</span> -e选项，而是通过配合<span class="built_in">exit</span> 命令来达到输出<span class="built_in">log</span>并退出执行的目的。</span><br></pre></td></tr></table></figure>
 <p><a name="QIk57"></a></p>
+<h4 id="配置-6to4-隧道"><a href="#配置-6to4-隧道" class="headerlink" title="配置 6to4 隧道"></a>配置 6to4 隧道</h4><p>参考：<a href="https://www.deepspace6.net/docs/iproute2tunnel-en.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.deepspace6.net/docs/iproute2tunnel-en.html</a>，<a href="https://www.tldp.org/HOWTO/Linux+IPv6-HOWTO/ch09s04.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.tldp.org/HOWTO/Linux+IPv6-HOWTO/ch09s04.html</a><br><a name="W22yi"></a></p>
 <h4 id="常见工具的-IPV6-模式"><a href="#常见工具的-IPV6-模式" class="headerlink" title="常见工具的 IPV6 模式"></a>常见工具的 IPV6 模式</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scp -6 hyperkube root@[2003:da8:2004:1000:0a09:6ec4:0006:ed49]:/tmp</span><br><span class="line">ping6 2003:da8:2004:1000:0a2a:1e5e:0122:d75b</span><br><span class="line">curl -g <span class="string">'http://[2003:ac12:fed0:1:0:ff:aad:aef]:8080'</span></span><br></pre></td></tr></table></figure>
-
-
+<p><a name="ALJXW"></a></p>
+<h4 id="linux-排故常用命令"><a href="#linux-排故常用命令" class="headerlink" title="linux 排故常用命令"></a>linux 排故常用命令</h4><p><a href="https://arthurchiao.art/blog/linux-trouble-shooting-cheat-sheet/" target="_blank" rel="external nofollow noopener noreferrer">https://arthurchiao.art/blog/linux-trouble-shooting-cheat-sheet/</a><br><a name="EsaA7"></a></p>
+<h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4></li>
+<li><p>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</p>
 </li>
-</ul>
-<p><a name="EsaA7"></a></p>
-<h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
-<li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
-<li>pandoc 可以借助第三方引擎实现各种文档格式之间的转换：<a href="https://pandoc.org/" target="_blank" rel="external nofollow noopener noreferrer">https://pandoc.org/</a>。</li>
-<li>MOBI 转 PDF 的在线网站：<a href="https://ebook2pdf.com/" target="_blank" rel="external nofollow noopener noreferrer">https://ebook2pdf.com/</a></li>
-<li>Github dispatch 使用示例：<a href="https://alejandroandr.eu/posts/manual-trigger-github-workflows/" target="_blank" rel="external nofollow noopener noreferrer">https://alejandroandr.eu/posts/manual-trigger-github-workflows/</a></li>
-<li>deepin-wine 安装微软雅黑字体 : <a href="https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722</a></li>
-<li>配置 Linux 为一个简单的路由器：<a href="https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/" target="_blank" rel="external nofollow noopener noreferrer">https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/</a></li>
-<li>安装 cuda 参考：<a href="https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux" target="_blank" rel="external nofollow noopener noreferrer">https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux</a></li>
-<li>下载 vscode 使用国内镜像: <a href="https://zhuanlan.zhihu.com/p/112215618" target="_blank" rel="external nofollow noopener noreferrer">https://zhuanlan.zhihu.com/p/112215618</a></li>
-<li>查看系统的各种统计信息：<a href="https://www.cnblogs.com/lovesKey/p/10900501.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/lovesKey/p/10900501.html</a></li>
+<li><p>pandoc 可以借助第三方引擎实现各种文档格式之间的转换：<a href="https://pandoc.org/" target="_blank" rel="external nofollow noopener noreferrer">https://pandoc.org/</a>。</p>
+</li>
+<li><p>MOBI 转 PDF 的在线网站：<a href="https://ebook2pdf.com/" target="_blank" rel="external nofollow noopener noreferrer">https://ebook2pdf.com/</a></p>
+</li>
+<li><p>Github dispatch 使用示例：<a href="https://alejandroandr.eu/posts/manual-trigger-github-workflows/" target="_blank" rel="external nofollow noopener noreferrer">https://alejandroandr.eu/posts/manual-trigger-github-workflows/</a></p>
+</li>
+<li><p>deepin-wine 安装微软雅黑字体 : <a href="https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/wszqkzqk/deepin-wine-ubuntu/issues/136#issuecomment-514585722</a></p>
+</li>
+<li><p>配置 Linux 为一个简单的路由器：<a href="https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/" target="_blank" rel="external nofollow noopener noreferrer">https://www.ascinc.com/blog/linux/how-to-build-a-simple-router-with-ubuntu-server-18-04-1-lts-bionic-beaver/</a></p>
+</li>
+<li><p>安装 cuda 参考：<a href="https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux" target="_blank" rel="external nofollow noopener noreferrer">https://linuxconfig.org/how-to-install-nvidia-cuda-toolkit-on-centos-7-linux</a></p>
+</li>
+<li><p>下载 vscode 使用国内镜像: <a href="https://zhuanlan.zhihu.com/p/112215618" target="_blank" rel="external nofollow noopener noreferrer">https://zhuanlan.zhihu.com/p/112215618</a></p>
+</li>
+<li><p>查看系统的各种统计信息：<a href="https://www.cnblogs.com/lovesKey/p/10900501.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/lovesKey/p/10900501.html</a></p>
+</li>
 </ul>
 <p><a name="Ocuwz"></a></p>
 <h4 id="疑难杂症"><a href="#疑难杂症" class="headerlink" title="疑难杂症"></a>疑难杂症</h4><ul>
@@ -1776,6 +1783,30 @@
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TBD</title>
+    <url>/post/270af770.html</url>
+    <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="安装-source-code-pro-字体"><a href="#安装-source-code-pro-字体" class="headerlink" title="安装 source-code-pro 字体"></a>安装 source-code-pro 字体</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew tap homebrew/cask-fonts &amp;&amp; brew cask install font-source-code-pro</span><br></pre></td></tr></table></figure><p><a name="KVEG2"></a></p><h4 id="解决字体模糊"><a href="#解决字体模糊" class="headerlink" title="解决字体模糊"></a>解决字体模糊</h4><p>开启 HiDPI 参考：<a href="https://github.com/xzhih/one-key-hidpi" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/xzhih/one-key-hidpi</a><br><a name="viaH3"></a></p><a id="more"></a>
+
+
+
+<h4 id="VMware-fusion-开机启动虚拟机"><a href="#VMware-fusion-开机启动虚拟机" class="headerlink" title="VMware fusion 开机启动虚拟机"></a>VMware fusion 开机启动虚拟机</h4><p>参考：<a href="https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e" target="_blank" rel="external nofollow noopener noreferrer">https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e</a><br><a name="yTj2o"></a></p>
+<h4 id="homebrew-使用国内镜像源"><a href="#homebrew-使用国内镜像源" class="headerlink" title="homebrew 使用国内镜像源"></a>homebrew 使用国内镜像源</h4><p>需先安装 homebrew ，然后配置国内镜像源，参考：<a href="https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob" target="_blank" rel="external nofollow noopener noreferrer">https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob</a>，<a href="https://blog.csdn.net/iroguel/article/details/93481795" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/iroguel/article/details/93481795</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/bin/ruby -e <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
+<p><a name="y7W0G"></a></p>
+<h4 id="安装-iproute2"><a href="#安装-iproute2" class="headerlink" title="安装 iproute2"></a>安装 iproute2</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew install iproute2mac</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>开发工具</tag>
+        <tag>macOS</tag>
       </tags>
   </entry>
   <entry>
