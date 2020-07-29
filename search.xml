@@ -53,15 +53,15 @@
 </li>
 </ul>
 <ul>
-<li>check cluster health<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">etcdctl endpoint health</span><br></pre></td></tr></table></figure>
-
-
+<li><p>check cluster health</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">etcdctl endpoint health</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>etcd 故障恢复</p>
 </li>
 </ul>
-<p><a name="YMk0B"></a></p>
+<p>注意：对于断电或系统意外崩溃的情况可尝试重启 etcd ，如果重启无法解决再使用备份进行恢复。<br>参考：<a href="https://blog.csdn.net/dazuiba008/article/details/94595679" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/dazuiba008/article/details/94595679</a><br><a name="YMk0B"></a></p>
 <h4 id="nodeName-nodeSelector-Affinity"><a href="#nodeName-nodeSelector-Affinity" class="headerlink" title="nodeName/nodeSelector/Affinity"></a>nodeName/nodeSelector/Affinity</h4><p>直接指定 nodeName 后 Pod 将被视为已调度而不再经过调度器进行调度；nodeSelector 通过节点标签来指定 Pod 调度到相应节点上去，是较为简单的一种方式；Affinity 支持逻辑表达式实现更复杂的调度逻辑，且可设置不具强制性的软亲和，还可以设置 Pod 之间的亲和与反亲和特性。<br><a name="qFuF6"></a></p>
-<h4 id="逻辑上的隔离"><a href="#逻辑上的隔离" class="headerlink" title="逻辑上的隔离"></a>逻辑上的隔离</h4><p>可通过配置限制 kubelet 在启动时设置节点的某些具有特殊前缀的标签，例如 <code>node-role.kubernetes.io/master, node-restriction.kubernetes.io/</code> 等，这些标签只能在节点加入集群后由具有集群管理员权限的用户添加上去，配合 <code>nodeSelector/Affinity</code> 可以实现 Pod 在逻辑上的一种隔离，将具有不同安全等级要求的 Pod 调度到不同的节点上去。<br></p>
-<p><a name="xcw1D"></a></p>
+<h4 id="逻辑上的隔离"><a href="#逻辑上的隔离" class="headerlink" title="逻辑上的隔离"></a>逻辑上的隔离</h4><p>可通过配置限制 kubelet 在启动时设置节点的某些具有特殊前缀的标签，例如 <code>node-role.kubernetes.io/master, node-restriction.kubernetes.io/</code> 等，这些标签只能在节点加入集群后由具有集群管理员权限的用户添加上去，配合 <code>nodeSelector/Affinity</code> 可以实现 Pod 在逻辑上的一种隔离，将具有不同安全等级要求的 Pod 调度到不同的节点上去。<br><a name="xcw1D"></a></p>
 <h4 id="Kubernetes-go-client"><a href="#Kubernetes-go-client" class="headerlink" title="Kubernetes-go-client"></a>Kubernetes-go-client</h4><ul>
 <li>更新 api 对象的两种方式<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">"k8s.io/apimachinery/pkg/types"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">patch, err := json.Marshal([]common.JsonPatchSpec&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        Op:    <span class="string">"replace"</span>,</span><br><span class="line">        Path:  <span class="string">"/spec/suspend"</span>,</span><br><span class="line">        Value: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">_, err = common.CronClient.CronJobs(config.UMStorInfraNamespace).Patch(in.GetName(), types.JSONPatchType, patch)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者使用 update</span></span><br><span class="line"><span class="comment">// 先按需修改 originDeploy 中的内容，关键是要重建 objectmeta</span></span><br><span class="line">_, err = common.AppsClient.Deployments(config.UMStorInfraNamespace).Update(&amp;k8s_apps_api.Deployment&#123;</span><br><span class="line">    ObjectMeta: k8s_metav1.ObjectMeta&#123;</span><br><span class="line">        Name:            in.Name,</span><br><span class="line">        ResourceVersion: originDeploy.ResourceVersion,</span><br><span class="line">        Labels:          originDeploy.Labels,</span><br><span class="line">    &#125;,</span><br><span class="line">    Spec: originDeploy.Spec,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
@@ -259,12 +259,21 @@
 </ul>
 <p>从 <a href="https://github.com/prometheus/prometheus/releases" target="_blank" rel="external nofollow noopener noreferrer">Prometheus 仓库</a>下载的可执行文件包含了 promtool 工具用于校验配置和 rule 的有效性。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat &gt;prometheus.yml &lt;&lt;<span class="string">'EOF'</span></span><br><span class="line">scrape_configs:</span><br><span class="line">- job_name: prometehus</span><br><span class="line">static_configs:</span><br><span class="line">  - targets: [<span class="string">'localhost:9090'</span>]</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">./promtool check config prometheus.yml</span><br><span class="line">Checking prometheus.yml</span><br><span class="line">  FAILED: parsing YAML file prometheus.yml: yaml: unmarshal errors:</span><br><span class="line">  line 3: field static_configs not found <span class="keyword">in</span> <span class="built_in">type</span> config.plain</span><br></pre></td></tr></table></figure>
-<p><a name="iiFsk"></a></p>
-<h4 id="etcd-故障恢复"><a href="#etcd-故障恢复" class="headerlink" title="etcd 故障恢复"></a>etcd 故障恢复</h4><p>注意：对于断电或系统意外崩溃的情况可尝试重启 etcd ，如果重启无法解决再通过备份进行恢复。<br>参考：<a href="https://blog.csdn.net/dazuiba008/article/details/94595679" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/dazuiba008/article/details/94595679</a><br><a name="yR4Fi"></a></p>
+
+<p><a name="nMrgw"></a></p>
+<h4 id="让-Pod-在节点上均匀分布"><a href="#让-Pod-在节点上均匀分布" class="headerlink" title="让 Pod 在节点上均匀分布"></a>让 Pod 在节点上均匀分布</h4><p>在默认的调度策略下，优先考虑到的是资源使用比例的均衡，所以同一个 Deployment 所属的多个 Pod 副本可能集中分布在个别节点上，为了使 Pod 能够在拓扑结构上均匀分布到各个节点上，有两个策略可以考虑：</p>
+<ul>
+<li><p>当 Pod 副本数少于节点数量时，可为 Pod 添加 Pod 之间的反亲和性避免同类 Pod 调度到同一个节点上；</p>
+</li>
+<li><p>当 Pod 副本数比节点数量多时，反亲和性可能导致节点无处调度，或者仍然出现多个 Pod 调度到同一节点，一种更为通用的做法是使用 1.16 版本开始引入的 PodTopologySpreadConstraints，可以为 Pod 设置如下属性：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    k8s-app: uk8s-kubectl</span><br><span class="line">  name: uk8s-kubectl</span><br><span class="line">spec:</span><br><span class="line">  replicas: 18</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      k8s-app: uk8s-kubectl</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        k8s-app: uk8s-kubectl</span><br><span class="line">    spec:</span><br><span class="line">      topologySpreadConstraints:</span><br><span class="line">      - topologyKey: <span class="string">"kubernetes.io/hostname"</span> <span class="comment"># 以节点为粒度，也可以是 region、zone</span></span><br><span class="line">        maxSkew: 1 <span class="comment"># 允许的节点之间 Pod 数量的最大偏差</span></span><br><span class="line">        whenUnsatisfiable: ScheduleAnyway <span class="comment"># 当节点偏差大于设定值时的调度策略</span></span><br><span class="line">        labelSelector:  <span class="comment"># 选中需应用此规则的 Pod </span></span><br><span class="line">          matchLabels:</span><br><span class="line">            k8s-app: uk8s-kubectl</span><br><span class="line">      ...</span><br></pre></td></tr></table></figure>
+<p><a name="yR4Fi"></a></p>
 <h4 id="升级-Kubernetes-组件和-etcd"><a href="#升级-Kubernetes-组件和-etcd" class="headerlink" title="升级 Kubernetes 组件和 etcd"></a>升级 Kubernetes 组件和 etcd</h4><p>参考：<a href="https://platform9.com/blog/kubernetes-upgrade-the-definitive-guide-to-do-it-yourself/" target="_blank" rel="external nofollow noopener noreferrer">https://platform9.com/blog/kubernetes-upgrade-the-definitive-guide-to-do-it-yourself/</a><br><a name="8T7qF"></a></p>
-<h4 id="十二因素应用"><a href="#十二因素应用" class="headerlink" title="十二因素应用"></a>十二因素应用</h4><ul>
-<li>十二因素的提出早于 Kubernetes 的大规模使用，但是一些因素和基于 Kubernetes 的服务开发部署有着很好的吻合。可参考： <a href="https://skyao.io/learning-cloudnative/factor/" target="_blank" rel="external nofollow noopener noreferrer">https://skyao.io/learning-cloudnative/factor/</a> ，<a href="https://blog.csdn.net/zeb_perfect/article/details/52536411" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/zeb_perfect/article/details/52536411</a>， <a href="https://12factor.net/" target="_blank" rel="external nofollow noopener noreferrer">https://12factor.net/</a></li>
-<li>关于基准代码的理解：每个应用应该使用单独的代码仓库，如果多个应用有需要共享的基准代码，则应当将这部分共享代码组织为一个单独的代码仓库。<table>
+<h4 id="十二因素应用"><a href="#十二因素应用" class="headerlink" title="十二因素应用"></a>十二因素应用</h4></li>
+<li><p>十二因素的提出早于 Kubernetes 的大规模使用，但是一些因素和基于 Kubernetes 的服务开发部署有着很好的吻合。可参考： <a href="https://skyao.io/learning-cloudnative/factor/" target="_blank" rel="external nofollow noopener noreferrer">https://skyao.io/learning-cloudnative/factor/</a> ，<a href="https://blog.csdn.net/zeb_perfect/article/details/52536411" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/zeb_perfect/article/details/52536411</a>， <a href="https://12factor.net/" target="_blank" rel="external nofollow noopener noreferrer">https://12factor.net/</a></p>
+</li>
+<li><p>关于基准代码的理解：每个应用应该使用单独的代码仓库，如果多个应用有需要共享的基准代码，则应当将这部分共享代码组织为一个单独的代码仓库。</p>
+<table>
 <thead>
 <tr>
 <th align="center">Factor</th>
@@ -2484,61 +2493,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
-    <url>/post/f901e5ff.html</url>
-    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
-
-
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
-<p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
-<p><a name="kEL2C"></a></p>
-<h3 id="Authentication-Annotations"><a href="#Authentication-Annotations" class="headerlink" title="Authentication Annotations"></a>Authentication Annotations</h3><p><a name="0hiT0"></a></p>
-<h4 id="auth-url"><a href="#auth-url" class="headerlink" title="auth-url"></a>auth-url</h4><p>Nginx-inkress 是一个相当成熟的为部署在 kubernetes 上的工作流提供外部入口的解决方案，它带有很多开箱即用的特性。这些特性大多数都可以通过简单地向服务的 ingress yaml 文件中添加注解来使用。这里需要使用其中专门用于对接外部认证的注解 ‘auth-url’ 。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/auth-url: <span class="string">"url to auth service"</span></span><br></pre></td></tr></table></figure>
-<p>这个注解告诉 ingress-nginx 控制器先将传入的请求转发给认证服务，然后如果认证服务返回状态码为 200 OK 的响应，则将请求继续转发到下游服务。例如:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-<p>上面的 ingress 配置指示 ingress-nginx 将所有路径为 <code>api.microservice-1.myapp.com/secure/</code> 的外部请求首先转发到部署在集群内的认证服务的 <code>/authenticate</code> 端点，其基本过程如下：</p>
-<ol>
-<li>客户端向 <code>api.microservice-1.myapp.com/secure/*</code> 发起 API 请求；</li>
-<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 <code>/authenticate</code> 端点；</li>
-<li>如果认证服务返回 <code>200 Ok</code> 则继续讲该请求转给 <code>microservice-1</code> 服务。</li>
-</ol>
-<p><a name="Zd1lp"></a></p>
-<h4 id="auth-response-headers"><a href="#auth-response-headers" class="headerlink" title="auth-response-headers"></a>auth-response-headers</h4><p>我们可以使用  auth-response-headers 注解让认证服务传递一些信息到下游的业务应用。例如，认证服务在进行认证的过程中可以解析出用户名或用户 ID ，并将用户信息传递给  <code>microservice-1</code> 服务：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">    nginx.ingress.kubernetes.io/auth-response-headers: UserID</span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>客户端向 api.microservice-1.myapp.com/secure/* 发起 API 请求；</li>
-<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；</li>
-<li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
-<li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
-</ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248" alt="image.png"></p>
-<p><a name="xK7hi"></a></p>
-<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
-<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
-<ol>
-<li>移除反向代理相关代码。</li>
-<li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
-<li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
-<li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
-</ol>
-<p><a name="pWbqx"></a></p>
-<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
-<p><a name="elPJY"></a></p>
-<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
-<p><a name="dh0i1"></a></p>
-<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>译文</tag>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Kubernetes CSI</title>
     <url>/post/d1098827.html</url>
     <content><![CDATA[<p><a name="ekedR"></a></p><h4 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h4><p>在 Kubernetes 中，容器运行结束后其文件系统也随即被销毁，因此无法在容器中直接存储需要持久化的数据；另一方面，Kubernetes 以 Pod 为单位管理多个有一定关联关系的容器，这些容器之间的数据共享也是一个需要解决的一个问题。为此，Kubernetes 中引入了 Volume 的概念，与 Docker 中 Volume 概念的不同之处在于 Kubernetes 中的 Volume 有着完善的生命周期管理，一个 Volume 的生命周期和对应的 Pod 的一致，因此 Pod 中的容器的重启不会造成 Volume 中数据的丢失，且多个容器可以通过挂载同一个 Volume 共享数据，另外单个 Pod 支持使用多个多种类型的 Volume。通过 Volume 的抽象，容器只需要挂载 Volume 到文件系统的某个目录使用它而不必关心 Volume 的存储后端到底是什么类型。<br><a name="P9ayc"></a></p><a id="more"></a>
@@ -2603,6 +2557,61 @@
       <tags>
         <tag>Kubernetes</tag>
         <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
+    <url>/post/f901e5ff.html</url>
+    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
+
+
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
+<p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
+<p><a name="kEL2C"></a></p>
+<h3 id="Authentication-Annotations"><a href="#Authentication-Annotations" class="headerlink" title="Authentication Annotations"></a>Authentication Annotations</h3><p><a name="0hiT0"></a></p>
+<h4 id="auth-url"><a href="#auth-url" class="headerlink" title="auth-url"></a>auth-url</h4><p>Nginx-inkress 是一个相当成熟的为部署在 kubernetes 上的工作流提供外部入口的解决方案，它带有很多开箱即用的特性。这些特性大多数都可以通过简单地向服务的 ingress yaml 文件中添加注解来使用。这里需要使用其中专门用于对接外部认证的注解 ‘auth-url’ 。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/auth-url: <span class="string">"url to auth service"</span></span><br></pre></td></tr></table></figure>
+<p>这个注解告诉 ingress-nginx 控制器先将传入的请求转发给认证服务，然后如果认证服务返回状态码为 200 OK 的响应，则将请求继续转发到下游服务。例如:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<p>上面的 ingress 配置指示 ingress-nginx 将所有路径为 <code>api.microservice-1.myapp.com/secure/</code> 的外部请求首先转发到部署在集群内的认证服务的 <code>/authenticate</code> 端点，其基本过程如下：</p>
+<ol>
+<li>客户端向 <code>api.microservice-1.myapp.com/secure/*</code> 发起 API 请求；</li>
+<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 <code>/authenticate</code> 端点；</li>
+<li>如果认证服务返回 <code>200 Ok</code> 则继续讲该请求转给 <code>microservice-1</code> 服务。</li>
+</ol>
+<p><a name="Zd1lp"></a></p>
+<h4 id="auth-response-headers"><a href="#auth-response-headers" class="headerlink" title="auth-response-headers"></a>auth-response-headers</h4><p>我们可以使用  auth-response-headers 注解让认证服务传递一些信息到下游的业务应用。例如，认证服务在进行认证的过程中可以解析出用户名或用户 ID ，并将用户信息传递给  <code>microservice-1</code> 服务：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">    nginx.ingress.kubernetes.io/auth-response-headers: UserID</span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>客户端向 api.microservice-1.myapp.com/secure/* 发起 API 请求；</li>
+<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；</li>
+<li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
+<li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248" alt="image.png"></p>
+<p><a name="xK7hi"></a></p>
+<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
+<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
+<ol>
+<li>移除反向代理相关代码。</li>
+<li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
+<li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
+<li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
+</ol>
+<p><a name="pWbqx"></a></p>
+<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
+<p><a name="elPJY"></a></p>
+<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
+<p><a name="dh0i1"></a></p>
+<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
+]]></content>
+      <categories>
+        <category>译文</category>
+      </categories>
+      <tags>
+        <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
