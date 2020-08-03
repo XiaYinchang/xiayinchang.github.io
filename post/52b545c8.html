@@ -53,8 +53,8 @@
   <meta name="description" content="本文记录需要掌握的基础网络知识。">
 <meta name="keywords" content="网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基础网络知识">
-<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;cf4d6f51.html">
+<meta property="og:title" content="Linux 基础网络知识">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;52b545c8.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="本文记录需要掌握的基础网络知识。">
 <meta property="og:locale" content="zh-CN">
@@ -64,11 +64,11 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576386544299-80e5dc93-9f94-475c-9c4e-ba06248e534e.png#align=left&amp;display=inline&amp;height=474&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=559&amp;originWidth=879&amp;size=160518&amp;status=done&amp;style=none&amp;width=746">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576386832999-494d3049-2e09-4f79-a962-d68a84ff1820.png#align=left&amp;display=inline&amp;height=341&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=341&amp;originWidth=521&amp;size=21678&amp;status=done&amp;style=none&amp;width=521">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;182657&#x2F;1593480135479-c91d4d48-b51e-4746-931c-5c1533e624b6.png#align=left&amp;display=inline&amp;height=794&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1587&amp;originWidth=1120&amp;size=505862&amp;status=done&amp;style=none&amp;width=560">
-<meta property="og:updated_time" content="2020-07-16T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-08-02T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1571478423292-36b18cb8-3312-42ed-940e-40b15315d38d.png#align=left&amp;display=inline&amp;height=793&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=793&amp;originWidth=796&amp;size=62072&amp;status=done&amp;style=none&amp;width=796">
 
-<link rel="canonical" href="https://www.xiayinchang.top/post/cf4d6f51.html">
+<link rel="canonical" href="https://www.xiayinchang.top/post/52b545c8.html">
 
 
 <script id="page-configurations">
@@ -82,7 +82,7 @@
   };
 </script>
 
-  <title>基础网络知识 | Better</title>
+  <title>Linux 基础网络知识 | Better</title>
   
 
 
@@ -216,7 +216,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/cf4d6f51.html">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/52b545c8.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -229,7 +229,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          基础网络知识
+          Linux 基础网络知识
         </h2>
 
         <div class="post-meta">
@@ -246,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-17 00:00:00" itemprop="dateModified" datetime="2020-07-17T00:00:00+08:00">2020-07-17</time>
+                <time title="修改时间：2020-08-03 00:00:00" itemprop="dateModified" datetime="2020-08-03T00:00:00+08:00">2020-08-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -414,7 +414,8 @@
 <p><a name="WmWZT"></a></p>
 <h4 id="OSI-开放互联模型"><a href="#OSI-开放互联模型" class="headerlink" title="OSI 开放互联模型"></a>OSI 开放互联模型</h4><p><img src="/images/1593480135479-c91d4d48-b51e-4746-931c-5c1533e624b6.png" alt="image.png"><br></p>
 <p><a name="no6nh"></a></p>
-<h4 id="tcp-tw-reuse和SO-REUSEADDR的区别"><a href="#tcp-tw-reuse和SO-REUSEADDR的区别" class="headerlink" title="tcp_tw_reuse和SO_REUSEADDR的区别"></a>tcp_tw_reuse和SO_REUSEADDR的区别</h4><p>tcp_tw_reuse 和 SO_REUSEADDR 对 time_wait 状态的连接所起作用的区别，可以概括为：tcp_tw_reuse 是为了缩短 time_wait 的时间，避免出现大量的 time_wait 连接而占用系统资源，解决的是 accept 后的问题；SO_REUSEADDR 是为了解决 time_wait 状态带来的端口占用问题，以及支持同一个port对应多个ip，解决的是 bind 时的问题。<br><a name="1AWO3"></a></p>
+<h4 id="tcp-tw-reuse和SO-REUSEADDR的区别"><a href="#tcp-tw-reuse和SO-REUSEADDR的区别" class="headerlink" title="tcp_tw_reuse和SO_REUSEADDR的区别"></a>tcp_tw_reuse和SO_REUSEADDR的区别</h4><p>tcp_tw_reuse 和 SO_REUSEADDR 对 time_wait 状态的连接所起作用的区别，可以概括为：tcp_tw_reuse 是为了缩短 time_wait 的时间，避免出现大量的 time_wait 连接而占用系统资源，解决的是 accept 后的问题；SO_REUSEADDR 是为了解决 time_wait 状态带来的端口占用问题，以及支持同一个port对应多个ip，解决的是 bind 时的问题。<br><a name="s0E6x"></a></p>
+<h4 id="SO-REUSEADDR-与-SO-REUSEPORT"><a href="#SO-REUSEADDR-与-SO-REUSEPORT" class="headerlink" title="SO_REUSEADDR 与 SO_REUSEPORT"></a>SO_REUSEADDR 与 SO_REUSEPORT</h4><p>SO_REUSEADDR 两个主要效果：改变了通配绑定时处理源地址冲突的处理方式；允许将处于 TIME_WAIT 状态的 TCP 连接对应的 socket 所占用的端口号拿出来给新的 socket 去 bind 使用。<br>SO_REUSEPORT 主要是允许多个 socket 绑定到同一个端口上去，为了防止端口劫持，限制所有使用相同 ip 和 port 的 socket 都必须拥有相同的有效用户 id，其主要效果是提高了 accept 的效率。<br><a name="1AWO3"></a></p>
 <h4 id="获取网络栈监控信息"><a href="#获取网络栈监控信息" class="headerlink" title="获取网络栈监控信息"></a>获取网络栈监控信息</h4><p>参考：<a href="https://arthurchiao.art/blog/monitoring-network-stack/" target="_blank" rel="external nofollow noopener noreferrer">https://arthurchiao.art/blog/monitoring-network-stack/</a><br><a name="JsS9S"></a></p>
 <h4 id="阅读资料"><a href="#阅读资料" class="headerlink" title="阅读资料"></a>阅读资料</h4><p><a href="https://notes.shichao.io/unp/ch7/" target="_blank" rel="external nofollow noopener noreferrer">https://notes.shichao.io</a><br><br><br><br><br><br><br></p>
 
@@ -540,7 +541,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS-域名服务器数量"><span class="nav-number">1.</span> <span class="nav-text">DNS 域名服务器数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NO-CARRIER-网卡故障"><span class="nav-number">2.</span> <span class="nav-text">NO-CARRIER 网卡故障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket-和-Socket-的区别"><span class="nav-number">3.</span> <span class="nav-text">WebSocket 和 Socket 的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket-通信建立过程"><span class="nav-number">4.</span> <span class="nav-text">WebSocket 通信建立过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-1-0-、1-1-、2-关于-TCP-连接使用的区别"><span class="nav-number">5.</span> <span class="nav-text">HTTP 1.0 、1.1 、2 关于 TCP 连接使用的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接建立与断开"><span class="nav-number">6.</span> <span class="nav-text">TCP 连接建立与断开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-内核网络相关函数调用关系图"><span class="nav-number">7.</span> <span class="nav-text">Linux 内核网络相关函数调用关系图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Qdisc-在-Linux-网络栈中的位置"><span class="nav-number">8.</span> <span class="nav-text">Qdisc 在 Linux 网络栈中的位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络路由过程"><span class="nav-number">9.</span> <span class="nav-text">网络路由过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#端口与套接字的区别与联系"><span class="nav-number">10.</span> <span class="nav-text">端口与套接字的区别与联系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-bridge"><span class="nav-number">11.</span> <span class="nav-text">Linux bridge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TUN-TAP"><span class="nav-number">12.</span> <span class="nav-text">TUN/TAP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iproute2-用法"><span class="nav-number">13.</span> <span class="nav-text">iproute2 用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接的意外情况"><span class="nav-number">14.</span> <span class="nav-text">TCP 连接的意外情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接能存活多久"><span class="nav-number">15.</span> <span class="nav-text">TCP 连接能存活多久</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发送数据时超时时间设置"><span class="nav-number">16.</span> <span class="nav-text">发送数据时超时时间设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-TCP-KEEPALIVE-的阅读资料"><span class="nav-number">17.</span> <span class="nav-text">关于 TCP_KEEPALIVE 的阅读资料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看网络统计信息的几种工具"><span class="nav-number">18.</span> <span class="nav-text">查看网络统计信息的几种工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络性能测试"><span class="nav-number">19.</span> <span class="nav-text">网络性能测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络性能调优"><span class="nav-number">20.</span> <span class="nav-text">网络性能调优</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSI-开放互联模型"><span class="nav-number">21.</span> <span class="nav-text">OSI 开放互联模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tcp-tw-reuse和SO-REUSEADDR的区别"><span class="nav-number">22.</span> <span class="nav-text">tcp_tw_reuse和SO_REUSEADDR的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取网络栈监控信息"><span class="nav-number">23.</span> <span class="nav-text">获取网络栈监控信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阅读资料"><span class="nav-number">24.</span> <span class="nav-text">阅读资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS-域名服务器数量"><span class="nav-number">1.</span> <span class="nav-text">DNS 域名服务器数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NO-CARRIER-网卡故障"><span class="nav-number">2.</span> <span class="nav-text">NO-CARRIER 网卡故障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket-和-Socket-的区别"><span class="nav-number">3.</span> <span class="nav-text">WebSocket 和 Socket 的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebSocket-通信建立过程"><span class="nav-number">4.</span> <span class="nav-text">WebSocket 通信建立过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-1-0-、1-1-、2-关于-TCP-连接使用的区别"><span class="nav-number">5.</span> <span class="nav-text">HTTP 1.0 、1.1 、2 关于 TCP 连接使用的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接建立与断开"><span class="nav-number">6.</span> <span class="nav-text">TCP 连接建立与断开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-内核网络相关函数调用关系图"><span class="nav-number">7.</span> <span class="nav-text">Linux 内核网络相关函数调用关系图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Qdisc-在-Linux-网络栈中的位置"><span class="nav-number">8.</span> <span class="nav-text">Qdisc 在 Linux 网络栈中的位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络路由过程"><span class="nav-number">9.</span> <span class="nav-text">网络路由过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#端口与套接字的区别与联系"><span class="nav-number">10.</span> <span class="nav-text">端口与套接字的区别与联系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-bridge"><span class="nav-number">11.</span> <span class="nav-text">Linux bridge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TUN-TAP"><span class="nav-number">12.</span> <span class="nav-text">TUN/TAP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iproute2-用法"><span class="nav-number">13.</span> <span class="nav-text">iproute2 用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接的意外情况"><span class="nav-number">14.</span> <span class="nav-text">TCP 连接的意外情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-连接能存活多久"><span class="nav-number">15.</span> <span class="nav-text">TCP 连接能存活多久</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发送数据时超时时间设置"><span class="nav-number">16.</span> <span class="nav-text">发送数据时超时时间设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-TCP-KEEPALIVE-的阅读资料"><span class="nav-number">17.</span> <span class="nav-text">关于 TCP_KEEPALIVE 的阅读资料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看网络统计信息的几种工具"><span class="nav-number">18.</span> <span class="nav-text">查看网络统计信息的几种工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络性能测试"><span class="nav-number">19.</span> <span class="nav-text">网络性能测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络性能调优"><span class="nav-number">20.</span> <span class="nav-text">网络性能调优</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSI-开放互联模型"><span class="nav-number">21.</span> <span class="nav-text">OSI 开放互联模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tcp-tw-reuse和SO-REUSEADDR的区别"><span class="nav-number">22.</span> <span class="nav-text">tcp_tw_reuse和SO_REUSEADDR的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SO-REUSEADDR-与-SO-REUSEPORT"><span class="nav-number">23.</span> <span class="nav-text">SO_REUSEADDR 与 SO_REUSEPORT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取网络栈监控信息"><span class="nav-number">24.</span> <span class="nav-text">获取网络栈监控信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阅读资料"><span class="nav-number">25.</span> <span class="nav-text">阅读资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -618,7 +619,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">257k</span>
+    <span title="站点总字数">258k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
