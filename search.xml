@@ -160,6 +160,118 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux 系统调优与故障排查</title>
+    <url>/post/24a90617.html</url>
+    <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h4><p>vmstat 可查看系统 CPU 、内存、IO 的基本使用状态信息。</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root@10-9-23-85 ~# vmstat 1 10</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 1  0      0 262052      0 1843248    0    0     1    55    0    7  3  2 94  0  0</span><br><span class="line"> 0  0      0 262232      0 1843260    0    0     0    57 1656 2956  3  2 95  0  0</span><br><span class="line"> 0  0      0 261744      0 1843308    0    0     0    56 2038 3790  3  2 95  0  0</span><br><span class="line"> 0  0      0 261712      0 1843312    0    0     0   146 2043 3590  2  2 96  1  0</span><br><span class="line"> 0  0      0 261776      0 1843312    0    0     0    50 1771 3263  2  2 96  1  0</span><br><span class="line"> 0  0      0 261680      0 1843316    0    0     0    48 1461 2896  1  1 98  0  0</span><br><span class="line"> 0  0      0 260360      0 1843276    0    0    16    36 1971 3538  3  2 95  0  0</span><br><span class="line"> 0  0      0 260168      0 1843256    0    0     0   129 1542 2906  2  2 96  1  0</span><br><span class="line"> 1  0      0 259572      0 1843256    0    0     0    82 2417 4036  6  3 91  1  0</span><br><span class="line"> 0  0      0 259604      0 1843260    0    0     0   128 1707 3228  2  2 96  1  0</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<p>其中各项数据的含义如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">procs</th>
+<th align="center">r</th>
+<th>等待运行的进程数。如果等待运行的进程数越多，意味着CPU非常繁忙。另外，如果该参数长期大于cpu核心数3倍，说明CPU资源可能存在较大的瓶颈。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center">b</td>
+<td>处在不可中断睡眠状态的进程数。一般是等待 IO 的进程。</td>
+</tr>
+<tr>
+<td align="center">memory</td>
+<td align="center">swpd</td>
+<td>已使用的虚拟内存大小。如果虚拟内存使用较多，可能系统的物理内存比较吃紧，需要采取合适的方式来减少物理内存的使用。swapd 不为 0 ，并不意味物理内存吃紧，如果 swapd 没变化，si、so 的值长期为 0 ，也表明系统没有问题。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">free</td>
+<td>空闲的物理内存的大小。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">buff</td>
+<td>用来做buffer（缓存，主要用于块设备缓存）的内存数，单位：KB。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">cache</td>
+<td>用作缓存的内存大小，如果cache的值大的时候，说明cache处的文件数多，如果频繁访问到的文件都能被cache处，那么磁盘的读IO bi会非常小，单位：KB 。</td>
+</tr>
+<tr>
+<td align="center">swap</td>
+<td align="center">si</td>
+<td>从磁盘写入到swap虚拟内存的交换页数量，单位：KB/秒。如果这个值大于0，表示物理内存不够用或者内存泄露了。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">so</td>
+<td>从swap虚拟内读出的数据。即从swap中的数据写入到磁盘的交换页数量，单位：KB/秒，如果这个值大于 0 ，表示物理内存不够用或者内存泄露了。<br>内存够用的时候，这两个值都是0，如果这两个值长期大于0时，系统性能会受到影响，磁盘 IO 和 CPU 资源都会被消耗。<br>当看到空闲内存（free）很少的或接近于0时，就认为内存不够用了，这个是不正确的。不能光看这一点，还要结合 si 和 so 。如果 free 很少，但是 si 和 so 是0，那么不用担心，系统性能这时不会受到影响的。</td>
+</tr>
+<tr>
+<td align="center">io</td>
+<td align="center">bi</td>
+<td>每秒从块设备接收到的块数，单位：块/秒 也就是读块设备。bi 通常是读磁盘的数据。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">bo</td>
+<td>每秒发送到块设备的块数，单位：块/秒 也就是写块设备。bo 通常是写磁盘的数据。</td>
+</tr>
+<tr>
+<td align="center">system</td>
+<td align="center">in</td>
+<td>每秒的中断数，包括时钟中断。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">cs</td>
+<td>每秒的环境（上下文）切换次数。比如我们调用系统函数，就要进行上下文切换，而过多的上下文切换会浪费较多的 CPU 资源，这个数值应该越小越好。</td>
+</tr>
+<tr>
+<td align="center">cpu</td>
+<td align="center">us</td>
+<td>用户态使用 CPU 的时间（非内核进程占用时间）（单位为百分比）。 us 的值比较高时，说明用户进程消耗的 CPU 时间多。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">sy</td>
+<td>系统使用的 CPU 时间（单位为百分比）。sy 的值高时，说明系统内核消耗的 CPU 资源多，这并不是良性表现，我们应该检查原因。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">id</td>
+<td>空闲的 CPU 的时间（百分比）。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">wa</td>
+<td>等待 IO 的 CPU 时间。这个指标意味着 CPU 在等待硬盘读写操作的时间，用百分比表示。wa 越大则机器 IO 性能就越差。说明 IO 等待比较严重，这可能由于对磁盘大量随机访问造成，也有可能磁盘出现瓶颈（块操作）。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">st</td>
+<td>虚拟机占用cpu时间的百分比。如果 CentOS 系统上运行了 KVM 虚拟机监视器，而 KVM 上运行了几个虚拟机，那么这个值将显示这个几个正在运行的虚拟机从物理机中窃取CPU运行时间的百分比。</td>
+</tr>
+</tbody></table>
+<br>
+
+<p><a name="lx1E0"></a></p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul>
+<li><a href="https://blog.csdn.net/weixin_41843699/article/details/97614157" target="_blank" rel="external nofollow noopener noreferrer">CPU-IO-网络-内核参数调优</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>系统调优</tag>
+        <tag>故障排查</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 进程管理基础知识</title>
     <url>/post/ee7438a7.html</url>
     <content><![CDATA[<p><a name="d3l9E"></a></p><h4 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h4><p>对于 Linux 来讲，所有的线程都当作进程来实现，因为没有单独为线程定义特定的调度算法，也没有单独为线程定义特定的数据结构（所有的线程或进程的核心数据结构都是 task_struct）。<br>对于一个进程，相当于是它含有一个线程，就是它自身。对于多线程来说，原本的进程称为主线程，它们在一起组成一个线程组。<br>进程拥有自己的地址空间，所以每个进程都有自己的页表。而线程却没有，只能和其它线程共享某一个地址空间和同一份页表。这个区别的根本原因是，在进程 / 线程创建时，因是否拷贝当前进程的地址空间还是共享当前进程的地址空间，而使得指定的参数不同而导致的。<br>进程和线程的创建都可以通过 clone 系统调用完成。clone 系统调用会执行 do_fork 内核函数，而它则又会调用 copy_process 内核函数来完成。主要包括如下操作：在调用 copy_process 的过程中，会创建并拷贝当前进程的 task_stuct，同时还会创建属于子进程的 thread_info 结构以及内核栈。此后，会为创建好的 task_stuct 指定一个新的 pid（在 task_struct 结构体中）。然后根据传递给 clone 的参数标志，来选择拷贝还是共享打开的文件，文件系统信息，信号处理函数，进程地址空间等。这就是进程和线程不一样地方的本质所在。<br><a name="xxcir"></a></p><a id="more"></a>
