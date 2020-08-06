@@ -3595,31 +3595,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Centos 编译安装 zfs</title>
-    <url>/post/dc552b49.html</url>
-    <content><![CDATA[<ul>
-<li><p>安装依赖</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum groupinstall <span class="string">"Development Tools"</span></span><br><span class="line">yum install zlib-devel libuuid-devel libattr-devel libblkid-devel libselinux-devel libudev-devel</span><br><span class="line">yum install parted lsscsi ksh openssl-devel elfutils-libelf-devel</span><br><span class="line">yum install kernel-devel-$(uname -r)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>从<a href="https://github.com/zfsonlinux/zfs/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载源代码并解压</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/zfsonlinux/zfs/releases/download/zfs-0.8.1/zfs-0.8.1.tar.gz &amp;&amp; tar zxf zfs-0.8.1.tar.gz</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>编译安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ../zfs-0.8.1</span><br><span class="line">sh autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make -s -j$(nproc)</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重启系统</p>
-</li>
-</ul>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Centos</tag>
-        <tag>存储</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>树莓派 3B 编译安装 zfs</title>
     <url>/post/6adad945.html</url>
     <content><![CDATA[<ul>
@@ -3643,8 +3618,33 @@
       </categories>
       <tags>
         <tag>Linux</tag>
-        <tag>存储</tag>
         <tag>树莓派</tag>
+        <tag>存储</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos 编译安装 zfs</title>
+    <url>/post/dc552b49.html</url>
+    <content><![CDATA[<ul>
+<li><p>安装依赖</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum groupinstall <span class="string">"Development Tools"</span></span><br><span class="line">yum install zlib-devel libuuid-devel libattr-devel libblkid-devel libselinux-devel libudev-devel</span><br><span class="line">yum install parted lsscsi ksh openssl-devel elfutils-libelf-devel</span><br><span class="line">yum install kernel-devel-$(uname -r)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从<a href="https://github.com/zfsonlinux/zfs/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载源代码并解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/zfsonlinux/zfs/releases/download/zfs-0.8.1/zfs-0.8.1.tar.gz &amp;&amp; tar zxf zfs-0.8.1.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ../zfs-0.8.1</span><br><span class="line">sh autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make -s -j$(nproc)</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启系统</p>
+</li>
+</ul>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>存储</tag>
+        <tag>Centos</tag>
       </tags>
   </entry>
   <entry>
