@@ -60,7 +60,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;182657&#x2F;1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#align=left&amp;display=inline&amp;height=824&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=824&amp;originWidth=983&amp;size=117967&amp;status=done&amp;style=none&amp;width=983">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;182657&#x2F;1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#align=left&amp;display=inline&amp;height=363&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=363&amp;originWidth=924&amp;size=65129&amp;status=done&amp;style=none&amp;width=924">
-<meta property="og:updated_time" content="2020-08-03T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-08-08T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;182657&#x2F;1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#align=left&amp;display=inline&amp;height=824&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=824&amp;originWidth=983&amp;size=117967&amp;status=done&amp;style=none&amp;width=983">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-04 00:00:00" itemprop="dateModified" datetime="2020-08-04T00:00:00+08:00">2020-08-04</time>
+                <time title="修改时间：2020-08-09 00:00:00" itemprop="dateModified" datetime="2020-08-09T00:00:00+08:00">2020-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -289,13 +289,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="JlHqj"></a></p><h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><ul>
-<li><p>使用原始 URL 获取资源信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get --raw <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span><br></pre></td></tr></table></figure>
+        <p><a name="JlHqj"></a></p><h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用原始 URL 获取资源信息</span></span><br><span class="line">kubectl get --raw <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span><br><span class="line"><span class="comment"># 定制输出列</span></span><br><span class="line">kubectl get nodes -o=custom-columns=NAME:.metadata.name,TAINTS:.spec.taints</span><br></pre></td></tr></table></figure><a id="more"></a>
+
 <p><a name="gFpih"></a></p>
 <h4 id="Patch-更新的三种操作"><a href="#Patch-更新的三种操作" class="headerlink" title="Patch 更新的三种操作"></a>Patch 更新的三种操作</h4><p>如下为 kubectl patch 命令更新资源的基本形式，其中 type 有三种 json/merge/strategic：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl patch xxxx --<span class="built_in">type</span> xxxx --patch xxxx</span><br></pre></td></tr></table></figure>
-</li>
+
+<ul>
 <li><p>标准的 json patch，Content-Type: application/json-patch+json：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl patch deployments patch-demo --<span class="built_in">type</span> json --patch <span class="string">'[&#123;"op":"replace", "path":"/spec/replicas", "value":4&#125;]'</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -306,8 +306,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">$ cat patch-file-containers.yaml</span><br><span class="line">spec:</span><br><span class="line">  template:</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: patch-demo-ctr-2</span><br><span class="line">        image: redis</span><br><span class="line">        </span><br><span class="line">$ kubectl patch deployment patch-demo --patch <span class="string">"<span class="variable">$(cat patch-file-containers.yaml)</span>"</span></span><br><span class="line"><span class="comment"># 可以看到新增了容器，而不是替换了容器列表</span></span><br><span class="line">$ kubectl get deployment patch-demo -o yaml</span><br><span class="line">   containers:</span><br><span class="line">      - image: redis</span><br><span class="line">        imagePullPolicy: Always</span><br><span class="line">        name: patch-demo-ctr-2</span><br><span class="line">        resources: &#123;&#125;</span><br><span class="line">        terminationMessagePath: /dev/termination-log</span><br><span class="line">        terminationMessagePolicy: File</span><br><span class="line">      - image: nginx</span><br><span class="line">        imagePullPolicy: Always</span><br><span class="line">        name: patch-demo-ctr</span><br><span class="line">        resources: &#123;&#125;</span><br><span class="line">        terminationMessagePath: /dev/termination-log</span><br><span class="line">        terminationMessagePolicy: File</span><br><span class="line"> </span><br><span class="line"> <span class="comment"># 这是因为在类型定义的标签中定义了 Containers 属性的 patchStrategy 为 merge，因此未执行默认替换策略</span></span><br><span class="line"> <span class="comment"># 而如果 patch 内容中包含 Tolerations 列表，则 Tolerations 会被替换</span></span><br><span class="line"> <span class="built_in">type</span> PodSpec struct &#123;</span><br><span class="line">  ...</span><br><span class="line">  Containers []Container `json:<span class="string">"containers"</span> patchStrategy:<span class="string">"merge"</span> patchMergeKey:<span class="string">"name"</span> ...`</span><br><span class="line">  Tolerations []Toleration `json:<span class="string">"tolerations,omitempty"</span> opt,name=tolerations<span class="string">"`</span></span><br></pre></td></tr></table></figure>
 <p><a name="XUXYp"></a></p>
 <h4 id="taint"><a href="#taint" class="headerlink" title="taint"></a>taint</h4></li>
-</ul><a id="more"></a>
-
+</ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 去除所有节点 mater taint 使之可调度</span></span><br><span class="line">kubectl taint nodes --all node-role.kubernetes.io/master-</span><br><span class="line"><span class="comment"># 为节点添加 taint</span></span><br><span class="line">kubectl taint nodes node1 node-role.kubernetes.io/master=:NoSchedule</span><br></pre></td></tr></table></figure>
 
 
@@ -657,10 +656,10 @@
       <div class="popular-posts-title"><a href="/post/c851306f.html" rel="bookmark">统一认证中心方案调研</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
+      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
+      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/post/e8bac896.html" rel="bookmark">Ceph 常用操作</a></div>
