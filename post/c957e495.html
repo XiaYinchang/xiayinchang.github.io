@@ -269,7 +269,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.8k</span>
+              <span>5.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -313,6 +313,10 @@
 <li><p>在使用 chroot 的情况下，软链接的范围仅限于当前新的根目录下（源目录与目的目录均在当前 chroot 下），而 bind mount 可以将 chroot 外的文件挂载到当前 chroot 中使用（过程是怎样的？）</p>
 </li>
 <li><p>容器文件系统的挂载过程借助了 bind mount。</p>
+</li>
+<li><p>bind mount 是将内核中的数据结构从源端拷贝到目的端。</p>
+</li>
+<li><p>改变目录树视图的文件系统可被称为 overlay 文件系统，bindfs/overlay2/aufs 均可称为 overlay 文件系统。</p>
 </li>
 <li><p>参考：<a href="https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix" target="_blank" rel="external nofollow noopener noreferrer">https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix</a></p>
 </li>

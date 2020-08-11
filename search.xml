@@ -521,6 +521,10 @@
 </li>
 <li><p>容器文件系统的挂载过程借助了 bind mount。</p>
 </li>
+<li><p>bind mount 是将内核中的数据结构从源端拷贝到目的端。</p>
+</li>
+<li><p>改变目录树视图的文件系统可被称为 overlay 文件系统，bindfs/overlay2/aufs 均可称为 overlay 文件系统。</p>
+</li>
 <li><p>参考：<a href="https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix" target="_blank" rel="external nofollow noopener noreferrer">https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix</a></p>
 </li>
 <li><p>参考：<a href="https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount</a><br><a name="XJ56q"></a></p>
