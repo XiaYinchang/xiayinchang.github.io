@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="利用Qt的插件进行实用功能配置。">
+<meta name="keywords" content="Qt, 实用配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qt 5.8 中的实用功能配置">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;65827044.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="利用Qt的插件进行实用功能配置。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575440239388-be68ae19-ccea-4767-a0aa-66d7d99af9da.png#align=left&amp;display=inline&amp;height=677&amp;name=image.png&amp;originHeight=677&amp;originWidth=1178&amp;size=105310&amp;status=done&amp;style=none&amp;width=1178">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575440346832-96128373-e3af-42e9-877c-0341b124c797.png#align=left&amp;display=inline&amp;height=629&amp;name=image.png&amp;originHeight=629&amp;originWidth=962&amp;size=85193&amp;status=done&amp;style=none&amp;width=962">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575440378311-0ced6759-7122-4060-92cb-a21d594e9f44.png#align=left&amp;display=inline&amp;height=573&amp;name=image.png&amp;originHeight=573&amp;originWidth=882&amp;size=80786&amp;status=done&amp;style=none&amp;width=882">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575440398604-6260a817-8f50-416b-ac37-d3bb7f06f34c.png#align=left&amp;display=inline&amp;height=781&amp;name=image.png&amp;originHeight=781&amp;originWidth=977&amp;size=210113&amp;status=done&amp;style=none&amp;width=977">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575440424321-012b41a0-fc18-4ffe-8e55-920b51fd416b.png#align=left&amp;display=inline&amp;height=677&amp;name=image.png&amp;originHeight=677&amp;originWidth=1178&amp;size=95656&amp;status=done&amp;style=none&amp;width=1178">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575440448145-ed66c2da-2ece-4773-b1f3-0bedc3286748.png#align=left&amp;display=inline&amp;height=677&amp;name=image.png&amp;originHeight=677&amp;originWidth=1178&amp;size=108392&amp;status=done&amp;style=none&amp;width=1178">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575440471310-0ee910d2-b3e5-4747-adc6-a710d582a4b5.png#align=left&amp;display=inline&amp;height=677&amp;name=image.png&amp;originHeight=677&amp;originWidth=1178&amp;size=113437&amp;status=done&amp;style=none&amp;width=1178">
+<meta property="og:updated_time" content="2017-03-26T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575440239388-be68ae19-ccea-4767-a0aa-66d7d99af9da.png#align=left&amp;display=inline&amp;height=677&amp;name=image.png&amp;originHeight=677&amp;originWidth=1178&amp;size=105310&amp;status=done&amp;style=none&amp;width=1178">
+
+<link rel="canonical" href="https://www.xiayinchang.top/post/65827044.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Qt 5.8 中的实用功能配置 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="external nofollow noopener noreferrer" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/65827044.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Qt 5.8 中的实用功能配置
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2017-03-27T00:00:00+08:00">2017-03-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Qt/" itemprop="url" rel="index">
+                    <span itemprop="name">Qt</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+            <div class="post-description">利用Qt的插件进行实用功能配置。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">03/27/2017</td>
+<td align="center">初始版本，增加”使用SVN进行版本控制”和”使用第三方代码格式化工具”两个章节。</td>
+</tr>
+</tbody></table><p>Qt 中已经集成了强大的扩展功能，根据需要进行简单的配置就可以更方便的进行开发。以下配置均基于Windows平台。</p><p><a name="42218e06"></a></p><h2 id="使用SVN进行版本控制"><a href="#使用SVN进行版本控制" class="headerlink" title="使用SVN进行版本控制"></a>使用SVN进行版本控制</h2><p>前提是你的项目中已经有SVN服务器，没有的话可以自行搭建，参考[TBD]。</p><a id="more"></a>
+
+
+
+<p><a name="7721685c"></a></p>
+<h3 id="下载并安装SVN命令行客户端"><a href="#下载并安装SVN命令行客户端" class="headerlink" title="下载并安装SVN命令行客户端"></a>下载并安装SVN命令行客户端</h3><p>推荐使用<a href="https://sliksvn.com/download/" target="_blank" rel="external nofollow noopener noreferrer">SlikSVN</a>。下载后按照提示正常安装即可。</p>
+<p><a name="79262238"></a></p>
+<h3 id="打开-Qt-进行设置"><a href="#打开-Qt-进行设置" class="headerlink" title="打开 Qt 进行设置"></a>打开 Qt 进行设置</h3><ol>
+<li>打开Qt，点击菜单栏”Tools”下的”Options”选项，弹出如下图所示的设置窗口。</li>
+</ol>
+<p><img src="https://i.loli.net/2019/12/04/iT8X13cAWERnegN.png" alt="image.png"><br></p>
+<ol start="2">
+<li>在窗口左侧导航栏中，选择”Version Control”,然后点击”Subversion”选项卡，设置”Subversion command”路径-上一步中安装的SlikSvn路径，”Username”和”Password”,然后保存并退出。</li>
+</ol>
+<p><a name="2109a010"></a></p>
+<h3 id="通过-Qt-导入SVN中的工程"><a href="#通过-Qt-导入SVN中的工程" class="headerlink" title="通过 Qt 导入SVN中的工程"></a>通过 Qt 导入SVN中的工程</h3><ol>
+<li>点击菜单栏”File”，选择”New File or Project”，弹出如下窗口。</li>
+</ol>
+<p><img src="https://i.loli.net/2019/12/04/l1ijYdzRUT6M8HJ.png" alt="image.png"></p>
+<ol start="2">
+<li>依次选择”Import Project”，”Subversion Checkout”，然后点击”Choose”选项，弹出如下窗口。<br></li>
+</ol>
+<p><img src="https://i.loli.net/2019/12/04/1AXnYLh9RIjB4uE.png" alt="image.png"></p>
+<ol start="3">
+<li>在窗体中分别设置”Repository”-要导入的已经保存在SVN中的工程的路径，”Path”-本地保存路径，”Directory”-本地工程目录名（建议使用默认），然后点击”Next”开始自动Checkout，等Checkout完成，打开当前工程，即可开始开发工作。</li>
+</ol>
+<p><a name="64eed538"></a></p>
+<h3 id="在-Qt-中进行SVN常用操作"><a href="#在-Qt-中进行SVN常用操作" class="headerlink" title="在 Qt 中进行SVN常用操作"></a>在 Qt 中进行SVN常用操作</h3><p>对工程代码文件修改后，可在菜单栏”Tools”下找到SVN常用的”Add”,”Commit”等指令，如下图。</p>
+<p><img src="https://i.loli.net/2019/12/04/xhvUAw2Y3Tq4Ff6.png" alt="image.png"></p>
+<p><a name="3da7a94e"></a></p>
+<h2 id="使用第三方代码格式化工具"><a href="#使用第三方代码格式化工具" class="headerlink" title="使用第三方代码格式化工具"></a>使用第三方代码格式化工具</h2><p>Qt 中内置了代码格式化工具，其默认快捷键是Ctrl + i，使用很方便，但是无法对赋值操作”=”两侧自动添加空格，这很不爽，我尝试修改配置文件，却仍然毫无效果，于是决定使用第三方格式化工具。<br><br>这个配置过程主要参考的是Qt Creator的<a href="http://doc.qt.io/qtcreator/creator-beautifier.html" target="_blank" rel="external nofollow noopener noreferrer">官方手册</a>，这里只是稍作翻译。</p>
+<p><a name="316d92d0"></a></p>
+<h3 id="打开-Beautifier-功能"><a href="#打开-Beautifier-功能" class="headerlink" title="打开 Beautifier 功能"></a>打开 Beautifier 功能</h3><p>选择Help &gt; About Plugins &gt; C++ &gt; Beautifier 来打开 Beautifier 功能，之后重启 Qt Creator 以使 Beautifier 生效。</p>
+<p><a name="a420232a"></a></p>
+<h3 id="下载安装第三方代码格式化工具"><a href="#下载安装第三方代码格式化工具" class="headerlink" title="下载安装第三方代码格式化工具"></a>下载安装第三方代码格式化工具</h3><p>Beautifier 支持 Artistic Style, ClangFormat, Uncrustify 三种工具，我都进行了尝试，Artistic Style 没有配置成功，Uncrustify 自带的代码格式化风格没有合适的，最后使用了 ClangFormat，这本是我最不想用的，因为获取其安装包的两种方式都很不爽，一种是自行编译-相当麻烦，一种是下载官方编译好的安装包 LLVM-包含了很多其它工具，非常臃肿。<br><br>其实 LLVM 是一款很强大的工具，只是在这里只用到了其中的 ClangFormat 功能，打开<a href="http://releases.llvm.org/download.html" target="_blank" rel="external nofollow noopener noreferrer">LLVM</a>页面，选择<br><br>Clang for Windows 32位或64位下载官方编译好的安装包，正常安装即可。</p>
+<p><a name="ab8a866d"></a></p>
+<h3 id="在-Qt-中配置-ClangFormat"><a href="#在-Qt-中配置-ClangFormat" class="headerlink" title="在 Qt 中配置 ClangFormat"></a>在 Qt 中配置 ClangFormat</h3><ol>
+<li>打开Qt，点击菜单栏”Tools”下的”Options”选项，弹出如下图所示的设置窗口。<br></li>
+</ol>
+<p><img src="https://i.loli.net/2019/12/04/Zb8GcBxWfDKHC6d.png" alt="image.png"></p>
+<ol start="2">
+<li>在窗口左侧导航栏中，选择”Beautifier”,然后在”General”选项卡下勾选”Enable auto format on file save”使得文件在保存时自动格式化，并选择”Tool”为ClangFormat。</li>
+<li>选择”Clang Format”选项卡，设置”Clang Format command”为ClangFormat安装路径，选择”Use predefined style”为你需要的代码风格，如下图，之后保存并退出。<br></li>
+</ol>
+<p><img src="https://i.loli.net/2019/12/04/eQEsD758hayuFAr.png" alt="image.png"></p>
+<p><a name="386a789b"></a></p>
+<h3 id="设置格式化快捷键"><a href="#设置格式化快捷键" class="headerlink" title="设置格式化快捷键"></a>设置格式化快捷键</h3><p>已经习惯了使用Ctrl + i 作为格式化快捷键，因此需要重新设置一下。<br><br>选择Tools &gt; Options &gt; Environment &gt; Keyboard，首先去掉默认的 AutoIndentSelection 的快捷键Ctrl + i，再为 ClangFormat 的 FormatSelectedText 添加快捷键Ctrl + i，保存并关闭又可以愉快地使用Ctrl + i了，如下图所示。</p>
+<p><img src="https://i.loli.net/2019/12/04/Tz6sYjIABVhS1JF.png" alt="image.png"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/da23d674.html" rel="bookmark">Qt 常见编译问题汇总</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Qt/" rel="tag"># Qt</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+              <a href="/tags/%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96/" rel="tag"># 代码格式化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/post/da23d674.html" rel="prev" title="Qt 常见编译问题汇总">
+                  Qt 常见编译问题汇总 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用SVN进行版本控制"><span class="nav-number">1.</span> <span class="nav-text">使用SVN进行版本控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载并安装SVN命令行客户端"><span class="nav-number">1.1.</span> <span class="nav-text">下载并安装SVN命令行客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打开-Qt-进行设置"><span class="nav-number">1.2.</span> <span class="nav-text">打开 Qt 进行设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过-Qt-导入SVN中的工程"><span class="nav-number">1.3.</span> <span class="nav-text">通过 Qt 导入SVN中的工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-Qt-中进行SVN常用操作"><span class="nav-number">1.4.</span> <span class="nav-text">在 Qt 中进行SVN常用操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用第三方代码格式化工具"><span class="nav-number">2.</span> <span class="nav-text">使用第三方代码格式化工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打开-Beautifier-功能"><span class="nav-number">2.1.</span> <span class="nav-text">打开 Beautifier 功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载安装第三方代码格式化工具"><span class="nav-number">2.2.</span> <span class="nav-text">下载安装第三方代码格式化工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-Qt-中配置-ClangFormat"><span class="nav-number">2.3.</span> <span class="nav-text">在 Qt 中配置 ClangFormat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置格式化快捷键"><span class="nav-number">2.4.</span> <span class="nav-text">设置格式化快捷键</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌" src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="external nofollow noopener noreferrer" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">267k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:03</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;" z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="153,153,153" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>
