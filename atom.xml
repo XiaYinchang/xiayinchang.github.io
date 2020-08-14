@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2020-08-11T16:00:00.000Z</updated>
+  <updated>2020-08-13T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://www.xiayinchang.top/post/24a90617.html"/>
     <id>https://www.xiayinchang.top/post/24a90617.html</id>
     <published>2020-08-03T16:00:00.000Z</published>
-    <updated>2020-08-11T16:00:00.000Z</updated>
+    <updated>2020-08-13T16:00:00.000Z</updated>
     
     <summary type="html">
     
@@ -61,6 +61,29 @@
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
     
       <category term="监控" scheme="https://www.xiayinchang.top/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TBD</title>
+    <link href="https://www.xiayinchang.top/post/270af770.html"/>
+    <id>https://www.xiayinchang.top/post/270af770.html</id>
+    <published>2020-07-25T16:00:00.000Z</published>
+    <updated>2020-08-13T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      需要阅读的材料。
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://www.xiayinchang.top/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="TBD" scheme="https://www.xiayinchang.top/tags/TBD/"/>
+    
+      <category term="学习笔记" scheme="https://www.xiayinchang.top/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
@@ -444,29 +467,6 @@
       <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
     
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 实用命令集合</title>
-    <link href="https://www.xiayinchang.top/post/b489449e.html"/>
-    <id>https://www.xiayinchang.top/post/b489449e.html</id>
-    <published>2019-11-08T16:00:00.000Z</published>
-    <updated>2020-08-12T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      在云计算场景下常用的 Linux 命令记录。
-    
-    </summary>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
-    
-      <category term=" 云计算" scheme="https://www.xiayinchang.top/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
