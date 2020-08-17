@@ -291,29 +291,6 @@
   </entry>
   
   <entry>
-    <title>Kubernetes CSI</title>
-    <link href="https://www.xiayinchang.top/post/d1098827.html"/>
-    <id>https://www.xiayinchang.top/post/d1098827.html</id>
-    <published>2019-12-06T16:00:00.000Z</published>
-    <updated>2019-12-06T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      CSI 是 Kubernetes 对接外部存储的最新规范。
-    
-    </summary>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-      <category term="云计算" scheme="https://www.xiayinchang.top/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
-  </entry>
-  
-  <entry>
     <title>在 Go 中不要拷贝锁</title>
     <link href="https://www.xiayinchang.top/post/6b348626.html"/>
     <id>https://www.xiayinchang.top/post/6b348626.html</id>
@@ -333,6 +310,29 @@
       <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
     
       <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kubernetes CSI</title>
+    <link href="https://www.xiayinchang.top/post/d1098827.html"/>
+    <id>https://www.xiayinchang.top/post/d1098827.html</id>
+    <published>2019-12-06T16:00:00.000Z</published>
+    <updated>2019-12-06T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      CSI 是 Kubernetes 对接外部存储的最新规范。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+      <category term="云计算" scheme="https://www.xiayinchang.top/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
