@@ -13,7 +13,8 @@
 <h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul>
 <li><a href="https://baijiahao.baidu.com/s?id=1598167710178783742픴=spider&for=pc" target="_blank" rel="external nofollow noopener noreferrer">linux内核将用BPF给iptables换心</a></li>
 <li><a href="https://medium.com/@ugendreshwarkudupudi/bpfilter-your-next-firewall-engine-5f7dc63ebc3" target="_blank" rel="external nofollow noopener noreferrer">BPFILTER: Your next Firewall Engine</a></li>
-<li><a href="https://stuffphilwrites.com/2014/09/iptables-processing-flowchart/" target="_blank" rel="external nofollow noopener noreferrer">iptables Processing Flowchart</a><br><a name="6fBcD"></a><h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4></li>
+<li><a href="https://stuffphilwrites.com/2014/09/iptables-processing-flowchart/" target="_blank" rel="external nofollow noopener noreferrer">iptables Processing Flowchart</a></li>
+<li><a href="http://www.zsythink.net/archives/1199/" target="_blank" rel="external nofollow noopener noreferrer">iptables详解（1）：iptables概念</a><br><a name="6fBcD"></a><h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4></li>
 </ul>
 ]]></content>
       <categories>
