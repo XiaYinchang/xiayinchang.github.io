@@ -475,7 +475,9 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install stress-ng</span><br><span class="line"># 两个 worker 计算圆周率测试，top 命令可以看到 cpu 时间均被消耗在用户空间</span><br><span class="line">stress-ng -c 2 --cpu-method pi</span><br><span class="line"># 两个 worker 遍历所有压力测试算法</span><br><span class="line">stress-ng -c 2 --cpu-method all</span><br><span class="line"># 一个 worker 产生 socket 相关的操作，top 命令可以看到 cpu 时间主要被内核以及软中断占用</span><br><span class="line"># --taskset 选项将任务绑定到指定 cpu 处理</span><br><span class="line">stress-ng --sock 1 --taskset 1</span><br></pre></td></tr></table></figure>
 <p><a name="0pmgh"></a></p>
 <h4 id="mpstat"><a href="#mpstat" class="headerlink" title="mpstat"></a>mpstat</h4><p>mpstat 是 Multiprocessor Statistics 的缩写，可用于获取 CPU 实时统计指标信息，其数据来源于 /proc/stat 文件。mpstat 区别于 vmstat 的一点是：可以查看多核 CPU 中每个计算核心的统计数据。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 每隔 2 秒显示所有 CPU 的使用信息，共打印 5 次</span><br><span class="line">mpstat -P ALL 2 5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 显示整体状态</span><br><span class="line">mpstat</span><br><span class="line"># 显示指定 CPU 状态</span><br><span class="line">mostat -P 0</span><br><span class="line"># 每隔 2 秒显示所有 CPU 的使用信息，共打印 5 次</span><br><span class="line">mpstat -P ALL 2 5</span><br><span class="line"># 显示所有 CPU 上的各种中断每秒总次数</span><br><span class="line">mpstat -I SUM -P ALL</span><br><span class="line"># 显示指定 CPU 的中断总次数</span><br><span class="line">mpstat -I SUM -P 0</span><br><span class="line"># 查看各个 CPU 上各种中断次数</span><br><span class="line">mpstat -I CPU</span><br><span class="line"># 查看各个 CPU 上各种软中断次数</span><br><span class="line">mpstat -I SCPU</span><br></pre></td></tr></table></figure>
+<p><a name="G3JWM"></a></p>
+<h4 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">iostat -d -x -m 1 6</span><br></pre></td></tr></table></figure>
 
 
 <p><a name="MZ3UH"></a></p>
