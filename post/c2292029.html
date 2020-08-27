@@ -50,15 +50,15 @@
   };
 </script>
 
-  <meta name="description" content="Linux 系统调优与故障排查的常用方法。">
-<meta name="keywords" content="Linux,调优,故障排查">
+  <meta name="description" content="Linux 故障排查的常用方法与工具。">
+<meta name="keywords" content="Linux,故障排查">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 故障排查方法与工具">
 <meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;c2292029.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="Linux 系统调优与故障排查的常用方法。">
+<meta property="og:description" content="Linux 故障排查的常用方法与工具。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-13T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-08-26T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/c2292029.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-14 00:00:00" itemprop="dateModified" datetime="2020-08-14T00:00:00+08:00">2020-08-14</time>
+                <time title="修改时间：2020-08-27 00:00:00" itemprop="dateModified" datetime="2020-08-27T00:00:00+08:00">2020-08-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -275,7 +275,7 @@
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>2 分钟</span>
             </span>
-            <div class="post-description">Linux 系统调优与故障排查的常用方法。</div>
+            <div class="post-description">Linux 故障排查的常用方法与工具。</div>
 
         </div>
       </header>
@@ -286,7 +286,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="CYJKi"></a></p><h4 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h4><p>vmstat 可查看系统 CPU 、内存、IO 的基本使用状态信息。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@10-9-23-85 ~# vmstat 1 10</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 1  0      0 262052      0 1843248    0    0     1    55    0    7  3  2 94  0  0</span><br><span class="line"> 0  0      0 262232      0 1843260    0    0     0    57 1656 2956  3  2 95  0  0</span><br><span class="line"> 0  0      0 261744      0 1843308    0    0     0    56 2038 3790  3  2 95  0  0</span><br><span class="line"> 0  0      0 261712      0 1843312    0    0     0   146 2043 3590  2  2 96  1  0</span><br><span class="line"> 0  0      0 261776      0 1843312    0    0     0    50 1771 3263  2  2 96  1  0</span><br><span class="line"> 0  0      0 261680      0 1843316    0    0     0    48 1461 2896  1  1 98  0  0</span><br><span class="line"> 0  0      0 260360      0 1843276    0    0    16    36 1971 3538  3  2 95  0  0</span><br><span class="line"> 0  0      0 260168      0 1843256    0    0     0   129 1542 2906  2  2 96  1  0</span><br><span class="line"> 1  0      0 259572      0 1843256    0    0     0    82 2417 4036  6  3 91  1  0</span><br><span class="line"> 0  0      0 259604      0 1843260    0    0     0   128 1707 3228  2  2 96  1  0</span><br></pre></td></tr></table></figure><a id="more"></a>
+        <p><a name="p4VdZ"></a></p><h3 id="排查方法"><a href="#排查方法" class="headerlink" title="排查方法"></a>排查方法</h3><p><a name="72xUi"></a></p><h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><p><a name="TuwPc"></a></p><h4 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h4><p>vmstat 可查看系统 CPU 、内存、IO 的基本使用状态信息。vmstat 展示的是整体 CPU 的使用情况，而不是单个 CPU。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@10-9-23-85 ~# vmstat 1 10</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 1  0      0 262052      0 1843248    0    0     1    55    0    7  3  2 94  0  0</span><br><span class="line"> 0  0      0 262232      0 1843260    0    0     0    57 1656 2956  3  2 95  0  0</span><br><span class="line"> 0  0      0 261744      0 1843308    0    0     0    56 2038 3790  3  2 95  0  0</span><br><span class="line"> 0  0      0 261712      0 1843312    0    0     0   146 2043 3590  2  2 96  1  0</span><br><span class="line"> 0  0      0 261776      0 1843312    0    0     0    50 1771 3263  2  2 96  1  0</span><br><span class="line"> 0  0      0 261680      0 1843316    0    0     0    48 1461 2896  1  1 98  0  0</span><br><span class="line"> 0  0      0 260360      0 1843276    0    0    16    36 1971 3538  3  2 95  0  0</span><br><span class="line"> 0  0      0 260168      0 1843256    0    0     0   129 1542 2906  2  2 96  1  0</span><br><span class="line"> 1  0      0 259572      0 1843256    0    0     0    82 2417 4036  6  3 91  1  0</span><br><span class="line"> 0  0      0 259604      0 1843260    0    0     0   128 1707 3228  2  2 96  1  0</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
 
 
 <p>其中各项数据的含义如下：</p>
@@ -379,10 +381,16 @@
 <td>虚拟机占用cpu时间的百分比。如果 CentOS 系统上运行了 KVM 虚拟机监视器，而 KVM 上运行了几个虚拟机，那么这个值将显示这个几个正在运行的虚拟机从物理机中窃取CPU运行时间的百分比。</td>
 </tr>
 </tbody></table>
-<br>
+<p><a name="ZCJzO"></a></p>
+<h4 id="stress-ng"><a href="#stress-ng" class="headerlink" title="stress-ng"></a>stress-ng</h4><p>stress-ng 是 stress 的增强版本，兼容 stress 命令的同时提供了更丰富的压力模拟场景。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum install stress-ng</span><br><span class="line"># 两个 worker 计算圆周率测试，top 命令可以看到 cpu 时间均被消耗在用户空间</span><br><span class="line">stress-ng -c 2 --cpu-method pi</span><br><span class="line"># 两个 worker 遍历所有压力测试算法</span><br><span class="line">stress-ng -c 2 --cpu-method all</span><br><span class="line"># 一个 worker 产生 socket 相关的操作，top 命令可以看到 cpu 时间主要被内核以及软中断占用</span><br><span class="line"># --taskset 选项将任务绑定到指定 cpu 处理</span><br><span class="line">stress-ng --sock 1 --taskset 1</span><br></pre></td></tr></table></figure>
+<p><a name="0pmgh"></a></p>
+<h4 id="mpstat"><a href="#mpstat" class="headerlink" title="mpstat"></a>mpstat</h4><p>mpstat 是 Multiprocessor Statistics 的缩写，可用于获取 CPU 实时统计指标信息，其数据来源于 /proc/stat 文件。mpstat 区别于 vmstat 的一点是：可以查看多核 CPU 中每个计算核心的统计数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 每隔 2 秒显示所有 CPU 的使用信息，共打印 5 次</span><br><span class="line">mpstat -P ALL 2 5</span><br></pre></td></tr></table></figure>
 
-<p><a name="lx1E0"></a></p>
-<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ul>
+
+<p><a name="MZ3UH"></a></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
 <li><a href="https://blog.csdn.net/weixin_41843699/article/details/97614157" target="_blank" rel="external nofollow noopener noreferrer">CPU-IO-网络-内核参数调优</a></li>
 <li><a href="https://coolshell.cn/articles/7490.html" target="_blank" rel="external nofollow noopener noreferrer">性能调优攻略</a></li>
 </ul>
@@ -448,7 +456,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E4%BC%98/" rel="tag"># 系统调优</a>
               <a href="/tags/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5/" rel="tag"># 故障排查</a>
           </div>
 
@@ -510,7 +517,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#vmstat"><span class="nav-number">1.</span> <span class="nav-text">vmstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#排查方法"><span class="nav-number">1.</span> <span class="nav-text">排查方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用工具"><span class="nav-number">2.</span> <span class="nav-text">常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vmstat"><span class="nav-number">2.1.</span> <span class="nav-text">vmstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stress-ng"><span class="nav-number">2.2.</span> <span class="nav-text">stress-ng</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mpstat"><span class="nav-number">2.3.</span> <span class="nav-text">mpstat</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -538,7 +545,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -588,13 +595,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">274k</span>
+    <span title="站点总字数">275k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:09</span>
+    <span title="站点阅读时长">4:10</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
