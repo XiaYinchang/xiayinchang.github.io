@@ -266,14 +266,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.4k</span>
+              <span>2.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
             <div class="post-description">Linux 故障排查的常用方法与工具。</div>
 
@@ -389,8 +389,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 显示整体状态</span><br><span class="line">mpstat</span><br><span class="line"># 显示指定 CPU 状态</span><br><span class="line">mostat -P 0</span><br><span class="line"># 每隔 2 秒显示所有 CPU 的使用信息，共打印 5 次</span><br><span class="line">mpstat -P ALL 2 5</span><br><span class="line"># 显示所有 CPU 上的各种中断每秒总次数</span><br><span class="line">mpstat -I SUM -P ALL</span><br><span class="line"># 显示指定 CPU 的中断总次数</span><br><span class="line">mpstat -I SUM -P 0</span><br><span class="line"># 查看各个 CPU 上各种中断次数</span><br><span class="line">mpstat -I CPU</span><br><span class="line"># 查看各个 CPU 上各种软中断次数</span><br><span class="line">mpstat -I SCPU</span><br></pre></td></tr></table></figure>
 <p><a name="G3JWM"></a></p>
 <h4 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat -d -x -m 1 6</span><br></pre></td></tr></table></figure>
-
-
+<p><a name="zxEJA"></a></p>
+<h4 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h4><p>sar 可用于获取进程和网络等各种系统活动统计信息，参考：<a href="https://www.computerhope.com/unix/usar.htm#:~:text=The%20sar%20command%20extracts%20and,data%20of%20that%20days%20ago." target="_blank" rel="external nofollow noopener noreferrer">Linux sar command</a>，<a href="https://www.cnblogs.com/xhyan/p/6531098.html" target="_blank" rel="external nofollow noopener noreferrer">Linux Sar命令详解</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取 CPU 利用率信息</span></span><br><span class="line">sar -u 2 5</span><br><span class="line"><span class="comment"># 获取 127 号中断向量统计信息</span></span><br><span class="line">sar -I 127 1 10</span><br><span class="line"><span class="comment"># 获取内存统计信息</span></span><br><span class="line">sar -r 1 2</span><br><span class="line"><span class="comment"># 获取网卡统计信息</span></span><br><span class="line">sar -n DEV 1 2</span><br><span class="line"><span class="comment"># 获取所有系统统计信息</span></span><br><span class="line">sar -A 1 2</span><br><span class="line"><span class="comment"># 从文件中获取历史统计信息，DD 指的是当天在本月是第几天</span></span><br><span class="line">sar -r -f /var/<span class="built_in">log</span>/sa/saDD</span><br><span class="line"><span class="comment"># 查看换页情况，其中 pgsteal/s 表示每秒钟从 cache 中被清除来满足内存需要的页个数，数值较大说明确实内存严重不足</span></span><br><span class="line">sar -B 10 3</span><br><span class="line"><span class="comment"># 获取块设备统计信息</span></span><br><span class="line">sar -d 1 2</span><br></pre></td></tr></table></figure>
+<p><a name="ccsvC"></a></p>
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>P - 按照 CPU 使用率排序；M -  按照内存使用量排序；T - 按照进程启动后占用的 CPU 时间总和排序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -u 指定用户 -d 指定刷新间隔</span></span><br><span class="line">top -u ceph -d 0.5</span><br></pre></td></tr></table></figure>
 <p><a name="MZ3UH"></a></p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
 <li><a href="https://blog.csdn.net/weixin_41843699/article/details/97614157" target="_blank" rel="external nofollow noopener noreferrer">CPU-IO-网络-内核参数调优</a></li>
@@ -519,7 +523,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#排查方法"><span class="nav-number">1.</span> <span class="nav-text">排查方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用工具"><span class="nav-number">2.</span> <span class="nav-text">常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vmstat"><span class="nav-number">2.1.</span> <span class="nav-text">vmstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stress-ng"><span class="nav-number">2.2.</span> <span class="nav-text">stress-ng</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mpstat"><span class="nav-number">2.3.</span> <span class="nav-text">mpstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iostat"><span class="nav-number">2.4.</span> <span class="nav-text">iostat</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#排查方法"><span class="nav-number">1.</span> <span class="nav-text">排查方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用工具"><span class="nav-number">2.</span> <span class="nav-text">常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vmstat"><span class="nav-number">2.1.</span> <span class="nav-text">vmstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stress-ng"><span class="nav-number">2.2.</span> <span class="nav-text">stress-ng</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mpstat"><span class="nav-number">2.3.</span> <span class="nav-text">mpstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iostat"><span class="nav-number">2.4.</span> <span class="nav-text">iostat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sar"><span class="nav-number">2.5.</span> <span class="nav-text">sar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top"><span class="nav-number">2.6.</span> <span class="nav-text">top</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
