@@ -266,14 +266,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
             <div class="post-description">Linux 故障排查的常用方法与工具。</div>
 
@@ -286,12 +286,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="p4VdZ"></a></p><h3 id="排查方法"><a href="#排查方法" class="headerlink" title="排查方法"></a>排查方法</h3><p><a name="72xUi"></a></p><h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><p><a name="TuwPc"></a></p><h4 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h4><p>vmstat 可查看系统 CPU 、内存、IO 的基本使用状态信息。vmstat 展示的是整体 CPU 的使用情况，而不是单个 CPU。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@10-9-23-85 ~# vmstat 1 10</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 1  0      0 262052      0 1843248    0    0     1    55    0    7  3  2 94  0  0</span><br><span class="line"> 0  0      0 262232      0 1843260    0    0     0    57 1656 2956  3  2 95  0  0</span><br><span class="line"> 0  0      0 261744      0 1843308    0    0     0    56 2038 3790  3  2 95  0  0</span><br><span class="line"> 0  0      0 261712      0 1843312    0    0     0   146 2043 3590  2  2 96  1  0</span><br><span class="line"> 0  0      0 261776      0 1843312    0    0     0    50 1771 3263  2  2 96  1  0</span><br><span class="line"> 0  0      0 261680      0 1843316    0    0     0    48 1461 2896  1  1 98  0  0</span><br><span class="line"> 0  0      0 260360      0 1843276    0    0    16    36 1971 3538  3  2 95  0  0</span><br><span class="line"> 0  0      0 260168      0 1843256    0    0     0   129 1542 2906  2  2 96  1  0</span><br><span class="line"> 1  0      0 259572      0 1843256    0    0     0    82 2417 4036  6  3 91  1  0</span><br><span class="line"> 0  0      0 259604      0 1843260    0    0     0   128 1707 3228  2  2 96  1  0</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-
+        <p><a name="p4VdZ"></a></p><h3 id="负载模拟与分析"><a href="#负载模拟与分析" class="headerlink" title="负载模拟与分析"></a>负载模拟与分析</h3><p><a name="zWX2H"></a></p><h4 id="CPU-密集型"><a href="#CPU-密集型" class="headerlink" title="CPU 密集型"></a>CPU 密集型</h4><ol>
+<li><p><code>stress-ng --cpu 2 --timeout 600 模拟 CPU</code> 负载；</p>
+</li>
+<li><p>通过 <code>uptime</code> 可以观察到，系统平均负载很高，通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 2 个 CPU 使用率很高，平均负载也很高，而 iowait 为 0 ，说明进程是 CPU 密集型的，一般是由进程使用 CPU 密集导致系统平均负载变高; </p>
+</li>
+<li><p>通过 <code>pidstat -u 1</code> 查看是哪个进程导致CPU使用率较高。<br><a name="vxKoA"></a></p>
+<h4 id="I-O-密集型"><a href="#I-O-密集型" class="headerlink" title="I/O 密集型"></a>I/O 密集型</h4></li>
+<li><p><code>stress-ng -i 4 --hdd 1 --timeout 600</code> 模拟磁盘 IO；</p>
+</li>
+<li><p>可以通过 <code>uptime</code> 观察到，系统平均负载很高，通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 CPU 使用率很低，iowait 很高，一直在等待 IO 处理，说明是 IO 密集型的场景；</p>
+</li>
+<li><p>通过 <code>pidstat -d 1</code> 可以查看哪个进程磁盘读写速度高，也可以通过 <code>iotop</code> 查看 IO 高的进程。<br><a name="SOEKR"></a></p>
+<h4 id="大量进程争抢-CPU"><a href="#大量进程争抢-CPU" class="headerlink" title="大量进程争抢 CPU"></a>大量进程争抢 CPU</h4></li>
+<li><p><code>stress-ng -c 16 --timeout 600</code> 模拟大量进程；</p>
+</li>
+<li><p>通过 <code>uptime</code> 观察到系统平均负载很高，通过通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 CPU 使用率也很高，iowait 为 0，说明此进程是 CPU 密集型的，或者在进行CPU 的争用；</p>
+</li>
+<li><p>通过 <code>pidstat -u 1</code> 观察到 wait 指标很高，则说明进程间存在 CPU 争用的情况，可以判断系统中存在大量的进程在等待使用 CPU；大量的进程，超出了CPU的计算能力，导致的系统的平均负载很高;</p>
+</li>
+<li><p>通过 <code>pidstat -w 1</code> 也可以看到存在大量的非自愿进程上下文切换。<br><a name="fWPF0"></a></p>
+<h4 id="单进程多线程争抢-CPU"><a href="#单进程多线程争抢-CPU" class="headerlink" title="单进程多线程争抢 CPU"></a>单进程多线程争抢 CPU</h4></li>
+<li><p><code>sysbench --threads=10 --time=300 threads run</code> 模拟多线程；</p>
+</li>
+<li><p>观察步骤类似大量进程争抢，不同的是 <code>pidstat -w 1 10</code> 看到 sysbench 无上下文切换，因为默认显示的是进程间的上下文切换；而使用 <code>pidstat -w -t</code> 可以看到存在大量 sysbench 相关的非自愿上下文切换。<br><a name="72xUi"></a></p>
+<h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><p><a name="TuwPc"></a></p>
+<h4 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h4><p>vmstat 可查看系统 CPU 、内存、IO 的基本使用状态信息。vmstat 展示的是整体 CPU 的使用情况，而不是单个 CPU。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@10-9-23-85 ~# vmstat 1 10</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 1  0      0 262052      0 1843248    0    0     1    55    0    7  3  2 94  0  0</span><br><span class="line"> 0  0      0 262232      0 1843260    0    0     0    57 1656 2956  3  2 95  0  0</span><br><span class="line"> 0  0      0 261744      0 1843308    0    0     0    56 2038 3790  3  2 95  0  0</span><br><span class="line"> 0  0      0 261712      0 1843312    0    0     0   146 2043 3590  2  2 96  1  0</span><br><span class="line"> 0  0      0 261776      0 1843312    0    0     0    50 1771 3263  2  2 96  1  0</span><br><span class="line"> 0  0      0 261680      0 1843316    0    0     0    48 1461 2896  1  1 98  0  0</span><br><span class="line"> 0  0      0 260360      0 1843276    0    0    16    36 1971 3538  3  2 95  0  0</span><br><span class="line"> 0  0      0 260168      0 1843256    0    0     0   129 1542 2906  2  2 96  1  0</span><br><span class="line"> 1  0      0 259572      0 1843256    0    0     0    82 2417 4036  6  3 91  1  0</span><br><span class="line"> 0  0      0 259604      0 1843260    0    0     0   128 1707 3228  2  2 96  1  0</span><br></pre></td></tr></table></figure>
 <p>其中各项数据的含义如下：</p>
+</li>
+</ol><a id="more"></a>
+
+
 <table>
 <thead>
 <tr>
@@ -391,7 +417,7 @@
 <h4 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat -d -x -m 1 6</span><br></pre></td></tr></table></figure>
 <p><a name="zxEJA"></a></p>
 <h4 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h4><p>sar 可用于获取进程和网络等各种系统活动统计信息，参考：<a href="https://www.computerhope.com/unix/usar.htm#:~:text=The%20sar%20command%20extracts%20and,data%20of%20that%20days%20ago." target="_blank" rel="external nofollow noopener noreferrer">Linux sar command</a>，<a href="https://www.cnblogs.com/xhyan/p/6531098.html" target="_blank" rel="external nofollow noopener noreferrer">Linux Sar命令详解</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取 CPU 利用率信息</span></span><br><span class="line">sar -u 2 5</span><br><span class="line"><span class="comment"># 获取 127 号中断向量统计信息</span></span><br><span class="line">sar -I 127 1 10</span><br><span class="line"><span class="comment"># 获取内存统计信息</span></span><br><span class="line">sar -r 1 2</span><br><span class="line"><span class="comment"># 获取网卡统计信息</span></span><br><span class="line">sar -n DEV 1 2</span><br><span class="line"><span class="comment"># 获取所有系统统计信息</span></span><br><span class="line">sar -A 1 2</span><br><span class="line"><span class="comment"># 从文件中获取历史统计信息，DD 指的是当天在本月是第几天</span></span><br><span class="line">sar -r -f /var/<span class="built_in">log</span>/sa/saDD</span><br><span class="line"><span class="comment"># 查看换页情况，其中 pgsteal/s 表示每秒钟从 cache 中被清除来满足内存需要的页个数，数值较大说明确实内存严重不足</span></span><br><span class="line">sar -B 10 3</span><br><span class="line"><span class="comment"># 获取块设备统计信息</span></span><br><span class="line">sar -d 1 2</span><br><span class="line"><span class="comment"># 上下文切换信息</span></span><br><span class="line">sar -w 1 5</span><br><span class="line"><span class="comment"># socket 信息</span></span><br><span class="line">sar -n SOCK 5 5</span><br><span class="line"><span class="comment"># TCP 信息</span></span><br><span class="line">sar -n TCP 1 5</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取 CPU 利用率信息</span></span><br><span class="line">sar -u 2 5</span><br><span class="line"><span class="comment"># 获取 127 号中断向量统计信息</span></span><br><span class="line">sar -I 127 1 10</span><br><span class="line"><span class="comment"># 获取内存统计信息</span></span><br><span class="line">sar -r 1 2</span><br><span class="line"><span class="comment"># 获取网卡统计信息</span></span><br><span class="line">sar -n DEV 1 2</span><br><span class="line"><span class="comment"># 获取所有系统统计信息</span></span><br><span class="line">sar -A 1 2</span><br><span class="line"><span class="comment"># 从文件中获取历史统计信息，DD 指的是当天在本月是第几天</span></span><br><span class="line">sar -r -f /var/<span class="built_in">log</span>/sa/saDD</span><br><span class="line"><span class="comment"># 查看换页情况，其中 pgsteal/s 表示每秒钟从 cache 中被清除来满足内存需要的页个数，数值较大说明确实内存严重不足</span></span><br><span class="line">sar -B 10 3</span><br><span class="line"><span class="comment"># 获取块设备统计信息</span></span><br><span class="line">sar -d 1 2</span><br><span class="line"><span class="comment"># 上下文切换信息</span></span><br><span class="line">sar -w 1 5</span><br><span class="line"><span class="comment"># socket 信息</span></span><br><span class="line">sar -n SOCK 5 5</span><br><span class="line"><span class="comment"># TCP 信息</span></span><br><span class="line">sar -n TCP 1 5</span><br><span class="line"><span class="comment"># 文件系统统计信息</span></span><br><span class="line">sar -F 2 4</span><br></pre></td></tr></table></figure>
 <p><a name="ccsvC"></a></p>
 <h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>P - 按照 CPU 使用率排序；M -  按照内存使用量排序；T - 按照进程启动后占用的 CPU 时间总和排序</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -u 指定用户 -d 指定刷新间隔</span></span><br><span class="line">top -u ceph -d 0.5</span><br></pre></td></tr></table></figure>
@@ -526,7 +552,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#排查方法"><span class="nav-number">1.</span> <span class="nav-text">排查方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用工具"><span class="nav-number">2.</span> <span class="nav-text">常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vmstat"><span class="nav-number">2.1.</span> <span class="nav-text">vmstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stress-ng"><span class="nav-number">2.2.</span> <span class="nav-text">stress-ng</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mpstat"><span class="nav-number">2.3.</span> <span class="nav-text">mpstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iostat"><span class="nav-number">2.4.</span> <span class="nav-text">iostat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sar"><span class="nav-number">2.5.</span> <span class="nav-text">sar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top"><span class="nav-number">2.6.</span> <span class="nav-text">top</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pidstat"><span class="nav-number">2.7.</span> <span class="nav-text">pidstat</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#负载模拟与分析"><span class="nav-number">1.</span> <span class="nav-text">负载模拟与分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CPU-密集型"><span class="nav-number">1.1.</span> <span class="nav-text">CPU 密集型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O-密集型"><span class="nav-number">1.2.</span> <span class="nav-text">I/O 密集型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大量进程争抢-CPU"><span class="nav-number">1.3.</span> <span class="nav-text">大量进程争抢 CPU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单进程多线程争抢-CPU"><span class="nav-number">1.4.</span> <span class="nav-text">单进程多线程争抢 CPU</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用工具"><span class="nav-number">2.</span> <span class="nav-text">常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#vmstat"><span class="nav-number">2.1.</span> <span class="nav-text">vmstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stress-ng"><span class="nav-number">2.2.</span> <span class="nav-text">stress-ng</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mpstat"><span class="nav-number">2.3.</span> <span class="nav-text">mpstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iostat"><span class="nav-number">2.4.</span> <span class="nav-text">iostat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sar"><span class="nav-number">2.5.</span> <span class="nav-text">sar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top"><span class="nav-number">2.6.</span> <span class="nav-text">top</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pidstat"><span class="nav-number">2.7.</span> <span class="nav-text">pidstat</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -604,7 +630,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">276k</span>
+    <span title="站点总字数">277k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
