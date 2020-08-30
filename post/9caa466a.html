@@ -269,7 +269,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>23k</span>
+              <span>24k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -289,7 +289,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="JlHqj"></a></p><h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用原始 URL 获取资源信息</span></span><br><span class="line">kubectl get --raw <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span><br><span class="line"><span class="comment"># 定制输出列</span></span><br><span class="line">kubectl get nodes -o=custom-columns=NAME:.metadata.name,TAINTS:.spec.taints</span><br><span class="line"><span class="comment"># 删除所有 evicted pods</span></span><br><span class="line">kubectl get po --all-namespaces --field-selector <span class="string">'status.phase!=Running'</span> -o json | kubectl delete -f -</span><br></pre></td></tr></table></figure><a id="more"></a>
+        <p><a name="JlHqj"></a></p><h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用原始 URL 获取资源信息</span></span><br><span class="line">kubectl get --raw <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span><br><span class="line"><span class="comment"># 定制输出列</span></span><br><span class="line">kubectl get nodes -o=custom-columns=NAME:.metadata.name,TAINTS:.spec.taints</span><br><span class="line"><span class="comment"># 删除所有 evicted pods</span></span><br><span class="line">kubectl get po --all-namespaces --field-selector <span class="string">'status.phase!=Running'</span> -o json | kubectl delete -f -</span><br><span class="line">kubectl get pods --all-namespaces | grep Evicted | awk <span class="string">'&#123;print $2 " --namespace=" $1&#125;'</span> | xargs kubectl delete pod</span><br><span class="line">kubectl get pods --all-namespaces | grep -E <span class="string">'ImagePullBackOff|ErrImagePull|Evicted'</span> | awk <span class="string">'&#123;print $2 " --namespace=" $1&#125;'</span> | xargs kubectl delete pod</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 <p><a name="gFpih"></a></p>
 <h4 id="Patch-更新的三种操作"><a href="#Patch-更新的三种操作" class="headerlink" title="Patch 更新的三种操作"></a>Patch 更新的三种操作</h4><p>如下为 kubectl patch 命令更新资源的基本形式，其中 type 有三种 json/merge/strategic：</p>
@@ -662,10 +662,10 @@
       <div class="popular-posts-title"><a href="/post/c851306f.html" rel="bookmark">统一认证中心方案调研</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
+      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
+      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/post/e8bac896.html" rel="bookmark">Ceph 常用操作</a></div>
