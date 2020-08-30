@@ -1629,7 +1629,7 @@
 <h4 id="Kubernetes-控制组件"><a href="#Kubernetes-控制组件" class="headerlink" title="Kubernetes 控制组件"></a>Kubernetes 控制组件</h4><p>Kubernetes 控制组件的控制组件 API Server, Scheduler, Controller, and Etcd 都提供了组件本身的监控信息。<br><a name="AZnOb"></a></p>
 <h4 id="用户应用"><a href="#用户应用" class="headerlink" title="用户应用"></a>用户应用</h4><p>用户应用往往也会暴露一些统计信息，尤其是提供 Web 服务的 HTTP Server 端，经常借助于 Prometheus 成熟的 SDK 暴露 RED (Request Rate, Error Rate, and Duration) 数据和程序的堆栈用量。<br><a name="GTrT1"></a></p>
 <h3 id="监控信息的分类"><a href="#监控信息的分类" class="headerlink" title="监控信息的分类"></a>监控信息的分类</h3><p>获取监控数据之后，可对数据按照分门别类地进行汇总和展示，便于运维人员观测系统性能和排故。Kubernetes 的监控数据可按照集群、节点、Pod（容器）、控制组件和应用进行划分。<br>集群信息包括集群整体的资源总量和使用量，如节点数量、容器数量，异常容器数量，命名空间数量，总的 CPU 核数和已用核数，总的内存大小和已用内存，集群网络吞吐等；节点信息包括每个节点的资源总量和用量，容器数量，网络和磁盘 IO 等；Pod 和容器的 CPU 及内存用量；控制组件的健康状态和 HTTP 及 GRPC 调用次数和成功率；应用内部的业务生成的统计信息。<br><a name="wyHDY"></a></p>
-<h3 id="Prometheus-知识"><a href="#Prometheus-知识" class="headerlink" title="Prometheus 知识"></a>Prometheus 知识</h3><p><a name="29QIj"></a></p>
+<h3 id="Prometheus-配置"><a href="#Prometheus-配置" class="headerlink" title="Prometheus 配置"></a>Prometheus 配置</h3><p><a name="29QIj"></a></p>
 <h4 id="relabel"><a href="#relabel" class="headerlink" title="relabel"></a>relabel</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 替换 address 端口</span><br><span class="line">- source_labels:</span><br><span class="line">  - __address__</span><br><span class="line">  separator:     &apos;:&apos;</span><br><span class="line">  regex:         &apos;(.*):(.*)&apos;</span><br><span class="line">  target_label:  &apos;__address__&apos;</span><br><span class="line">  replacement:   &apos;$&#123;1&#125;:10249&apos;</span><br></pre></td></tr></table></figure>
 
 
