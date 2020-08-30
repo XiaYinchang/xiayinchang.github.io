@@ -164,6 +164,18 @@
       </tags>
   </entry>
   <entry>
+    <title>常用 Kubernetes Operator</title>
+    <url>/post/502c3f78.html</url>
+    <content><![CDATA[<p><a name="NcuSR"></a></p><h4 id="Keycloak-Operator"><a href="#Keycloak-Operator" class="headerlink" title="Keycloak Operator"></a>Keycloak Operator</h4><p>支持多种认证和授权方式的统一认证中心方案 Keycloak 的官方 Operator: <a href="https://github.com/keycloak/keycloak-operator" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/keycloak/keycloak-operator</a>。<br></p>]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
+        <tag>Operator</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 实用命令集合</title>
     <url>/post/b489449e.html</url>
     <content><![CDATA[<p><a name="CYJKi"></a></p><h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS<br></h4><ul>

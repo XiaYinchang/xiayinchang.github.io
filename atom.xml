@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2020-08-25T16:00:00.000Z</updated>
+  <updated>2020-08-29T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>常用 Kubernetes Operator</title>
+    <link href="https://www.xiayinchang.top/post/502c3f78.html"/>
+    <id>https://www.xiayinchang.top/post/502c3f78.html</id>
+    <published>2020-08-29T16:00:00.000Z</published>
+    <updated>2020-08-29T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      常用的 Kubernetes Operator 集合。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+      <category term="Operator" scheme="https://www.xiayinchang.top/tags/Operator/"/>
+    
+  </entry>
   
   <entry>
     <title>iptables 基础与操作</title>
@@ -444,27 +467,6 @@
       <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
     
       <category term="gRPC" scheme="https://www.xiayinchang.top/tags/gRPC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>前端知识点滴</title>
-    <link href="https://www.xiayinchang.top/post/a68ff6.html"/>
-    <id>https://www.xiayinchang.top/post/a68ff6.html</id>
-    <published>2019-11-13T16:00:00.000Z</published>
-    <updated>2020-07-22T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      开发过程中遇到的有趣及琐碎的前端知识。
-    
-    </summary>
-    
-    
-      <category term="前端" scheme="https://www.xiayinchang.top/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-      <category term="前端" scheme="https://www.xiayinchang.top/tags/%E5%89%8D%E7%AB%AF/"/>
     
   </entry>
   
