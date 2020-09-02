@@ -266,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.5k</span>
+              <span>4.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -425,7 +425,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -u 指定用户 -d 指定刷新间隔</span></span><br><span class="line">top -u ceph -d 0.5</span><br></pre></td></tr></table></figure>
 <p><a name="pgEY5"></a></p>
 <h4 id="iotop"><a href="#iotop" class="headerlink" title="iotop"></a>iotop</h4><p><code>iotop</code> 进程或线程的当前 I/O 使用情况，显示每个进程/线程读写 I/O 带宽以及等待换入和等待 I/O 的线程/进程花费的时间的百分比。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 仅显示正在进行 IO 操作的进程或线程信息</span><br><span class="line">iotop -o</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 仅显示正在进行 IO 操作的进程或线程信息</span><br><span class="line">iotop -o </span><br><span class="line"># 只显示进程（线程读写也算到所属进程）</span><br><span class="line">iotop -P -o</span><br></pre></td></tr></table></figure>
 <p><a name="JiKnX"></a></p>
 <h4 id="nethogs"><a href="#nethogs" class="headerlink" title="nethogs"></a>nethogs</h4><p>查看进程网络流量</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nethogs</span><br></pre></td></tr></table></figure>
