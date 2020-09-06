@@ -109,6 +109,29 @@
   </entry>
   
   <entry>
+    <title>Kubernetes 监控</title>
+    <link href="https://www.xiayinchang.top/post/b0106d49.html"/>
+    <id>https://www.xiayinchang.top/post/b0106d49.html</id>
+    <published>2020-07-25T16:00:00.000Z</published>
+    <updated>2020-08-29T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Kubernetes 监控方法、工具与原理。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+      <category term="监控" scheme="https://www.xiayinchang.top/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
     <title>TBD</title>
     <link href="https://www.xiayinchang.top/post/270af770.html"/>
     <id>https://www.xiayinchang.top/post/270af770.html</id>
@@ -444,29 +467,6 @@
       <category term="语雀" scheme="https://www.xiayinchang.top/tags/%E8%AF%AD%E9%9B%80/"/>
     
       <category term="GitHub" scheme="https://www.xiayinchang.top/tags/GitHub/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>gRPC snippets</title>
-    <link href="https://www.xiayinchang.top/post/ab759786.html"/>
-    <id>https://www.xiayinchang.top/post/ab759786.html</id>
-    <published>2019-11-13T16:00:00.000Z</published>
-    <updated>2020-01-08T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      gRPC 用法相关的知识和技巧以及代码片段汇总。
-    
-    </summary>
-    
-    
-      <category term="gRPC" scheme="https://www.xiayinchang.top/categories/gRPC/"/>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
-    
-      <category term="gRPC" scheme="https://www.xiayinchang.top/tags/gRPC/"/>
     
   </entry>
   
