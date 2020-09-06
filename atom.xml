@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2020-08-29T16:00:00.000Z</updated>
+  <updated>2020-09-05T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Kubernetes 集群升级</title>
+    <link href="https://www.xiayinchang.top/post/67293294.html"/>
+    <id>https://www.xiayinchang.top/post/67293294.html</id>
+    <published>2020-09-05T16:00:00.000Z</published>
+    <updated>2020-09-05T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Kubernetes 集群升级的方法探寻。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+      <category term="集群升级" scheme="https://www.xiayinchang.top/tags/%E9%9B%86%E7%BE%A4%E5%8D%87%E7%BA%A7/"/>
+    
+  </entry>
   
   <entry>
     <title>常用 Kubernetes Operator</title>
@@ -82,29 +105,6 @@
       <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
     
       <category term="故障排查" scheme="https://www.xiayinchang.top/tags/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Kubernetes 监控</title>
-    <link href="https://www.xiayinchang.top/post/b0106d49.html"/>
-    <id>https://www.xiayinchang.top/post/b0106d49.html</id>
-    <published>2020-07-25T16:00:00.000Z</published>
-    <updated>2020-08-29T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      Kubernetes 监控方法、工具与原理。
-    
-    </summary>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-      <category term="监控" scheme="https://www.xiayinchang.top/tags/%E7%9B%91%E6%8E%A7/"/>
     
   </entry>
   
