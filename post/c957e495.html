@@ -60,7 +60,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&amp;display=inline&amp;height=150&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=299&amp;originWidth=441&amp;size=14934&amp;status=done&amp;style=none&amp;width=220.5">
 <meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&amp;display=inline&amp;height=255&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=255&amp;originWidth=514&amp;size=34517&amp;status=done&amp;style=none&amp;width=514">
-<meta property="og:updated_time" content="2020-09-05T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-09-10T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&amp;display=inline&amp;height=150&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=299&amp;originWidth=441&amp;size=14934&amp;status=done&amp;style=none&amp;width=220.5">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-06 00:00:00" itemprop="dateModified" datetime="2020-09-06T00:00:00+08:00">2020-09-06</time>
+                <time title="修改时间：2020-09-11 00:00:00" itemprop="dateModified" datetime="2020-09-11T00:00:00+08:00">2020-09-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,7 +269,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.7k</span>
+              <span>6.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -373,8 +373,8 @@
 </tbody></table>
 </li>
 </ul>
-<br>
-
+<p><a name="vWBtK"></a></p>
+<h4 id="dev-ptmx"><a href="#dev-ptmx" class="headerlink" title="/dev/ptmx"></a>/dev/ptmx</h4><p>伪终端 (pseudoterminal) : ptmx, pts (伪终端 master 和伪终端 slave )。/dev/ptmx 用于创建伪终端主从设备对。当我们用 open 打开 /dev/ptmx 设备后, 返回主设备的文件描述符，并且在 /dev/pts/ 目录下创建一个伪终端从设备。在成功打开 /dev/ptmx 后, 可以通过函数 ptsname() 来获取从设备的 path 。想要打开 open 伪终端从设备,必须先使用主设备的文件描述符调用 grantpt() ,  unlockpt() 。当主设备和从设备都打开后, 在主设备写入的数据可以在从设备上读取, 在从设备上写入的数据可以在主设备读取。<br></p>
 <p><a name="703Jw"></a></p>
 <h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4><ul>
 <li><a href="https://helpdeskgeek.com/linux-tips/what-are-inodes-in-linux-and-how-are-they-used/" target="_blank" rel="external nofollow noopener noreferrer">What Are Inodes in Linux and How Are They Used</a></li>
@@ -505,7 +505,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#superblock-inode-dentry-file"><span class="nav-number">1.</span> <span class="nav-text">superblock, inode, dentry, file</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软链接和硬链接的区别"><span class="nav-number">2.</span> <span class="nav-text">软链接和硬链接的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chroot"><span class="nav-number">3.</span> <span class="nav-text">chroot</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软链接和-bind-mount-的比较"><span class="nav-number">4.</span> <span class="nav-text">软链接和 bind mount 的比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount-namespace"><span class="nav-number">5.</span> <span class="nav-text">mount namespace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bind-mount-写入-fstab"><span class="nav-number">6.</span> <span class="nav-text">bind mount 写入 fstab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件的-atime-mtime-ctime"><span class="nav-number">7.</span> <span class="nav-text">文件的 atime/mtime/ctime</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统启动时加载-initrd-initramfs"><span class="nav-number">8.</span> <span class="nav-text">系统启动时加载 initrd (initramfs)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xfs-文件系统"><span class="nav-number">9.</span> <span class="nav-text">xfs 文件系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tmpfs"><span class="nav-number">10.</span> <span class="nav-text">tmpfs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ls-列出的文件信息"><span class="nav-number">11.</span> <span class="nav-text">ls 列出的文件信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阅读材料"><span class="nav-number">12.</span> <span class="nav-text">阅读材料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#superblock-inode-dentry-file"><span class="nav-number">1.</span> <span class="nav-text">superblock, inode, dentry, file</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软链接和硬链接的区别"><span class="nav-number">2.</span> <span class="nav-text">软链接和硬链接的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chroot"><span class="nav-number">3.</span> <span class="nav-text">chroot</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软链接和-bind-mount-的比较"><span class="nav-number">4.</span> <span class="nav-text">软链接和 bind mount 的比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount-namespace"><span class="nav-number">5.</span> <span class="nav-text">mount namespace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bind-mount-写入-fstab"><span class="nav-number">6.</span> <span class="nav-text">bind mount 写入 fstab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件的-atime-mtime-ctime"><span class="nav-number">7.</span> <span class="nav-text">文件的 atime/mtime/ctime</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统启动时加载-initrd-initramfs"><span class="nav-number">8.</span> <span class="nav-text">系统启动时加载 initrd (initramfs)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xfs-文件系统"><span class="nav-number">9.</span> <span class="nav-text">xfs 文件系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tmpfs"><span class="nav-number">10.</span> <span class="nav-text">tmpfs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ls-列出的文件信息"><span class="nav-number">11.</span> <span class="nav-text">ls 列出的文件信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dev-ptmx"><span class="nav-number">12.</span> <span class="nav-text">/dev/ptmx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阅读材料"><span class="nav-number">13.</span> <span class="nav-text">阅读材料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -583,7 +583,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">280k</span>
+    <span title="站点总字数">281k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

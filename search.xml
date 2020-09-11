@@ -236,26 +236,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Kubernetes 集群升级</title>
-    <url>/post/67293294.html</url>
-    <content><![CDATA[<p><a name="UOFG7"></a></p><h3 id="基本问题"><a href="#基本问题" class="headerlink" title="基本问题"></a>基本问题</h3><p>Kubernetes 小版本的升级要简单很多，一般只需要原地替换组件并重启组件即可，不会引发 Pod 重启，不会对业务造成影响，这是因为小版本更多的是维护性的 bug 修复，不会发生大的特性变更。相对的，大版本升级就会面临很多问题，尤其是 Pod 重启可能对业务造成的影响，另一个棘手的问题是资源对象所属资源组及版本的变更。目前查询资料获得的升级方案多是在解决第一个问题，第二个问题鲜有提及，本文也未有方案。<br><a name="qIwso"></a></p><a id="more"></a>
-
-<h3 id="常见方案"><a href="#常见方案" class="headerlink" title="常见方案"></a>常见方案</h3><p><a name="I9WbK"></a></p>
-<h4 id="新旧节点替换"><a href="#新旧节点替换" class="headerlink" title="新旧节点替换"></a>新旧节点替换</h4><p>基本过程是：添加新节点 -&gt; 驱逐旧节点上的 Pod -&gt; Pod 在新节点上自动重建 -&gt; 删除旧节点；但是这个过程只完成了对 Node 节点的替换，对于 Master 节点的处理如何进行类似处理还需仔细考虑。这个过程中还有几个细节问题需要考虑：① Pod 的优雅终止，自研组件可以通过捕获 SIGTERM 信号进行优雅退出，对于在线服务应首先停止监听进程，然后等待所有已建立的连接完成通信后退出，而对于 Nginx 等第三方产品可以在 PreStop Hook 中调用其自身提供的退出接口进行退出；② 启动退出服务之前的延时等待，由于 kubelet 删除 Pod 和 kubeproxy 移除相应的 endpoint 是并行的过程，所以很有可能出现 Pod 先停止监听而 endpoint 后移除的情况，会造成新的用户请求被转发到一个已经停止监听的后端 Pod 上从而被拒绝处理的错误发生，影响线上业务，所以需要在 PreStop Hook 中添加一定时间的 sleep ，一般是 5s ；③ 在 Pod 驱逐过程中保持一定的可用量，通过 PodDisruptionBudget 配置相应的策略从而保证在同时对多个节点上的所有 Pod 进行驱逐时能够保持给定标签的 Pod 维持在保证服务可用的水平，从而避免出现同一个服务的所有后端 Pod 同时不可用的情况。<br></p>
-<p><a name="3209S"></a></p>
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
-<li><a href="https://blog.gruntwork.io/zero-downtime-server-updates-for-your-kubernetes-cluster-902009df5b33" target="_blank" rel="external nofollow noopener noreferrer">Zero Downtime Server Updates For Your Kubernetes Cluster</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Kubernetes</category>
-      </categories>
-      <tags>
-        <tag>Kubernetes</tag>
-        <tag>集群升级</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux 文件系统基础知识</title>
     <url>/post/c957e495.html</url>
     <content><![CDATA[<p><a name="vzdGd"></a></p><h4 id="superblock-inode-dentry-file"><a href="#superblock-inode-dentry-file" class="headerlink" title="superblock, inode, dentry, file"></a>superblock, inode, dentry, file</h4><p>理解这几个概念，首先需要搞清楚元数据（metadata ）的概念，借用维基百科的定义，元数据是关于数据的数据，即元数据包含了某段数据的一些信息。就好像你买了一辆车，而这辆车的型号、品牌及产地等信息即为该车的元数据。这些信息并不是车本身的一部分而是关于车的描述，因此称为车的元数据。在 Linux 文件系统中，元数据本身又分为了多个层级。<br>superblock 超级块是文件系统的元数据，定义了文件系统的大小、类型状态以及一些其它元数据结构的信息（因此可称超级块是元数据的元数据）。超级块是处于较高层级的文件系统的元数据结构，是文件系统非常关键的信息，一旦损坏则会导致所有的数据不可用，所以一般文件系统中超级块的内容会保存多份，必要时可使用工具找到备份的超级块信息恢复损坏的文件系统。<br>inode 定义了文件的元数据信息。在 Linux 系统中，为了简洁和统一，文件、目录、设备等都被视为 file。inode 包含的元数据中，不包含文件名信息，主要包含：文件的归属关系、读写权限、文件类型以及 inode 描述的 file 在磁盘存储的数据块地址等信息。问题来了，如果 inode 不包含文件名信息，而文件名信息又必然保存在磁盘上（因为将磁盘在不同的计算机上挂载都能够看到文件名，所以文件名信息不可能是保存在某一特定计算机上），而 Linux 文件系统中保存在磁盘上的除了 inode、superblock 等元数据，也就只有数据区了，所以文件名信息必然保存在数据区，那具体是怎么保存呢？刚才提到 inode 指向的也有可能是一个目录，所以猜想这个目录对象的数据区中即保存了相关文件的文件名。<br>dentry 是仅存在与内核中的对象，用于将内核中的 file 对象与 inode 对象联系起来。dentry 中保存了文件的文件名信息，该文件名也是根据 inode number 信息从磁盘数据中获取的。dentry 是 Linux 内核用来跟踪目录中文件层次结构的工具。 每个 dentry 将一个 inode 号映射到一个文件名。dentry 在文件访问加速和目录遍历等操作中发挥作用。<br>file 则是最接近用户的文件的定义，对于编程人员来说，操作文件时内核都会创建一个 file 对象，该对象包含文件存储位置和使用该文件的进程的信息和读写文件时的游标信息以及指向的 dentry（在 5.8-rc6 内核源码中看起来是直接指向的 inode ） 信息。 文件对象 (但不包括文件数据本身) 在关闭文件时被丢弃。<br>以上几种元数据中，superblock 和 inode 都会保存在磁盘上，在操作系统操作文件系统时被读入内核空间，所以在内核空间也会有相关的数据结构和相应的对象，而 dentry 和 file 则是根据内核操作文件的需要动态地进行创建和销毁，是临时存在的对象，不会持久化到磁盘上进行存储。<br>dentry 是仅存在于内存的目录项缓存，为了提高查找性能而设计，基于文件系统中存储目录信息的 inode 的数据构建，形成一个树状结构，用于从文件名到 inode 号的对应查找，从而能够快速将用户操作的 file 与底层 inode 关联起来。<br>进程每打开一个文件，就会有一个 file 结构与之对应。同一个进程可以多次打开同一个文件而得到多个不同的 file 结构，file 结构描述被打开文件的属性，如文件的当前偏移量等信息。<br>两个不同的 file 结构可以对应同一个 dentry 结构。进程多次打开同一个文件时，对应的只有一个 dentry 结构。dentry 结构存储目录项和对应文件（inode）的信息。<br>在存储介质中，每个文件对应唯一的 inode 结点，但是每个文件又可以有多个文件名。即可以通过不同的文件名访问同一个文件。这里多个文件名对应一个文件的关系在数据结构中表示就是 dentry 和 inode 的关系。<br>Inode 中不存储文件的名字，它只存储节点号；而 dentry 则保存有名字和与其对应的节点号，所以就可以通过不同的 dentry 访问同一个 inode。<br>指向同一个 inode 的不同的 dentry 则是通过文件链接（ln 命令）来实现的。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&display=inline&height=150&margin=%5Bobject%20Object%5D&name=image.png&originHeight=299&originWidth=441&size=14934&status=done&style=none&width=220.5" alt="image.png"><br>参考： <a href="https://www.wikiwand.com/en/Inode" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/Inode</a>，<a href="https://unix.stackexchange.com/a/4403" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/a/4403</a>，<a href="https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html" target="_blank" rel="external nofollow noopener noreferrer">https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html</a><br><a name="8BQYD"></a></p><a id="more"></a>
@@ -342,8 +322,8 @@
 </tbody></table>
 </li>
 </ul>
-<br>
-
+<p><a name="vWBtK"></a></p>
+<h4 id="dev-ptmx"><a href="#dev-ptmx" class="headerlink" title="/dev/ptmx"></a>/dev/ptmx</h4><p>伪终端 (pseudoterminal) : ptmx, pts (伪终端 master 和伪终端 slave )。/dev/ptmx 用于创建伪终端主从设备对。当我们用 open 打开 /dev/ptmx 设备后, 返回主设备的文件描述符，并且在 /dev/pts/ 目录下创建一个伪终端从设备。在成功打开 /dev/ptmx 后, 可以通过函数 ptsname() 来获取从设备的 path 。想要打开 open 伪终端从设备,必须先使用主设备的文件描述符调用 grantpt() ,  unlockpt() 。当主设备和从设备都打开后, 在主设备写入的数据可以在从设备上读取, 在从设备上写入的数据可以在主设备读取。<br></p>
 <p><a name="703Jw"></a></p>
 <h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4><ul>
 <li><a href="https://helpdeskgeek.com/linux-tips/what-are-inodes-in-linux-and-how-are-they-used/" target="_blank" rel="external nofollow noopener noreferrer">What Are Inodes in Linux and How Are They Used</a></li>
@@ -358,6 +338,26 @@
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Kubernetes 集群升级</title>
+    <url>/post/67293294.html</url>
+    <content><![CDATA[<p><a name="UOFG7"></a></p><h3 id="基本问题"><a href="#基本问题" class="headerlink" title="基本问题"></a>基本问题</h3><p>Kubernetes 小版本的升级要简单很多，一般只需要原地替换组件并重启组件即可，不会引发 Pod 重启，不会对业务造成影响，这是因为小版本更多的是维护性的 bug 修复，不会发生大的特性变更。相对的，大版本升级就会面临很多问题，尤其是 Pod 重启可能对业务造成的影响，另一个棘手的问题是资源对象所属资源组及版本的变更。目前查询资料获得的升级方案多是在解决第一个问题，第二个问题鲜有提及，本文也未有方案。<br><a name="qIwso"></a></p><a id="more"></a>
+
+<h3 id="常见方案"><a href="#常见方案" class="headerlink" title="常见方案"></a>常见方案</h3><p><a name="I9WbK"></a></p>
+<h4 id="新旧节点替换"><a href="#新旧节点替换" class="headerlink" title="新旧节点替换"></a>新旧节点替换</h4><p>基本过程是：添加新节点 -&gt; 驱逐旧节点上的 Pod -&gt; Pod 在新节点上自动重建 -&gt; 删除旧节点；但是这个过程只完成了对 Node 节点的替换，对于 Master 节点的处理如何进行类似处理还需仔细考虑。这个过程中还有几个细节问题需要考虑：① Pod 的优雅终止，自研组件可以通过捕获 SIGTERM 信号进行优雅退出，对于在线服务应首先停止监听进程，然后等待所有已建立的连接完成通信后退出，而对于 Nginx 等第三方产品可以在 PreStop Hook 中调用其自身提供的退出接口进行退出；② 启动退出服务之前的延时等待，由于 kubelet 删除 Pod 和 kubeproxy 移除相应的 endpoint 是并行的过程，所以很有可能出现 Pod 先停止监听而 endpoint 后移除的情况，会造成新的用户请求被转发到一个已经停止监听的后端 Pod 上从而被拒绝处理的错误发生，影响线上业务，所以需要在 PreStop Hook 中添加一定时间的 sleep ，一般是 5s ；③ 在 Pod 驱逐过程中保持一定的可用量，通过 PodDisruptionBudget 配置相应的策略从而保证在同时对多个节点上的所有 Pod 进行驱逐时能够保持给定标签的 Pod 维持在保证服务可用的水平，从而避免出现同一个服务的所有后端 Pod 同时不可用的情况。<br></p>
+<p><a name="3209S"></a></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<li><a href="https://blog.gruntwork.io/zero-downtime-server-updates-for-your-kubernetes-cluster-902009df5b33" target="_blank" rel="external nofollow noopener noreferrer">Zero Downtime Server Updates For Your Kubernetes Cluster</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
+        <tag>集群升级</tag>
       </tags>
   </entry>
   <entry>
