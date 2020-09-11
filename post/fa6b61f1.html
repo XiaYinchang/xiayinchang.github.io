@@ -259,7 +259,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>77</span>
+              <span>137</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -279,7 +279,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="NcuSR"></a></p><h4 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h4><p>用于操作文件描述符，可以改变已打开文件的 flags：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 设置 fd 为非阻塞</span><br><span class="line">fcntl(fd, F_SETFL, flags | O_NONBLOCK);</span><br></pre></td></tr></table></figure>
+        <p><a name="NcuSR"></a></p><h4 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h4><p>用于操作文件描述符，可以改变已打开文件的性质，fcntl 针对描述符提供控制，参数 fd 是被参数 cmd 操作的描述符，根据 cmd 的类型，fcntl 能够接受第三个参数 int arg :</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 设置 fd 为非阻塞</span><br><span class="line">fcntl(fd, F_SETFL, flags | O_NONBLOCK);</span><br></pre></td></tr></table></figure>
     </div>
 
     
