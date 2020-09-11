@@ -40,6 +40,27 @@
   </entry>
   
   <entry>
+    <title>Rust 基础知识</title>
+    <link href="https://www.xiayinchang.top/post/bedbca3d.html"/>
+    <id>https://www.xiayinchang.top/post/bedbca3d.html</id>
+    <published>2020-09-10T16:00:00.000Z</published>
+    <updated>2020-09-10T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Rust 基础知识。
+    
+    </summary>
+    
+    
+      <category term="Rust" scheme="https://www.xiayinchang.top/categories/Rust/"/>
+    
+    
+      <category term="Rust" scheme="https://www.xiayinchang.top/tags/Rust/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Kubernetes 集群升级</title>
     <link href="https://www.xiayinchang.top/post/67293294.html"/>
     <id>https://www.xiayinchang.top/post/67293294.html</id>
@@ -444,29 +465,6 @@
     
     
       <category term="认证" scheme="https://www.xiayinchang.top/tags/%E8%AE%A4%E8%AF%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Go 语言流式 IO</title>
-    <link href="https://www.xiayinchang.top/post/d2033f7a.html"/>
-    <id>https://www.xiayinchang.top/post/d2033f7a.html</id>
-    <published>2019-11-23T16:00:00.000Z</published>
-    <updated>2019-11-23T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      Go 语言中 IO 的基本用法。
-    
-    </summary>
-    
-    
-      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
-    
-    
-      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
     
   </entry>
   
