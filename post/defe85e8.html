@@ -276,7 +276,7 @@
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>25 分钟</span>
+              <span>26 分钟</span>
             </span>
             <div class="post-description">汇总对 Go 语言的基本理解、编程方法和开源库等。</div>
 
@@ -471,7 +471,9 @@
 <h4 id="Linux-伪终端用法"><a href="#Linux-伪终端用法" class="headerlink" title="Linux 伪终端用法"></a>Linux 伪终端用法</h4><p>参考：<a href="https://www.jianshu.com/p/11c01003211b" target="_blank" rel="external nofollow noopener noreferrer">https://www.jianshu.com/p/11c01003211b</a><br><a name="oeiI1"></a></p>
 <h4 id="channel-引发资源泄漏"><a href="#channel-引发资源泄漏" class="headerlink" title="channel 引发资源泄漏"></a>channel 引发资源泄漏</h4><p>channel 引发资源泄漏的场景是： goroutine 操作 channel 后，处于发送或接收阻塞状态，而 channel 处于满或空的状态，一直得不到改变。同时，垃圾回收器也不会回收此类资源，进而导致 gouroutine 会一直处于等待队列中。<br>另外，程序运行过程中，对于一个 channel，如果没有任何 goroutine 引用了，gc 会对其进行回收操作，不会引起内存泄漏，所以在多生产者多消费者通过一个 channel 进行通信时，可以通过一个中间的信号 channel 停止发送和接收而不去关闭数据 channel，而由 gc 回收数据 channel，从而避免无法确定何时关闭 channel 而造成多次关闭同一 channel 引发 panic。<br><a name="d5kYa"></a></p>
 <h4 id="操作-channel-panic"><a href="#操作-channel-panic" class="headerlink" title="操作 channel panic"></a>操作 channel panic</h4><p>发生 panic 的情况有三种：向一个关闭的 channel 进行写操作；关闭一个 nil 的 channel；重复关闭一个 channel。读、写一个 nil channel 都会被阻塞。<br><a name="siF7r"></a></p>
-<h4 id="结构体作为-map-的-key"><a href="#结构体作为-map-的-key" class="headerlink" title="结构体作为 map 的 key"></a>结构体作为 map 的 key</h4><p>当结构体的成员都是可以判等时（使用 == ），该结构体也可以判等（结构体所有字段的值相等时两个结构体视为相等），就可以作为 map 的 key ，否则就不可以。<br><a name="ADtCR"></a></p>
+<h4 id="结构体作为-map-的-key"><a href="#结构体作为-map-的-key" class="headerlink" title="结构体作为 map 的 key"></a>结构体作为 map 的 key</h4><p>当结构体的成员都是可以判等时（使用 == ），该结构体也可以判等（结构体所有字段的值相等时两个结构体视为相等），就可以作为 map 的 key ，否则就不可以。下述程序中，a1 和 a2 可判等且相等，a3 和 a4 不可判等，程序无法通过编译。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">type Test1 struct &#123;</span><br><span class="line">	Name  string</span><br><span class="line">	Value int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Test2 struct &#123;</span><br><span class="line">	Name    string</span><br><span class="line">	Value   int</span><br><span class="line">	Handler func() error</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	a1 := Test1&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line">	a2 := Test1&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(a1 == a2)</span><br><span class="line">	a3 := Test2&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line">	a4 := Test2&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 1,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(a3 == a4)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="ADtCR"></a></p>
 <h4 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h4></li>
 <li><p>Linux 操作系统功能调用 <a href="https://github.com/tredoe/osutil" target="_blank" rel="external nofollow noopener noreferrer">osutil</a>， 可以用以生成 Linux 用户密码的 Hash。</p>
 </li>
@@ -517,6 +519,9 @@
       <div class="popular-posts-title"><a href="/post/f5f8beb0.html" rel="bookmark">Go 实现长轮询：一个服务端超时设置的实例</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/6c502a9a.html" rel="bookmark">Go 整洁架构</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/post/d2033f7a.html" rel="bookmark">Go 语言流式 IO</a></div>
     </li>
     <li class="popular-posts-item">
@@ -524,9 +529,6 @@
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/post/ab759786.html" rel="bookmark">gRPC snippets</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/6b348626.html" rel="bookmark">在 Go 中不要拷贝锁</a></div>
     </li>
   </ul>
 
@@ -704,7 +706,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">282k</span>
+    <span title="站点总字数">283k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
