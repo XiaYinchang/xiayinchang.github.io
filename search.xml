@@ -186,8 +186,10 @@
 <h4 id="channel-引发资源泄漏"><a href="#channel-引发资源泄漏" class="headerlink" title="channel 引发资源泄漏"></a>channel 引发资源泄漏</h4><p>channel 引发资源泄漏的场景是： goroutine 操作 channel 后，处于发送或接收阻塞状态，而 channel 处于满或空的状态，一直得不到改变。同时，垃圾回收器也不会回收此类资源，进而导致 gouroutine 会一直处于等待队列中。<br>另外，程序运行过程中，对于一个 channel，如果没有任何 goroutine 引用了，gc 会对其进行回收操作，不会引起内存泄漏，所以在多生产者多消费者通过一个 channel 进行通信时，可以通过一个中间的信号 channel 停止发送和接收而不去关闭数据 channel，而由 gc 回收数据 channel，从而避免无法确定何时关闭 channel 而造成多次关闭同一 channel 引发 panic。<br><a name="d5kYa"></a></p>
 <h4 id="操作-channel-panic"><a href="#操作-channel-panic" class="headerlink" title="操作 channel panic"></a>操作 channel panic</h4><p>发生 panic 的情况有三种：向一个关闭的 channel 进行写操作；关闭一个 nil 的 channel；重复关闭一个 channel。读、写一个 nil channel 都会被阻塞。<br><a name="siF7r"></a></p>
 <h4 id="结构体作为-map-的-key"><a href="#结构体作为-map-的-key" class="headerlink" title="结构体作为 map 的 key"></a>结构体作为 map 的 key</h4><p>当结构体的成员都是可以判等时（使用 == ），该结构体也可以判等（结构体所有字段的值相等时两个结构体视为相等），就可以作为 map 的 key ，否则就不可以。下述程序中，a1 和 a2 可判等且相等，a3 和 a4 不可判等，程序无法通过编译。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">type Test1 struct &#123;</span><br><span class="line">	Name  string</span><br><span class="line">	Value int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Test2 struct &#123;</span><br><span class="line">	Name    string</span><br><span class="line">	Value   int</span><br><span class="line">	Handler func() error</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	a1 := Test1&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line">	a2 := Test1&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fmt.Println(a1 == a2)</span><br><span class="line">	a3 := Test2&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line">	a4 := Test2&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 1,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(a3 == a4)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">type Test1 struct &#123;</span><br><span class="line">	Name  string</span><br><span class="line">	Value int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Test2 struct &#123;</span><br><span class="line">	Name    string</span><br><span class="line">	Value   int</span><br><span class="line">	Handler func() error</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	a1 := Test1&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line">	a2 := Test1&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(a1 == a2)</span><br><span class="line">	a3 := Test2&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 0,</span><br><span class="line">	&#125;</span><br><span class="line">	a4 := Test2&#123;</span><br><span class="line">		Name:  &quot;a1&quot;,</span><br><span class="line">		Value: 1,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(a3 == a4)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><a name="ADtCR"></a></p>
+<h4 id="从切片中删除元素"><a href="#从切片中删除元素" class="headerlink" title="从切片中删除元素"></a>从切片中删除元素</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 重新构造一个切片</span></span><br><span class="line">func deleteItem(strSlice []string, index int) []string &#123;</span><br><span class="line">	newSlice := []string&#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> i, v := range strSlice &#123;</span><br><span class="line">		<span class="keyword">if</span> i != index &#123;</span><br><span class="line">			newSlice = append(newSlice, v)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">return</span> newSlice</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 使用最后一个元素覆盖欲删除的元素，破坏了顺序</span></span><br><span class="line">func deleteItem1(strSlice []string, index int) []string &#123;</span><br><span class="line">	strSlice[index] = strSlice[len(strSlice)-1]</span><br><span class="line">	<span class="built_in">return</span> strSlice[:len(strSlice)-1]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 将待删除元素之后的元素整体向前平移一个位置</span></span><br><span class="line">func deleteItem2(strSlice []string, index int) []string &#123;</span><br><span class="line">	copy(strSlice[index:len(strSlice)-1], strSlice[index+1:])</span><br><span class="line">	<span class="built_in">return</span> strSlice[:len(strSlice)-1]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="orjpT"></a></p>
 <h4 id="开源库"><a href="#开源库" class="headerlink" title="开源库"></a>开源库</h4></li>
 <li><p>Linux 操作系统功能调用 <a href="https://github.com/tredoe/osutil" target="_blank" rel="external nofollow noopener noreferrer">osutil</a>， 可以用以生成 Linux 用户密码的 Hash。</p>
 </li>
@@ -2953,61 +2955,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
-    <url>/post/f901e5ff.html</url>
-    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
-
-
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
-<p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
-<p><a name="kEL2C"></a></p>
-<h3 id="Authentication-Annotations"><a href="#Authentication-Annotations" class="headerlink" title="Authentication Annotations"></a>Authentication Annotations</h3><p><a name="0hiT0"></a></p>
-<h4 id="auth-url"><a href="#auth-url" class="headerlink" title="auth-url"></a>auth-url</h4><p>Nginx-inkress 是一个相当成熟的为部署在 kubernetes 上的工作流提供外部入口的解决方案，它带有很多开箱即用的特性。这些特性大多数都可以通过简单地向服务的 ingress yaml 文件中添加注解来使用。这里需要使用其中专门用于对接外部认证的注解 ‘auth-url’ 。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/auth-url: <span class="string">"url to auth service"</span></span><br></pre></td></tr></table></figure>
-<p>这个注解告诉 ingress-nginx 控制器先将传入的请求转发给认证服务，然后如果认证服务返回状态码为 200 OK 的响应，则将请求继续转发到下游服务。例如:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-<p>上面的 ingress 配置指示 ingress-nginx 将所有路径为 <code>api.microservice-1.myapp.com/secure/</code> 的外部请求首先转发到部署在集群内的认证服务的 <code>/authenticate</code> 端点，其基本过程如下：</p>
-<ol>
-<li>客户端向 <code>api.microservice-1.myapp.com/secure/*</code> 发起 API 请求；</li>
-<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 <code>/authenticate</code> 端点；</li>
-<li>如果认证服务返回 <code>200 Ok</code> 则继续讲该请求转给 <code>microservice-1</code> 服务。</li>
-</ol>
-<p><a name="Zd1lp"></a></p>
-<h4 id="auth-response-headers"><a href="#auth-response-headers" class="headerlink" title="auth-response-headers"></a>auth-response-headers</h4><p>我们可以使用  auth-response-headers 注解让认证服务传递一些信息到下游的业务应用。例如，认证服务在进行认证的过程中可以解析出用户名或用户 ID ，并将用户信息传递给  <code>microservice-1</code> 服务：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">    nginx.ingress.kubernetes.io/auth-response-headers: UserID</span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>客户端向 api.microservice-1.myapp.com/secure/* 发起 API 请求；</li>
-<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；</li>
-<li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
-<li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
-</ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248" alt="image.png"></p>
-<p><a name="xK7hi"></a></p>
-<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
-<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
-<ol>
-<li>移除反向代理相关代码。</li>
-<li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
-<li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
-<li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
-</ol>
-<p><a name="pWbqx"></a></p>
-<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
-<p><a name="elPJY"></a></p>
-<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
-<p><a name="dh0i1"></a></p>
-<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>译文</tag>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Kubernetes CSI</title>
     <url>/post/d1098827.html</url>
     <content><![CDATA[<p><a name="ekedR"></a></p><h4 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h4><p>在 Kubernetes 中，容器运行结束后其文件系统也随即被销毁，因此无法在容器中直接存储需要持久化的数据；另一方面，Kubernetes 以 Pod 为单位管理多个有一定关联关系的容器，这些容器之间的数据共享也是一个需要解决的一个问题。为此，Kubernetes 中引入了 Volume 的概念，与 Docker 中 Volume 概念的不同之处在于 Kubernetes 中的 Volume 有着完善的生命周期管理，一个 Volume 的生命周期和对应的 Pod 的一致，因此 Pod 中的容器的重启不会造成 Volume 中数据的丢失，且多个容器可以通过挂载同一个 Volume 共享数据，另外单个 Pod 支持使用多个多种类型的 Volume。通过 Volume 的抽象，容器只需要挂载 Volume 到文件系统的某个目录使用它而不必关心 Volume 的存储后端到底是什么类型。<br><a name="P9ayc"></a></p><a id="more"></a>
@@ -3072,6 +3019,61 @@
       <tags>
         <tag>Kubernetes</tag>
         <tag>云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证</title>
+    <url>/post/f901e5ff.html</url>
+    <content><![CDATA[<p><a name="2PGKt"></a></p><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@ankit.wal/authenticate-requests-to-apps-on-kubernetes-using-nginx-ingress-and-an-authservice-37bf189670ee" target="_blank" rel="external nofollow noopener noreferrer">Authenticate requests to apps on kubernetes using Nginx-Ingress and an AuthService</a><br></p><p>在诸如 Kubernetes 的集群上部署微服务的一种常见模式是将认证过程委托给外部认证服务或者是将认证过程抽取为单独的微服务部署在当前集群，其基本结构如下图所示：</p><a id="more"></a>
+
+
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575344848404-ec7c7588-8044-46e0-a3f8-46d682a8329c.png#align=left&display=inline&height=1058&name=image.png&originHeight=1058&originWidth=1246&size=76582&status=done&style=none&width=1246" alt="image.png"></p>
+<p>通过将对所有 API 调用的认证过程委托给独立的认证服务可以避免在每个业务微服务中都要实现认证插件，从而使得开发团队可以专注于业务逻辑的开发，避免重复的工作。本文介绍了使用 ingress-nginx 注解配置外部认证服务实现用户身份验证与授权。</p>
+<p><a name="kEL2C"></a></p>
+<h3 id="Authentication-Annotations"><a href="#Authentication-Annotations" class="headerlink" title="Authentication Annotations"></a>Authentication Annotations</h3><p><a name="0hiT0"></a></p>
+<h4 id="auth-url"><a href="#auth-url" class="headerlink" title="auth-url"></a>auth-url</h4><p>Nginx-inkress 是一个相当成熟的为部署在 kubernetes 上的工作流提供外部入口的解决方案，它带有很多开箱即用的特性。这些特性大多数都可以通过简单地向服务的 ingress yaml 文件中添加注解来使用。这里需要使用其中专门用于对接外部认证的注解 ‘auth-url’ 。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">nginx.ingress.kubernetes.io/auth-url: <span class="string">"url to auth service"</span></span><br></pre></td></tr></table></figure>
+<p>这个注解告诉 ingress-nginx 控制器先将传入的请求转发给认证服务，然后如果认证服务返回状态码为 200 OK 的响应，则将请求继续转发到下游服务。例如:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<p>上面的 ingress 配置指示 ingress-nginx 将所有路径为 <code>api.microservice-1.myapp.com/secure/</code> 的外部请求首先转发到部署在集群内的认证服务的 <code>/authenticate</code> 端点，其基本过程如下：</p>
+<ol>
+<li>客户端向 <code>api.microservice-1.myapp.com/secure/*</code> 发起 API 请求；</li>
+<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 <code>/authenticate</code> 端点；</li>
+<li>如果认证服务返回 <code>200 Ok</code> 则继续讲该请求转给 <code>microservice-1</code> 服务。</li>
+</ol>
+<p><a name="Zd1lp"></a></p>
+<h4 id="auth-response-headers"><a href="#auth-response-headers" class="headerlink" title="auth-response-headers"></a>auth-response-headers</h4><p>我们可以使用  auth-response-headers 注解让认证服务传递一些信息到下游的业务应用。例如，认证服务在进行认证的过程中可以解析出用户名或用户 ID ，并将用户信息传递给  <code>microservice-1</code> 服务：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1 </span><br><span class="line">kind: Ingress</span><br><span class="line">metadata:</span><br><span class="line">  annotations:</span><br><span class="line">    nginx.ingress.kubernetes.io/auth-url: http:<span class="comment">//auth-service.prod.svc.cluster.local/authenticate</span></span><br><span class="line">    nginx.ingress.kubernetes.io/auth-response-headers: UserID</span><br><span class="line">  namespace: prod </span><br><span class="line">  name: ingress-<span class="keyword">with</span>-auth</span><br><span class="line">spec: </span><br><span class="line">  rules:</span><br><span class="line">   - host: api.microservice<span class="number">-1.</span>myapp.com</span><br><span class="line">      http:</span><br><span class="line">        paths:</span><br><span class="line">        - path: <span class="regexp">/secure/</span></span><br><span class="line">          backend:</span><br><span class="line">            serviceName: microservice<span class="number">-1</span></span><br><span class="line">            servicePort: <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>客户端向 api.microservice-1.myapp.com/secure/* 发起 API 请求；</li>
+<li>请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；</li>
+<li>认证服务在认证过程中解析出 <code>UserID</code>，在返回的 <code>200 Ok</code> 响应中带上 <code>UserID</code> 头信息；</li>
+<li>ingress-nginx 控制器从认证服务的响应中获取 UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给 <code>microservice-1</code> 服务。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248" alt="image.png"></p>
+<p><a name="xK7hi"></a></p>
+<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p><a name="mCRS2"></a></p>
+<h4 id="keycloak-auth"><a href="#keycloak-auth" class="headerlink" title="keycloak-auth"></a>keycloak-auth</h4><p>在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 <a href="https://github.com/keycloak/keycloak" target="_blank" rel="external nofollow noopener noreferrer">keycloak</a> 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 <a href="https://github.com/keycloak/keycloak-gatekeeper" target="_blank" rel="external nofollow noopener noreferrer">keycloak-gatekeeper</a> 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了 <a href="https://github.com/XiaYinchang/nginx-ingress-keycloak-auth" target="_blank" rel="external nofollow noopener noreferrer">nginx-ingress-keycloak-auth</a>，主要完成了以下改造：</p>
+<ol>
+<li>移除反向代理相关代码。</li>
+<li>与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。</li>
+<li>在入口中间件中（EntrypointMiddleware）中将 <code>req *http.Request</code> 对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的 “X-Original-Url” 和 “X-Original-Method” 请求头解析出的内容以便复用原有的认证和授权逻辑。</li>
+<li>对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。</li>
+</ol>
+<p><a name="pWbqx"></a></p>
+<h4 id="LDAP-对接-ingress-nginx"><a href="#LDAP-对接-ingress-nginx" class="headerlink" title="LDAP 对接 ingress-nginx"></a>LDAP 对接 ingress-nginx</h4><p><a href="https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/issues/1676#issuecomment-427033748</a></p>
+<p><a name="elPJY"></a></p>
+<h4 id="ingress-nginx-生成配置的模板"><a href="#ingress-nginx-生成配置的模板" class="headerlink" title="ingress-nginx 生成配置的模板"></a>ingress-nginx 生成配置的模板</h4><p><a href="https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes/ingress-nginx/blob/b286c2a3364888de32cb60c4771e57a1ed8e5735/rootfs/etc/nginx/template/nginx.tmpl</a></p>
+<p><a name="dh0i1"></a></p>
+<h4 id="Go-实现的一个-JWT-Validator"><a href="#Go-实现的一个-JWT-Validator" class="headerlink" title="Go 实现的一个 JWT Validator"></a>Go 实现的一个 JWT Validator</h4><p><a href="https://github.com/carlpett/nginx-subrequest-auth-jwt" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/carlpett/nginx-subrequest-auth-jwt</a></p>
+]]></content>
+      <categories>
+        <category>译文</category>
+      </categories>
+      <tags>
+        <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
