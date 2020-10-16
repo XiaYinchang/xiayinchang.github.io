@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Kubernetes CNI</title>
+    <url>/post/2e65e43b.html</url>
+    <content><![CDATA[<p><a name="fIV6H"></a></p><h3 id="CNI-插件"><a href="#CNI-插件" class="headerlink" title="CNI 插件"></a>CNI 插件</h3><p><a name="HZnDG"></a></p><h4 id="antrea"><a href="#antrea" class="headerlink" title="antrea"></a>antrea</h4><p>基于  Open vSwitch 的 CNI 插件，<a href="https://github.com/vmware-tanzu/antrea" target="_blank" rel="external nofollow noopener noreferrer">github.com/vmware-tanzu/antrea</a>。<br></p>]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Kubernetes 周边工具</title>
     <url>/post/afef0f89.html</url>
     <content><![CDATA[<p><a name="fIV6H"></a></p><h3 id="测试工具"><a href="#测试工具" class="headerlink" title="测试工具"></a>测试工具</h3><p><a name="HZnDG"></a></p><h4 id="Sonobuoy"><a href="#Sonobuoy" class="headerlink" title="Sonobuoy"></a>Sonobuoy</h4><p>默认跑 e2e 一致性测试，可以自定义插件对 Kubernetes 集群进行测试，<a href="https://github.com/vmware-tanzu/sonobuoy" target="_blank" rel="external nofollow noopener noreferrer">github.com/vmware-tanzu/sonobuoy</a>。<br></p>]]></content>
