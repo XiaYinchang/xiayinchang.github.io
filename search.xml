@@ -14,7 +14,7 @@
   <entry>
     <title>Kubernetes 周边工具</title>
     <url>/post/afef0f89.html</url>
-    <content><![CDATA[<p><a name="fIV6H"></a></p><h3 id="测试工具"><a href="#测试工具" class="headerlink" title="测试工具"></a>测试工具</h3><p><a name="HZnDG"></a></p><h4 id="Sonobuoy"><a href="#Sonobuoy" class="headerlink" title="Sonobuoy"></a>Sonobuoy</h4><p>默认跑 e2e 一致性测试，可以自定义插件对 Kubernetes 集群进行测试，<a href="https://github.com/vmware-tanzu/sonobuoy" target="_blank" rel="external nofollow noopener noreferrer">github.com/vmware-tanzu/sonobuoy</a>。<br></p>]]></content>
+    <content><![CDATA[<p><a name="fIV6H"></a></p><h3 id="Dashboard"><a href="#Dashboard" class="headerlink" title="Dashboard"></a>Dashboard</h3><p><a name="BqNHY"></a></p><h4 id="octant"><a href="#octant" class="headerlink" title="octant"></a>octant</h4><p><a href="https://github.com/vmware-tanzu/octant" target="_blank" rel="external nofollow noopener noreferrer">github.com/vmware-tanzu/octant</a><br></p><p><a name="vCEhe"></a></p><h3 id="测试工具"><a href="#测试工具" class="headerlink" title="测试工具"></a>测试工具</h3><p><a name="HZnDG"></a></p><h4 id="Sonobuoy"><a href="#Sonobuoy" class="headerlink" title="Sonobuoy"></a>Sonobuoy</h4><p>默认跑 e2e 一致性测试，可以自定义插件对 Kubernetes 集群进行测试，<a href="https://github.com/vmware-tanzu/sonobuoy" target="_blank" rel="external nofollow noopener noreferrer">github.com/vmware-tanzu/sonobuoy</a>。<br></p>]]></content>
       <categories>
         <category>Kubernetes</category>
       </categories>
