@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Go 常用开源库</title>
+    <url>/post/2ebf5f2a.html</url>
+    <content><![CDATA[<p><a name="p0BgZ"></a></p><h3 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h3><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="BCYjk"></a></p><h3 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h3><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a><br><a name="CK6aF"></a></p><h4 id="在子命令的-Run-函数执行前执行初始化任务"><a href="#在子命令的-Run-函数执行前执行初始化任务" class="headerlink" title="在子命令的 Run 函数执行前执行初始化任务"></a>在子命令的 Run 函数执行前执行初始化任务</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><br>]]></content>
+      <categories>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Go 知识点汇总</title>
     <url>/post/defe85e8.html</url>
     <content><![CDATA[<p><a name="szYLf"></a></p><h4 id="关于-slice-的初始化"><a href="#关于-slice-的初始化" class="headerlink" title="关于 slice 的初始化"></a>关于 slice 的初始化</h4><p>执行代码：</p><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tmpSlice []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">	tmpSlice = <span class="built_in">append</span>(tmpSlice, <span class="number">1</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"value: %[1]v   type: %[1]T    len: %d    cap: %d    underlay: %p\n"</span>, tmpSlice, <span class="built_in">len</span>(tmpSlice), <span class="built_in">cap</span>(tmpSlice), tmpSlice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>

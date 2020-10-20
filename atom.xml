@@ -59,6 +59,27 @@
   </entry>
   
   <entry>
+    <title>Go 常用开源库</title>
+    <link href="https://www.xiayinchang.top/post/2ebf5f2a.html"/>
+    <id>https://www.xiayinchang.top/post/2ebf5f2a.html</id>
+    <published>2020-10-11T16:00:00.000Z</published>
+    <updated>2020-10-19T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Go 编程常用的开源库。
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Linux 常用系统调用</title>
     <link href="https://www.xiayinchang.top/post/fa6b61f1.html"/>
     <id>https://www.xiayinchang.top/post/fa6b61f1.html</id>
@@ -440,29 +461,6 @@
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
     
       <category term="云计算" scheme="https://www.xiayinchang.top/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在 Go 中不要拷贝锁</title>
-    <link href="https://www.xiayinchang.top/post/6b348626.html"/>
-    <id>https://www.xiayinchang.top/post/6b348626.html</id>
-    <published>2019-12-06T16:00:00.000Z</published>
-    <updated>2019-12-06T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      在并发编程时，往往需要使用到锁保护共享的资源，Go 语言中锁是值类型，所以拷贝会失去作用。
-    
-    </summary>
-    
-    
-      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
-    
-    
-      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
     
   </entry>
   
