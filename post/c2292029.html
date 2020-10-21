@@ -310,7 +310,7 @@
 <li><p><code>sysbench --threads=10 --time=300 threads run</code> 模拟多线程；</p>
 </li>
 <li><p>观察步骤类似大量进程争抢，不同的是 <code>pidstat -w 1 10</code> 看到 sysbench 无上下文切换，因为默认显示的是进程间的上下文切换；而使用 <code>pidstat -w -t</code> 可以看到存在大量 sysbench 相关的非自愿上下文切换。<br><a name="I0RAb"></a></p>
-<h4 id="网络包注入"><a href="#网络包注入" class="headerlink" title="网络包注入"></a>网络包注入</h4><p>使用 Python 包 scapy 可以模拟网络包注入，参考：<a href="https://www.cnblogs.com/darkpig/p/7629854.html" target="_blank" rel="external nofollow noopener noreferrer">用 Python 模拟 TCP 三次握手连接及发送数据</a></p>
+<h4 id="网络包注入"><a href="#网络包注入" class="headerlink" title="网络包注入"></a>网络包注入</h4><p>使用 Python 包 scapy 可以模拟网络包注入，参考：<a href="https://www.cnblogs.com/darkpig/p/7629854.html" target="_blank" rel="external nofollow noopener noreferrer">用 Python 模拟 TCP 三次握手连接及发送数据</a>，<a href="https://www.cnblogs.com/lsdb/p/10496171.html" target="_blank" rel="external nofollow noopener noreferrer">Python3 + Scapy 安装使用教程</a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.all <span class="keyword">import</span> *</span><br><span class="line">ans = sr1(IP(src=<span class="string">'107.55.66.38'</span>,dst=<span class="string">'106.75.175.95'</span>)/TCP(dport=<span class="number">80</span>, sport=<span class="number">56789</span>,seq=<span class="number">123</span>, flags=<span class="string">'S'</span>), verbose=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
 <p><a name="72xUi"></a></p>
 <h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><p><a name="TuwPc"></a></p>
