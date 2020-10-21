@@ -50,16 +50,18 @@
   };
 </script>
 
-  <meta name="description" content="云计算从业者，全栈攻城狮">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Better">
-<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;categories&#x2F;Go&#x2F;index.html">
+  <meta name="description" content="Go 可复用的代码片段。">
+<meta name="keywords" content="Go, snippets">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go snippets">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;beea4a6b.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="云计算从业者，全栈攻城狮">
+<meta property="og:description" content="Go 可复用的代码片段。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-10-20T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.xiayinchang.top/categories/Go/">
+<link rel="canonical" href="https://www.xiayinchang.top/post/beea4a6b.html">
 
 
 <script id="page-configurations">
@@ -67,13 +69,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>分类: Go | Better</title>
+  <title>Go snippets | Better</title>
   
 
 
@@ -202,109 +204,176 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">Go
-          <small>分类</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/beea4a6b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Go snippets
         </h2>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-10-21T00:00:00+08:00">2020-10-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>467</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+            <div class="post-description">Go 可复用的代码片段。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h2 class="collection-header">2020</h2>
+        <p><a name="I88lp"></a></p><h4 id="生成-csv-文件"><a href="#生成-csv-文件" class="headerlink" title="生成 csv 文件"></a>生成 csv 文件</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">file, err := os.OpenFile(<span class="string">"test.csv"</span>, os.O_CREATE|os.O_WRONLY, <span class="number">0777</span>)</span><br><span class="line"><span class="keyword">defer</span> file.Close()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	os.Exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line">x := []<span class="keyword">string</span>&#123;<span class="string">"Country"</span>, <span class="string">"City"</span>, <span class="string">"Population"</span>&#125;</span><br><span class="line">y := []<span class="keyword">string</span>&#123;<span class="string">"Japan"</span>, <span class="string">"Tokyo"</span>, <span class="string">"923456"</span>&#125;</span><br><span class="line">csvWriter := csv.NewWriter(file)</span><br><span class="line">strs := [][]<span class="keyword">string</span>&#123;x, y&#125;</span><br><span class="line">csvWriter.WriteAll(strs)</span><br><span class="line">csvWriter.Flush()</span><br><span class="line"></span><br><span class="line">dataBuf := bytes.NewBuffer(<span class="literal">nil</span>)</span><br><span class="line">writer := csv.NewWriter(dataBuf)</span><br><span class="line"><span class="keyword">for</span> _, str := <span class="keyword">range</span> strs &#123;</span><br><span class="line">    writer.Write(str)</span><br><span class="line">&#125;</span><br><span class="line">writer.Flush()</span><br></pre></td></tr></table></figure>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/f5f8beb0.html" rel="bookmark">Go 实现长轮询：一个服务端超时设置的实例</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/2ebf5f2a.html" rel="bookmark">Go 常用开源库</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/6c502a9a.html" rel="bookmark">Go 整洁架构</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/defe85e8.html" rel="bookmark">Go 知识点汇总</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/d2033f7a.html" rel="bookmark">Go 语言流式 IO</a></div>
+    </li>
+  </ul>
 
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2020-10-21T00:00:00+08:00" content="2020-10-21">
-          10-21
-        </time>
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
       </div>
 
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/beea4a6b.html" itemprop="url">
-            <span itemprop="name">Go snippets</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2020-10-12T00:00:00+08:00" content="2020-10-12">
-          10-12
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/2ebf5f2a.html" itemprop="url">
-            <span itemprop="name">Go 常用开源库</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-    <div class="collection-year">
-      <h2 class="collection-header">2019</h2>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-10-12T00:00:00+08:00" content="2019-10-12">
-          10-12
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/defe85e8.html" itemprop="url">
-            <span itemprop="name">Go 知识点汇总</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-09-17T00:00:00+08:00" content="2019-09-17">
-          09-17
-        </time>
-      </div>
-
-      <h3 class="post-title">
-          <a class="post-title-link" href="/post/bd5bd15.html" itemprop="url">
-            <span itemprop="name">从 RESTful 到 gRPC-Web 的平滑切换</span>
-          </a>
-      </h3>
-
-    </header>
-  </article>
-
-    </div>
   </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/2e65e43b.html" rel="next" title="Kubernetes CNI">
+                  <i class="fa fa-chevron-left"></i> Kubernetes CNI
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
   
   
   
 
-  
-
+  </div>
 
 
           </div>
           
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
 
         </div>
           
@@ -329,6 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-csv-文件"><span class="nav-number">1.</span> <span class="nav-text">生成 csv 文件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -504,6 +574,19 @@
 
   
 
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
 
 </body>
 </html>
