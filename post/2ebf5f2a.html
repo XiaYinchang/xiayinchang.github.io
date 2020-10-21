@@ -58,7 +58,7 @@
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="Go 编程常用的开源库。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-10-19T16:00:00.000Z">
+<meta property="og:updated_time" content="2020-10-20T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/2ebf5f2a.html">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-20 00:00:00" itemprop="dateModified" datetime="2020-10-20T00:00:00+08:00">2020-10-20</time>
+                <time title="修改时间：2020-10-21 00:00:00" itemprop="dateModified" datetime="2020-10-21T00:00:00+08:00">2020-10-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,7 +266,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>130</span>
+              <span>274</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -286,7 +286,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="p0BgZ"></a></p><h3 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h3><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="BCYjk"></a></p><h3 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h3><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a><br><a name="CK6aF"></a></p><h4 id="在子命令的-Run-函数执行前执行初始化任务"><a href="#在子命令的-Run-函数执行前执行初始化任务" class="headerlink" title="在子命令的 Run 函数执行前执行初始化任务"></a>在子命令的 Run 函数执行前执行初始化任务</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><br>
+        <p><a name="I88lp"></a></p><h4 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h4><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="tdVEE"></a></p><h4 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h4><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在子命令的 Run 函数执行前执行初始化任务</span></span><br><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><p><a name="2d4D6"></a></p><h4 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h4><p><a href="https://github.com/scorredoira/email" target="_blank" rel="external nofollow noopener noreferrer">github.com/scorredoira/email</a></p><a id="more"></a>
+
+
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 发送 HTML 格式的邮件</span></span><br><span class="line">m := email.NewHTMLMessage(subject, content)</span><br><span class="line"><span class="comment"># 添加附件</span></span><br><span class="line">m.AttachBuffer(attach.Filename, attach.Data, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
     </div>
 
     
@@ -408,7 +418,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#按列格式化输出-columnize"><span class="nav-number">1.</span> <span class="nav-text">按列格式化输出 columnize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行工具框架-cobra"><span class="nav-number">2.</span> <span class="nav-text">命令行工具框架 cobra</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在子命令的-Run-函数执行前执行初始化任务"><span class="nav-number">2.1.</span> <span class="nav-text">在子命令的 Run 函数执行前执行初始化任务</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#按列格式化输出-columnize"><span class="nav-number">1.</span> <span class="nav-text">按列格式化输出 columnize</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令行工具框架-cobra"><span class="nav-number">2.</span> <span class="nav-text">命令行工具框架 cobra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发送邮件"><span class="nav-number">3.</span> <span class="nav-text">发送邮件</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -486,7 +496,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">286k</span>
+    <span title="站点总字数">287k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>

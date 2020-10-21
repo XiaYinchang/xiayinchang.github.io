@@ -3,7 +3,17 @@
   <entry>
     <title>Go 常用开源库</title>
     <url>/post/2ebf5f2a.html</url>
-    <content><![CDATA[<p><a name="p0BgZ"></a></p><h3 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h3><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="BCYjk"></a></p><h3 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h3><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a><br><a name="CK6aF"></a></p><h4 id="在子命令的-Run-函数执行前执行初始化任务"><a href="#在子命令的-Run-函数执行前执行初始化任务" class="headerlink" title="在子命令的 Run 函数执行前执行初始化任务"></a>在子命令的 Run 函数执行前执行初始化任务</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><br>]]></content>
+    <content><![CDATA[<p><a name="I88lp"></a></p><h4 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h4><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="tdVEE"></a></p><h4 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h4><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子命令的 Run 函数执行前执行初始化任务</span></span><br><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><p><a name="2d4D6"></a></p><h4 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h4><p><a href="https://github.com/scorredoira/email" target="_blank" rel="external nofollow noopener noreferrer">github.com/scorredoira/email</a></p><a id="more"></a>
+
+
+
+
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送 HTML 格式的邮件</span></span><br><span class="line">m := email.NewHTMLMessage(subject, content)</span><br><span class="line"><span class="comment"># 添加附件</span></span><br><span class="line">m.AttachBuffer(attach.Filename, attach.Data, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
       <categories>
         <category>Go</category>
       </categories>
