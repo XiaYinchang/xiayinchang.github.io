@@ -259,14 +259,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.7k</span>
+              <span>5.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>5 分钟</span>
             </span>
             <div class="post-description">Go 可复用的代码片段。</div>
 
@@ -316,15 +316,19 @@
 </li>
 <li><p>指针 1，指向该变量的类型</p>
 </li>
-<li><p>指针 2，指向该变量的 value</p>
-</li>
-</ul>
-<p><a name="fCmPq"></a></p>
+<li><p>指针 2，指向该变量的 value<br><a name="fCmPq"></a></p>
 <h4 id="获取变量地址"><a href="#获取变量地址" class="headerlink" title="获取变量地址"></a>获取变量地址</h4><p>输入：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"reflect"</span></span><br><span class="line">	<span class="string">"unsafe"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	intarr := [<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">12</span>, <span class="number">34</span>, <span class="number">55</span>, <span class="number">66</span>, <span class="number">43</span>&#125;</span><br><span class="line">	slice := intarr[:]</span><br><span class="line">	fmt.Printf(<span class="string">"the len is %d and cap is %d \n"</span>, <span class="built_in">len</span>(slice), <span class="built_in">cap</span>(slice))</span><br><span class="line">	fmt.Printf(<span class="string">"%p   %p   %p   %p\n"</span>, &amp;slice[<span class="number">0</span>], &amp;intarr, slice, &amp;slice)</span><br><span class="line">	fmt.Printf(<span class="string">"underlay: %#x\n"</span>, (*reflect.SliceHeader)(unsafe.Pointer(&amp;slice)).Data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">the len is 5 and cap is 5 </span><br><span class="line">0x456000   0x456000   0x456000   0x40a0e0</span><br><span class="line">underlay: 0x456000</span><br></pre></td></tr></table></figure>
+<p><a name="CtPsq"></a></p>
+<h4 id="按行读取文本"><a href="#按行读取文本" class="headerlink" title="按行读取文本"></a>按行读取文本</h4><p>如果是对一个多行的字符串按行读取，则可以：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, line := <span class="keyword">range</span> strings.Split(strings.TrimSuffix(x, <span class="string">"\n"</span>), <span class="string">"\n"</span>) &#123;</span><br><span class="line">    fmt.Println(line)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果是从文件或者流式管道中按行读取，则可以：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">scanner := bufio.NewScanner(f) <span class="comment">// f is the *os.File</span></span><br><span class="line"><span class="keyword">for</span> scanner.Scan() &#123;</span><br><span class="line">    fmt.Println(scanner.Text()) <span class="comment">// Println will add back the final '\n'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> err := scanner.Err(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">   <span class="comment">// handle error</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 另一个例子</span></span><br><span class="line">args := <span class="string">"-E -eNEW,DESTROY -ptcp --any-nat --buffer-size 1024000 --dport "</span> + fmt.Sprintf(<span class="string">"%d"</span>, serviceNodePort)</span><br><span class="line">cmd := exec.Command(<span class="string">"conntrack"</span>, strings.Split(args, <span class="string">" "</span>)...)</span><br><span class="line"></span><br><span class="line">stdout, _ := cmd.StdoutPipe()</span><br><span class="line">err := cmd.Start()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    common.ZapClient.Fatalf(<span class="string">"start conntrack failed: %s"</span>, err.Error())</span><br><span class="line">    errChan &lt;- err</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">scanner := bufio.NewScanner(stdout)</span><br><span class="line"><span class="keyword">for</span> scanner.Scan() &#123;&#125;</span><br></pre></td></tr></table></figure>
 
+</li>
+</ul>
 
     </div>
 
@@ -344,10 +348,10 @@
       <div class="popular-posts-title"><a href="/post/6c502a9a.html" rel="bookmark">Go 整洁架构</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/defe85e8.html" rel="bookmark">Go 知识点汇总</a></div>
+      <div class="popular-posts-title"><a href="/post/d2033f7a.html" rel="bookmark">Go 语言流式 IO</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/d2033f7a.html" rel="bookmark">Go 语言流式 IO</a></div>
+      <div class="popular-posts-title"><a href="/post/defe85e8.html" rel="bookmark">Go 知识点汇总</a></div>
     </li>
   </ul>
 
@@ -444,7 +448,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-csv-文件"><span class="nav-number">1.</span> <span class="nav-text">生成 csv 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结合使用-klog-和-cobra"><span class="nav-number">2.</span> <span class="nav-text">结合使用 klog 和 cobra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从切片中删除元素"><span class="nav-number">3.</span> <span class="nav-text">从切片中删除元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-UUID"><span class="nav-number">4.</span> <span class="nav-text">生成 UUID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查字符串是否符合-base64-编码"><span class="nav-number">5.</span> <span class="nav-text">检查字符串是否符合 base64 编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查环境变量是否存在"><span class="nav-number">6.</span> <span class="nav-text">检查环境变量是否存在</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-Response-Status"><span class="nav-number">7.</span> <span class="nav-text">HTTP Response Status</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取变量类型"><span class="nav-number">8.</span> <span class="nav-text">获取变量类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取变量地址"><span class="nav-number">9.</span> <span class="nav-text">获取变量地址</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-csv-文件"><span class="nav-number">1.</span> <span class="nav-text">生成 csv 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结合使用-klog-和-cobra"><span class="nav-number">2.</span> <span class="nav-text">结合使用 klog 和 cobra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从切片中删除元素"><span class="nav-number">3.</span> <span class="nav-text">从切片中删除元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成-UUID"><span class="nav-number">4.</span> <span class="nav-text">生成 UUID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查字符串是否符合-base64-编码"><span class="nav-number">5.</span> <span class="nav-text">检查字符串是否符合 base64 编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查环境变量是否存在"><span class="nav-number">6.</span> <span class="nav-text">检查环境变量是否存在</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-Response-Status"><span class="nav-number">7.</span> <span class="nav-text">HTTP Response Status</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取变量类型"><span class="nav-number">8.</span> <span class="nav-text">获取变量类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取变量地址"><span class="nav-number">9.</span> <span class="nav-text">获取变量地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#按行读取文本"><span class="nav-number">10.</span> <span class="nav-text">按行读取文本</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -522,13 +526,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">292k</span>
+    <span title="站点总字数">293k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:25</span>
+    <span title="站点阅读时长">4:26</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
