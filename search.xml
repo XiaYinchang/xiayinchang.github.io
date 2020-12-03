@@ -1242,7 +1242,7 @@
 </li>
 </ul>
 <ul>
-<li>查看包安装信息<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查询已安装的软件包</span></span><br><span class="line">rpm -qa | grep sysstat</span><br><span class="line"><span class="comment"># 查询软件包信息</span></span><br><span class="line">rpm -qi sysstat-10.1.5-19.el7.x86_64</span><br><span class="line"><span class="comment"># 查询软件包含的文件信息</span></span><br><span class="line">rpm -ql sysstat-10.1.5-19.el7.x86_64</span><br><span class="line"><span class="comment"># 通过绝对路径查询文件属于哪个软件包</span></span><br><span class="line">rpm -qf /usr/bin/pidstat</span><br></pre></td></tr></table></figure>
+<li>查看包安装信息<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查询已安装的软件包</span></span><br><span class="line">rpm -qa | grep sysstat</span><br><span class="line"><span class="comment"># 查询软件包信息</span></span><br><span class="line">rpm -qi sysstat-10.1.5-19.el7.x86_64</span><br><span class="line"><span class="comment"># 查询软件包含的文件信息</span></span><br><span class="line">rpm -ql sysstat-10.1.5-19.el7.x86_64</span><br><span class="line"><span class="comment"># 通过绝对路径查询文件属于哪个软件包</span></span><br><span class="line">rpm -qf /usr/bin/pidstat</span><br><span class="line"><span class="comment"># 查看安装包中的版本信息</span></span><br><span class="line">rpm -qip foo.rpm</span><br></pre></td></tr></table></figure>
 
 
 </li>
