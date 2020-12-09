@@ -39,7 +39,7 @@
 
 
 <p><a name="DzShe"></a></p>
-<h4 id="docker-容器的四种网络模型"><a href="#docker-容器的四种网络模型" class="headerlink" title="docker 容器的四种网络模型"></a>docker 容器的四种网络模型</h4><p>Bridge, Host, Container, None，参考： <a href="https://juejin.im/post/5c3363bf6fb9a049e2322cdb" target="_blank" rel="external nofollow noopener noreferrer">Docker 的网络模式详解</a><br></p>
+<h4 id="docker-容器的四种网络模型"><a href="#docker-容器的四种网络模型" class="headerlink" title="docker 容器的四种网络模型"></a>docker 容器的四种网络模型</h4><p>Bridge, Host, Container, None，参考： <a href="https://zhuanlan.zhihu.com/p/98788162" target="_blank" rel="external nofollow noopener noreferrer">Docker 的网络模式详解</a><br></p>
 <p><a name="Ssm0h"></a></p>
 <h4 id="查看-docker-registry-中的镜像信息"><a href="#查看-docker-registry-中的镜像信息" class="headerlink" title="查看 docker registry 中的镜像信息"></a>查看 docker registry 中的镜像信息</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -X GET https://myregistry:5000/v2/_catalog</span><br><span class="line">curl -X GET https://myregistry:5000/v2/ubuntu/tags/list</span><br></pre></td></tr></table></figure>
 
@@ -79,7 +79,8 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/docker/docker-ce.git</span><br><span class="line">// 检出目标版本</span><br><span class="line">git checkout v18.09.2</span><br><span class="line">// 按需修改源码</span><br><span class="line">// 执行编译命令</span><br><span class="line">make static DOCKER_BUILD_PKGS=static-linux</span><br><span class="line">// 查看编译结果</span><br><span class="line">tree ./components/packaging/static/build/linux</span><br><span class="line"></span><br><span class="line">./components/packaging/static/build/linux</span><br><span class="line">├── docker</span><br><span class="line">│   ├── docker</span><br><span class="line">│   ├── containerd</span><br><span class="line">│   ├── containerd-ctr</span><br><span class="line">│   ├── containerd-shim</span><br><span class="line">│   ├── dockerd</span><br><span class="line">│   ├── docker-init</span><br><span class="line">│   ├── docker-proxy</span><br><span class="line">│   └── docker-runc</span><br><span class="line">└── docker-18.09.2.tgz</span><br></pre></td></tr></table></figure>
 <p><a name="WrdTe"></a></p>
 <h4 id="减少镜像体积的方式"><a href="#减少镜像体积的方式" class="headerlink" title="减少镜像体积的方式"></a>减少镜像体积的方式</h4><p>将多个 RUN 语句组合在一行命令中；使用多阶段构建；使用 Alpine 作为基础镜像；使用 Go 等静态编译语言代替 Java 等动态解释语言。<br><a name="DpIk7"></a></p>
-<h4 id="COPY-与-ADD"><a href="#COPY-与-ADD" class="headerlink" title="COPY 与 ADD"></a>COPY 与 ADD</h4><p>COPY 比 ADD 多两个特性：可以自动解压 src 为 gzip 等压缩格式的文件到 dst 目录；src 路径可以是一个远程 URL 链接。<br></p>
+<h4 id="COPY-与-ADD"><a href="#COPY-与-ADD" class="headerlink" title="COPY 与 ADD"></a>COPY 与 ADD</h4><p>COPY 比 ADD 多两个特性：可以自动解压 src 为 gzip 等压缩格式的文件到 dst 目录；src 路径可以是一个远程 URL 链接。<br><a name="f6hkb"></a></p>
+<h4 id="ENTRYPOINT-与-CMD"><a href="#ENTRYPOINT-与-CMD" class="headerlink" title="ENTRYPOINT 与 CMD"></a>ENTRYPOINT 与 CMD</h4><p>ENTRYPOINT 必须是可执行的程序，CMD 作为参数传递给 ENTRYPOINT。<br><br><br></p>
 ]]></content>
       <categories>
         <category>Docker</category>
@@ -589,6 +590,27 @@
       </tags>
   </entry>
   <entry>
+    <title>Go 常用开源库</title>
+    <url>/post/2ebf5f2a.html</url>
+    <content><![CDATA[<p><a name="I88lp"></a></p><h4 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h4><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="tdVEE"></a></p><h4 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h4><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子命令的 Run 函数执行前执行初始化任务</span></span><br><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><p><a name="2d4D6"></a></p><h4 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h4><p><a href="https://github.com/scorredoira/email" target="_blank" rel="external nofollow noopener noreferrer">github.com/scorredoira/email</a></p><a id="more"></a>
+
+
+
+
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送 HTML 格式的邮件</span></span><br><span class="line">m := email.NewHTMLMessage(subject, content)</span><br><span class="line"><span class="comment"># 添加附件</span></span><br><span class="line">m.AttachBuffer(attach.Filename, attach.Data, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Go snippets</title>
     <url>/post/beea4a6b.html</url>
     <content><![CDATA[<p><a name="I88lp"></a></p><h4 id="生成-csv-文件"><a href="#生成-csv-文件" class="headerlink" title="生成 csv 文件"></a>生成 csv 文件</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">file, err := os.OpenFile(<span class="string">"test.csv"</span>, os.O_CREATE|os.O_WRONLY, <span class="number">0777</span>)</span><br><span class="line"><span class="keyword">defer</span> file.Close()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	os.Exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line">data := [][]<span class="keyword">string</span>&#123;&#123;<span class="string">"Line1"</span>, <span class="string">"Hello"</span>&#125;, &#123;<span class="string">"Line2"</span>, <span class="string">"World"</span>&#125;&#125;</span><br><span class="line">csvWriter := csv.NewWriter(file)</span><br><span class="line">csvWriter.WriteAll(data)</span><br><span class="line">csvWriter.Flush()</span><br><span class="line"></span><br><span class="line">dataBuf := bytes.NewBuffer(<span class="literal">nil</span>)</span><br><span class="line">writer := csv.NewWriter(dataBuf)</span><br><span class="line"><span class="keyword">for</span> _, str := <span class="keyword">range</span> data &#123;</span><br><span class="line">    writer.Write(str)</span><br><span class="line">&#125;</span><br><span class="line">writer.Flush()</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -651,27 +673,6 @@
 
 </li>
 </ul>
-]]></content>
-      <categories>
-        <category>Go</category>
-      </categories>
-      <tags>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Go 常用开源库</title>
-    <url>/post/2ebf5f2a.html</url>
-    <content><![CDATA[<p><a name="I88lp"></a></p><h4 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h4><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="tdVEE"></a></p><h4 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h4><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子命令的 Run 函数执行前执行初始化任务</span></span><br><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><p><a name="2d4D6"></a></p><h4 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h4><p><a href="https://github.com/scorredoira/email" target="_blank" rel="external nofollow noopener noreferrer">github.com/scorredoira/email</a></p><a id="more"></a>
-
-
-
-
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送 HTML 格式的邮件</span></span><br><span class="line">m := email.NewHTMLMessage(subject, content)</span><br><span class="line"><span class="comment"># 添加附件</span></span><br><span class="line">m.AttachBuffer(attach.Filename, attach.Data, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
-
-
-
 ]]></content>
       <categories>
         <category>Go</category>
