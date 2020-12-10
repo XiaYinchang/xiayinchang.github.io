@@ -277,7 +277,7 @@
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>22 分钟</span>
+              <span>23 分钟</span>
             </span>
             <div class="post-description">在云计算场景下常用的 Linux 命令记录。</div>
 
@@ -377,7 +377,7 @@
 </li>
 </ul>
 <ul>
-<li>查看包安装信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询已安装的软件包</span></span><br><span class="line">rpm -qa | grep sysstat</span><br><span class="line"><span class="comment"># 查询软件包信息</span></span><br><span class="line">rpm -qi sysstat-10.1.5-19.el7.x86_64</span><br><span class="line"><span class="comment"># 查询软件包含的文件信息</span></span><br><span class="line">rpm -ql sysstat-10.1.5-19.el7.x86_64</span><br><span class="line"><span class="comment"># 通过绝对路径查询文件属于哪个软件包</span></span><br><span class="line">rpm -qf /usr/bin/pidstat</span><br><span class="line"><span class="comment"># 查看安装包中的版本信息</span></span><br><span class="line">rpm -qip foo.rpm</span><br><span class="line"><span class="comment"># 只下载不安装</span></span><br><span class="line">yum install docker-ce -y --downloadonly --downloaddir=.</span><br></pre></td></tr></table></figure>
+<li>查看包安装信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查询已安装的软件包</span></span><br><span class="line">rpm -qa | grep sysstat</span><br><span class="line"><span class="comment"># 查询软件包信息</span></span><br><span class="line">rpm -qi sysstat-10.1.5-19.el7.x86_64</span><br><span class="line"><span class="comment"># 查询软件包含的文件信息</span></span><br><span class="line">rpm -ql sysstat-10.1.5-19.el7.x86_64</span><br><span class="line"><span class="comment"># 通过绝对路径查询文件属于哪个软件包</span></span><br><span class="line">rpm -qf /usr/bin/pidstat</span><br><span class="line"><span class="comment"># 查看安装包中的版本信息</span></span><br><span class="line">rpm -qip foo.rpm</span><br><span class="line"><span class="comment"># 只下载不安装</span></span><br><span class="line">yum install -y --downloadonly --downloaddir=. docker-ce</span><br><span class="line"><span class="comment"># 列出依赖包</span></span><br><span class="line">yum deplist containerd</span><br></pre></td></tr></table></figure>
 
 
 </li>
@@ -680,7 +680,7 @@
 
 
 <p><a name="1FJ0W"></a></p>
-<h4 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断服务是否存活</span></span><br><span class="line">systemctl is-active --quiet service</span><br></pre></td></tr></table></figure>
+<h4 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断服务是否存活</span></span><br><span class="line">systemctl is-active --quiet service</span><br><span class="line"><span class="comment"># 获取服务文件地址</span></span><br><span class="line">systemctl show -p FragmentPath containerd | awk -F <span class="string">"="</span> <span class="string">'&#123;print $2&#125;'</span></span><br></pre></td></tr></table></figure>
 <p><a name="qqWj3"></a></p>
 <h4 id="conntrack"><a href="#conntrack" class="headerlink" title="conntrack"></a>conntrack</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示时间戳</span></span><br><span class="line">conntrack -E -o timestamp</span><br></pre></td></tr></table></figure>
 <p><a name="5f7Ry"></a></p>
