@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Better</title>
+  <icon>https://www.xiayinchang.top/icon.png</icon>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://www.xiayinchang.top/"/>
+  <updated>2020-10-20T16:00:00.000Z</updated>
+  <id>https://www.xiayinchang.top/</id>
+  
+  <author>
+    <name>夏印昌</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go snippets</title>
+    <link href="https://www.xiayinchang.top/post/beea4a6b.html"/>
+    <id>https://www.xiayinchang.top/post/beea4a6b.html</id>
+    <published>2020-10-20T16:00:00.000Z</published>
+    <updated>2020-10-20T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Go 可复用的代码片段。
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kubernetes CNI</title>
+    <link href="https://www.xiayinchang.top/post/2e65e43b.html"/>
+    <id>https://www.xiayinchang.top/post/2e65e43b.html</id>
+    <published>2020-10-15T16:00:00.000Z</published>
+    <updated>2020-10-15T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Kubernetes CNI。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kubernetes 周边工具</title>
+    <link href="https://www.xiayinchang.top/post/afef0f89.html"/>
+    <id>https://www.xiayinchang.top/post/afef0f89.html</id>
+    <published>2020-10-15T16:00:00.000Z</published>
+    <updated>2020-10-19T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Kubernetes 周边工具。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Go 常用开源库</title>
+    <link href="https://www.xiayinchang.top/post/2ebf5f2a.html"/>
+    <id>https://www.xiayinchang.top/post/2ebf5f2a.html</id>
+    <published>2020-10-11T16:00:00.000Z</published>
+    <updated>2020-10-20T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Go 编程常用的开源库。
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Go 常用开源库</title>
+    <link href="https://www.xiayinchang.top/post/2ebf5f2a.html"/>
+    <id>https://www.xiayinchang.top/post/2ebf5f2a.html</id>
+    <published>2020-10-11T16:00:00.000Z</published>
+    <updated>2020-10-20T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Go 编程常用的开源库。
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 常用系统调用</title>
+    <link href="https://www.xiayinchang.top/post/fa6b61f1.html"/>
+    <id>https://www.xiayinchang.top/post/fa6b61f1.html</id>
+    <published>2020-09-10T16:00:00.000Z</published>
+    <updated>2020-09-10T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Linux 常用系统调用。
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+      <category term="系统调用" scheme="https://www.xiayinchang.top/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Rust 基础知识</title>
+    <link href="https://www.xiayinchang.top/post/bedbca3d.html"/>
+    <id>https://www.xiayinchang.top/post/bedbca3d.html</id>
+    <published>2020-09-10T16:00:00.000Z</published>
+    <updated>2020-09-10T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Rust 基础知识。
+    
+    </summary>
+    
+    
+      <category term="Rust" scheme="https://www.xiayinchang.top/categories/Rust/"/>
+    
+    
+      <category term="Rust" scheme="https://www.xiayinchang.top/tags/Rust/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kubernetes 集群升级</title>
+    <link href="https://www.xiayinchang.top/post/67293294.html"/>
+    <id>https://www.xiayinchang.top/post/67293294.html</id>
+    <published>2020-09-05T16:00:00.000Z</published>
+    <updated>2020-09-05T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Kubernetes 集群升级的方法探寻。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+      <category term="集群升级" scheme="https://www.xiayinchang.top/tags/%E9%9B%86%E7%BE%A4%E5%8D%87%E7%BA%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>常用 Kubernetes Operator</title>
+    <link href="https://www.xiayinchang.top/post/502c3f78.html"/>
+    <id>https://www.xiayinchang.top/post/502c3f78.html</id>
+    <published>2020-08-29T16:00:00.000Z</published>
+    <updated>2020-08-29T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      常用的 Kubernetes Operator。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+      <category term="Operator" scheme="https://www.xiayinchang.top/tags/Operator/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>iptables 基础与操作</title>
+    <link href="https://www.xiayinchang.top/post/26e8b8c9.html"/>
+    <id>https://www.xiayinchang.top/post/26e8b8c9.html</id>
+    <published>2020-08-14T16:00:00.000Z</published>
+    <updated>2020-08-25T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      iptables 基础与操作。
+    
+    </summary>
+    
+    
+      <category term="Linux,网络" scheme="https://www.xiayinchang.top/categories/Linux-%E7%BD%91%E7%BB%9C/"/>
+    
+    
+      <category term="网络" scheme="https://www.xiayinchang.top/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="iptables" scheme="https://www.xiayinchang.top/tags/iptables/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 故障排查方法与工具</title>
+    <link href="https://www.xiayinchang.top/post/c2292029.html"/>
+    <id>https://www.xiayinchang.top/post/c2292029.html</id>
+    <published>2020-08-03T16:00:00.000Z</published>
+    <updated>2020-10-20T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Linux 故障排查的常用方法与工具。
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+      <category term="故障排查" scheme="https://www.xiayinchang.top/tags/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kubernetes 监控</title>
+    <link href="https://www.xiayinchang.top/post/b0106d49.html"/>
+    <id>https://www.xiayinchang.top/post/b0106d49.html</id>
+    <published>2020-07-25T16:00:00.000Z</published>
+    <updated>2020-08-29T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Kubernetes 监控方法、工具与原理。
+    
+    </summary>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
+    
+    
+      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
+    
+      <category term="监控" scheme="https://www.xiayinchang.top/tags/%E7%9B%91%E6%8E%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TBD</title>
+    <link href="https://www.xiayinchang.top/post/270af770.html"/>
+    <id>https://www.xiayinchang.top/post/270af770.html</id>
+    <published>2020-07-25T16:00:00.000Z</published>
+    <updated>2020-08-18T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      需要阅读的材料。
+    
+    </summary>
+    
+    
+      <category term="学习笔记" scheme="https://www.xiayinchang.top/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="TBD" scheme="https://www.xiayinchang.top/tags/TBD/"/>
+    
+      <category term="学习笔记" scheme="https://www.xiayinchang.top/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MeshCentral - 管理远程设备的利器</title>
+    <link href="https://www.xiayinchang.top/post/f5428d95.html"/>
+    <id>https://www.xiayinchang.top/post/f5428d95.html</id>
+    <published>2020-06-19T16:00:00.000Z</published>
+    <updated>2020-06-19T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      MeshCentral 是一款开源的可私有化部署的 Web 端远程设备管理工具，功能强大，可以登录远程桌面或者直接打开终端，也可以传输文件，既可以通过中心服务器连接远程设备，也支持 WebRTC，通过 NAT 穿透实现 Peer To Peer 的连接，对于使用羊毛版公有云服务器的群体无疑是极其友好的，唯一不足的地方就是界面观感不佳，一眼看去让人百感交集。
+    
+    </summary>
+    
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="MeshCentral" scheme="https://www.xiayinchang.top/tags/MeshCentral/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>macOS 使用相关</title>
+    <link href="https://www.xiayinchang.top/post/e9aa727.html"/>
+    <id>https://www.xiayinchang.top/post/e9aa727.html</id>
+    <published>2020-05-05T16:00:00.000Z</published>
+    <updated>2020-07-09T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      macOS 使用相关。
+    
+    </summary>
+    
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="macOS" scheme="https://www.xiayinchang.top/tags/macOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git 常用命令</title>
+    <link href="https://www.xiayinchang.top/post/5fddf106.html"/>
+    <id>https://www.xiayinchang.top/post/5fddf106.html</id>
+    <published>2020-04-20T16:00:00.000Z</published>
+    <updated>2020-08-17T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Git 常用命令记录。
+    
+    </summary>
+    
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+      <category term="开发工具" scheme="https://www.xiayinchang.top/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker 知识点与命令集合</title>
+    <link href="https://www.xiayinchang.top/post/f8a08eb2.html"/>
+    <id>https://www.xiayinchang.top/post/f8a08eb2.html</id>
+    <published>2019-12-22T16:00:00.000Z</published>
+    <updated>2020-12-08T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Docker 相关的基础知识与常用操作记录。
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://www.xiayinchang.top/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="https://www.xiayinchang.top/tags/Docker/"/>
+    
+      <category term=" 云计算" scheme="https://www.xiayinchang.top/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Netfilter 框架及其周边组件</title>
+    <link href="https://www.xiayinchang.top/post/d617cc74.html"/>
+    <id>https://www.xiayinchang.top/post/d617cc74.html</id>
+    <published>2019-12-14T16:00:00.000Z</published>
+    <updated>2020-08-29T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Netfilter 框架及其周边组件作为 Linux 内核网络栈的一部分在网络包过滤等方面发挥重要作用。我们在使用 iptables 配置防火墙规则、使用 conntrack 跟踪网络连接、使用 ipvs 配置虚拟服务器实现负载均衡时都使用到了 Netfilter 框架提供的功能特性。对 Netfilter 的生态进行梳理有助于我们对现有应用场景加深理解，也能进一步帮助我们发掘出更多的应用场景。
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 进程管理基础知识</title>
+    <link href="https://www.xiayinchang.top/post/ee7438a7.html"/>
+    <id>https://www.xiayinchang.top/post/ee7438a7.html</id>
+    <published>2019-12-13T16:00:00.000Z</published>
+    <updated>2020-08-30T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Linux 进程管理基础知识。
+    
+    </summary>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Go 实现长轮询：一个服务端超时设置的实例</title>
+    <link href="https://www.xiayinchang.top/post/f5f8beb0.html"/>
+    <id>https://www.xiayinchang.top/post/f5f8beb0.html</id>
+    <published>2019-12-07T16:00:00.000Z</published>
+    <updated>2019-12-07T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket 是更好的选择，而如果是需要对已有的 HTTP/1.1 API 添加实时获取数据的特性，使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API 时关于服务端超时时间设置的讨论。
+    
+    </summary>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/categories/%E8%AF%91%E6%96%87/"/>
+    
+    
+      <category term="译文" scheme="https://www.xiayinchang.top/tags/%E8%AF%91%E6%96%87/"/>
+    
+      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
+    
+  </entry>
+  
+</feed>

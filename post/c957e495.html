@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Linux 文件系统基础知识。">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 文件系统基础知识">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;c957e495.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="Linux 文件系统基础知识。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&amp;display=inline&amp;height=150&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=299&amp;originWidth=441&amp;size=14934&amp;status=done&amp;style=none&amp;width=220.5">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&amp;display=inline&amp;height=255&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=255&amp;originWidth=514&amp;size=34517&amp;status=done&amp;style=none&amp;width=514">
+<meta property="og:updated_time" content="2020-09-10T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&amp;display=inline&amp;height=150&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=299&amp;originWidth=441&amp;size=14934&amp;status=done&amp;style=none&amp;width=220.5">
+
+<link rel="canonical" href="https://www.xiayinchang.top/post/c957e495.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Linux 文件系统基础知识 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="external nofollow noopener noreferrer" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/c957e495.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Linux 文件系统基础知识
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-08 00:00:00" itemprop="dateCreated datePublished" datetime="2019-11-08T00:00:00+08:00">2019-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-11 00:00:00" itemprop="dateModified" datetime="2020-09-11T00:00:00+08:00">2020-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+            <div class="post-description">Linux 文件系统基础知识。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a name="vzdGd"></a></p><h4 id="superblock-inode-dentry-file"><a href="#superblock-inode-dentry-file" class="headerlink" title="superblock, inode, dentry, file"></a>superblock, inode, dentry, file</h4><p>理解这几个概念，首先需要搞清楚元数据（metadata ）的概念，借用维基百科的定义，元数据是关于数据的数据，即元数据包含了某段数据的一些信息。就好像你买了一辆车，而这辆车的型号、品牌及产地等信息即为该车的元数据。这些信息并不是车本身的一部分而是关于车的描述，因此称为车的元数据。在 Linux 文件系统中，元数据本身又分为了多个层级。<br>superblock 超级块是文件系统的元数据，定义了文件系统的大小、类型状态以及一些其它元数据结构的信息（因此可称超级块是元数据的元数据）。超级块是处于较高层级的文件系统的元数据结构，是文件系统非常关键的信息，一旦损坏则会导致所有的数据不可用，所以一般文件系统中超级块的内容会保存多份，必要时可使用工具找到备份的超级块信息恢复损坏的文件系统。<br>inode 定义了文件的元数据信息。在 Linux 系统中，为了简洁和统一，文件、目录、设备等都被视为 file。inode 包含的元数据中，不包含文件名信息，主要包含：文件的归属关系、读写权限、文件类型以及 inode 描述的 file 在磁盘存储的数据块地址等信息。问题来了，如果 inode 不包含文件名信息，而文件名信息又必然保存在磁盘上（因为将磁盘在不同的计算机上挂载都能够看到文件名，所以文件名信息不可能是保存在某一特定计算机上），而 Linux 文件系统中保存在磁盘上的除了 inode、superblock 等元数据，也就只有数据区了，所以文件名信息必然保存在数据区，那具体是怎么保存呢？刚才提到 inode 指向的也有可能是一个目录，所以猜想这个目录对象的数据区中即保存了相关文件的文件名。<br>dentry 是仅存在与内核中的对象，用于将内核中的 file 对象与 inode 对象联系起来。dentry 中保存了文件的文件名信息，该文件名也是根据 inode number 信息从磁盘数据中获取的。dentry 是 Linux 内核用来跟踪目录中文件层次结构的工具。 每个 dentry 将一个 inode 号映射到一个文件名。dentry 在文件访问加速和目录遍历等操作中发挥作用。<br>file 则是最接近用户的文件的定义，对于编程人员来说，操作文件时内核都会创建一个 file 对象，该对象包含文件存储位置和使用该文件的进程的信息和读写文件时的游标信息以及指向的 dentry（在 5.8-rc6 内核源码中看起来是直接指向的 inode ） 信息。 文件对象 (但不包括文件数据本身) 在关闭文件时被丢弃。<br>以上几种元数据中，superblock 和 inode 都会保存在磁盘上，在操作系统操作文件系统时被读入内核空间，所以在内核空间也会有相关的数据结构和相应的对象，而 dentry 和 file 则是根据内核操作文件的需要动态地进行创建和销毁，是临时存在的对象，不会持久化到磁盘上进行存储。<br>dentry 是仅存在于内存的目录项缓存，为了提高查找性能而设计，基于文件系统中存储目录信息的 inode 的数据构建，形成一个树状结构，用于从文件名到 inode 号的对应查找，从而能够快速将用户操作的 file 与底层 inode 关联起来。<br>进程每打开一个文件，就会有一个 file 结构与之对应。同一个进程可以多次打开同一个文件而得到多个不同的 file 结构，file 结构描述被打开文件的属性，如文件的当前偏移量等信息。<br>两个不同的 file 结构可以对应同一个 dentry 结构。进程多次打开同一个文件时，对应的只有一个 dentry 结构。dentry 结构存储目录项和对应文件（inode）的信息。<br>在存储介质中，每个文件对应唯一的 inode 结点，但是每个文件又可以有多个文件名。即可以通过不同的文件名访问同一个文件。这里多个文件名对应一个文件的关系在数据结构中表示就是 dentry 和 inode 的关系。<br>Inode 中不存储文件的名字，它只存储节点号；而 dentry 则保存有名字和与其对应的节点号，所以就可以通过不同的 dentry 访问同一个 inode。<br>指向同一个 inode 的不同的 dentry 则是通过文件链接（ln 命令）来实现的。<br><img src="/images/1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png" alt="image.png"><br>参考： <a href="https://www.wikiwand.com/en/Inode" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/Inode</a>，<a href="https://unix.stackexchange.com/a/4403" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/a/4403</a>，<a href="https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html" target="_blank" rel="external nofollow noopener noreferrer">https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html</a><br><a name="8BQYD"></a></p><a id="more"></a>
+
+<h4 id="软链接和硬链接的区别"><a href="#软链接和硬链接的区别" class="headerlink" title="软链接和硬链接的区别"></a>软链接和硬链接的区别</h4><p><img src="/images/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png" alt="image.png"></p>
+<ul>
+<li><p>参考：<a href="https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link</a></p>
+</li>
+<li><p>硬链接是对 inode 的引用，只有所有引用都删除后 inode 才会被删除，删除源文件，通过硬链接创建的文件仍然能够访问之前保存的数据；软链接指向源文件，源文件被删除后，访问软链接会提示文件不存在， inode 一般在源文件删除后即被删除（除非有硬链接指向该 inode）。</p>
+</li>
+<li><p>创建硬链接时源文件必须存在；而软链接可以指向不存在的对象以及不同文件系统（如 nfs）的对象（目录或文件）。</p>
+</li>
+<li><p>创建硬链接增加了针对指定 inode 的引用项，创建软链接增加了一条包含指定路径名称的记录项，由此在内核中构建的 dentry 记录也会有所差别。</p>
+</li>
+<li><p>关于为什么不允许对目录创建硬链接的个人理解：硬链接创建的是和源文件同样类型的文件系统对象，在硬链接创建完成后，文件系统已经无法区分新建出来的文件系统对象是否是通过硬链接创建出来的，因此在执行目录遍历时便会将其作为普通的文件对象对待，因此一旦允许硬链接指向目录，则在出现环路时会永不停止的遍历下去，造成文件系统无法正常工作；而对目录创建软链接可以工作是因为，软链接创建出来的文件系统对象和普通的文件系统对象类型是不一样的，因此文件系统可以区分出软链接创建出来的文件系统对象并在进行目录遍历时获取到软链接指向的最短路径（readlink -f soft-link）后就终止对其进行遍历，从而能够正常工作；其关键在于是否可识别，如果能够识别就可以区别对待。<br><a name="KiJyy"></a></p>
+<h4 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h4><p>chroot 改变了进程及其子进程能够访问的文件系统的入口点，使得该应用只能访问新的根目录下的文件内容而无法访问根目录以外的文件，将应用置于沙盒中从而限制其能够访问的文件和设备等资源，实现对应用的安全隔离。<br><a name="Hy6Xv"></a></p>
+<h4 id="软链接和-bind-mount-的比较"><a href="#软链接和-bind-mount-的比较" class="headerlink" title="软链接和 bind mount 的比较"></a>软链接和 bind mount 的比较</h4></li>
+<li><p>其相同之处是都可以实现对源目录进行跨文件系统的定位和访问。</p>
+</li>
+<li><p>其主要的不同点在于它们的控制主体和表现形式，软链接由文件系统负责管理，是文件系统中的对象；bind mount 由内核直接控制，是内核中的实体，比文件系统层级更低（因此 bind mount 需要 root 权限，创建软链接并不需要 root 权限），它可以更改文件系统的底层拓扑结构而使得文件系统毫无察觉（因此 bind mount 过程不会持久化保存，系统重启时必须重新进行 bind mount，一般将其写入到 /etc/fstab）。</p>
+</li>
+<li><p>软链接的创建可以使用相对路径或绝对路径，表示对象中保存的源路径与输入路径完全一致，因此有可能使得软链接在某些情况无法访问（例如，在由软链接建立的循环路径中相对路径可能失效）；bind mount 在使用相对路径作为源路径时会将其解析为绝对路径后保存并挂载。</p>
+</li>
+<li><p>在使用 chroot 的情况下，软链接的范围仅限于当前新的根目录下（源目录与目的目录均在当前 chroot 下），而 bind mount 可以将 chroot 外的文件挂载到当前 chroot 中使用（过程是怎样的？）</p>
+</li>
+<li><p>容器文件系统的挂载过程借助了 bind mount。</p>
+</li>
+<li><p>bind mount 是将内核中的数据结构从源端拷贝到目的端。</p>
+</li>
+<li><p>改变目录树视图的文件系统可被称为 overlay 文件系统，bindfs/overlay2/aufs 均可称为 overlay 文件系统。</p>
+</li>
+<li><p>参考：<a href="https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix" target="_blank" rel="external nofollow noopener noreferrer">https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix</a></p>
+</li>
+<li><p>参考：<a href="https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount</a><br><a name="XJ56q"></a></p>
+<h4 id="mount-namespace"><a href="#mount-namespace" class="headerlink" title="mount namespace"></a>mount namespace</h4></li>
+<li><p><a href="https://lwn.net/Articles/689856/" target="_blank" rel="external nofollow noopener noreferrer">https://lwn.net/Articles/689856/</a></p>
+</li>
+<li><p>新的 mount namespace 会继承原 mount namespace 的挂载点（因为是 clone），之后挂载点会各自变化。</p>
+</li>
+<li><p>Creating a mount namespace is similar to a recursive bind mount of / followed by chroot into the bind mount. Chroot creating is simular to creating a mount namespace followed by pivot_root.</p>
+</li>
+<li><p><a href="https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces</a><br><a name="ICS4l"></a></p>
+<h4 id="bind-mount-写入-fstab"><a href="#bind-mount-写入-fstab" class="headerlink" title="bind mount 写入 fstab"></a>bind mount 写入 fstab</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/cephfs/storage /storage none defaults,bind 0 0</span><br></pre></td></tr></table></figure>
+<p><a name="wo4sF"></a></p>
+<h4 id="文件的-atime-mtime-ctime"><a href="#文件的-atime-mtime-ctime" class="headerlink" title="文件的 atime/mtime/ctime"></a>文件的 atime/mtime/ctime</h4><p>atime 是文件最后被访问的时间，mtime 是文件最后更新的时间，ctime 是文件权限/所有者等元数据发生变化的时间，<code>ls -l</code> 默认显示文件的 mtime，<code>touch</code> 命令用于更新文件的 atime/mtime/ctime 为当前时间。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 stat 命令可以查看文件的三种时间戳</span></span><br><span class="line"><span class="built_in">stat</span> Dockerfile</span><br><span class="line"><span class="comment"># 输出如下</span></span><br><span class="line">  File: Dockerfile</span><br><span class="line">  Size: 714       	Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: 801h/2049d	Inode: 1730866260  Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/     xyc)   Gid: (  985/   users)</span><br><span class="line">Access: 2020-07-20 18:30:18.011746992 +0800</span><br><span class="line">Modify: 2020-07-20 18:28:45.569930146 +0800</span><br><span class="line">Change: 2020-07-20 18:28:45.569930146 +0800</span><br><span class="line"> Birth: 2020-07-20 18:28:45.569930146 +0800</span><br></pre></td></tr></table></figure>
+<p><a name="6WWtH"></a></p>
+<h4 id="系统启动时加载-initrd-initramfs"><a href="#系统启动时加载-initrd-initramfs" class="headerlink" title="系统启动时加载 initrd (initramfs)"></a>系统启动时加载 initrd (initramfs)</h4><p>grub 在加载内核的同时，还需要加载 initrd (initramfs)，并交给内核进行挂载。grub 完成自己的任务后会把系统启动的工作移交给内核继续进行，initrd 提供了内核执行启动工作所必须的最小资源集，包括网卡驱动、磁盘驱动、各种文件系统驱动和扩展内核模块等，可视为一个临时的根文件系统，当内核从中获取必要的驱动与模块从而有能力操作各种外设后，将会挂载最终的根文件系统来替换掉该临时的文件系统。<br>initrd (initial ram disk) 和 initramfs (initial ram file system) 所承载的内容是一样的，区别在于其工作模式。<br>顾名思义，initrd 是内存盘的镜像，内核在读取其内容时将其作为块设备处理，且这个块设备完整存在于内存中，占用了内存空间，再加上内核从块设备读取数据时会将数据拷贝到 page cache（对于文件数据）和 dentry cache（(对于目录项），相当于同样的数据在内存中存在了两份从而造成浪费。initrd 的另一个特点是，既然它是一个块设备，则在其之上必然存在一种系统（一般是 ext2 ）才能承载可供内核读取的数据，同时内核在编译时也必须加入此种文件系统的驱动。块设备大小固定，所以可能存在内存空间浪费或所需空间不足的情况。<br>显然，initramfs 是一份文件系统的数据镜像，其所使用的文件系统名为 tmpfs，是一种 dummy 文件系统，它提供给 VFS （虚拟文件系统）的接口仅包含了能够保证正常工作的最少功能集。基于 tmpfs 的文件读写均是对内核中同一份数据的操作，且不需要块设备驱动的介入。另外，tmpfs 基于 Linux cache 系统构建，仅增加少量代码，是内核原生支持的文件系统格式，而无需加入额外的驱动支持。<br>参考：<a href="https://stackoverflow.com/a/10604667" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/10604667</a>，<a href="https://blog.csdn.net/findstr/article/details/6990807" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/findstr/article/details/6990807</a><br><a name="k53dH"></a></p>
+<h4 id="xfs-文件系统"><a href="#xfs-文件系统" class="headerlink" title="xfs 文件系统"></a>xfs 文件系统</h4><p>参考：<a href="http://landoflinux.com/linux_xfs_filesystem_introduction.html" target="_blank" rel="external nofollow noopener noreferrer">http://landoflinux.com/linux_xfs_filesystem_introduction.html</a>，<a href="https://www.wikiwand.com/en/XFS" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/XFS</a>，<a href="https://righteousit.wordpress.com/2018/05/21/xfs-part-1-superblock/" target="_blank" rel="external nofollow noopener noreferrer">https://righteousit.wordpress.com/2018/05/21/xfs-part-1-superblock/</a><br><a name="DVlm9"></a></p>
+<h4 id="tmpfs"><a href="#tmpfs" class="headerlink" title="tmpfs"></a>tmpfs</h4><p>tmpfs 是基于内存的文件系统，它使用虚拟内存空间，可被交换至 swap 分区，初始挂载时使用很小的空间，其占用的内存空间大小随实际文件的大小变化，当文件被删除时内存空间会被释放。挂载时可指定可用空间大小，若未指定，则默认为内存空间大小的一半。tmpfs 基于 ramfs 和 page cache 构建，不同于 ramfs 的是 tmpfs 中的内容可被交换至 swap 分区，tmpfs 所用内存大小和 inode 数量可被限制，防止内存被耗尽。ramfs 基于物理内存，所以无法使用 swap 分区；tmpfs 基于虚拟内存，可使用物理内存和 swap 空间。<br>tmpfs 通常被用在 /tmp, /var/lock, /var/run 挂载点，也被挂载在 /dev/shm 用于 POSIX 共享内存，挂载至 /dev/shm 由 systemd 自动完成。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 手动挂载，size=0 意味不限制大小，nr_inodes=0 意味不限制 inode 数量</span><br><span class="line">mount -t tmpfs -o size=20m tmpfs /mnt/tmp</span><br><span class="line">// 写入 fstab</span><br><span class="line">tmpfs /tmp tmpfs size=2m 0 0</span><br></pre></td></tr></table></figure>
+<p><a name="t6WHH"></a></p>
+<h4 id="ls-列出的文件信息"><a href="#ls-列出的文件信息" class="headerlink" title="ls 列出的文件信息"></a>ls 列出的文件信息</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ ls -ltrh</span><br><span class="line">total 19M</span><br><span class="line">drwxr-xr-x  4 root root   35 Jul  1 18:07 uk8s-demo</span><br><span class="line">-rw-r--r--  1 root root  21K Jul  3 12:52 prometheus.yaml</span><br><span class="line">-rw-r--r--  1 root root  998 Jul  3 15:02 prometheus-instance.yaml</span><br><span class="line">-rw-r--r--  1 root root 1.5K Jul  3 15:05 prometheus-operator-old.yaml</span><br><span class="line">-rw-r--r--  1 root root 1.4K Jul  3 16:19 etcd-sm.yaml</span><br><span class="line">-rw-r--r--  1 root root  202 Jul  8 15:35 delete-cm.bash</span><br><span class="line">-rw-r--r--  1 root root  32K Jul  8 16:45 prometheus-new.yaml</span><br><span class="line">-rw-r--r--  1 root root  325 Jul  8 18:12 prometheus-svc.yaml</span><br><span class="line">-rw-r--r--  1 root root 2.4K Jul 21 10:33 prometheus-sts.yaml</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>第一列</th>
+<th>第二列</th>
+<th>第三列</th>
+<th>第四列</th>
+<th>第五列</th>
+<th>第六列</th>
+<th>第七列</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>drwxr-xr-x</td>
+<td>4</td>
+<td>root</td>
+<td>root</td>
+<td>35</td>
+<td>Jul  1 18:07</td>
+<td>uk8s-demo</td>
+</tr>
+<tr>
+<td>文件的类型和文件权限<br>第一个字符表示文件类型：d 目录 , - 文件 , l 链接 , s: socket , p: named pipe , b: block device , c: character device。<br>文件权限中 x 位为 s 时，表示在文件执行时把进程的属主或组ID置为该文件的文件属主。</td>
+<td>文件链接个数</td>
+<td>文件的所有者</td>
+<td>文件的属组</td>
+<td>文件大小</td>
+<td>文件内容被修改的最后时间</td>
+<td>文件名称</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p><a name="vWBtK"></a></p>
+<h4 id="dev-ptmx"><a href="#dev-ptmx" class="headerlink" title="/dev/ptmx"></a>/dev/ptmx</h4><p>伪终端 (pseudoterminal) : ptmx, pts (伪终端 master 和伪终端 slave )。/dev/ptmx 用于创建伪终端主从设备对。当我们用 open 打开 /dev/ptmx 设备后, 返回主设备的文件描述符，并且在 /dev/pts/ 目录下创建一个伪终端从设备。在成功打开 /dev/ptmx 后, 可以通过函数 ptsname() 来获取从设备的 path 。想要打开 open 伪终端从设备,必须先使用主设备的文件描述符调用 grantpt() ,  unlockpt() 。当主设备和从设备都打开后, 在主设备写入的数据可以在从设备上读取, 在从设备上写入的数据可以在主设备读取。<br></p>
+<p><a name="703Jw"></a></p>
+<h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4><ul>
+<li><a href="https://helpdeskgeek.com/linux-tips/what-are-inodes-in-linux-and-how-are-they-used/" target="_blank" rel="external nofollow noopener noreferrer">What Are Inodes in Linux and How Are They Used</a></li>
+<li><a href="https://www.wikiwand.com/en/Inode" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/Inode</a></li>
+<li><a href="https://www.thegeekdiary.com/unix-file-basics-inode-soft-vs-hard-link-device-files/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/unix-file-basics-inode-soft-vs-hard-link-device-files/</a></li>
+<li><a href="https://www.kernel.org/doc/html/latest/filesystems/tmpfs.html" target="_blank" rel="external nofollow noopener noreferrer">Tmpfs</a>，<a href="https://wiki.archlinux.org/index.php/Tmpfs" target="_blank" rel="external nofollow noopener noreferrer">archwiki-Tmpfs</a></li>
+<li><a href="https://www.cnblogs.com/sparkdev/p/9651622.html" target="_blank" rel="external nofollow noopener noreferrer">Linux 特殊权限 SUID,SGID,SBIT</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/e8bac896.html" rel="bookmark">Ceph 常用操作</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/5fddf106.html" rel="bookmark">Git 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/d830a7d8.html" rel="bookmark">IO 同步、异步及阻塞、非阻塞</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/16a650d7.html" rel="next" title="VSCode 使用技巧">
+                  <i class="fa fa-chevron-left"></i> VSCode 使用技巧
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/post/b489449e.html" rel="prev" title="Linux 实用命令集合">
+                  Linux 实用命令集合 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#superblock-inode-dentry-file"><span class="nav-number">1.</span> <span class="nav-text">superblock, inode, dentry, file</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软链接和硬链接的区别"><span class="nav-number">2.</span> <span class="nav-text">软链接和硬链接的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chroot"><span class="nav-number">3.</span> <span class="nav-text">chroot</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软链接和-bind-mount-的比较"><span class="nav-number">4.</span> <span class="nav-text">软链接和 bind mount 的比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount-namespace"><span class="nav-number">5.</span> <span class="nav-text">mount namespace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bind-mount-写入-fstab"><span class="nav-number">6.</span> <span class="nav-text">bind mount 写入 fstab</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件的-atime-mtime-ctime"><span class="nav-number">7.</span> <span class="nav-text">文件的 atime/mtime/ctime</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统启动时加载-initrd-initramfs"><span class="nav-number">8.</span> <span class="nav-text">系统启动时加载 initrd (initramfs)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xfs-文件系统"><span class="nav-number">9.</span> <span class="nav-text">xfs 文件系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tmpfs"><span class="nav-number">10.</span> <span class="nav-text">tmpfs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ls-列出的文件信息"><span class="nav-number">11.</span> <span class="nav-text">ls 列出的文件信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dev-ptmx"><span class="nav-number">12.</span> <span class="nav-text">/dev/ptmx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阅读材料"><span class="nav-number">13.</span> <span class="nav-text">阅读材料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌" src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="external nofollow noopener noreferrer" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">290k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:23</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;" z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="153,153,153" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>

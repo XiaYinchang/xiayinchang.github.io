@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="使用 kolla-ansible 部署一套具有三个控制节点和两个计算节点的 OpenStack 环境。">
+<meta name="keywords" content="OpenStack, Kolla, Ansible">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 kolla-ansible 部署 OpenStack">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;43354256.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="使用 kolla-ansible 部署一套具有三个控制节点和两个计算节点的 OpenStack 环境。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align=left&amp;display=inline&amp;height=702&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=702&amp;originWidth=891&amp;size=68225&amp;status=done&amp;style=none&amp;width=891">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png#align=left&amp;display=inline&amp;height=696&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=696&amp;originWidth=885&amp;size=68338&amp;status=done&amp;style=none&amp;width=885">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png#align=left&amp;display=inline&amp;height=614&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=614&amp;originWidth=617&amp;size=55558&amp;status=done&amp;style=none&amp;width=617">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558870518738-a48e46b4-d616-4a1b-9c17-f11fc2595b76.png#align=left&amp;display=inline&amp;height=590&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=701&amp;originWidth=886&amp;size=70490&amp;status=done&amp;style=none&amp;width=746">
+<meta property="og:updated_time" content="2020-07-22T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align=left&amp;display=inline&amp;height=702&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=702&amp;originWidth=891&amp;size=68225&amp;status=done&amp;style=none&amp;width=891">
+
+<link rel="canonical" href="https://www.xiayinchang.top/post/43354256.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>使用 kolla-ansible 部署 OpenStack | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="external nofollow noopener noreferrer" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/43354256.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          使用 kolla-ansible 部署 OpenStack
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-26 00:00:00" itemprop="dateCreated datePublished" datetime="2019-05-26T00:00:00+08:00">2019-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-23 00:00:00" itemprop="dateModified" datetime="2020-07-23T00:00:00+08:00">2020-07-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenStack/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenStack</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+            <div class="post-description">使用 kolla-ansible 部署一套具有三个控制节点和两个计算节点的 OpenStack 环境。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">26/05/2019</td>
+<td align="center">初始版本.</td>
+</tr>
+</tbody></table><p><a name="b072c805"></a></p><h3 id="解决什么问题"><a href="#解决什么问题" class="headerlink" title="解决什么问题"></a>解决什么问题</h3><p><br>本文尝试解决的问题：<br></p><ul>
+<li>使用个人开发电脑搭建一套 OpenStack 开发环境。</li>
+</ul><p><br>本文所有操作的前提是个人电脑搭建 Linux 操作系统且具有 16G 以上的内存资源和 足够大的硬盘空间。要完成整个系统的搭建，需要进行：<br></p><ul>
+<li>准备三个控制节点和两个计算节点的虚拟机环境；</li>
+<li>使用 kolla-ansible 部署 OpenStack。<br><a name="fb370aed"></a><h3 id="准备虚拟机"><a href="#准备虚拟机" class="headerlink" title="准备虚拟机"></a>准备虚拟机</h3>首先，新建 /infra 目录用于存放本次部署产生所有的数据信息，包括安装文件和虚拟机磁盘文件。基于 VMware Workstation 创建虚拟机， VMware Workstation 安装过程不再赘述。使用 CentOS 7.6 最小系统镜像安装操作系统，镜像地址：<br></li>
+</ul><a id="more"></a>
+
+
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://mirrors.tuna.tsinghua.edu.cn/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso</span><br></pre></td></tr></table></figure>
+
+<p><br>三个控制节点配置相同，可以在创建完成一个虚拟机后使用 VMware 提供的 clone 功能直接复制出其余的（复制得到的虚拟机需要重新生成 MAC 地址，否则会造成地址冲突），配置详情如下：<br><img src="/images/1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png" alt="image.png"><br>两个计算节点在上图配置的基础上提升了内存、处理器和硬盘配置，这里硬盘容量设置较大是为了后续在 OpenStack 环境中部署 Kubernetes 等其它系统做准备，可根据个人需要缩减：<br><img src="/images/1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png" alt="image.png"><br>所有节点配置两张网卡：一张用于 OpenStack 管理网，通过 NAT 连接外网；一张用于 Neutron 网络，直接桥接到外部网络。可根据个人需求调整连接外部网络的方式，VMware 虚拟网络信息如下：<br><img src="/images/1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png" alt="image.png"><br>虚拟机创建完成后进入操作系统检查 IP 地址获取情况：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@controller_03 ~]<span class="comment"># ip a</span></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:32:8a:b7 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.16.192.131/24 brd 172.16.192.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::250:56ff:fe32:8ab7/64 scope link </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">3: ens36: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:50:56:34:89:62 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.1.10/24 brd 192.168.1.255 scope global noprefixroute dynamic ens36</span><br><span class="line">       valid_lft 82858sec preferred_lft 82858sec</span><br><span class="line">    inet6 fe80::91ef:7089:dc2e:d7f1/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<p><br>如果没有获取到 IP 可执行 dhclient 命令尝试获取 IP 地址，动态分配的 IP 地址只是为系统提供了临时连接外部网络的途径。为了后续的自动化部署，我们需要将每个节点连接管理网的网卡 IP 地址固定下来，并使用管理网网关为默认路由网关（一定要确认好网关地址），如下：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@controller_03 ~]<span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-ens33 </span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">NAME=ens33</span><br><span class="line">UUID=f7c0ccd3-10d2-4bd9-bc47-c6429cbc28a0</span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=172.16.192.131</span><br><span class="line">GATEWAY=172.16.192.2</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">DNS1=114.114.114.114</span><br><span class="line">DNS2=1.1.1.1</span><br><span class="line">DNS3=8.8.4.4</span><br></pre></td></tr></table></figure>
+
+<p><br>给 Neutron 使用的网卡配置如下：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-ens36</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=dhcp</span><br><span class="line">DEFROUTE=no</span><br><span class="line">NAME=ens36</span><br><span class="line">DEVICE=ens36</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
+
+<br>
+<br>为了管理方便，我们将三个控制节点和两个计算节点的 hostname 分别设置为（主机名不能带下划线，否则部署 OpenStack 时报错）:<br>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">controller-01</span><br><span class="line">controller-02</span><br><span class="line">controller-03</span><br><span class="line">compute-01</span><br><span class="line">compute-02</span><br></pre></td></tr></table></figure>
+
+<p><br>为了方便命令行登录节点，可通过 ssh-copy-id 将宿主机 ssh public-key 拷贝到各虚拟节点，之后在 ssh 登录时无需再输入密码。<br>为了方便在所有虚拟机和宿主机之间共享文件，我们可以使用 VMware 的文件共享机制将宿主机目录挂载到虚拟机中。首先，在虚拟机的属性配置中添加要共享的文件夹，如下是将宿主机上的 /infra/vmshare 目录共享给虚拟机：<br><img src="/images/1558870518738-a48e46b4-d616-4a1b-9c17-f11fc2595b76.png" alt="image.png"><br><br><br>只有上图的设置还不够，我们需要进入到虚拟机内部将共享的文件夹挂载到本地目录才能使用，如下，该命令的涵义是将名称为 vmshare 的共享挂载到本地 /vmshare 目录：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmhgfs-fuse .host:/vmshare /vmshare</span><br></pre></td></tr></table></figure>
+
+<p><br>另外也可以将挂载信息写入到 /etc/fstab 使系统在启动时自动挂载：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.host:/vmshare /vmshare fuse.vmhgfs-fuse allow_other 0 0</span><br></pre></td></tr></table></figure>
+
+<p><br>部署 OpenStack 的时候需要使用到网卡的混杂模式，而在 Linux 下虚拟机没有权限完成该操作，可通过以下设置开放权限给虚拟机：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod a+rw /dev/vmnet0</span><br><span class="line">sudo chmod a+rw /dev/vmnet8</span><br></pre></td></tr></table></figure>
+
+<p><br>在使用图形化界面完成以上操作和配置后，我们将脱离 GUI 运行虚拟机，这样可以节省一些资源开支。执行以下命令以命令行形式运行虚拟机：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmrun start /infra/openstack_controller_02/openstack_controller_02.vmx nogui</span><br></pre></td></tr></table></figure>
+
+<p><br>现在，将所有节点都以 nogui 形式启动起来，vmrun list 可以看到它们：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(kolla) ➜  kolla vmrun list                                                                  </span><br><span class="line">Total running VMs: 5</span><br><span class="line">/infra/openstack_controller_02/openstack_controller_02.vmx</span><br><span class="line">/infra/openstack_controller_03/openstack_controller_03.vmx</span><br><span class="line">/infra/openstack_controller_01/openstack_controller_01.vmx</span><br><span class="line">/infra/openstack_compute_01/openstack_compute_01.vmx</span><br><span class="line">/infra/openstack_compute_02/openstack_compute_02.vmx</span><br></pre></td></tr></table></figure>
+
+<p><br>我们的虚拟机环境准备好了，开始使用 kolla-ansible 进行部署。<br></p>
+<p><a name="9jAVQ"></a></p>
+<h3 id="使用-kolla-ansible-部署-OpenStack"><a href="#使用-kolla-ansible-部署-OpenStack" class="headerlink" title="使用 kolla-ansible 部署 OpenStack"></a>使用 kolla-ansible 部署 OpenStack</h3><p><br>参考 kolla-ansible <a href="https://docs.openstack.org/kolla-ansible/latest/user/quickstart.html" target="_blank" rel="external nofollow noopener noreferrer">官方文档</a> 进行部署。<br>创建一份虚拟 Python 环境用于本次部署，需要先安装 virtualenv ，我的宿主机环境是 ArchLinux，执行以下命令安装，其它 Linux 环境请自行 Google 安装方法：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yay -S python-virtualenv</span><br></pre></td></tr></table></figure>
+
+<p><br>然后执行以下命令创建 kolla 虚拟环境：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">virtualenv -p python2 /infra/kolla</span><br></pre></td></tr></table></figure>
+
+<p><br>使用以下命令激活虚拟 Python 环境 :<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /infra/kolla/bin/activate</span><br></pre></td></tr></table></figure>
+
+<p><br>安装 Ansible:<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install ansible</span><br></pre></td></tr></table></figure>
+
+<p><br>为了方便对所有节点执行一些共性的操作，我们临时创建一份 hosts 文件，如下：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">(kolla) ➜  kolla cat /infra/hosts            </span><br><span class="line">[OpenstackGroup:children]</span><br><span class="line"> nodes</span><br><span class="line"> controllers</span><br><span class="line"> computes</span><br><span class="line">[OpenstackGroup:vars]</span><br><span class="line"> ansible_ssh_user=root</span><br><span class="line"> ansible_ssh_pass=r00tme</span><br><span class="line"> ansible_port=22</span><br><span class="line">[nodes]</span><br><span class="line"> openstack_controller_01 ansible_host=172.16.192.129</span><br><span class="line"> openstack_controller_02 ansible_host=172.16.192.130</span><br><span class="line"> openstack_controller_03 ansible_host=172.16.192.131</span><br><span class="line"> openstack_compute_01 ansible_host=172.16.192.132</span><br><span class="line"> openstack_compute_02 ansible_host=172.16.192.133</span><br><span class="line">[contorllers]</span><br><span class="line"> openstack_controller_01 ansible_host=172.16.192.129</span><br><span class="line"> openstack_controller_02 ansible_host=172.16.192.130</span><br><span class="line"> openstack_controller_03 ansible_host=172.16.192.131</span><br><span class="line">[computes]</span><br><span class="line"> openstack_compute_01 ansible_host=172.16.192.132</span><br><span class="line"> openstack_compute_02 ansible_host=172.16.192.133</span><br></pre></td></tr></table></figure>
+
+<p><br>启用 SELinux 会带来一些麻烦，影响 kolla 安装部署，因此我们使用 ansible 关闭所有节点的 SELinux 并重启系统使之生效：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ansible nodes -i /infra/hosts -m shell -a <span class="string">'sed -i "s#SELINUX=enforcing#SELINUX=disabled#g" /etc/selinux/config'</span></span><br><span class="line">ansible nodes -i /infra/hosts -m shell -a <span class="string">'reboot'</span></span><br></pre></td></tr></table></figure>
+
+<p><br>另外，我们使用清华开源镜像替代 Pypi 官方仓库：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible nodes -i /infra/hosts -m shell -a <span class="string">'yum install -y wget'</span></span><br><span class="line">ansible nodes -i /infra/hosts -m shell -a <span class="string">'wget https://tuna.moe/oh-my-tuna/oh-my-tuna.py'</span></span><br><span class="line">ansible nodes -i /infra/hosts -m shell -a <span class="string">'python /root/oh-my-tuna.py'</span></span><br></pre></td></tr></table></figure>
+
+<p><br>接下来，继续按照 kolla 文档安装 kolla-ansible：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pip install kolla-ansible</span><br><span class="line">sudo mkdir -p /etc/kolla</span><br><span class="line">sudo chown <span class="variable">$USER</span>:<span class="variable">$USER</span> /etc/kolla</span><br><span class="line">cp -r /infra/kolla/share/kolla-ansible/etc_examples/kolla/* /etc/kolla</span><br><span class="line">cp /infra/kolla/share/kolla-ansible/ansible/inventory/multinode /infra/kolla</span><br></pre></td></tr></table></figure>
+
+<p><br>然后，配置 multinode inventory 文件，根据文档中的说明来进行配置即可：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">(kolla) ➜  kolla cat multinode </span><br><span class="line"><span class="comment"># These initial groups are the only groups required to be modified. The</span></span><br><span class="line"><span class="comment"># additional groups are for more control of the environment.</span></span><br><span class="line">[control]</span><br><span class="line"><span class="comment"># 这里的配置和我们宿主机 hosts 配置要对应起来</span></span><br><span class="line">openstack_controller_01</span><br><span class="line">openstack_controller_02</span><br><span class="line">openstack_controller_03</span><br><span class="line"></span><br><span class="line"><span class="comment"># The above can also be specified as follows:</span></span><br><span class="line"><span class="comment">#control[01:03]     ansible_user=kolla</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 网路节点和控制节点对应</span></span><br><span class="line">[network]</span><br><span class="line">openstack_controller_01</span><br><span class="line">openstack_controller_02</span><br><span class="line">openstack_controller_03</span><br><span class="line"></span><br><span class="line"><span class="comment"># inner-compute is the groups of compute nodes which do not have</span></span><br><span class="line"><span class="comment"># external reachability.</span></span><br><span class="line"><span class="comment"># DEPRECATED, the group will be removed in S release of OpenStack,</span></span><br><span class="line"><span class="comment"># use variable neutron_compute_dvr_mode instead.</span></span><br><span class="line">[inner-compute]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们的两个计算节点都可以联通外网</span></span><br><span class="line"><span class="comment"># DEPRECATED, the group will be removed in S release of OpenStack,</span></span><br><span class="line"><span class="comment"># use variable neutron_compute_dvr_mode instead.</span></span><br><span class="line">[external-compute]</span><br><span class="line">openstack_compute_01</span><br><span class="line">openstack_compute_02</span><br><span class="line"></span><br><span class="line">[compute:children]</span><br><span class="line">inner-compute</span><br><span class="line">external-compute</span><br><span class="line"></span><br><span class="line"><span class="comment"># 监控节点可以选择控制节点中的任意一个</span></span><br><span class="line">[monitoring]</span><br><span class="line">openstack_controller_01</span><br><span class="line"></span><br><span class="line"><span class="comment"># When compute nodes and control nodes use different interfaces,</span></span><br><span class="line"><span class="comment"># you need to comment out "api_interface" and other interfaces from the globals.yml</span></span><br><span class="line"><span class="comment"># and specify like below:</span></span><br><span class="line"><span class="comment">#compute01 neutron_external_interface=eth0 api_interface=em1 storage_interface=em1 tunnel_interface=em1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 存储节点和计算节点复用</span></span><br><span class="line">[storage]</span><br><span class="line">openstack_compute_01</span><br><span class="line">openstack_compute_02</span><br><span class="line"></span><br><span class="line">[deployment]</span><br><span class="line">localhost       ansible_connection=<span class="built_in">local</span></span><br><span class="line"></span><br><span class="line">[baremetal:children]</span><br><span class="line">control</span><br><span class="line">network</span><br><span class="line">compute</span><br><span class="line">storage</span><br><span class="line">monitoring</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加了一项变量配置，指明登录虚拟机节点所需要的用户名和密码</span></span><br><span class="line">[baremetal:vars]</span><br><span class="line">ansible_ssh_user=root</span><br><span class="line">ansible_ssh_pass=r00tme</span><br><span class="line">ansible_port=22</span><br></pre></td></tr></table></figure>
+
+<p><br>注意上述文件中的虚拟机名称应当可以在宿主机解析到其对应的 IP 地址，为此 宿主机 hosts 增加如下配置：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(kolla) ➜  kolla tail -n 5 /etc/hosts</span><br><span class="line">172.16.192.129 openstack_controller_01</span><br><span class="line">172.16.192.130 openstack_controller_02</span><br><span class="line">172.16.192.131 openstack_controller_03</span><br><span class="line">172.16.192.132 openstack_compute_01</span><br><span class="line">172.16.192.133 openstack_compute_02</span><br></pre></td></tr></table></figure>
+
+<p><br>执行以下命令生成安装过程所需的数据库等各项基础设施密码：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kolla-genpwd</span><br></pre></td></tr></table></figure>
+
+<p><br>然后修改 kolla 的全局配置文件 /etc/kolla/globals.yml :<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 所有OpenStack组件的基础镜像使用 centos</span></span><br><span class="line">kolla_base_distro: <span class="string">"centos"</span></span><br><span class="line"><span class="comment"># 选择社区编译好的安装源文件进行安装</span></span><br><span class="line">kolla_install_type: <span class="string">"binary"</span></span><br><span class="line"><span class="comment"># 选择安装 R 版 OpenStack</span></span><br><span class="line">openstack_release: <span class="string">"rocky"</span></span><br><span class="line"><span class="comment"># 设置管理网使用的网卡，即为我们为每个虚拟机添加的网卡之一</span></span><br><span class="line">network_interface: <span class="string">"ens33"</span></span><br><span class="line"><span class="comment"># 设置 Neutron 使用的网卡，即为我们为虚拟机添加的另外一块网卡</span></span><br><span class="line">neutron_external_interface: <span class="string">"ens36"</span></span><br><span class="line"><span class="comment"># 设置管理平台 VIP，该 IP 漂移在三个控制节点的管理网卡上，因此应是一个未被占用的和管理网段一致的 IP 地址</span></span><br><span class="line">kolla_internal_vip_address: <span class="string">"172.16.192.134"</span></span><br></pre></td></tr></table></figure>
+
+<p><br>接下来，开始真正部署的第一步，在所有节点上安装部署依赖的基础软件包，安装过程可能有报错，可针对具体问题解决后重复执行安装命令：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kolla-ansible -i /infra/kolla/multinode bootstrap-servers</span><br></pre></td></tr></table></figure>
+
+<p><br>第二步，检查环境是否已经准备好，配置是否有错漏，检查过程可能会抛出一些错误，不要惊慌，一般都有提示信息，按照提示去修改即可：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kolla-ansible -i /infra/kolla/multinode prechecks</span><br></pre></td></tr></table></figure>
+
+<p><br>第三步，正式开始安装：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kolla-ansible -i /infra/kolla/multinode deploy</span><br></pre></td></tr></table></figure>
+
+<p><br>如果在安装中出错，可以先找到错误原因并修复后，先清理上次安装后再重装：<br></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kolla-ansible -i ./multinode destroy --yes-i-really-really-mean-it</span><br><span class="line">kolla-ansible -i /infra/kolla/multinode deploy</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="9AVli"></a></p>
+<h3 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h3><ul>
+<li>在 bootstrap-servers 阶段遇到 Python uninstall request 包错误，可尝试如下方式解决：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -I requests==2.9</span><br></pre></td></tr></table></figure>
+
+
+<p><a name="1GRNC"></a></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://www.jianshu.com/p/c549a512c224" target="_blank" rel="external nofollow noopener noreferrer">Kolla安装Openstack</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/f8a08eb2.html" rel="bookmark">Docker 知识点与命令集合</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/b489449e.html" rel="bookmark">Linux 实用命令集合</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/6c44975c.html" rel="bookmark">为 Proxmox 制作包含 cloud-init 的虚拟机模板</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">#  云计算</a>
+              <a href="/tags/OpenStack/" rel="tag"># OpenStack</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/699b195d.html" rel="next" title="K8S集成Keystone认证">
+                  <i class="fa fa-chevron-left"></i> K8S集成Keystone认证
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/post/eca5e5f3.html" rel="prev" title="VMware Workstation 虚拟机 root 分区扩容">
+                  VMware Workstation 虚拟机 root 分区扩容 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决什么问题"><span class="nav-number">1.</span> <span class="nav-text">解决什么问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备虚拟机"><span class="nav-number">2.</span> <span class="nav-text">准备虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-kolla-ansible-部署-OpenStack"><span class="nav-number">3.</span> <span class="nav-text">使用 kolla-ansible 部署 OpenStack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见错误"><span class="nav-number">4.</span> <span class="nav-text">常见错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌" src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="external nofollow noopener noreferrer" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">290k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:23</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;" z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="153,153,153" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>
