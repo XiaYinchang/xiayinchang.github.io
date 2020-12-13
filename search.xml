@@ -584,27 +584,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Go 常用开源库</title>
-    <url>/post/2ebf5f2a.html</url>
-    <content><![CDATA[<p><a name="I88lp"></a></p><h4 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h4><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="tdVEE"></a></p><h4 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h4><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子命令的 Run 函数执行前执行初始化任务</span></span><br><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><p><a name="2d4D6"></a></p><h4 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h4><p><a href="https://github.com/scorredoira/email" target="_blank" rel="external nofollow noopener noreferrer">github.com/scorredoira/email</a></p><a id="more"></a>
-
-
-
-
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送 HTML 格式的邮件</span></span><br><span class="line">m := email.NewHTMLMessage(subject, content)</span><br><span class="line"><span class="comment"># 添加附件</span></span><br><span class="line">m.AttachBuffer(attach.Filename, attach.Data, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>Go</category>
-      </categories>
-      <tags>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Go snippets</title>
     <url>/post/beea4a6b.html</url>
     <content><![CDATA[<p><a name="I88lp"></a></p><h4 id="生成-csv-文件"><a href="#生成-csv-文件" class="headerlink" title="生成 csv 文件"></a>生成 csv 文件</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">file, err := os.OpenFile(<span class="string">"test.csv"</span>, os.O_CREATE|os.O_WRONLY, <span class="number">0777</span>)</span><br><span class="line"><span class="keyword">defer</span> file.Close()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	os.Exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line">data := [][]<span class="keyword">string</span>&#123;&#123;<span class="string">"Line1"</span>, <span class="string">"Hello"</span>&#125;, &#123;<span class="string">"Line2"</span>, <span class="string">"World"</span>&#125;&#125;</span><br><span class="line">csvWriter := csv.NewWriter(file)</span><br><span class="line">csvWriter.WriteAll(data)</span><br><span class="line">csvWriter.Flush()</span><br><span class="line"></span><br><span class="line">dataBuf := bytes.NewBuffer(<span class="literal">nil</span>)</span><br><span class="line">writer := csv.NewWriter(dataBuf)</span><br><span class="line"><span class="keyword">for</span> _, str := <span class="keyword">range</span> data &#123;</span><br><span class="line">    writer.Write(str)</span><br><span class="line">&#125;</span><br><span class="line">writer.Flush()</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -667,6 +646,27 @@
 
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Go 常用开源库</title>
+    <url>/post/2ebf5f2a.html</url>
+    <content><![CDATA[<p><a name="I88lp"></a></p><h4 id="按列格式化输出-columnize"><a href="#按列格式化输出-columnize" class="headerlink" title="按列格式化输出 columnize"></a>按列格式化输出 columnize</h4><p><a href="http://github.com/ryanuber/columnize" target="_blank" rel="external nofollow noopener noreferrer">github.com/ryanuber/columnize</a><br><a name="tdVEE"></a></p><h4 id="命令行工具框架-cobra"><a href="#命令行工具框架-cobra" class="headerlink" title="命令行工具框架 cobra"></a>命令行工具框架 cobra</h4><p><a href="https://github.com/spf13/cobra" target="_blank" rel="external nofollow noopener noreferrer">github.com/spf13/cobra</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子命令的 Run 函数执行前执行初始化任务</span></span><br><span class="line">cobra.OnInitialize(initConfig)</span><br></pre></td></tr></table></figure><p><a name="2d4D6"></a></p><h4 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h4><p><a href="https://github.com/scorredoira/email" target="_blank" rel="external nofollow noopener noreferrer">github.com/scorredoira/email</a></p><a id="more"></a>
+
+
+
+
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送 HTML 格式的邮件</span></span><br><span class="line">m := email.NewHTMLMessage(subject, content)</span><br><span class="line"><span class="comment"># 添加附件</span></span><br><span class="line">m.AttachBuffer(attach.Filename, attach.Data, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <categories>
         <category>Go</category>
