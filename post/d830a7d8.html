@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,22 +51,29 @@
 </script>
 
   <meta name="description" content="理清 Linux 网络 IO 的各种概念。">
-<meta name="keywords" content="Linux,IO,异步,同步,阻塞,非阻塞">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IO 同步、异步及阻塞、非阻塞">
-<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;d830a7d8.html">
+<meta property="og:url" content="https://www.xiayinchang.top/post/d830a7d8.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="理清 Linux 网络 IO 的各种概念。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800282968-bce27934-e535-49b8-8c25-2945f7d2ce70.png#align=left&amp;display=inline&amp;height=291&amp;name=image.png&amp;originHeight=291&amp;originWidth=550&amp;size=33321&amp;status=done&amp;style=none&amp;width=550">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800363874-2e57da37-f74c-4dd4-b75c-6a7db13bb99d.png#align=left&amp;display=inline&amp;height=291&amp;name=image.png&amp;originHeight=291&amp;originWidth=550&amp;size=40341&amp;status=done&amp;style=none&amp;width=550">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800468227-7354dc16-071b-459d-a472-33103ef6e76d.png#align=left&amp;display=inline&amp;height=299&amp;name=image.png&amp;originHeight=299&amp;originWidth=550&amp;size=42845&amp;status=done&amp;style=none&amp;width=550">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800792427-fc0c4e8f-336a-4c86-a3b0-646238b5c2ca.png#align=left&amp;display=inline&amp;height=313&amp;name=image.png&amp;originHeight=313&amp;originWidth=550&amp;size=44205&amp;status=done&amp;style=none&amp;width=550">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800815863-ec7fe271-d1a0-4e49-a4ba-8e5d5990e151.png#align=left&amp;display=inline&amp;height=327&amp;name=image.png&amp;originHeight=327&amp;originWidth=550&amp;size=41762&amp;status=done&amp;style=none&amp;width=550">
-<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575804118240-0ad5c30f-e984-45fc-b945-a6ca192fefa7.png#align=left&amp;display=inline&amp;height=328&amp;name=image.png&amp;originHeight=328&amp;originWidth=587&amp;size=87015&amp;status=done&amp;style=none&amp;width=587">
-<meta property="og:updated_time" content="2019-12-07T16:00:00.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2019/12/08/YskWcyPr9bNQnzE.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/08/DtKiljf2bM3sHgx.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/08/FA5PznHJqmUjlkW.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/08/ywfiM3Y7cGhVxDC.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/08/56rBXhjJm4kYdDV.png">
+<meta property="og:image" content="https://i.loli.net/2019/12/08/wWD4eTFVS1ujbir.png">
+<meta property="article:published_time" content="2019-12-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-12-07T16:00:00.000Z">
+<meta property="article:author" content="夏印昌">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="IO">
+<meta property="article:tag" content="异步">
+<meta property="article:tag" content="同步">
+<meta property="article:tag" content="阻塞">
+<meta property="article:tag" content="非阻塞">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1575800282968-bce27934-e535-49b8-8c25-2945f7d2ce70.png#align=left&amp;display=inline&amp;height=291&amp;name=image.png&amp;originHeight=291&amp;originWidth=550&amp;size=33321&amp;status=done&amp;style=none&amp;width=550">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/182657/1575800282968-bce27934-e535-49b8-8c25-2945f7d2ce70.png#align=left&display=inline&height=291&name=image.png&originHeight=291&originWidth=550&size=33321&status=done&style=none&width=550">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/d830a7d8.html">
 
@@ -286,36 +293,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="yo1iZ"></a></p><h4 id="网络-IO"><a href="#网络-IO" class="headerlink" title="网络 IO"></a>网络 IO</h4><p>一般情况下，一次网络 IO 读操作会涉及两个系统对象：(1) 用户进程 (线程) Process；(2) 内核对象 kernel，两个处理阶段：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1] Waiting for the data to be ready - 等待数据准备好</span><br><span class="line">[2] Copying the data from the kernel to the process - 将数据从内核空间的buffer拷贝到用户空间进程的buffer</span><br></pre></td></tr></table></figure><a id="more"></a>
+        <h4 id="网络-IO"><a href="#网络-IO" class="headerlink" title="网络 IO"></a>网络 IO</h4><p>一般情况下，一次网络 IO 读操作会涉及两个系统对象：(1) 用户进程 (线程) Process；(2) 内核对象 kernel，两个处理阶段：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1] Waiting for the data to be ready - 等待数据准备好</span><br><span class="line">[2] Copying the data from the kernel to the process - 将数据从内核空间的buffer拷贝到用户空间进程的buffer</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
-<p>阻塞与非阻塞指的是用户进程在发起调用后等待调用结果的状态，同步与异步指的是内核如何处理用户调用并如何将结果返回给用户进程。<br>阻塞与非阻塞关注的是单个进程（线程）的执行状态，同步和异步关注的是程序之间的协作关系（这里主要是用户进程与内核之间）。<br>异步一定不会造成阻塞，因此只有同步时才有阻塞与非阻塞之分。异步的实现一般是通过函数回调来实现，例如 Node.js 的回调函数，参见：<a href="https://www.cnblogs.com/chenyangyao/p/libuv_threadpool.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/chenyangyao/p/libuv_threadpool.html</a>。<br>同步与异步的一个区别是，同步函数调用时返回的即为最终数据，异步调用不立即返回数据，可以在执行一些其他任务之后再来查看调用结果或者是在接到事件通知后查看结果。<br>异步 IO 中内核会负责将数据拷贝到用户态（或者使用内存映射），然后通知用户进程使用即可，而同步 IO 需要用户进程自行通过系统调用从内核拷贝数据。<br>同步 IO 中，对同一个描述符的操作必须是有序的。异步 IO 中，可以允许多方同时对同一个描述符发送 IO 请求，或者一次发送多个请求，当然需要有机制去区分这些请求。同步是线性的，异步可以认为是并发的（联想到 HTTP/1.1 和 HTTP/2 在发起大量 HTTP 请求时的不同表现）。<br>从总体的 CPU 效率来看，非阻塞不一定比阻塞更好，如果非阻塞是通过轮询查询数据是否准备好，虽然轮询的过程中可能穿插一些其它工作，但大概率会因为数据没有 ready 而致使 CPU 空转，虽然当前进程获取的时间片多了，但却存在大量的浪费，还不如进程阻塞被挂起，CPU 忙其它的工作。<br>阻塞、非阻塞、多路 IO 复用，都是同步 IO。真正的异步 IO 需要内核的深度参与。换句话说，只有用户线程在操作 IO 的时候根本不去考虑 IO 的执行全部都交给内核去完成，而自己只等待一个完成信号的时候，才是真正的异步 IO。所以，拉一个子线程去轮询、去死循环，或者使用 select、poll、epool，都不是异步。<br>Linux 中不存在完全异步的网络 IO，AIO 由于没有完善的网络 API，目前主要用于文件 IO，例如数据库或分布式存储后端，参见：<a href="https://www.zhihu.com/question/26943558" target="_blank" rel="external nofollow noopener noreferrer">https://www.zhihu.com/question/26943558</a>。<br>虽然 Linux 中主流的网络 IO 模型都是同步 IO ，但是基于多路复用和回调机制的 epoll 也是够用的。<br><a name="DchjO"></a></p>
+<p>阻塞与非阻塞指的是用户进程在发起调用后等待调用结果的状态，同步与异步指的是内核如何处理用户调用并如何将结果返回给用户进程。<br>阻塞与非阻塞关注的是单个进程（线程）的执行状态，同步和异步关注的是程序之间的协作关系（这里主要是用户进程与内核之间）。<br>异步一定不会造成阻塞，因此只有同步时才有阻塞与非阻塞之分。异步的实现一般是通过函数回调来实现，例如 Node.js 的回调函数，参见：<a href="https://www.cnblogs.com/chenyangyao/p/libuv_threadpool.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/chenyangyao/p/libuv_threadpool.html</a>。<br>同步与异步的一个区别是，同步函数调用时返回的即为最终数据，异步调用不立即返回数据，可以在执行一些其他任务之后再来查看调用结果或者是在接到事件通知后查看结果。<br>异步 IO 中内核会负责将数据拷贝到用户态（或者使用内存映射），然后通知用户进程使用即可，而同步 IO 需要用户进程自行通过系统调用从内核拷贝数据。<br>同步 IO 中，对同一个描述符的操作必须是有序的。异步 IO 中，可以允许多方同时对同一个描述符发送 IO 请求，或者一次发送多个请求，当然需要有机制去区分这些请求。同步是线性的，异步可以认为是并发的（联想到 HTTP/1.1 和 HTTP/2 在发起大量 HTTP 请求时的不同表现）。<br>从总体的 CPU 效率来看，非阻塞不一定比阻塞更好，如果非阻塞是通过轮询查询数据是否准备好，虽然轮询的过程中可能穿插一些其它工作，但大概率会因为数据没有 ready 而致使 CPU 空转，虽然当前进程获取的时间片多了，但却存在大量的浪费，还不如进程阻塞被挂起，CPU 忙其它的工作。<br>阻塞、非阻塞、多路 IO 复用，都是同步 IO。真正的异步 IO 需要内核的深度参与。换句话说，只有用户线程在操作 IO 的时候根本不去考虑 IO 的执行全部都交给内核去完成，而自己只等待一个完成信号的时候，才是真正的异步 IO。所以，拉一个子线程去轮询、去死循环，或者使用 select、poll、epool，都不是异步。<br>Linux 中不存在完全异步的网络 IO，AIO 由于没有完善的网络 API，目前主要用于文件 IO，例如数据库或分布式存储后端，参见：<a href="https://www.zhihu.com/question/26943558" target="_blank" rel="external nofollow noopener noreferrer">https://www.zhihu.com/question/26943558</a>。<br>虽然 Linux 中主流的网络 IO 模型都是同步 IO ，但是基于多路复用和回调机制的 epoll 也是够用的。</p>
 <h4 id="五类-IO-模型"><a href="#五类-IO-模型" class="headerlink" title="五类 IO 模型"></a>五类 IO 模型</h4><ol>
 <li>完全阻塞</li>
 </ol>
-<p>两个处理阶段均阻塞。一个线程只处理一个连接。<br><img src="https://i.loli.net/2019/12/08/YskWcyPr9bNQnzE.png" alt="image.png"></p>
+<p>两个处理阶段均阻塞。一个线程只处理一个连接。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575800282968-bce27934-e535-49b8-8c25-2945f7d2ce70.png#align=left&display=inline&height=291&name=image.png&originHeight=291&originWidth=550&size=33321&status=done&style=none&width=550" alt="image.png"></p>
 <ol start="2">
 <li>非阻塞</li>
 </ol>
-<p>检查数据是否准备好的阶段即阶段一不阻塞（一般是通过轮询实现，虽然不阻塞，但是一样低效，此时调用方处于忙等待，不被挂起，消耗 CPU 资源），阶段二阻塞。一个线程处理一个连接。<br><img src="https://i.loli.net/2019/12/08/DtKiljf2bM3sHgx.png" alt="image.png"></p>
+<p>检查数据是否准备好的阶段即阶段一不阻塞（一般是通过轮询实现，虽然不阻塞，但是一样低效，此时调用方处于忙等待，不被挂起，消耗 CPU 资源），阶段二阻塞。一个线程处理一个连接。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575800363874-2e57da37-f74c-4dd4-b75c-6a7db13bb99d.png#align=left&display=inline&height=291&name=image.png&originHeight=291&originWidth=550&size=40341&status=done&style=none&width=550" alt="image.png"></p>
 <ol start="3">
 <li>IO 多路复用</li>
 </ol>
-<p>两个阶段均阻塞，但是一个线程可以处理多个连接。虽然阶段一阻塞，但是被阻塞线程可以被挂起，阻塞期间不消耗 CPU 资源。<br><img src="https://i.loli.net/2019/12/08/FA5PznHJqmUjlkW.png" alt="image.png"></p>
+<p>两个阶段均阻塞，但是一个线程可以处理多个连接。虽然阶段一阻塞，但是被阻塞线程可以被挂起，阻塞期间不消耗 CPU 资源。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575800468227-7354dc16-071b-459d-a472-33103ef6e76d.png#align=left&display=inline&height=299&name=image.png&originHeight=299&originWidth=550&size=42845&status=done&style=none&width=550" alt="image.png"></p>
 <ol start="4">
 <li>信号驱动 IO</li>
 </ol>
-<p>阶段一创建信号即可，不需要监测描述符，不阻塞，阶段二阻塞。<br><img src="https://i.loli.net/2019/12/08/ywfiM3Y7cGhVxDC.png" alt="image.png"></p>
+<p>阶段一创建信号即可，不需要监测描述符，不阻塞，阶段二阻塞。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575800792427-fc0c4e8f-336a-4c86-a3b0-646238b5c2ca.png#align=left&display=inline&height=313&name=image.png&originHeight=313&originWidth=550&size=44205&status=done&style=none&width=550" alt="image.png"></p>
 <ol start="5">
 <li>异步 IO</li>
 </ol>
-<p>两个阶段均不阻塞。<br><img src="https://i.loli.net/2019/12/08/56rBXhjJm4kYdDV.png" alt="image.png"></p>
+<p>两个阶段均不阻塞。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575800815863-ec7fe271-d1a0-4e49-a4ba-8e5d5990e151.png#align=left&display=inline&height=327&name=image.png&originHeight=327&originWidth=550&size=41762&status=done&style=none&width=550" alt="image.png"></p>
 <ol start="6">
 <li>总体比较</li>
 </ol>
-<p><img src="https://i.loli.net/2019/12/08/wWD4eTFVS1ujbir.png" alt="image.png"><br></p>
-<p><a name="wE13p"></a></p>
-<h4 id="IO-多路复用"><a href="#IO-多路复用" class="headerlink" title="IO 多路复用"></a>IO 多路复用</h4><p>IO 多路复用是 Linux 网络编程用到的主流的 IO 模型。select，poll，epoll 都是 IO 多路复用的机制。I/O 多路复用通过一种机制，可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。 select，poll，epoll 本质上都是同步 I/O，因为他们都需要在读写事件就绪后由用户进程负责执行读写，且读写过程是阻塞的，而异步 I/O 则无需用户进程负责读写，异步 I/O 的实现会负责把数据从内核拷贝到用户空间。可以查阅三个分别使用 <a href="http://www.cnblogs.com/Anker/archive/2013/08/14/3258674.html" target="_blank" rel="external nofollow noopener noreferrer">select</a>，<a href="http://www.cnblogs.com/Anker/archive/2013/08/15/3261006.html" target="_blank" rel="external nofollow noopener noreferrer">poll</a>，<a href="http://www.cnblogs.com/Anker/archive/2013/08/17/3263780.html" target="_blank" rel="external nofollow noopener noreferrer">epoll</a> 编写的 echo 示例程序帮助理解三种机制的工作过程。<br>select 仅仅知道有 IO 事件发生，却并不知道发生在哪个 socket 上（可能有一个，多个甚至全部），所以只能无差别轮询所有 socket 找出可读或可写的 socket 进行操作。由于是轮询所以是 O(n)  的时间复杂度，socket 越多则轮询时间越长。<br>select 主要有三个问题：①被监控的描述符集合大小被宏控制为 1024 （64 位机是2048），数量太少；②描述符集合需要从用户空间拷贝到内核空间，我们希望不要拷贝；③当被监控的描述符中有 IO 事件发生时，我们希望通知更精细一点，可以直接从通知中获取存在可读事件的描述符集合，而不是需要遍历整个描述符集合。<br>poll 本质上和 select 没有区别，poll 只是解决了 select 的第一个问题即描述符集合大小限制的问题，poll 使用了 pollfd 结构而不是 select 的 fd_set 结构，基于链表来存储描述符，所以没有最大连接数的限制。但是，poll 并没有改变大量描述符被复制于用户态和内核态的地址空间之间，以及个别描述符就绪触发整体描述符集合的遍历的低效问题。poll 随着监控的 socket 集合的增加性能线性下降，poll 不适合用于大并发场景。<br>epoll 可以理解为 event poll，不同于无差别轮询，epoll 会把哪个 socket 发生了怎样的 IO 事件通知我们。所以我们说 epoll 实际上是事件驱动的（每个事件关联上 socket ），此时我们对这些 socket 的操作都是有意义的（复杂度降低到了 O(1)）。Epoll 最大的优点就在于它只管 “活跃” 的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll 的效率就会远远高于 select 和 poll。<br>epoll 解决 select 遗留的问题时主要借助两种思想：引入中间层和变集中处理为分散处理。每次调用 select 时都会进行一次描述符集合从用户空间到内核空间的拷贝，但实际上由于连续两次调用时描述符集合的变化很小，没必要每次都重新准备整个描述符集合，所以在 epoll 中引入了 epoll_ctl 系统调用，将描述符的增删改和高频调用的 epoll_wait 隔离开，在最初通过 epoll_create 创建 epoll 描述符后，会立即将监听 socket 的描述符通过 epoll_ctl 调用加入到描述符集合中，随后只有在需要监控的描述符集合发生变化时才会通过 epoll_ctl 去增删改，而 epoll_wait 调用并不会重新复制描述符集合到内核空间，这样就将 select 中的大块的内存拷贝（集中处理）分散为了低频的小块内存拷贝（分散处理）。同时，对于高频 epoll_wait 调用返回可读就绪的描述符集合时的拷贝问题，epoll 通过内核与用户空间 mmap (内存映射) 同一块内存来解决。mmap 将用户空间的一块地址和内核空间的一块地址同时映射到相同的一块物理内存地址（不管是用户空间还是内核空间都是虚拟地址，最终要通过地址映射映射到物理地址），使得这块物理内存对内核和对用户均可见，减少用户态和内核态之间的数据交换。<br>另外，epoll 通过 epoll_ctl 来对监控的描述符集合来进行增、删、改，那么必须涉及到描述符的快速查找问题，于是，一个低时间复杂度的增、删、改、查的数据结构来组织被监控的描述符集合是必不可少的了。在 linux 2.6.8 之前的内核，epoll 使用散列表来组织描述符集合，于是在创建 epoll 描述符的时候，epoll 需要初始化散列表的大小。于是 epoll_create (int size) 有一个参数 size，以便内核根据 size 的大小来分配散列表的大小。在 linux 2.6.8 以后的内核中，epoll 使用红黑树来组织监控的描述符集合，于是 epoll_create (int size) 的参数 size 实际上已经没有意义了。<br>epoll 巧妙的引入一个中间层解决了大量监控 socket 的无效遍历问题。epoll 在中间层上为每个监控的 socket 准备了一个单独的回调函数 epoll_callback_sk，而对于 select，所有的 socket 都共用一个相同的回调函数。正是这个单独的回调 epoll_callback_sk 使得每个 socket 都能单独处理自身，当自己就绪的时候将自身 socket 挂入 epoll 的 ready_list。同时，epoll 引入了一个睡眠队列 single_epoll_wait_list，分割了两类睡眠等待。process 不再睡眠在所有的 socket 的睡眠队列上，而是睡眠在 epoll 的睡眠队列上等待“任意一个 socket 可读就绪”事件。而中间 wait_entry_sk 则代替 process 睡眠在具体的 socket 上，当 socket 就绪的时候，它就可以处理自身了。<br>关于更多 epoll 边沿触发和水平触发的内容参考：<a href="https://cloud.tencent.com/developer/article/1005481" target="_blank" rel="external nofollow noopener noreferrer">https://cloud.tencent.com/developer/article/1005481</a>。简单理解，边沿触发只有新的数据到达时会被触发（就算有未读完的数据也必须等到新数据到来后触发才能继续读），而水平触发只要有数据可读就会被触发（可能是上次触发后数据未读完）。而相对的，边沿触发由于只会在新的数据到来时才会通知到用户进程，所以 epoll_wait 返回的描述符集合可能会小于使用水平触发，所以有边沿触发效率更高的说法。但假如那些被边沿触发忽略掉的而被水平触发返回的可读描述符仍然是你需要读取的对象，那水平触发可能效率更高，因为你可以更快的读完剩余数据而不是必须等到新数据的到来。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575804118240-0ad5c30f-e984-45fc-b945-a6ca192fefa7.png#align=left&display=inline&height=328&name=image.png&originHeight=328&originWidth=587&size=87015&status=done&style=none&width=587" alt="image.png"></p>
+<h4 id="IO-多路复用"><a href="#IO-多路复用" class="headerlink" title="IO 多路复用"></a>IO 多路复用</h4><p>IO 多路复用是 Linux 网络编程用到的主流的 IO 模型。select，poll，epoll 都是 IO 多路复用的机制。I/O 多路复用通过一种机制，可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。 select，poll，epoll 本质上都是同步 I/O，因为他们都需要在读写事件就绪后由用户进程负责执行读写，且读写过程是阻塞的，而异步 I/O 则无需用户进程负责读写，异步 I/O 的实现会负责把数据从内核拷贝到用户空间。可以查阅三个分别使用 <a href="http://www.cnblogs.com/Anker/archive/2013/08/14/3258674.html" target="_blank" rel="external nofollow noopener noreferrer">select</a>，<a href="http://www.cnblogs.com/Anker/archive/2013/08/15/3261006.html" target="_blank" rel="external nofollow noopener noreferrer">poll</a>，<a href="http://www.cnblogs.com/Anker/archive/2013/08/17/3263780.html" target="_blank" rel="external nofollow noopener noreferrer">epoll</a> 编写的 echo 示例程序帮助理解三种机制的工作过程。<br>select 仅仅知道有 IO 事件发生，却并不知道发生在哪个 socket 上（可能有一个，多个甚至全部），所以只能无差别轮询所有 socket 找出可读或可写的 socket 进行操作。由于是轮询所以是 O(n)  的时间复杂度，socket 越多则轮询时间越长。<br>select 主要有三个问题：① 被监控的描述符集合大小被宏控制为 1024 （64 位机是 2048），数量太少；② 描述符集合需要从用户空间拷贝到内核空间，我们希望不要拷贝；③ 当被监控的描述符中有 IO 事件发生时，我们希望通知更精细一点，可以直接从通知中获取存在可读事件的描述符集合，而不是需要遍历整个描述符集合。<br>poll 本质上和 select 没有区别，poll 只是解决了 select 的第一个问题即描述符集合大小限制的问题，poll 使用了 pollfd 结构而不是 select 的 fd_set 结构，基于链表来存储描述符，所以没有最大连接数的限制。但是，poll 并没有改变大量描述符被复制于用户态和内核态的地址空间之间，以及个别描述符就绪触发整体描述符集合的遍历的低效问题。poll 随着监控的 socket 集合的增加性能线性下降，poll 不适合用于大并发场景。<br>epoll 可以理解为 event poll，不同于无差别轮询，epoll 会把哪个 socket 发生了怎样的 IO 事件通知我们。所以我们说 epoll 实际上是事件驱动的（每个事件关联上 socket ），此时我们对这些 socket 的操作都是有意义的（复杂度降低到了 O(1)）。Epoll 最大的优点就在于它只管 “活跃” 的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll 的效率就会远远高于 select 和 poll。<br>epoll 解决 select 遗留的问题时主要借助两种思想：引入中间层和变集中处理为分散处理。每次调用 select 时都会进行一次描述符集合从用户空间到内核空间的拷贝，但实际上由于连续两次调用时描述符集合的变化很小，没必要每次都重新准备整个描述符集合，所以在 epoll 中引入了 epoll_ctl 系统调用，将描述符的增删改和高频调用的 epoll_wait 隔离开，在最初通过 epoll_create 创建 epoll 描述符后，会立即将监听 socket 的描述符通过 epoll_ctl 调用加入到描述符集合中，随后只有在需要监控的描述符集合发生变化时才会通过 epoll_ctl 去增删改，而 epoll_wait 调用并不会重新复制描述符集合到内核空间，这样就将 select 中的大块的内存拷贝（集中处理）分散为了低频的小块内存拷贝（分散处理）。同时，对于高频 epoll_wait 调用返回可读就绪的描述符集合时的拷贝问题，epoll 通过内核与用户空间 mmap (内存映射) 同一块内存来解决。mmap 将用户空间的一块地址和内核空间的一块地址同时映射到相同的一块物理内存地址（不管是用户空间还是内核空间都是虚拟地址，最终要通过地址映射映射到物理地址），使得这块物理内存对内核和对用户均可见，减少用户态和内核态之间的数据交换。<br>另外，epoll 通过 epoll_ctl 来对监控的描述符集合来进行增、删、改，那么必须涉及到描述符的快速查找问题，于是，一个低时间复杂度的增、删、改、查的数据结构来组织被监控的描述符集合是必不可少的了。在 linux 2.6.8 之前的内核，epoll 使用散列表来组织描述符集合，于是在创建 epoll 描述符的时候，epoll 需要初始化散列表的大小。于是 epoll_create (int size) 有一个参数 size，以便内核根据 size 的大小来分配散列表的大小。在 linux 2.6.8 以后的内核中，epoll 使用红黑树来组织监控的描述符集合，于是 epoll_create (int size) 的参数 size 实际上已经没有意义了。<br>epoll 巧妙的引入一个中间层解决了大量监控 socket 的无效遍历问题。epoll 在中间层上为每个监控的 socket 准备了一个单独的回调函数 epoll_callback_sk，而对于 select，所有的 socket 都共用一个相同的回调函数。正是这个单独的回调 epoll_callback_sk 使得每个 socket 都能单独处理自身，当自己就绪的时候将自身 socket 挂入 epoll 的 ready_list。同时，epoll 引入了一个睡眠队列 single_epoll_wait_list，分割了两类睡眠等待。process 不再睡眠在所有的 socket 的睡眠队列上，而是睡眠在 epoll 的睡眠队列上等待“任意一个 socket 可读就绪”事件。而中间 wait_entry_sk 则代替 process 睡眠在具体的 socket 上，当 socket 就绪的时候，它就可以处理自身了。<br>关于更多 epoll 边沿触发和水平触发的内容参考：<a href="https://cloud.tencent.com/developer/article/1005481" target="_blank" rel="external nofollow noopener noreferrer">https://cloud.tencent.com/developer/article/1005481</a>。简单理解，边沿触发只有新的数据到达时会被触发（就算有未读完的数据也必须等到新数据到来后触发才能继续读），而水平触发只要有数据可读就会被触发（可能是上次触发后数据未读完）。而相对的，边沿触发由于只会在新的数据到来时才会通知到用户进程，所以 epoll_wait 返回的描述符集合可能会小于使用水平触发，所以有边沿触发效率更高的说法。但假如那些被边沿触发忽略掉的而被水平触发返回的可读描述符仍然是你需要读取的对象，那水平触发可能效率更高，因为你可以更快的读完剩余数据而不是必须等到新数据的到来。</p>
 
     </div>
 
@@ -454,7 +460,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -482,7 +488,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -517,15 +523,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">292k</span>
+    <span title="站点总字数">297k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:26</span>
+    <span title="站点阅读时长">4:30</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -577,9 +583,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -597,7 +611,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

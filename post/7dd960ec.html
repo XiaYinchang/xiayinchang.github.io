@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,14 +51,16 @@
 </script>
 
   <meta name="description" content="Go 为什么这样设计和使用的一些问题。">
-<meta name="keywords" content="Go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go 的一些为什么">
-<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;7dd960ec.html">
+<meta property="og:url" content="https://www.xiayinchang.top/post/7dd960ec.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="Go 为什么这样设计和使用的一些问题。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-12-23T16:00:00.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-23T16:00:00.000Z">
+<meta property="article:author" content="夏印昌">
+<meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/7dd960ec.html">
@@ -279,7 +281,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a name="I88lp"></a></p><h4 id="调度器为什么引入-P"><a href="#调度器为什么引入-P" class="headerlink" title="调度器为什么引入 P"></a>调度器为什么引入 P</h4><p>将原先与 M 相绑定的资源（比如 mcache）转移给 P，减少内存浪费；将全局状态（如 grunnable 队列）分解给 P，减少锁的争用，提高调度效率。参考：<a href="https://www.zhihu.com/question/63906375/answer/496840262" target="_blank" rel="external nofollow noopener noreferrer">goroutine调度过程中P到底扮演什么角色？</a></p>
+        <h4 id="调度器为什么引入-P"><a href="#调度器为什么引入-P" class="headerlink" title="调度器为什么引入 P"></a>调度器为什么引入 P</h4><p>将原先与 M 相绑定的资源（比如 mcache）转移给 P，减少内存浪费；将全局状态（如 grunnable 队列）分解给 P，减少锁的争用，提高调度效率。参考：<a href="https://www.zhihu.com/question/63906375/answer/496840262" target="_blank" rel="external nofollow noopener noreferrer">goroutine 调度过程中 P 到底扮演什么角色？</a></p>
     </div>
 
     
@@ -292,6 +294,9 @@
       <div class="popular-posts-title"><a href="/post/2ebf5f2a.html" rel="bookmark">Go 常用开源库</a></div>
     </li>
     <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/6b64a72a.html" rel="bookmark">Go Rate Limit</a></div>
+    </li>
+    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/post/beea4a6b.html" rel="bookmark">Go snippets</a></div>
     </li>
     <li class="popular-posts-item">
@@ -299,9 +304,6 @@
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/post/a36d54e2.html" rel="bookmark">Go 开发与调试工具与方法</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/6c502a9a.html" rel="bookmark">Go 整洁架构</a></div>
     </li>
   </ul>
 
@@ -416,7 +418,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -444,7 +446,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -479,15 +481,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">292k</span>
+    <span title="站点总字数">297k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:26</span>
+    <span title="站点阅读时长">4:30</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -539,9 +541,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -559,7 +569,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

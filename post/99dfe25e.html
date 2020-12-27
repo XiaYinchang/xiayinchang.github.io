@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,14 +51,17 @@
 </script>
 
   <meta name="description" content="使用 Ceph 作为 Kubernetes 存储后端时，需要一些配置使其支持对 PVC 的在线扩容。">
-<meta name="keywords" content="Kubernetes, Ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="K8S PVC 在线扩容">
-<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;99dfe25e.html">
+<meta property="og:url" content="https://www.xiayinchang.top/post/99dfe25e.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="使用 Ceph 作为 Kubernetes 存储后端时，需要一些配置使其支持对 PVC 的在线扩容。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-15T16:00:00.000Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-10-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-10-15T16:00:00.000Z">
+<meta property="article:author" content="夏印昌">
+<meta property="article:tag" content="Kubernetes">
+<meta property="article:tag" content=" Ceph">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/99dfe25e.html">
@@ -280,36 +283,49 @@
 
       
         <ol>
-<li><p>创建storageclass 时加入 allowVolumeExpansion: true 参数。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">storage.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">StorageClass</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">ceph-rbd</span></span><br><span class="line"><span class="attr">parameters:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="attr">provisioner:</span> <span class="string">kubernetes.io/rbd</span></span><br><span class="line"><span class="attr">allowVolumeExpansion:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">reclaimPolicy:</span> <span class="string">Delete</span></span><br><span class="line"><span class="attr">volumeBindingMode:</span> <span class="string">Immediate</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在所有 master 节点上安装好 ceph-common 包，并且拷贝 ceph 配置文件到每个 master 节点的 /etc/ceph 目录，确保 <code>ceph -s</code> 能够输出正常的结果。</p>
-</li>
-<li><p>执行以下命令从某一 kube-controller-manager 容器中拷贝出 kube-controller-manager 可执行文件以备后用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n kube-system cp kube-controller-manager-节点名:usr/local/bin/kube-controller-manager .</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>基于 ceph 基础镜像重新打包一个包含有 rbd 命令的 kube-controller-manager 容器镜像。ceph 基础镜像的版本要和部署好的 ceph 集群的版本一致，通过 <code>ceph -v</code> 查看版本，例如 ceph 版本是 12.2.4 ，则通过 dockerhub 可以获取到 ceph 12.2.4 的基础镜像：<a href="https://hub.docker.com/r/ceph/ceph-amd64/tags" target="_blank" rel="external nofollow noopener noreferrer">https://hub.docker.com/r/ceph/ceph-amd64/tags</a>, 然后使用以下 Dockerfile 文件重新打包镜像：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM ceph/ceph-amd64:v12.2.4-20190828</span><br><span class="line"># 将上一步获取的 kube-controller-manager 与此 Dockerfile 置于同一目录</span><br><span class="line">ADD kube-controller-manager /usr/local/bin/kube-controller-manager</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用上述 Dockerfile 执行以下命令打包，镜像名称和标签可以自定义，标签最好和原始的 kube-controller-manager 保持一致：</p>
+<li>创建 storageclass 时加入 allowVolumeExpansion: true 参数。</li>
+</ol><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">storage.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">StorageClass</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">ceph-rbd</span></span><br><span class="line"><span class="attr">parameters:</span> <span class="string">...</span></span><br><span class="line"><span class="attr">provisioner:</span> <span class="string">kubernetes.io/rbd</span></span><br><span class="line"><span class="attr">allowVolumeExpansion:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">reclaimPolicy:</span> <span class="string">Delete</span></span><br><span class="line"><span class="attr">volumeBindingMode:</span> <span class="string">Immediate</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<ol>
+<li>在所有 master 节点上安装好 ceph-common 包，并且拷贝 ceph 配置文件到每个 master 节点的 /etc/ceph 目录，确保 <code>ceph -s</code> 能够输出正常的结果。</li>
+<li>执行以下命令从某一 kube-controller-manager 容器中拷贝出 kube-controller-manager 可执行文件以备后用：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n kube-system cp kube-controller-manager-节点名:usr&#x2F;local&#x2F;bin&#x2F;kube-controller-manager .</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>基于 ceph 基础镜像重新打包一个包含有 rbd 命令的 kube-controller-manager 容器镜像。ceph 基础镜像的版本要和部署好的 ceph 集群的版本一致，通过 <code>ceph -v</code> 查看版本，例如 ceph 版本是 12.2.4 ，则通过 dockerhub 可以获取到 ceph 12.2.4 的基础镜像：<a href="https://hub.docker.com/r/ceph/ceph-amd64/tags" target="_blank" rel="external nofollow noopener noreferrer">https://hub.docker.com/r/ceph/ceph-amd64/tags</a>, 然后使用以下 Dockerfile 文件重新打包镜像：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM ceph&#x2F;ceph-amd64:v12.2.4-20190828</span><br><span class="line"># 将上一步获取的 kube-controller-manager 与此 Dockerfile 置于同一目录</span><br><span class="line">ADD kube-controller-manager &#x2F;usr&#x2F;local&#x2F;bin&#x2F;kube-controller-manager</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>使用上述 Dockerfile 执行以下命令打包，镜像名称和标签可以自定义，标签最好和原始的 kube-controller-manager 保持一致：</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t kube-controller-manager-ceph-v12.2.4:v1.13.3 .</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行以下命令导出镜像并上传至所有 master 节点后倒入：</p>
+
+<ol start="6">
+<li>执行以下命令导出镜像并上传至所有 master 节点后倒入：</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 导出镜像</span><br><span class="line">docker save kube-controller-manager-ceph-v12.2.4:v1.13.3 | gzip -c &gt; kube-controller-manager.tar.gz</span><br><span class="line"># 上传至 master 节点</span><br><span class="line">scp kube-controller-manager.tar.gz root@master1:.</span><br><span class="line"># 登录至 master 节点并执行以下命令倒入镜像</span><br><span class="line">docker load &lt; kube-controller-manager.tar.gz</span><br><span class="line"># 以上步骤需要在所有 master 节点执行</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>修改 kube-api-server / kube-controller-manager / kubelet 配置以启用 ExpandInUsePersistentVolumes:<br><br>/etc/kubernetes/manifests/kube-apiserver.yaml 中添加 feature-gates 参数：</p>
+
+<ol start="7">
+<li>修改 kube-api-server / kube-controller-manager / kubelet 配置以启用 ExpandInUsePersistentVolumes:</li>
+</ol>
+<p>/etc/kubernetes/manifests/kube-apiserver.yaml 中添加 feature-gates 参数：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">command:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">kube-apiserver</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--feature-gates=ExpandInUsePersistentVolumes=true</span></span><br></pre></td></tr></table></figure>
+
 <p>/etc/kubernetes/manifests/kube-controller-manager.yaml 中添加 feature-gates 参数并替换镜像为之前重新制作的镜像，另外需要将宿主机上的 ceph 配置目录挂载到 kube-controller-manager 容器中：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">command:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">kube-controller-manager</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--feature-gates=ExpandInUsePersistentVolumes=true</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">kube-controller-manager-ceph-v12.2.4:v1.13.3</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line">    <span class="attr">volumeMounts:</span></span><br><span class="line">    <span class="string">...</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/etc/ceph</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">ceph-config</span></span><br><span class="line">      <span class="attr">readOnly:</span> <span class="literal">true</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">hostPath:</span></span><br><span class="line">      <span class="attr">path:</span> <span class="string">/etc/ceph</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">Directory</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">ceph-config</span></span><br></pre></td></tr></table></figure>
-<p>以上关于 kube-apiserver 和 kube-controller-manager 的操作需要在所有 master 节点上执行，kubelet 会监听到相关文件的变化并自动应用这些更新。<br><br>/etc/systemd/system/kubelet.service.d/10-kubeadm.conf 中更改 ExecStart 项增加 feature-gates 参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/kubelet --feature-gates=ExpandInUsePersistentVolumes=true ...</span><br></pre></td></tr></table></figure>
+
+<p>以上关于 kube-apiserver 和 kube-controller-manager 的操作需要在所有 master 节点上执行，kubelet 会监听到相关文件的变化并自动应用这些更新。</p>
+<p>/etc/systemd/system/kubelet.service.d/10-kubeadm.conf 中更改 ExecStart 项增加 feature-gates 参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;kubelet --feature-gates&#x3D;ExpandInUsePersistentVolumes&#x3D;true ...</span><br></pre></td></tr></table></figure>
+
 <p>修改后需要执行以下命令使更改生效：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
-<p>以上关于 kubelet 的修改需要再所有计算节点上执行。</p>
-</li>
-<li><p>执行完所有以上操作后即可对使用该 storgeclass 的 PVC 进行动态在线扩容。</p>
-</li>
-</ol>
+
+<p>以上关于 kubelet 的修改需要再所有计算节点上执行。 8. 执行完所有以上操作后即可对使用该 storgeclass 的 PVC 进行动态在线扩容。</p>
+
     </div>
 
     
@@ -446,7 +462,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -474,7 +490,7 @@
         <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
   </div>
 
@@ -509,15 +525,15 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">292k</span>
+    <span title="站点总字数">297k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:26</span>
+    <span title="站点阅读时长">4:30</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
@@ -569,9 +585,17 @@
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -589,7 +613,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
