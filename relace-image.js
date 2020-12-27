@@ -7,17 +7,17 @@ const request = require("request");
 const publicDir = "./public";
 // Loop through all the files in the temp directory
 function readDir(dir) {
-  fs.readdir(dir, function(err, files) {
+  fs.readdir(dir, function (err, files) {
     if (err) {
       console.error("Could not list the directory.", err);
       process.exit(1);
     }
 
-    files.forEach(function(file, index) {
+    files.forEach(function (file, index) {
       // Make one pass and make the file complete
       const relativePath = path.join(dir, file);
 
-      fs.stat(relativePath, function(error, stat) {
+      fs.stat(relativePath, function (error, stat) {
         if (error) {
           console.error("Error stating file.", error);
           return;
@@ -48,7 +48,7 @@ function replaceImgAddr(filename) {
         const imgAddr = match[0].match(srcReg)[1];
         if (imgAddr.startsWith("https://cdn.nlark.com/yuque")) {
           let imagePath = "";
-          let imageMap = imagesMap.images.find(ele => ele.origin === imgAddr);
+          let imageMap = imagesMap.images.find((ele) => ele.origin === imgAddr);
           if (imageMap) {
             imagePath = imageMap.smms;
           } else {
@@ -86,7 +86,7 @@ function downloadToLocal(imgAddr) {
   const localfilePath = path.join(publicDir, relativePath);
   request(imgAddr)
     .pipe(fs.createWriteStream(localfilePath))
-    .on("error", function() {
+    .on("error", function () {
       console.error(`download ${imgAddr} to ${localfilePath} failed`);
     });
   return relativePath;
@@ -94,7 +94,9 @@ function downloadToLocal(imgAddr) {
 
 function uploadToSMMS(imgAddr) {
   return new Promise((resolve, reject) => {
-    let readableStream = request(imgAddr);
+    let readableStream = request(imgAddr).on("error", function (err) {
+      console.log(`read ${imgAddr} stream failed: ${err}`);
+    });
     const form = new FormData();
     form.append("smfile", readableStream);
     const req = https.request(
@@ -103,15 +105,15 @@ function uploadToSMMS(imgAddr) {
         port: "443",
         path: "/api/v2/upload?inajax=1",
         method: "POST",
-        headers: form.getHeaders()
+        headers: form.getHeaders(),
       },
-      res => {
+      (res) => {
         if (res.statusCode < 200 || res.statusCode >= 300) {
           return reject(new Error("statusCode=" + res.statusCode));
         }
         res.setEncoding("utf8");
         let imageNewAddr = "";
-        res.on("data", function(chunk) {
+        res.on("data", function (chunk) {
           try {
             body = JSON.parse(String(chunk));
             if (body.success) {
@@ -136,8 +138,9 @@ function uploadToSMMS(imgAddr) {
     req.setHeader("referer", "https://sm.ms/");
     req.setHeader(
       "user-agent",
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36"
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
     );
+    req.setHeader("x-requested-with", "XMLHttpRequest");
     form.pipe(req);
   });
 }
