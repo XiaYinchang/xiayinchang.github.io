@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Better" type="application/atom+xml">
+  <meta name="google-site-verification" content="50AFVzX5Un8aV_39ECS7O1HvI536wZfrbUXfXmZC1uI">
+  <meta name="baidu-site-verification" content="jbuVi0osTz">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: "",
+      labels: ""
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Netfilter 框架及其周边组件作为 Linux 内核网络栈的一部分在网络包过滤等方面发挥重要作用。我们在使用 iptables 配置防火墙规则、使用 conntrack 跟踪网络连接、使用 ipvs 配置虚拟服务器实现负载均衡时都使用到了 Netfilter 框架提供的功能特性。对 Netfilter 的生态进行梳理有助于我们对现有应用场景加深理解，也能进一步帮助我们发掘出更多的应用场景。">
+<meta name="keywords" content="Linux, Netfilter, iptables, conntrack, ipvs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Netfilter 框架及其周边组件">
+<meta property="og:url" content="https:&#x2F;&#x2F;www.xiayinchang.top&#x2F;post&#x2F;d617cc74.html">
+<meta property="og:site_name" content="Better">
+<meta property="og:description" content="Netfilter 框架及其周边组件作为 Linux 内核网络栈的一部分在网络包过滤等方面发挥重要作用。我们在使用 iptables 配置防火墙规则、使用 conntrack 跟踪网络连接、使用 ipvs 配置虚拟服务器实现负载均衡时都使用到了 Netfilter 框架提供的功能特性。对 Netfilter 的生态进行梳理有助于我们对现有应用场景加深理解，也能进一步帮助我们发掘出更多的应用场景。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576396676777-643a7090-d522-4f7b-a4a8-e1d20742681a.png#align=left&amp;display=inline&amp;height=237&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=474&amp;originWidth=1330&amp;size=35302&amp;status=done&amp;style=none&amp;width=665">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576376326201-8e54e0c3-4710-47c7-ae4d-07f66be4452f.png#align=left&amp;display=inline&amp;height=421&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=451&amp;originWidth=800&amp;size=58313&amp;status=done&amp;style=none&amp;width=746">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576390222986-8e61ba27-7ac7-4695-a7e0-0ad91e7ee581.png#align=left&amp;display=inline&amp;height=215&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=475&amp;originWidth=1650&amp;size=186592&amp;status=done&amp;style=none&amp;width=746">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576390449967-dd24ea02-2232-41fd-bd07-33aea0a350de.png#align=left&amp;display=inline&amp;height=352&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=703&amp;originWidth=1696&amp;size=126471&amp;status=done&amp;style=none&amp;width=848">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576394377796-20f9f09a-67df-418a-96a0-96c9201f59c5.png#align=left&amp;display=inline&amp;height=851&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=1133&amp;originWidth=730&amp;size=78757&amp;status=done&amp;style=none&amp;width=548">
+<meta property="og:updated_time" content="2020-08-29T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;182657&#x2F;1576396676777-643a7090-d522-4f7b-a4a8-e1d20742681a.png#align=left&amp;display=inline&amp;height=237&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=474&amp;originWidth=1330&amp;size=35302&amp;status=done&amp;style=none&amp;width=665">
+
+<link rel="canonical" href="https://www.xiayinchang.top/post/d617cc74.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Netfilter 框架及其周边组件 | Better</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Better</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiayinchang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="external nofollow noopener noreferrer" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/d617cc74.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="夏印昌">
+      <meta itemprop="description" content="云计算从业者，全栈攻城狮">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Better">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Netfilter 框架及其周边组件
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-12-15T00:00:00+08:00">2019-12-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-30 00:00:00" itemprop="dateModified" datetime="2020-08-30T00:00:00+08:00">2020-08-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+            <div class="post-description">Netfilter 框架及其周边组件作为 Linux 内核网络栈的一部分在网络包过滤等方面发挥重要作用。我们在使用 iptables 配置防火墙规则、使用 conntrack 跟踪网络连接、使用 ipvs 配置虚拟服务器实现负载均衡时都使用到了 Netfilter 框架提供的功能特性。对 Netfilter 的生态进行梳理有助于我们对现有应用场景加深理解，也能进一步帮助我们发掘出更多的应用场景。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a name="gTkfK"></a></p><h3 id="Netfilter"><a href="#Netfilter" class="headerlink" title="Netfilter"></a>Netfilter</h3><p>Netfilter 是 Linux 2.4.x 及后续版本内核引入的包过滤框架。Netfilter 包含了一组内核钩子 API ，周边内核组件可以使用这些钩子在网络栈中注册回调函数。每一个在网络栈中流通的包到达相应的钩子时，就会触发相应的回调函数，从而能够完成包过滤、网络地址（端口）转换和网络包协议头修改等各种操作。<br>Netfilter 提供了五种钩子（参考<a href="https://medium.com/@GoldenOak/linux-kernel-communication-part-1-netfilter-hooks-15c07a5a5c4e" target="_blank" rel="external nofollow noopener noreferrer">Linux Kernel Communication — Netfilter Hooks</a>），如下：<br><img src="/images/1576396676777-643a7090-d522-4f7b-a4a8-e1d20742681a.png" alt="image.png"></p><a id="more"></a>
+
+<ol>
+<li>NF_IP_PER_ROUNTING — 当数据包到达计算机立即触发。</li>
+<li>NF_IP_LOCAL_IN — 当数据包的目的地就是当前计算机时触发。</li>
+<li>NF_IP_FORWARD — 当数据包目的地址是其它的网络接口时触发。</li>
+<li>NF_IP_POST_ROUTING — 当数据包即将从计算机发出时触发。</li>
+<li>NF_IP_LOCAL_OUT — 当数据包由本地生成并发向外部时触发。</li>
+</ol>
+<p>基于 Netfilter 钩子 API 实现的内核模块主要有 ebtables、arptables、ip(6)tables、nf_tables、NAT、connection tracking 等。如下是维基百科上关于 Netfilter 相关组件的一张示意图：<br><img src="/images/1576376326201-8e54e0c3-4710-47c7-ae4d-07f66be4452f.png" alt="image.png"><br>下图是数据包在Netfilter 框架中的流动过程：<br><img src="/images/1576390222986-8e61ba27-7ac7-4695-a7e0-0ad91e7ee581.png" alt="image.png"><br><a name="ITi2e"></a></p>
+<h3 id="ebtables"><a href="#ebtables" class="headerlink" title="ebtables"></a>ebtables</h3><p>ebtables 是以太网桥防火墙，以太网桥工作在数据链路层，ebtables 主要用来过滤链路层数据包。使用 ebtables 可以实现 filtering 、NAT 和 brouting。过滤根据 MAC 头包括 VLAN ID 等信息确定是否丢弃该帧。MAC NAT 可以修改 MAC 源和目的地址。Brouting 意为 bridge or route，根据规则确定应该将数据帧路由给上层（iptables）还是通过网桥转给其它的接口。<br>ebtables 和我们熟悉的 iptables 很像，也有规则（rules）、链（chains）和表（tables）的概念。ebtables 使用规则确定应当对数据帧执行什么动作。规则按照不同的链分组，不同的表中包含不同的链。在 ebtables 中有三张表：filter、nat 和 broute，分别对应其三大功能模块。<br>需要注意的是如果一个以太网接口 eth1，它并没有桥接到网桥上，此时，从 eth1 进来的数据包不会走到 ebtables 中。在 bridge check 点，会检查数据包进入的接口是否属于某个桥，如果是则走 ebtables，否则直接走 iptables。也就是说，ebtables 只对桥接网络生效。<br><a name="Awlug"></a></p>
+<h4 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h4><ul>
+<li><p>INPUT 链：当数据帧的目的 MAC 地址是网桥的 MAC 地址时，这条链上的过滤规则会被应用。</p>
+</li>
+<li><p>FORWARD 链：当数据帧将要被网桥转发给其它接口时，这条链上的过滤规则会被应用。</p>
+</li>
+<li><p>OUTPUT 链：当数据帧由本地产生或者已经完成路由时。<br><a name="l1MM1"></a></p>
+<h4 id="nat"><a href="#nat" class="headerlink" title="nat"></a>nat</h4></li>
+<li><p>PREROUTING 链：当数据帧到达时会立即执行该链上的规则。</p>
+</li>
+<li><p>OUTPUT 链：对于本地生成的或者已经完成路由的数据帧，在被桥接之前进行修改。</p>
+</li>
+<li><p>POSTROUTING 链：在数据帧被发送之前进行修改。<br><a name="Rteq9"></a></p>
+<h4 id="broute"><a href="#broute" class="headerlink" title="broute"></a>broute</h4></li>
+<li><p>BROUTING 链：应用规则决定对数据帧进行 bridge or route。</p>
+</li>
+</ul>
+<p>下图是一个 iptables 与 ebtables 工作流图：<br><img src="/images/1576390449967-dd24ea02-2232-41fd-bd07-33aea0a350de.png" alt="image.png"><br></p>
+<p><a name="003GL"></a></p>
+<h3 id="arptables"><a href="#arptables" class="headerlink" title="arptables"></a>arptables</h3><p>arptables 和 ebtables 相似，区别在于 arptables 不局限于桥接网络且是专门用来配置和处理 ARP 消息相关的规则。<br><a name="fhXTH"></a></p>
+<h3 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h3><p>正是基于 Netfilter 钩子 API 的共同点，iptables 和 ebtables 的工作机制相似，区别是 iptables 工作在 OSI 网络模型的三层和四层。<br>iptables 提供的功能主要有：</p>
+<ul>
+<li>无状态数据包过滤。</li>
+<li>有状态数据包过滤：iptables 可以识别到如 ftp 数据包的连接状态，从而基于连接状态能够提供更多的过滤功能。</li>
+<li>网络地址（端口）转换：iptables 可以修改数据包的协议头信息包括 IP 地址和 TCP/UDP 端口。</li>
+</ul>
+<p>一般的说法是 iptables 包含四张表：filter、nat、mangle 和 raw ，但是通过 man 查看 iptables 的使用手册可以看到最新的 iptables 还有 security 表，但是 security 的应用确实也不是很常见，所以这里仍然沿用四张表的说法。filter 表顾名思义主要是根据规则对数据包进行过滤，nat 表则是根据规则进行地址转换，mangle 表用于一些专门的修改操作，例如修改包头中的 TOS（服务类型）字段，raw 表则是在数据包进入 connection tracking 之前应用一些规则进行修改操作。<br>NAT 又有 SNAT、DNAT 、NAPT 和 MASQUERADE 各种术语。SNAT 意味着更改数据包的源 IP 地址。DNAT 则是更改数据包的目的 IP 地址。NAPT 则是进行端口转发，即修改数据包的 TCP/UDP 端口。MASQUERADE 是 SNAT 的特例，可称为动态 SNAT ，它是用发送数据的网卡上的 IP 来替换源 IP，因此，对于那些 IP 不固定的场合，比如拨号网络或者通过 DHCP 分配 IP 的情况下，需要用 MASQUERADE。以下是一些示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// SNAT 必须指定目标 IP</span><br><span class="line">// 更改数据包的源 IP 地址为 1.2.3.4</span><br><span class="line">iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to 1.2.3.4</span><br><span class="line">// 把所有 10.8.0.0 网段的数据包 SNAT 成 192.168.5.3/192.168.5.4/192.168.5.5 几个 IP 然后发出去</span><br><span class="line">iptables -t nat -A POSTROUTING -s 10.8.0.0/255.255.255.0 -o eth0 -j SNAT --to-source 192.168.5.3-192.168.5.5</span><br><span class="line">// 更改数据包的目的 IP 地址为 1.2.3.4</span><br><span class="line">iptables -t nat -A PREROUTING -i eth0 -j DNAT --to 1.2.3.4</span><br><span class="line">// 将从 eth0 进入的目标端口为 80 的数据包转发到 192.168.1.200 的 8080 端口</span><br><span class="line">iptables -t nat -A PREROUTING -i etho --dport 80 -j DNAT --to-destination 192.168.1.200:8080</span><br><span class="line">// MASQUERADE 不用指定 SNAT 的目标 IP ，不管现在 eth0 的出口获得了怎样的动态 IP</span><br><span class="line">// MASQUERADE 会自动读取 eth0 现在的 IP 地址然后做 SNAT 出去</span><br><span class="line">// 这样就实现了很好的动态 SNAT 地址转换</span><br><span class="line">iptables -t nat -A POSTROUTING -s 10.8.0.0/255.255.255.0 -o eth0 -j MASQUERADE</span><br></pre></td></tr></table></figure>
+
+<p><br>一张可供参考的 iptables 工作流图，需要注意的是只有对发起新连接（包括和已经存在的连接有 related 关系的请求）的请求才会去重新匹配 nat 表中的规则，而其它表中的规则对每一个到来的数据包都会匹配一遍，这得益于基于 Netfilter 的另一个组件 connection tracking 系统，它记录了每一个连接的信息，从而使得同一个连接上的数据包不必经过重新匹配 nat 规则就可获知应当如何传递。<br><img src="/images/1576394377796-20f9f09a-67df-418a-96a0-96c9201f59c5.png" alt="image.png"><br><a name="YIl8y"></a></p>
+<h3 id="conntrack"><a href="#conntrack" class="headerlink" title="conntrack"></a>conntrack</h3><p>在 Netfilter 体系中，状态跟踪机制（conntrack）是重要的一部分。它是基于 Linux 系统的 stateful 防火墙和 NAT 的基础。conntrack 将信息存在内存结构中，包括 IP，端口，协议类型，状态以及超时时间。conntrack 不仅可以对 TCP 这种有状态的会话进行状态跟踪，还可以对 UDP/ICMP 进行状态跟踪。conntrack本身并不会对包进行过滤，而是提供一种基于状态和关系的过滤依据。<br>conntrack定义了5种连接状态，分别如下：<br><strong>NEW</strong> 匹配连接的第一个包。意思就是，iptables从连接跟踪表中查到此包是某连接的第一个包。判断此包是某连接的第一个包是依据 conntrack 当前”只看到一个方向数据包”( [UNREPLIED] )，不关联特定协议，因此NEW并不单指 tcp 连接的 SYN 包。<br><strong>ESTABLISHED</strong> 匹配连接的响应包及后续的包。意思是，iptables 从连接跟踪表中查到此包是属于一个已经收到响应的连接(即没有 [UNREPLIED] 字段)。因此在 iptables 状态中，只要发送并接到响应，连接就认为是 ESTABLISHED 的了。这个特点使 iptables 可以控制由谁发起的连接才可以通过，比如 A 与 B 通信， A 发给 B 数据包属于 NEW 状态， B 回复给 A 的数据包就变为 ESTABLISHED 状态。 ICMP 的错误和重定向等信息包也被看作是 ESTABLISHED ，只要它们是我们所发出的信息的应答。<br><strong>RELATED</strong> 状态有点复杂，当一个连接与另一个已经是 ESTABLISHED 的连接有关时，这个连接就被认为是 RELATED 。这意味着，一个连接要想成为 RELATED ，必须首先有一个已经是 ESTABLISHED 的连接存在。这个 ESTABLISHED 连接再产生一个主连接之外的新连接，这个新连接就是 RELATED 状态了，当然首先 conntrack 模块要能”读懂”它是 RELATED 。拿 ftp 来说， FTP 数据传输连接就是 RELATED 与先前已创建的 FTP 控制连接，还有通过 IRC 的 DCC 连接。有了 RELATED 这个状态， ICMP 错误消息、 FTP 传输、 DCC 等才能穿过防火墙正常工作。有些依赖此机制的 TCP 协议和 UDP 协议非常复杂，他们的连接被封装在其它的 TCP 或 UDP 包的数据部分(可以了解下overlay/vxlan/gre)，这使得 conntrack 需要借助其它辅助模块才能正确”读懂”这些复杂数据包，比如 nf_conntrack_ftp 这个辅助模块。<br><strong>INVALID</strong> 匹配那些无法识别或没有任何状态的数据包。这可能是由于系统内存不足或收到不属于任何已知连接的 ICMP 错误消息。一般情况下我们应该 DROP 此类状态的包。<br><strong>UNTRACKED</strong> 状态比较简单，它匹配那些带有 NOTRACK 标签的数据包。需要注意的一点是，如果你在 raw 表中对某些数据包设置有 NOTRACK 标签，那上面的4种状态将无法匹配这样的数据包，因此你需要单独考虑 NOTRACK 包的放行规则。<br></p>
+<p><a name="eom59"></a></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/a-deep-dive-into-iptables-and-netfilter-architecture" target="_blank" rel="external nofollow noopener noreferrer">https://www.digitalocean.com/community/tutorials/a-deep-dive-into-iptables-and-netfilter-architecture</a></li>
+<li><a href="https://guanjunjian.github.io/2017/12/05/study-15-docker-single-host-network-analysis/" target="_blank" rel="external nofollow noopener noreferrer">https://guanjunjian.github.io/2017/12/05/study-15-docker-single-host-network-analysis/</a></li>
+<li><a href="https://blog.csdn.net/dog250/article/details/5561082" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/dog250/article/details/5561082</a></li>
+<li><a href="https://blog.spoock.com/2020/01/18/conntrack/" target="_blank" rel="external nofollow noopener noreferrer">https://blog.spoock.com/2020/01/18/conntrack/</a></li>
+<li><a href="https://my.oschina.net/u/232595/blog/1919450" target="_blank" rel="external nofollow noopener noreferrer">https://my.oschina.net/u/232595/blog/1919450</a></li>
+<li><a href="https://www.cnblogs.com/huenchao/p/6225770.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/huenchao/p/6225770.html</a></li>
+<li><a href="https://www.projectcalico.org/when-linux-conntrack-is-no-longer-your-friend/#:~:text=Connection%20tracking%20(%E2%80%9Cconntrack%E2%80%9D),the%20Linux%20kernel' target=" _blank" rel="external nofollow noopener noreferrer" s%20networking%20stack.&text="This%20allows%20you%20to%20write,explicitly%20allow%20the%20response%20traffic." " target="_blank">When Linux conntrack is no longer your friend</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/e8bac896.html" rel="bookmark">Ceph 常用操作</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/5fddf106.html" rel="bookmark">Git 常用命令</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/post/d830a7d8.html" rel="bookmark">IO 同步、异步及阻塞、非阻塞</a></div>
+    </li>
+  </ul>
+
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="夏印昌 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">本文到此结束　<i class="fa fa-heart"></i>　感谢您的阅读</div>
+    
+</div>
+        
+      </div>
+
+      <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+      </script>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/post/ee7438a7.html" rel="next" title="Linux 进程管理基础知识">
+                  <i class="fa fa-chevron-left"></i> Linux 进程管理基础知识
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/post/f8a08eb2.html" rel="prev" title="Docker 知识点与命令集合">
+                  Docker 知识点与命令集合 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80MjY3Ni8xOTIyMw=="></div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Netfilter"><span class="nav-number">1.</span> <span class="nav-text">Netfilter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ebtables"><span class="nav-number">2.</span> <span class="nav-text">ebtables</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#filter"><span class="nav-number">2.1.</span> <span class="nav-text">filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nat"><span class="nav-number">2.2.</span> <span class="nav-text">nat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#broute"><span class="nav-number">2.3.</span> <span class="nav-text">broute</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#arptables"><span class="nav-number">3.</span> <span class="nav-text">arptables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iptables"><span class="nav-number">4.</span> <span class="nav-text">iptables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conntrack"><span class="nav-number">5.</span> <span class="nav-text">conntrack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="夏印昌" src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">夏印昌</p>
+  <div class="site-description" itemprop="description">云计算从业者，全栈攻城狮</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">58</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiayinchang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiayinchang" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/mailto:xiayinchang@gmail.com" title="E-Mail → mailto:xiayinchang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="external nofollow noopener noreferrer" target="_blank">沪ICP备17024006号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">夏印昌</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">292k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:26</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;" z>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color="153,153,153" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+</body>
+</html>
