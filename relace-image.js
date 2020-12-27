@@ -33,6 +33,10 @@ function readDir(dir) {
   });
 }
 
+function sleep(millis) {
+  return new Promise((resolve) => setTimeout(resolve, millis));
+}
+
 function replaceImgAddr(filename) {
   const imageStr = String(fs.readFileSync("./imageMap.json", "utf8"));
   let imagesMap = JSON.parse(imageStr);
@@ -53,6 +57,7 @@ function replaceImgAddr(filename) {
             imagePath = imageMap.smms;
           } else {
             try {
+              await sleep(5000 * Math.random());
               imagePath = await uploadToSMMS(imgAddr);
               if (imagePath) {
                 imagesMap.images.push({ origin: imgAddr, smms: imagePath });
@@ -97,7 +102,6 @@ function uploadToSMMS(imgAddr) {
     let agent =
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
     let readableStream = request(imgAddr);
-    readableStream.setHeader("user-agent", agent);
     const form = new FormData();
     form.append("smfile", readableStream);
     const req = https.request(
@@ -107,6 +111,7 @@ function uploadToSMMS(imgAddr) {
         path: "/api/v2/upload?inajax=1",
         method: "POST",
         headers: form.getHeaders(),
+        timeout: 10000,
       },
       (res) => {
         if (res.statusCode < 200 || res.statusCode >= 300) {
@@ -135,6 +140,7 @@ function uploadToSMMS(imgAddr) {
         });
       }
     );
+    req.setTimeout(10000);
     req.setHeader("origin", "https://sm.ms");
     req.setHeader("referer", "https://sm.ms/");
     req.setHeader("user-agent", agent);
@@ -144,5 +150,9 @@ function uploadToSMMS(imgAddr) {
     });
   });
 }
+
+setTimeout(() => {
+  process.exit(0);
+}, 50000);
 
 readDir(publicDir);
