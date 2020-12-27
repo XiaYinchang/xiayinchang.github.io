@@ -6,3 +6,5 @@ public/
 .deploy*/
 package-lock.json
 export-env.sh
+db.json
+
