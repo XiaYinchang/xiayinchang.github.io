@@ -1,7 +1,7 @@
 ---
 title: Go 知识点汇总
 urlname: sfexfo
-date: '2019-10-12 00:00:00 +0800'
+date: '2019-10-12 00:00:00 +0000'
 layout: post
 comments: true
 categories: Go
@@ -9,6 +9,7 @@ tags:
   - Go
 keywords: Go
 description: 汇总对 Go 语言的基本理解、编程方法和开源库等。
+abbrlink: defe85e8
 updated: 2020-10-30 00:00:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: K8S PVC 在线扩容
 urlname: goqtlq
-date: '2019-10-16 00:00:00 +0800'
+date: '2019-10-16 00:00:00 +0000'
 layout: post
 categories: Kubernetes
 tags:
@@ -9,6 +9,7 @@ tags:
   - Ceph
 keywords: 'Kubernetes, Ceph'
 description: 使用 Ceph 作为 Kubernetes 存储后端时，需要一些配置使其支持对 PVC 的在线扩容。
+abbrlink: 99dfe25e
 ---
 
 1. 创建 storageclass 时加入 allowVolumeExpansion: true 参数。

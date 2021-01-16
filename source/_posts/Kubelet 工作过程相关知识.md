@@ -1,7 +1,7 @@
 ---
 title: Kubelet 工作过程简析
 urlname: gnxyg4
-date: '2020-12-19 00:00:00 +0800'
+date: '2020-12-19 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes
@@ -9,6 +9,7 @@ tags:
   - Kubernetes
 keywords: 'Kubernetes, Kubelet'
 description: Kubelet 工作过程相关知识点的记录。
+abbrlink: aad9c438
 updated: 2020-12-19 00:00:00
 ---
 

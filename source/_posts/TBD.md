@@ -1,7 +1,7 @@
 ---
 title: TBD
 urlname: ncceb4
-date: '2020-07-26 00:00:00 +0800'
+date: '2020-07-26 00:00:00 +0000'
 layout: post
 categories: 学习笔记
 tags:
@@ -9,6 +9,7 @@ tags:
   - 学习笔记
 keywords: TBD
 description: 需要阅读的材料。
+abbrlink: 270af770
 updated: 2020-08-19 00:00:00
 ---
 

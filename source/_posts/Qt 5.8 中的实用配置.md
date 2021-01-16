@@ -1,7 +1,7 @@
 ---
 title: Qt 5.8 中的实用功能配置
 urlname: kb6pq6
-date: '2017-03-27 00:00:00 +0800'
+date: '2017-03-27 00:00:00 +0000'
 layout: post
 comments: true
 categories: Qt
@@ -11,6 +11,7 @@ tags:
   - 代码格式化
 keywords: 'Qt, 实用配置'
 description: 利用Qt的插件进行实用功能配置。
+abbrlink: '65827044'
 ---
 
 |    Date    |                                     Log                                     |

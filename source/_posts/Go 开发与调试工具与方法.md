@@ -1,7 +1,7 @@
 ---
 title: Go 开发与调试工具与方法
 urlname: sxpwav
-date: '2020-12-16 00:00:00 +0800'
+date: '2020-12-16 00:00:00 +0000'
 layout: post
 comments: true
 categories: Go
@@ -9,6 +9,7 @@ tags:
   - Go
 keywords: 'Go, 开发, 调试'
 description: Go 开发与调试辅助工具。
+abbrlink: a36d54e2
 updated: 2021-01-09 00:00:00
 ---
 

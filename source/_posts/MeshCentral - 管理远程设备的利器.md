@@ -1,7 +1,7 @@
 ---
 title: MeshCentral - 管理远程设备的利器
 urlname: mgvvhs
-date: '2020-06-20 00:00:00 +0800'
+date: '2020-06-20 00:00:00 +0000'
 layout: post
 categories: 开发工具
 tags:
@@ -9,6 +9,7 @@ tags:
   - 开发工具
 keywords: 'MeshCentral, 远程控制'
 description: "MeshCentral 是一款开源的可私有化部署的 Web 端远程设备管理工具，功能强大，可以登录远程桌面或者直接打开终端，也可以传输文件，既可以通过中心服务器连接远程设备，也支持\_WebRTC，通过 NAT 穿透实现 Peer To Peer 的连接，对于使用羊毛版公有云服务器的群体无疑是极其友好的，唯一不足的地方就是界面观感不佳，一眼看去让人百感交集。"
+abbrlink: f5428d95
 updated: 2020-06-20 00:00:00
 ---
 

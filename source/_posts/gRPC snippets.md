@@ -1,7 +1,7 @@
 ---
 title: gRPC snippets
 urlname: xs66n7
-date: '2019-11-14 00:00:00 +0800'
+date: '2019-11-14 00:00:00 +0000'
 layout: post
 comments: true
 categories: gRPC
@@ -10,6 +10,7 @@ tags:
   - Go
 keywords: gRPC
 description: gRPC 用法相关的知识和技巧以及代码片段汇总。
+abbrlink: ab759786
 updated: 2020-01-09 00:00:00
 ---
 

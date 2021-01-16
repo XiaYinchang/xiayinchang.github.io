@@ -1,7 +1,7 @@
 ---
 title: Go 实现长轮询：一个服务端超时设置的实例
 urlname: mel61p
-date: '2019-12-08 00:00:00 +0800'
+date: '2019-12-08 00:00:00 +0000'
 updated: 2019-12-8
 layout: post
 comments: true
@@ -14,6 +14,7 @@ description: >-
   前端获取实时更新的后端数据主要有短轮询、长轮询、WebSocket、SSE等几种方式，对于新开发的应用使用 WebSocket
   是更好的选择，而如果是需要对已有的 HTTP/1.1 API 添加实时获取数据的特性，使用长轮询则相对简单一些。本文即是作者在使用长轮询改造已有 API
   时关于服务端超时时间设置的讨论。
+abbrlink: f5f8beb0
 ---
 
 ### 原文

@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes\_实践"
 urlname: kgmvfu
-date: '2019-11-13 00:00:00 +0800'
+date: '2019-11-13 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes
@@ -10,6 +10,7 @@ tags:
   - Kubernetes
 keywords: Kubernetes
 description: 本文记录 Kubernetes 相关的操作命令和实践方法。
+abbrlink: 9caa466a
 updated: 2021-01-16 00:00:00
 ---
 

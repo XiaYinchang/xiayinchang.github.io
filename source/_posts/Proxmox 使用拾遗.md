@@ -1,7 +1,7 @@
 ---
 title: Proxmox 使用拾遗
 urlname: ngycql
-date: '2019-09-03 00:00:00 +0800'
+date: '2019-09-03 00:00:00 +0000'
 layout: post
 comments: true
 categories: Proxmox
@@ -10,6 +10,7 @@ tags:
   - Proxmox
 keywords: Proxmox
 description: 本文记录使用 Proxmox 过程中用到的操作。
+abbrlink: 399a617a
 updated: 2019-12-12 00:00:00
 ---
 

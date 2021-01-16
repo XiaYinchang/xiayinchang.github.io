@@ -1,7 +1,7 @@
 ---
 title: IO 同步、异步及阻塞、非阻塞
 urlname: riyfd8
-date: '2019-12-08 00:00:00 +0800'
+date: '2019-12-08 00:00:00 +0000'
 layout: post
 comments: true
 categories: Linux
@@ -10,6 +10,7 @@ tags:
   - IO
 keywords: 'Linux,IO,异步,同步,阻塞,非阻塞'
 description: 理清 Linux 网络 IO 的各种概念。
+abbrlink: d830a7d8
 updated: 2019-12-08 00:00:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 在 Go 中不要拷贝锁
 urlname: nfeqc2
-date: '2019-12-07 00:00:00 +0800'
+date: '2019-12-07 00:00:00 +0000'
 updated: 2019-12-7
 layout: post
 comments: true
@@ -11,6 +11,7 @@ tags:
   - 译文
 keywords: 'Go, mutex, concurrent'
 description: 在并发编程时，往往需要使用到锁保护共享的资源，Go 语言中锁是值类型，所以拷贝会失去作用。
+abbrlink: 6b348626
 ---
 
 ### 原文

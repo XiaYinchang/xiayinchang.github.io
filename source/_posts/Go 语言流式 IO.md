@@ -1,7 +1,7 @@
 ---
 title: Go 语言流式 IO
 urlname: trivgo
-date: '2019-11-24 00:00:00 +0800'
+date: '2019-11-24 00:00:00 +0000'
 layout: post
 comments: true
 categories: 译文
@@ -10,6 +10,7 @@ tags:
   - 译文
 keywords: 'Go,IO'
 description: Go 语言中 IO 的基本用法。
+abbrlink: d2033f7a
 updated: 2019-11-24 00:00:00
 ---
 

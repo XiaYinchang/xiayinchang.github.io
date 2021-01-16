@@ -1,7 +1,7 @@
 ---
 title: Linux 常用系统调用
 urlname: bz00k3
-date: '2020-09-11 00:00:00 +0800'
+date: '2020-09-11 00:00:00 +0000'
 layout: post
 comments: true
 categories: Linux
@@ -10,6 +10,7 @@ tags:
   - 系统调用
 keywords: 'Linux, 系统调用'
 description: Linux 常用系统调用。
+abbrlink: fa6b61f1
 updated: 2020-09-11 00:00:00
 ---
 

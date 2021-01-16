@@ -1,7 +1,7 @@
 ---
 title: 为 Proxmox 制作包含 cloud-init 的虚拟机模板
 urlname: en0qpx
-date: '2019-08-14 00:00:00 +0800'
+date: '2019-08-14 00:00:00 +0000'
 layout: post
 categories: Proxmox
 tags:
@@ -11,6 +11,7 @@ tags:
   - 虚拟机
 keywords: 'Proxmox, cloud-init'
 description: 为了方便基于 Proxmox 平台创建虚拟机，本文描述了制作包含 cloud-init 的虚拟机模板。
+abbrlink: 6c44975c
 updated: 2019-12-13 00:00:00
 ---
 

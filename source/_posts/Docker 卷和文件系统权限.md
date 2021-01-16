@@ -1,7 +1,7 @@
 ---
 title: Docker 卷和文件系统权限
 urlname: vngkut
-date: '2019-10-17 00:00:00 +0800'
+date: '2019-10-17 00:00:00 +0000'
 layout: post
 comments: true
 categories: 译文
@@ -10,6 +10,7 @@ tags:
   - 译文
 keywords: Docker
 description: 使用 Docker 将宿主机目录挂载到容器内使用，往往会出现权限问题造成无法正常读写文件，这篇文章揭示了背后的原因。
+abbrlink: 86bd2460
 ---
 
 |    Date    |    Log    |

@@ -1,7 +1,7 @@
 ---
 title: Keycloak 使用过程记录
 urlname: pfgibp
-date: '2019-12-02 00:00:00 +0800'
+date: '2019-12-02 00:00:00 +0000'
 layout: post
 comments: true
 categories: 认证
@@ -9,6 +9,7 @@ tags:
   - 认证
 keywords: 'Keycloak, 认证'
 description: 使用 Keycloak 实现统一认证中心过程需要记录的知识点。
+abbrlink: e4c4afae
 updated: 2019-12-12 00:00:00
 ---
 

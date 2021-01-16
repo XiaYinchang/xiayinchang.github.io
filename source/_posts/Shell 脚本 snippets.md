@@ -1,7 +1,7 @@
 ---
 title: Shell 脚本 snippets
 urlname: ggzq6c
-date: '2021-01-16 00:00:00 +0800'
+date: '2021-01-16 00:00:00 +0000'
 layout: post
 comments: true
 categories: linux
@@ -10,6 +10,7 @@ tags:
   - shell
 keywords: shell
 description: Shell 脚本 snippets。
+abbrlink: d2d8a73b
 updated: 2021-01-16 00:00:00
 ---
 

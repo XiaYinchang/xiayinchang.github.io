@@ -1,7 +1,7 @@
 ---
 title: Linux 文件系统基础知识
 urlname: vuhmq2
-date: '2019-11-08 00:00:00 +0800'
+date: '2019-11-08 00:00:00 +0000'
 layout: post
 comments: true
 categories: Linux
@@ -9,6 +9,7 @@ tags:
   - Linux
 keywords: Linux
 description: Linux 文件系统基础知识。
+abbrlink: c957e495
 updated: 2020-09-11 00:00:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: VSCode 使用技巧
 urlname: botibk
-date: '2019-10-19 00:00:00 +0800'
+date: '2019-10-19 00:00:00 +0000'
 layout: post
 comments: true
 categories: VSCode
@@ -9,6 +9,7 @@ tags:
   - VSCode
 keywords: VSCode
 description: 汇总 VSCode 使用方法和插件等。
+abbrlink: 16a650d7
 ---
 
 #### Linux 下默认快捷键

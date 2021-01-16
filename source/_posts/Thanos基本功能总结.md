@@ -1,7 +1,7 @@
 ---
 title: Thanos基本功能总结
 urlname: dfwamg
-date: '2018-07-02 00:04:56 +0800'
+date: '2018-07-02 00:04:56 +0000'
 layout: post
 comments: true
 categories: 云计算
@@ -11,6 +11,7 @@ tags:
   - Prometheus
 keywords: 'Thanos,Prometheus'
 description: Thanos基本功能总结。
+abbrlink: 1f42eec9
 ---
 
 |    Date    |                                         Log                                          |

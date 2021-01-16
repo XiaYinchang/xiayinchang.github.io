@@ -1,7 +1,7 @@
 ---
 title: Netfilter 框架及其周边组件
 urlname: eo6o30
-date: '2019-12-15 00:00:00 +0800'
+date: '2019-12-15 00:00:00 +0000'
 layout: post
 comments: true
 categories: Linux
@@ -12,6 +12,7 @@ description: >-
   Netfilter 框架及其周边组件作为 Linux 内核网络栈的一部分在网络包过滤等方面发挥重要作用。我们在使用 iptables 配置防火墙规则、使用
   conntrack 跟踪网络连接、使用 ipvs 配置虚拟服务器实现负载均衡时都使用到了 Netfilter 框架提供的功能特性。对 Netfilter
   的生态进行梳理有助于我们对现有应用场景加深理解，也能进一步帮助我们发掘出更多的应用场景。
+abbrlink: d617cc74
 updated: 2020-08-30 00:00:00
 ---
 

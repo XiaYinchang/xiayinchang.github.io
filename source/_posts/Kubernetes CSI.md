@@ -1,7 +1,7 @@
 ---
 title: Kubernetes CSI
 urlname: xyrx2u
-date: '2019-12-07 00:00:00 +0800'
+date: '2019-12-07 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes
@@ -10,6 +10,7 @@ tags:
   - Kubernetes
 keywords: 'Kubernetes, CSI'
 description: CSI 是 Kubernetes 对接外部存储的最新规范。
+abbrlink: d1098827
 ---
 
 #### Volume

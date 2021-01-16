@@ -1,7 +1,7 @@
 ---
 title: Linux 实用命令集合
 urlname: qyggmq
-date: '2019-11-09 00:00:00 +0800'
+date: '2019-11-09 00:00:00 +0000'
 layout: post
 categories: Linux
 tags:
@@ -9,6 +9,7 @@ tags:
   - "\_云计算"
 keywords: 'Linux, Docker'
 description: 在云计算场景下常用的 Linux 命令记录。
+abbrlink: b489449e
 updated: 2020-09-02 00:00:00
 ---
 

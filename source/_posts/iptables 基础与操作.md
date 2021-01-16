@@ -1,7 +1,7 @@
 ---
 title: iptables 基础与操作
 urlname: cskphl
-date: '2020-08-15 00:00:00 +0800'
+date: '2020-08-15 00:00:00 +0000'
 layout: post
 categories: 'Linux,网络'
 tags:
@@ -9,6 +9,7 @@ tags:
   - iptables
 keywords: 'Linux,iptables'
 description: iptables 基础与操作。
+abbrlink: 26e8b8c9
 updated: 2020-08-26 00:00:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Linux 故障排查方法与工具
 urlname: vdixb5
-date: '2020-08-04 00:00:00 +0800'
+date: '2020-08-04 00:00:00 +0000'
 layout: post
 categories: Linux
 tags:
@@ -9,6 +9,7 @@ tags:
   - 故障排查
 keywords: 'Linux,故障排查'
 description: Linux 故障排查的常用方法与工具。
+abbrlink: c2292029
 updated: 2020-10-21 00:00:00
 ---
 

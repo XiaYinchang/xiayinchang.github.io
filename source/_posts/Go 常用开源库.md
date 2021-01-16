@@ -1,7 +1,7 @@
 ---
 title: Go 常用开源库
 urlname: iekhgs
-date: '2020-10-12 00:00:00 +0800'
+date: '2020-10-12 00:00:00 +0000'
 layout: post
 comments: true
 categories: Go
@@ -9,6 +9,7 @@ tags:
   - Go
 keywords: 'Go, 开源库'
 description: Go 编程常用的开源库。
+abbrlink: 2ebf5f2a
 updated: 2021-01-05 00:00:00
 ---
 

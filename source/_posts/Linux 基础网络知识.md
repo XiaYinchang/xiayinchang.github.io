@@ -1,7 +1,7 @@
 ---
 title: Linux 基础网络知识
 urlname: ggqnsg
-date: '2019-10-09 00:00:00 +0800'
+date: '2019-10-09 00:00:00 +0000'
 layout: post
 comments: true
 categories: 网络
@@ -10,6 +10,7 @@ tags:
   - 网络
 keywords: 网络
 description: 本文记录需要掌握的基础网络知识。
+abbrlink: 52b545c8
 updated: 2020-09-03 00:00:00
 ---
 

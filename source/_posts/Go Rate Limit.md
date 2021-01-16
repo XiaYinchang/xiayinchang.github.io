@@ -1,7 +1,7 @@
 ---
 title: Go Rate Limit
 urlname: rgxo5h
-date: '2020-09-18 00:00:00 +0800'
+date: '2020-09-18 00:00:00 +0000'
 layout: post
 comments: true
 categories: Go
@@ -9,6 +9,7 @@ tags:
   - Go
 keywords: 'Go, RateLimit'
 description: Go 中常用的 RateLimit 工具。
+abbrlink: 6b64a72a
 updated: 2020-09-18 00:00:00
 ---
 

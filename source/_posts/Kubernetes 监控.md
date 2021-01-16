@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 监控
 urlname: odgclg
-date: '2020-07-26 00:00:00 +0800'
+date: '2020-07-26 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes
@@ -10,6 +10,7 @@ tags:
   - Kubernetes
 keywords: 'Kubernetes, Prometheus'
 description: Kubernetes 监控方法、工具与原理。
+abbrlink: b0106d49
 updated: 2020-08-30 00:00:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Docker 知识点与命令集合
 urlname: ltai3f
-date: '2019-12-23 00:00:00 +0800'
+date: '2019-12-23 00:00:00 +0000'
 layout: post
 categories: Docker
 tags:
@@ -9,6 +9,7 @@ tags:
   - "\_云计算"
 keywords: Docker
 description: Docker 相关的基础知识与常用操作记录。
+abbrlink: f8a08eb2
 updated: 2020-12-09 00:00:00
 ---
 

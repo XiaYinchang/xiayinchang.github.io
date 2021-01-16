@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证
 urlname: hvu32r
-date: '2019-12-03 00:00:00 +0800'
+date: '2019-12-03 00:00:00 +0000'
 updated: 2019-12-7
 layout: post
 comments: true
@@ -11,6 +11,7 @@ tags:
   - 译文
 keywords: 'Go, Auth, 认证'
 description: 在 Kubernetes 中使用 Nginx-Ingress 作为 API 网关时可以使用独立的认证服务将认证逻辑从业务代码中解耦出来。
+abbrlink: f901e5ff
 ---
 
 ### 原文
