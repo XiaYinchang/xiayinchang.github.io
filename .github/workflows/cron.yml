@@ -6,13 +6,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    env:
-      TZ: Asia/Shanghai
-
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node-version: [13.x]
+        node-version: [15.x]
 
     steps:
       - uses: actions/checkout@master
