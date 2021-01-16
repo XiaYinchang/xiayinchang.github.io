@@ -15,8 +15,10 @@
     "baseUrl": "https://www.yuque.com/api/v2",
     "login": "xiayinchang",
     "repo": "qgw8ek",
+    "concurrency": 5,
     "mdNameFormat": "title",
     "postPath": "source/_posts",
+    "cachePath": "yuque.json",
     "onlyPublished": false
   },
   "dependencies": {
