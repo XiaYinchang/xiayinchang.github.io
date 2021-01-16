@@ -269,14 +269,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>2.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
             <div class="post-description">Kubernetes 监控方法、工具与原理。</div>
 
@@ -298,7 +298,10 @@
 <h4 id="Kubernetes-控制组件"><a href="#Kubernetes-控制组件" class="headerlink" title="Kubernetes 控制组件"></a>Kubernetes 控制组件</h4><p>Kubernetes 控制组件的控制组件 API Server, Scheduler, Controller, and Etcd 都提供了组件本身的监控信息。</p>
 <h4 id="用户应用"><a href="#用户应用" class="headerlink" title="用户应用"></a>用户应用</h4><p>用户应用往往也会暴露一些统计信息，尤其是提供 Web 服务的 HTTP Server 端，经常借助于 Prometheus 成熟的 SDK 暴露 RED (Request Rate, Error Rate, and Duration) 数据和程序的堆栈用量。</p>
 <h3 id="监控信息的分类"><a href="#监控信息的分类" class="headerlink" title="监控信息的分类"></a>监控信息的分类</h3><p>获取监控数据之后，可对数据按照分门别类地进行汇总和展示，便于运维人员观测系统性能和排故。Kubernetes 的监控数据可按照集群、节点、Pod（容器）、控制组件和应用进行划分。<br>集群信息包括集群整体的资源总量和使用量，如节点数量、容器数量，异常容器数量，命名空间数量，总的 CPU 核数和已用核数，总的内存大小和已用内存，集群网络吞吐等；节点信息包括每个节点的资源总量和用量，容器数量，网络和磁盘 IO 等；Pod 和容器的 CPU 及内存用量；控制组件的健康状态和 HTTP 及 GRPC 调用次数和成功率；应用内部的业务生成的统计信息。</p>
-<h3 id="Prometheus"><a href="#Prometheus" class="headerlink" title="Prometheus"></a>Prometheus</h3><h4 id="relabel"><a href="#relabel" class="headerlink" title="relabel"></a>relabel</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 替换 address 端口</span><br><span class="line">- source_labels:</span><br><span class="line">  - __address__</span><br><span class="line">  separator:     &#39;:&#39;</span><br><span class="line">  regex:         &#39;(.*):(.*)&#39;</span><br><span class="line">  target_label:  &#39;__address__&#39;</span><br><span class="line">  replacement:   &#39;$&#123;1&#125;:10249&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="Prometheus"><a href="#Prometheus" class="headerlink" title="Prometheus"></a>Prometheus</h3><h4 id="yaml-部署"><a href="#yaml-部署" class="headerlink" title="yaml 部署"></a>yaml 部署</h4><p><a href="https://github.com/prometheus-operator/kube-prometheus" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/prometheus-operator/kube-prometheus</a></p>
+<h4 id="helm-chart-部署"><a href="#helm-chart-部署" class="headerlink" title="helm chart 部署"></a>helm chart 部署</h4><p>prometheus stack 部署以及一些 exporter：<a href="https://github.com/prometheus-community/helm-charts/tree/main/charts" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/prometheus-community/helm-charts/tree/main/charts</a></p>
+<h4 id="blackbox-exporter"><a href="#blackbox-exporter" class="headerlink" title="blackbox_exporter"></a>blackbox_exporter</h4><p>blackbox_exporter 是社区提供的黑盒监测机制，默认监听端口 9115，允许通过 HTTP 、 HTTPS 、DNS 、TCP 和 ICMP 探测端点。在 exporter 中，可以定义一系列执行特定检查的模块，例：检查正在运行的 web 服务器，或者 DNS 解析记录。黑盒监控主要用于探活，因为很多应用并没有提供内部 metrics 接口，无法获取应用内部更多的信息，应用对于我们来说是一个黑盒，只能利用存在已久的协议简单探测应用的存活状态。类似于 MySQL exporter 的采集模块则可以将 MySQL 内部本身提供的 metrics 信息导出成 Prometheus 支持的标准格式。实际上 exporter 多是为了将一些 Prometheus 出现之前的应用暴露的形式各异的监控信息导出为 Prometheus 标准格式。而在 Prometheus 广泛流行之后开发的应用，导出的监控信息基本都遵循 Prometheus 标准格式，不再需要 exporter 中转。</p>
+<h4 id="relabel"><a href="#relabel" class="headerlink" title="relabel"></a>relabel</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 替换 address 端口</span><br><span class="line">- source_labels:</span><br><span class="line">  - __address__</span><br><span class="line">  separator:     &#39;:&#39;</span><br><span class="line">  regex:         &#39;(.*):(.*)&#39;</span><br><span class="line">  target_label:  &#39;__address__&#39;</span><br><span class="line">  replacement:   &#39;$&#123;1&#125;:10249&#39;</span><br></pre></td></tr></table></figure>
 
 <h4 id="重新加载配置"><a href="#重新加载配置" class="headerlink" title="重新加载配置"></a>重新加载配置</h4><p>启动时添加  –web.enable-lifecycle 参数，重新加载配置使用 <code>curl -X POST http://localhost:9090/-/reload</code> 。</p>
 <h4 id="校验配置的有效性"><a href="#校验配置的有效性" class="headerlink" title="校验配置的有效性"></a>校验配置的有效性</h4><p>从 <a href="https://github.com/prometheus/prometheus/releases" target="_blank" rel="external nofollow noopener noreferrer">Prometheus 仓库</a>下载的可执行文件包含了 promtool 工具用于校验配置和 rule 的有效性。</p>
@@ -430,7 +433,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Kubernetes-中监控数据的来源"><span class="nav-number">1.</span> <span class="nav-text">Kubernetes 中监控数据的来源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cAdvisor"><span class="nav-number">1.1.</span> <span class="nav-text">cAdvisor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-Metrics-Server"><span class="nav-number">1.2.</span> <span class="nav-text">Kubernetes Metrics Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-Exporter"><span class="nav-number">1.3.</span> <span class="nav-text">Node Exporter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kube-State-Metrics"><span class="nav-number">1.4.</span> <span class="nav-text">Kube-State-Metrics</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-控制组件"><span class="nav-number">1.5.</span> <span class="nav-text">Kubernetes 控制组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户应用"><span class="nav-number">1.6.</span> <span class="nav-text">用户应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监控信息的分类"><span class="nav-number">2.</span> <span class="nav-text">监控信息的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prometheus"><span class="nav-number">3.</span> <span class="nav-text">Prometheus</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#relabel"><span class="nav-number">3.1.</span> <span class="nav-text">relabel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重新加载配置"><span class="nav-number">3.2.</span> <span class="nav-text">重新加载配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#校验配置的有效性"><span class="nav-number">3.3.</span> <span class="nav-text">校验配置的有效性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Kubernetes-中监控数据的来源"><span class="nav-number">1.</span> <span class="nav-text">Kubernetes 中监控数据的来源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cAdvisor"><span class="nav-number">1.1.</span> <span class="nav-text">cAdvisor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-Metrics-Server"><span class="nav-number">1.2.</span> <span class="nav-text">Kubernetes Metrics Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-Exporter"><span class="nav-number">1.3.</span> <span class="nav-text">Node Exporter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kube-State-Metrics"><span class="nav-number">1.4.</span> <span class="nav-text">Kube-State-Metrics</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-控制组件"><span class="nav-number">1.5.</span> <span class="nav-text">Kubernetes 控制组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户应用"><span class="nav-number">1.6.</span> <span class="nav-text">用户应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监控信息的分类"><span class="nav-number">2.</span> <span class="nav-text">监控信息的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prometheus"><span class="nav-number">3.</span> <span class="nav-text">Prometheus</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#yaml-部署"><span class="nav-number">3.1.</span> <span class="nav-text">yaml 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#helm-chart-部署"><span class="nav-number">3.2.</span> <span class="nav-text">helm chart 部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#blackbox-exporter"><span class="nav-number">3.3.</span> <span class="nav-text">blackbox_exporter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#relabel"><span class="nav-number">3.4.</span> <span class="nav-text">relabel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重新加载配置"><span class="nav-number">3.5.</span> <span class="nav-text">重新加载配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#校验配置的有效性"><span class="nav-number">3.6.</span> <span class="nav-text">校验配置的有效性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -445,20 +448,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">58</span>
+        <span class="site-state-item-count">63</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -508,13 +511,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">297k</span>
+    <span title="站点总字数">309k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:30</span>
+    <span title="站点阅读时长">4:41</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>

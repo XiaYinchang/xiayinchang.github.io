@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2020-12-26T16:00:00.000Z</updated>
+  <updated>2021-01-15T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,75 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Shell 脚本 snippets</title>
+    <link href="https://www.xiayinchang.top/post/d2d8a73b.html"/>
+    <id>https://www.xiayinchang.top/post/d2d8a73b.html</id>
+    <published>2021-01-15T16:00:00.000Z</published>
+    <updated>2021-01-15T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      Shell 脚本 snippets。
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://www.xiayinchang.top/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://www.xiayinchang.top/tags/linux/"/>
+    
+      <category term="shell" scheme="https://www.xiayinchang.top/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>client-go 的零零碎碎的用法</title>
+    <link href="https://www.xiayinchang.top/post/91373500.html"/>
+    <id>https://www.xiayinchang.top/post/91373500.html</id>
+    <published>2021-01-09T16:00:00.000Z</published>
+    <updated>2021-01-09T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      client-go 使用过程的中一些零碎知识的记录。
+    
+    </summary>
+    
+    
+      <category term="kubernetes" scheme="https://www.xiayinchang.top/categories/kubernetes/"/>
+    
+    
+      <category term="kubernetes" scheme="https://www.xiayinchang.top/tags/kubernetes/"/>
+    
+      <category term="client-go" scheme="https://www.xiayinchang.top/tags/client-go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>context 相关知识与用法</title>
+    <link href="https://www.xiayinchang.top/post/b246b51.html"/>
+    <id>https://www.xiayinchang.top/post/b246b51.html</id>
+    <published>2021-01-09T16:00:00.000Z</published>
+    <updated>2021-01-09T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      context 相关的知识和用法。
+    
+    </summary>
+    
+    
+      <category term="go" scheme="https://www.xiayinchang.top/categories/go/"/>
+    
+    
+      <category term="go" scheme="https://www.xiayinchang.top/tags/go/"/>
+    
+      <category term="context" scheme="https://www.xiayinchang.top/tags/context/"/>
+    
+  </entry>
   
   <entry>
     <title>实用容器镜像</title>
@@ -170,7 +239,7 @@
     <link href="https://www.xiayinchang.top/post/afef0f89.html"/>
     <id>https://www.xiayinchang.top/post/afef0f89.html</id>
     <published>2020-10-15T16:00:00.000Z</published>
-    <updated>2020-10-19T16:00:00.000Z</updated>
+    <updated>2021-01-09T16:00:00.000Z</updated>
     
     <summary type="html">
     
@@ -382,75 +451,6 @@
       <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
     
       <category term="故障排查" scheme="https://www.xiayinchang.top/tags/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Kubernetes 监控</title>
-    <link href="https://www.xiayinchang.top/post/b0106d49.html"/>
-    <id>https://www.xiayinchang.top/post/b0106d49.html</id>
-    <published>2020-07-25T16:00:00.000Z</published>
-    <updated>2020-08-29T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      Kubernetes 监控方法、工具与原理。
-    
-    </summary>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-      <category term="监控" scheme="https://www.xiayinchang.top/tags/%E7%9B%91%E6%8E%A7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TBD</title>
-    <link href="https://www.xiayinchang.top/post/270af770.html"/>
-    <id>https://www.xiayinchang.top/post/270af770.html</id>
-    <published>2020-07-25T16:00:00.000Z</published>
-    <updated>2020-08-18T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      需要阅读的材料。
-    
-    </summary>
-    
-    
-      <category term="学习笔记" scheme="https://www.xiayinchang.top/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="TBD" scheme="https://www.xiayinchang.top/tags/TBD/"/>
-    
-      <category term="学习笔记" scheme="https://www.xiayinchang.top/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MeshCentral - 管理远程设备的利器</title>
-    <link href="https://www.xiayinchang.top/post/f5428d95.html"/>
-    <id>https://www.xiayinchang.top/post/f5428d95.html</id>
-    <published>2020-06-19T16:00:00.000Z</published>
-    <updated>2020-06-19T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      MeshCentral 是一款开源的可私有化部署的 Web 端远程设备管理工具，功能强大，可以登录远程桌面或者直接打开终端，也可以传输文件，既可以通过中心服务器连接远程设备，也支持 WebRTC，通过 NAT 穿透实现 Peer To Peer 的连接，对于使用羊毛版公有云服务器的群体无疑是极其友好的，唯一不足的地方就是界面观感不佳，一眼看去让人百感交集。
-    
-    </summary>
-    
-    
-      <category term="开发工具" scheme="https://www.xiayinchang.top/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="开发工具" scheme="https://www.xiayinchang.top/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
-    
-      <category term="MeshCentral" scheme="https://www.xiayinchang.top/tags/MeshCentral/"/>
     
   </entry>
   
