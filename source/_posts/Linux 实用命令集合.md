@@ -10,7 +10,7 @@ tags:
 keywords: 'Linux, Docker'
 description: 在云计算场景下常用的 Linux 命令记录。
 abbrlink: b489449e
-updated: 2020-09-02 00:00:00
+updated: 2021-01-19 00:00:00
 ---
 
 #### CentOS
@@ -555,10 +555,24 @@ sed -i '/xxx/d' filename            # 删除包含 xxx 的行
 sed -i 's/CURRENT_HOST_ZONE_ID/test/g' /tmp/{test1,test2}
 ```
 
-- 在指定模式串后面添加内容
+- 插入多个空格只需要在第一个空格前加反斜线
 
 ```bash
+sed -i -e '/network-plugin/i\                --container-runtime=remote \\' /etc/kubernetes/kubelet
+```
+
+- 在指定模式串前面或后面添加内容
+
+```bash
+# 后面
 sed -i '/\[Service\]/a EnvironmentFile\=\-\/etc\/kubernetes\/ucloud' /usr/lib/systemd/system/containerd.service
+# 前面只需将 a 换成 i
+```
+
+- 对目录下所有文件执行替换
+
+```bash
+find ./ -type f -exec sed -i -e "s/K8S_NODE_NAME/$K8S_NODE_NAME/g" -e "s/WORK_Dir/$WORK_Dir/g" -e "s/STATUS_CM/$STATUS_CM/g" {}
 ```
 
 - 报错
@@ -573,8 +587,10 @@ sed: -e expression #1, char 34: unknown option to `s'
 ```bash
 # -i 不区分大小写; -n 显示文件行号; -e 多项查询条件，或操作
 grep -in -e 'AddNode' -e 'checkpara' -r .
+grep -E "10.9.150.110|10.9.68.13"
 # -v 匹配不符合指定条件的内容
 grep -in -v 'AddUK8SClusterNode' -r .
+grep -v -E "10.9.150.110|10.9.68.13"
 # -I 忽略检索二进制文件，等同于 --binary-files=without-match
 grep -I -i 'ifup-post' -r .
 ```
@@ -604,6 +620,13 @@ awk '{for(i=1;i<=N;i++){$i=""}; print $0}' file
 awk -v OFS=',' '{print $1,$2}'
 # 处理多个返回值
 crictl images | grep -v IMAGE | awk '{print $1,$2}' | while read var1 var2; do echo $var1":"$var2; done
+```
+
+#### tee
+
+```bash
+# 同时输出到标准输出和文件
+echo "test"| tee -a outfile
 ```
 
 #### split
@@ -949,14 +972,6 @@ yum install redhat-lsb-core
 lsb_release -is
 ```
 
-#### 判断文件是否存在
-
-```bash
-// -f 判断文件存在
-if [ ! -f "/usr/local/bin/hyperkube.bak" ]; then cp /usr/local/bin/hyperkube /usr/local/bin/hyperkube.bak; fi
-// -s 判断文件存在且不为空
-```
-
 #### sshpass 跳过 hostkey 检查
 
 ```bash
@@ -1054,19 +1069,6 @@ iptables-save -t filter > iptables.bak
 iptables-restor < iptables.bak
 ```
 
-#### 判断字符串包含子串
-
-参见：[https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash](https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash)
-
-```bash
-string='My string';
-# 会进行整个字符串的匹配，不需要加通配符
-if [[ $string =~ "My" ]]
-then
-   echo "It's there!"
-fi
-```
-
 #### findmnt
 
 参见： [https://www.tecmint.com/find-mounted-file-systems-in-linux/](https://www.tecmint.com/find-mounted-file-systems-in-linux/)
@@ -1098,32 +1100,6 @@ systemctl show -p FragmentPath containerd | awk -F "=" '{print $2}'
 ```bash
 # 显示时间戳
 conntrack -E -o timestamp
-```
-
-#### shell 脚本语法校验
-
-参考：[https://stackoverflow.com/questions/171924/how-do-i-syntax-check-a-bash-script-without-running-it](https://stackoverflow.com/questions/171924/how-do-i-syntax-check-a-bash-script-without-running-it)
-
-```bash
-bash -n tmp.sh
-// 或者安装 shellcheck 工具
-shellcheck tmp.sh
-```
-
-#### 带超时的循环
-
-参考：[https://stackoverflow.com/questions/27555727/timeouting-a-while-loop-in-linux-shell-script](https://stackoverflow.com/questions/27555727/timeouting-a-while-loop-in-linux-shell-script)
-
-```bash
-timeout 5 bash -c -- 'while true; do printf ".";done'
-```
-
-#### shell 中打印带日期的日志
-
-参考：[https://serverfault.com/a/310099](https://serverfault.com/a/310099),[https://stackoverflow.com/a/1705761](https://stackoverflow.com/a/1705761)
-
-```bash
-echo $(date -u) "Some message or other"
 ```
 
 #### ssh
@@ -1308,53 +1284,6 @@ systemd-modules-load.service 在系统启动时自动读取 /etc/modules-load.d 
 
 ```bash
 cat /dev/zero>/dev/null
-```
-
-#### shell 编程
-
-- for 循环指定次数
-
-```bash
-for i in {1..200}; do
-  dosomething
-done
-```
-
-- `set -e` 出现非零返回值立即退出
-
-```bash
-set -e： 执行的时候如果出现了返回值为非零，整个脚本就会立即退出
-set +e： 执行的时候如果出现了返回值为非零将会继续执行下面的脚本
-
-set -e 命令用法总结如下：
-1. 当命令的返回值为非零状态时，则立即退出脚本的执行。
-2. 作用范围只限于脚本执行的当前进行，不作用于其创建的子进程（https://blog.csdn.net/fc34235/article/details/76598448 ）。
-3. 另外，当想根据命令执行的返回值，输出对应的log时，最好不要采用set -e选项，而是通过配合exit 命令来达到输出log并退出执行的目的。
-```
-
-- 设置工作目录
-
-```
-#!/bin/bash
-cd "$(dirname "$0")"
-```
-
-- 捕捉信号并处理
-
-```bash
-#!/bin/bash
-exit_script() {
-    echo "Printing something special!"
-    echo "Maybe executing other commands!"
-    trap - SIGINT SIGTERM # clear the trap
-    kill -- -$$ # Sends SIGTERM to child/sub processes
-}
-
-trap exit_script SIGINT SIGTERM
-
-echo "Some other text"
-#other commands here
-sleep infinity
 ```
 
 #### 配置 6to4 隧道

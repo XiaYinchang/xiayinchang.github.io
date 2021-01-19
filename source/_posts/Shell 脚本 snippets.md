@@ -159,6 +159,9 @@ cd "$some_directory" && rm ./*
 ```bash
 # 以下逻辑在某行命令执行后退出码非 0 时打印错误并退出
 # 在脚本退出码为 0 时清理临时目录
+# 必要时加入 set -E ，等同于 set -o errtrace ，其效果是让 trap 能够捕获到函数中执行出错的命令
+set -eE
+
 tempfiles=( )
 cleanup() {
   rm -f "${tempfiles[@]}"
@@ -250,4 +253,25 @@ timeout 5 bash -c -- 'while true; do printf ".";done'
 
 ```bash
 echo $(date -u) "Some message or other"
+```
+
+#### 判断文件是否存在
+
+```bash
+// -f 判断文件存在
+if [ ! -f "/usr/local/bin/hyperkube.bak" ]; then cp /usr/local/bin/hyperkube /usr/local/bin/hyperkube.bak; fi
+// -s 判断文件存在且不为空
+```
+
+#### 判断字符串包含子串
+
+参见：[https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash](https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash)
+
+```bash
+string='My string';
+# 会进行整个字符串的匹配，不需要加通配符
+if [[ $string =~ "My" ]]
+then
+   echo "It's there!"
+fi
 ```
