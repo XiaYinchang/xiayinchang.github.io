@@ -11,7 +11,7 @@ tags:
 keywords: shell
 description: Shell 脚本 snippets。
 abbrlink: d2d8a73b
-updated: 2021-01-16 00:00:00
+updated: 2021-01-19 00:00:00
 ---
 
 #### 重试逻辑
@@ -179,4 +179,75 @@ error() {
 trap 'error ${LINENO}' ERR
 # 手动触发方式
 error ${LINENO} "the foobar failed" 2
+```
+
+#### for 循环指定次数
+
+```bash
+for i in {1..200}; do
+  dosomething
+done
+```
+
+#### `set -e` 出现非零返回值立即退出
+
+```bash
+set -e： 执行的时候如果出现了返回值为非零，整个脚本就会立即退出
+set +e： 执行的时候如果出现了返回值为非零将会继续执行下面的脚本
+
+set -e 命令用法总结如下：
+1. 当命令的返回值为非零状态时，则立即退出脚本的执行。
+2. 作用范围只限于脚本执行的当前进行，不作用于其创建的子进程（https://blog.csdn.net/fc34235/article/details/76598448 ）。
+3. 另外，当想根据命令执行的返回值，输出对应的log时，最好不要采用set -e选项，而是通过配合exit 命令来达到输出log并退出执行的目的。
+```
+
+#### 设置工作目录
+
+```
+#!/bin/bash
+cd "$(dirname "$0")"
+```
+
+#### 捕捉信号并处理
+
+```bash
+#!/bin/bash
+exit_script() {
+    echo "Printing something special!"
+    echo "Maybe executing other commands!"
+    trap - SIGINT SIGTERM # clear the trap
+    kill -- -$$ # Sends SIGTERM to child/sub processes
+}
+
+trap exit_script SIGINT SIGTERM
+
+echo "Some other text"
+#other commands here
+sleep infinity
+```
+
+#### shell 脚本语法校验
+
+参考：[https://stackoverflow.com/questions/171924/how-do-i-syntax-check-a-bash-script-without-running-it](https://stackoverflow.com/questions/171924/how-do-i-syntax-check-a-bash-script-without-running-it)
+
+```bash
+bash -n tmp.sh
+// 或者安装 shellcheck 工具
+shellcheck tmp.sh
+```
+
+#### 带超时的循环
+
+参考：[https://stackoverflow.com/questions/27555727/timeouting-a-while-loop-in-linux-shell-script](https://stackoverflow.com/questions/27555727/timeouting-a-while-loop-in-linux-shell-script)
+
+```bash
+timeout 5 bash -c -- 'while true; do printf ".";done'
+```
+
+#### 打印带日期的日志
+
+参考：[https://serverfault.com/a/310099](https://serverfault.com/a/310099),[https://stackoverflow.com/a/1705761](https://stackoverflow.com/a/1705761)
+
+```bash
+echo $(date -u) "Some message or other"
 ```
