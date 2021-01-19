@@ -572,7 +572,8 @@ sed -i '/\[Service\]/a EnvironmentFile\=\-\/etc\/kubernetes\/ucloud' /usr/lib/sy
 - 对目录下所有文件执行替换
 
 ```bash
-find ./ -type f -exec sed -i -e "s/K8S_NODE_NAME/$K8S_NODE_NAME/g" -e "s/WORK_Dir/$WORK_Dir/g" -e "s/STATUS_CM/$STATUS_CM/g" {}
+# 最后的 \; 必不可少
+find ./ -type f -exec sed -i -e "s/K8S_NODE_NAME/$K8S_NODE_NAME/g" -e "s/WORK_Dir/$WORK_Dir/g" -e "s/STATUS_CM/$STATUS_CM/g" {} \;
 ```
 
 - 报错
@@ -625,7 +626,7 @@ crictl images | grep -v IMAGE | awk '{print $1,$2}' | while read var1 var2; do e
 #### tee
 
 ```bash
-# 同时输出到标准输出和文件
+# 同时输出到标准输出和追加至文件
 echo "test"| tee -a outfile
 ```
 

@@ -154,7 +154,7 @@ cd "$some_directory" && rm ./*
 
 #### 错误处理
 
-参考：[https://stackoverflow.com/a/185900](https://stackoverflow.com/a/185900)
+参考：[https://stackoverflow.com/a/185900](https://stackoverflow.com/a/185900)，[https://stackoverflow.com/a/35800451](https://stackoverflow.com/a/35800451)
 
 ```bash
 # 以下逻辑在某行命令执行后退出码非 0 时打印错误并退出
@@ -182,6 +182,27 @@ error() {
 trap 'error ${LINENO}' ERR
 # 手动触发方式
 error ${LINENO} "the foobar failed" 2
+```
+
+另一种处理方式，参考：[The Bash Trap Trap](https://medium.com/@dirk.avery/the-bash-trap-trap-ce6083f36700)
+
+```bash
+#!/bin/bash
+set -e
+trap 'catch $? $LINENO' EXIT
+catch() {
+  echo "catching!"
+  if [ "$1" != "0" ]; then
+    # error handling goes here
+    echo "Error $1 occurred on $2"
+  fi
+}
+simple() {
+  badcommand
+  echo "Hi from simple()!"
+}
+simple
+echo "After simple call"
 ```
 
 #### for 循环指定次数
