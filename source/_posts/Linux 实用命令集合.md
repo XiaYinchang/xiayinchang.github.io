@@ -660,6 +660,10 @@ od -t u1 prometheus-new.yaml
 sort -k 2 file.txt
 ```
 
+#### crond
+
+/etc/cron.d 目录下添加文件设置定时任务时必须要在文件结尾加换行才能生效。
+
 #### iproute2
 
 ```
@@ -1187,6 +1191,13 @@ rvm use 2.3.1 --default
 gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ --remove https://rubygems.org/
 gem sources -l
 gem install --no-document fpm
+```
+
+#### find
+
+```bash
+# 按扩展名排除文件
+find . -not -name "*.exe" -not -name "*.dll" -not -type d
 ```
 
 #### find -print0 与  xargs -0

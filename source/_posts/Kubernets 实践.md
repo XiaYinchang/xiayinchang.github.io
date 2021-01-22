@@ -178,6 +178,15 @@ etcdctl endpoint health
 注意：对于断电或系统意外崩溃的情况可尝试重启 etcd ，如果重启无法解决再使用备份进行恢复。
 参考：[https://blog.csdn.net/dazuiba008/article/details/94595679](https://blog.csdn.net/dazuiba008/article/details/94595679)
 
+#### drain node
+
+```bash
+# 不加 --ignore-daemonsets 会因为节点上部署有 daemonset 管理的 Pod 而中止
+# 不加 --force 会因为节点上有不属于任何控制器的独立 Pod 而中止
+# 不加 --delete-local-data 会因为节点上有 Pod 使用了 emptyDir 或 LocalPV 之类的本地存储而中止
+kubectl drain <nodeName> --ignore-daemonsets --force --delete-local-data
+```
+
 #### nodeName/nodeSelector/Affinity
 
 直接指定 nodeName 后 Pod 将被视为已调度而不再经过调度器进行调度；nodeSelector 通过节点标签来指定 Pod 调度到相应节点上去，是较为简单的一种方式；Affinity 支持逻辑表达式实现更复杂的调度逻辑，且可设置不具强制性的软亲和，还可以设置 Pod 之间的亲和与反亲和特性。
