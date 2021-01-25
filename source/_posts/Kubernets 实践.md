@@ -11,7 +11,7 @@ tags:
 keywords: Kubernetes
 description: 本文记录 Kubernetes 相关的操作命令和实践方法。
 abbrlink: 9caa466a
-updated: 2021-01-16 00:00:00
+updated: 2021-01-23 00:00:00
 ---
 
 #### kubectl
@@ -1053,6 +1053,10 @@ go tool pprof heap.info
 kubectl proxy --address='0.0.0.0' --accept-hosts='^*$'
 go tool pprof -seconds=60 -raw -output=kubelet.pprof http://127.0.0.1:8001/api/v1/nodes/${NODENAME}/proxy/debug/pprof/profile
 ```
+
+#### Deployment 中使用 PVC
+
+一般来讲 Deployment 应当用来部署无状态应用，需要挂载 PVC 时最好使用 StatefulSet。如果 Deployment 使用了 ReadWriteOnce 的 PVC （块存储），在滚动更新时会因为需要先拉起新的 Pod 再终止旧 Pod 造成同时挂载该 PVC 的情况，这是不允许，所以会一直卡在这个状态。如果想要这样使用，可以把更新策略改成 Recreate ，这样会先删除旧 Pod 再建新 Pod，这必然导致业务中断。另一种方案是使用 ReadWriteMany 的 PVC（文件或对象存储），可以允许多 Pod 同时挂载。
 
 #### 十二因素应用
 
