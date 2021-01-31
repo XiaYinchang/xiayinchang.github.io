@@ -204,3 +204,7 @@ git checkout c5f567 -- file1/to/restore file2/to/restore
 #### github actions
 
 - 自动创建发布：[https://github.com/actions/upload-release-asset](https://github.com/actions/upload-release-asset)
+
+#### clone all projects in group
+
+[https://github.com/gabrie30/ghorg](https://github.com/gabrie30/ghorg)
