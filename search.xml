@@ -488,7 +488,8 @@
 <h4 id="github-actions"><a href="#github-actions" class="headerlink" title="github actions"></a>github actions</h4><ul>
 <li>自动创建发布：<a href="https://github.com/actions/upload-release-asset" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/actions/upload-release-asset</a></li>
 </ul>
-<h4 id="clone-all-projects-in-group"><a href="#clone-all-projects-in-group" class="headerlink" title="clone all projects in group"></a>clone all projects in group</h4><p><a href="https://github.com/gabrie30/ghorg" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/gabrie30/ghorg</a></p>
+<h4 id="clone-all-projects-in-group"><a href="#clone-all-projects-in-group" class="headerlink" title="clone all projects in group"></a>clone all projects in group</h4><p><a href="https://github.com/gabrie30/ghorg" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/gabrie30/ghorg</a><br>或者</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> repo <span class="keyword">in</span> $(curl -s --header <span class="string">"PRIVATE-TOKEN: your_private_token"</span> https://&lt;your-host&gt;/api/v4/groups/&lt;group_id&gt; | jq <span class="string">".projects[].ssh_url_to_repo"</span> | tr -d <span class="string">'"'</span>); <span class="keyword">do</span> git <span class="built_in">clone</span> <span class="variable">$repo</span>; <span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>开发工具</category>
