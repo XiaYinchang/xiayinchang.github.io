@@ -10,7 +10,7 @@ tags:
 keywords: Git
 description: Git 常用命令记录。
 abbrlink: 5fddf106
-updated: 2020-08-18 00:00:00
+updated: 2021-01-31 00:00:00
 ---
 
 #### 修改历史 commit 信息
@@ -208,3 +208,8 @@ git checkout c5f567 -- file1/to/restore file2/to/restore
 #### clone all projects in group
 
 [https://github.com/gabrie30/ghorg](https://github.com/gabrie30/ghorg)
+或者
+
+```bash
+for repo in $(curl -s --header "PRIVATE-TOKEN: your_private_token" https://<your-host>/api/v4/groups/<group_id> | jq ".projects[].ssh_url_to_repo" | tr -d '"'); do git clone $repo; done;
+```
