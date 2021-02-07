@@ -10,7 +10,7 @@ tags:
 keywords: 'Linux,iptables'
 description: iptables 基础与操作。
 abbrlink: 26e8b8c9
-updated: 2020-08-26 00:00:00
+updated: 2021-02-05 00:00:00
 ---
 
 #### 防火墙
@@ -85,6 +85,11 @@ iptables -D INPUT 1
 iptables -F NEW_CHAIN
 iptables -X NEW_CHAIN
 ```
+
+#### 观测工具
+
+[https://github.com/commonism/iptables-trace](https://github.com/commonism/iptables-trace)
+[https://github.com/x-way/iptables-tracer](https://github.com/x-way/iptables-tracer)
 
 #### 参考资料
 
