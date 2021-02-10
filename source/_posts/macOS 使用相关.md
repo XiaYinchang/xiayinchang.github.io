@@ -10,7 +10,7 @@ tags:
 keywords: macOS
 description: macOS 使用相关。
 abbrlink: e9aa727
-updated: 2020-07-10 00:00:00
+updated: 2021-02-10 00:00:00
 ---
 
 #### 安装  source-code-pro 字体
@@ -29,7 +29,13 @@ brew tap homebrew/cask-fonts && brew cask install font-source-code-pro
 
 #### homebrew 使用国内镜像源
 
-需先安装 homebrew ，然后配置国内镜像源，参考：[https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob](https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob)，[https://blog.csdn.net/iroguel/article/details/93481795](https://blog.csdn.net/iroguel/article/details/93481795)
+安装 homebre
+
+```
+/bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
+```
+
+配置国内镜像源，参考：[https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob](https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob)，[https://blog.csdn.net/iroguel/article/details/93481795](https://blog.csdn.net/iroguel/article/details/93481795)
 
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
