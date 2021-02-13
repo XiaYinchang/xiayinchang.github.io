@@ -22,6 +22,7 @@
     "onlyPublished": false
   },
   "dependencies": {
+    "ali-oss": "^6.13.2",
     "babel-runtime": "^6.26.0",
     "form-data": "^3.0.0",
     "hexo": "^4.2.1",

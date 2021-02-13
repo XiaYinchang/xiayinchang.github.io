@@ -3,6 +3,19 @@ const path = require("path");
 const https = require("https");
 const FormData = require("form-data");
 const request = require("request");
+const OSS = require("ali-oss");
+const PassThrough = require("stream").PassThrough;
+// let STS = OSS.STS;
+// let sts = new STS({
+//   accessKeyId: process.env.OSS_ACCESS_KEY,
+//   accessKeySecret: process.env.OSS_SECRET_KEY,
+// });
+// let token = await sts.assumeRole(
+//   `acs:ram::${process.env.ALI_ACCOUNT_ID}:role/blog-images`,
+//   "",
+//   "",
+//   "uploadImage"
+// );
 
 const publicDir = "./public";
 // Loop through all the files in the temp directory
@@ -52,15 +65,20 @@ function replaceImgAddr(filename) {
         const imgAddr = match[0].match(srcReg)[1];
         if (imgAddr.startsWith("https://cdn.nlark.com/yuque")) {
           let imagePath = "";
-          let imageMap = imagesMap.images.find((ele) => ele.origin === imgAddr);
+          let imageName = getImageName(imgAddr);
+          let imageMap = imagesMap.images.find((ele) => ele.name === imageName);
           if (imageMap) {
-            imagePath = imageMap.smms;
+            imagePath = imageMap.oss;
           } else {
             try {
               await sleep(5000 * Math.random());
-              imagePath = await uploadToSMMS(imgAddr);
+              imagePath = await uploadToOSS(imgAddr);
               if (imagePath) {
-                imagesMap.images.push({ origin: imgAddr, smms: imagePath });
+                imagesMap.images.push({
+                  origin: imgAddr,
+                  oss: imagePath,
+                  name: imageName,
+                });
               }
             } catch (error) {
               console.log(error);
@@ -85,9 +103,7 @@ function replaceImgAddr(filename) {
 }
 
 function downloadToLocal(imgAddr) {
-  const tmpArr = imgAddr.split("#")[0].split("/");
-  const imageName = tmpArr[tmpArr.length - 1];
-  const relativePath = `/images/${imageName}`;
+  const relativePath = `/images/${getImageName(imgAddr)}`;
   const localfilePath = path.join(publicDir, relativePath);
   request(imgAddr)
     .pipe(fs.createWriteStream(localfilePath))
@@ -95,6 +111,44 @@ function downloadToLocal(imgAddr) {
       console.error(`download ${imgAddr} to ${localfilePath} failed`);
     });
   return relativePath;
+}
+
+function getImageName(imgAddr) {
+  const tmpArr = imgAddr.split("#")[0].split("/");
+  return tmpArr[tmpArr.length - 1];
+}
+
+async function uploadToOSS(imgAddr) {
+  let client = new OSS({
+    region: "oss-cn-hongkong",
+    accessKeyId: process.env.OSS_ACCESS_KEY,
+    accessKeySecret: process.env.OSS_SECRET_KEY,
+    // stsToken: token.credentials.SecurityToken,
+    bucket: "xyc-blog-images",
+  });
+
+  let stream;
+  let pipf = await new Promise((resolve, reject) => {
+    stream = request(imgAddr)
+      .on("error", (err) => {
+        resolve(0);
+      })
+      .on("response", (response) => {
+        if (response.statusCode !== 200) {
+          resolve(0);
+        }
+        resolve(1);
+      })
+      .pipe(PassThrough());
+  });
+  if (!pipf) {
+    console.log("下载失败");
+    return "";
+  }
+  let imageName = getImageName(imgAddr);
+  let result = await client.putStream(imageName, stream);
+  await client.putACL(result.name, "public-read");
+  return `https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/${result.name}`;
 }
 
 function uploadToSMMS(imgAddr) {

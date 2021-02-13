@@ -28,6 +28,9 @@ jobs:
         env:
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
           LIVERE_UID: ${{ secrets.LIVERE_UID }}
+          OSS_ACCESS_KEY: ${{ secrets.OSS_ACCESS_KEY }}
+          OSS_SECRET_KEY: ${{ secrets.OSS_SECRET_KEY }}
+          ALI_ACCOUNT_ID: ${{ secrets.ALI_ACCOUNT_ID }}
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v2.5.0
         env:
