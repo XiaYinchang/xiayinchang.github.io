@@ -193,4 +193,8 @@ function uploadToSMMS(imgAddr) {
   });
 }
 
+setTimeout(() => {
+  process.exit(0);
+}, 10000);
+
 readDir(publicDir);
