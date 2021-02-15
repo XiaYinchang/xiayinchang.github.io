@@ -69,7 +69,7 @@
 <meta property="article:tag" content=" Keystone">
 <meta property="article:tag" content=" Authentication">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/182657/1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png#align=left&display=inline&height=780&name=image.png&originHeight=780&originWidth=1124&size=108671&status=done&style=none&width=1124">
+<meta name="twitter:image" content="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/699b195d.html">
 
@@ -355,7 +355,7 @@
 <p>重新打包镜像后尝试部署，仍然报错，这次是找不到 fernet 相关的 key 文件，应当是 fernet 需要额外的一些部署操作，查看官方文档后，在镜像启动脚本中添加了以下命令:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone</span><br><span class="line">keystone-manage credential_setup --keystone-user keystone --keystone-group keystone</span><br></pre></td></tr></table></figure>
 
-<p>再次重新打包镜像，重新部署，部署成功。curl 访问一下，结果如下：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png#align=left&display=inline&height=780&name=image.png&originHeight=780&originWidth=1124&size=108671&status=done&style=none&width=1124" alt="image.png"></p>
+<p>再次重新打包镜像，重新部署，部署成功。curl 访问一下，结果如下：<br><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575441061446-d961a9d8-bb54-44c9-ab3e-e63b839554bf.png" alt="image.png"></p>
 <p>因为做了一些改动，所以将原来的 keystone 容器化部署开源项目做了一些修改，并提交到了<a href="https://github.com/XiaYinchang/keystone" target="_blank" rel="external nofollow noopener noreferrer">这里</a>.</p>
 <h3 id="部署-K8S-与-Keystone-集成的支持插件"><a href="#部署-K8S-与-Keystone-集成的支持插件" class="headerlink" title="部署 K8S 与 Keystone 集成的支持插件"></a>部署 K8S 与 Keystone 集成的支持插件</h3><p>根据<a href="https://github.com/kubernetes/cloud-provider-openstack" target="_blank" rel="external nofollow noopener noreferrer">cloud-provider-openstack</a>的使用说明文档，我们这里主要使用到两个插件：</p>
 <ul>
@@ -386,7 +386,7 @@
 <p>接下来，更改 kube-apiserver 的启动参数，编辑 /etc/kubernetes/manifests/kube-apiserver.yaml 如下，增加了一行内容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--authentication-token-webhook-config-file&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;pki&#x2F;webhookconfig.yaml</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575441117777-1a84f269-f9cb-4f21-b149-f3a9979f981d.png#align=left&display=inline&height=1128&name=image.png&originHeight=1128&originWidth=1268&size=287983&status=done&style=none&width=1268" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575441117777-1a84f269-f9cb-4f21-b149-f3a9979f981d.png" alt="image.png"></p>
 <h4 id="client-keystone-auth-的部署"><a href="#client-keystone-auth-的部署" class="headerlink" title="client-keystone-auth 的部署"></a>client-keystone-auth 的部署</h4><p>先编译出 client-keystone-aut 可执行文件，并放到 master 任意路径，这里放在 /usr/local/bin/client-keystone-auth。然后，执行以下命令创建一个 user ：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config set-credentials admin</span><br></pre></td></tr></table></figure>
 
@@ -406,12 +406,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config use-context kubernetes-admin@kubernetes</span><br></pre></td></tr></table></figure>
 
 <p>此时执行 kubectl get ns 可以发现，keystone 中的项目已经同步过来了，列表中第一个命名空间就是从 Keystone 同步过来的项目，命名规则和我们设置的一致，即项目名-项目 ID：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575441145645-fc76fed8-5251-442c-897c-ec854e8fbdf8.png#align=left&display=inline&height=204&name=image.png&originHeight=204&originWidth=792&size=37633&status=done&style=none&width=792" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575441145645-fc76fed8-5251-442c-897c-ec854e8fbdf8.png" alt="image.png"></p>
 <p>刚刚我们说到 keystone-admin<a href>@kubernetes </a> context 只有权限访问从 Keystone 同步过来的项目，也就是这个列表中的第一个命名空间，其它命名空间都是无权限访问的。</p>
 <p>另外 kubernetes 中默认已经有 admin 、 edit 和 view 三个 clusterrole，而 keystone 默认的三种角色是 admin、 member 和 reader， 为了同步时的一致性，这里将 keystone 中的角色改为和 kubernetes 中一致，如下：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575441171154-0092ca7c-9d67-46e0-8d07-752a98a02951.png#align=left&display=inline&height=614&name=image.png&originHeight=614&originWidth=778&size=107346&status=done&style=none&width=778" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575441171154-0092ca7c-9d67-46e0-8d07-752a98a02951.png" alt="image.png"></p>
 <p>之后，到 admin-b97a1f63205743ce8e33356243774fbc 中查看 rolebinding ：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575441193681-709aa70d-5835-46dc-a67a-57b10339e0da.png#align=left&display=inline&height=172&name=image.png&originHeight=172&originWidth=1316&size=66169&status=done&style=none&width=1316" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575441193681-709aa70d-5835-46dc-a67a-57b10339e0da.png" alt="image.png"></p>
 <h3 id="如何解决了问题"><a href="#如何解决了问题" class="headerlink" title="如何解决了问题"></a>如何解决了问题</h3><p>针对文章开篇提到的两个问题，一个是认证系统的问题，一个是软多租户的问题。</p>
 <p>针对认证系统的问题，k8s-keystone-auth 插件提供了解决方案。</p>
 <p>针对软多租户的问题，可以借由 keystone 的租户管理概念来实现。</p>

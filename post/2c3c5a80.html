@@ -72,7 +72,7 @@
 <meta property="article:tag" content=" OpenShift">
 <meta property="article:tag" content=" CNI">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/182657/1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png#align=left&display=inline&height=38&name=image.png&originHeight=38&originWidth=1166&size=27284&status=done&style=none&width=1166">
+<meta name="twitter:image" content="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/2c3c5a80.html">
 
@@ -342,7 +342,7 @@
 <p>编译的过程异乎寻常的顺利，前提是你的机子上已经配置好 Go 的开发环境，只需执行以下命令即可:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/containernetworking/plugins.git</span><br><span class="line"><span class="built_in">cd</span> plugins</span><br><span class="line">./build_linux.sh</span><br></pre></td></tr></table></figure>
 
-<p>很快编译完了，在项目目录下出现了 bin 文件夹， ls 查看一下，有了：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png#align=left&display=inline&height=38&name=image.png&originHeight=38&originWidth=1166&size=27284&status=done&style=none&width=1166" alt="image.png"></p>
+<p>很快编译完了，在项目目录下出现了 bin 文件夹， ls 查看一下，有了：<br><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575442963241-bc70c7cc-1ee4-4fb6-aecb-0507f46d33ad.png" alt="image.png"></p>
 <p>scp 到 master 节点，放到/opt/cni/bin 目录下。</p>
 <p>重启 kubelet，又报错…说是 config version is 0.1.0， plugin supports only [0.3.0, 0.3.1, 0.4.0]</p>
 <p>完全摸不着头脑，只能靠猜了…</p>
@@ -360,14 +360,14 @@
 <p>修改 10-calico.conflist 为如下内容，其实就是增加了 bandwidth 的配置项，去掉了 potmap 的配置项：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;</span></span><br><span class="line">  <span class="attr">"name":</span> <span class="string">"k8s-pod-network"</span><span class="string">,</span></span><br><span class="line">  <span class="attr">"cniVersion":</span> <span class="string">"0.3.0"</span><span class="string">,</span></span><br><span class="line">  <span class="attr">"plugins":</span></span><br><span class="line">    <span class="string">[</span></span><br><span class="line">      <span class="string">&#123;</span></span><br><span class="line">        <span class="attr">"type":</span> <span class="string">"calico"</span><span class="string">,</span></span><br><span class="line">        <span class="attr">"log_level":</span> <span class="string">"info"</span><span class="string">,</span></span><br><span class="line">        <span class="attr">"datastore_type":</span> <span class="string">"kubernetes"</span><span class="string">,</span></span><br><span class="line">        <span class="attr">"nodename":</span> <span class="string">"10-10-183-55"</span><span class="string">,</span></span><br><span class="line">        <span class="attr">"mtu":</span> <span class="number">1440</span><span class="string">,</span></span><br><span class="line">        <span class="attr">"ipam":</span> <span class="string">&#123;</span> <span class="attr">"type":</span> <span class="string">"host-local"</span><span class="string">,</span> <span class="attr">"subnet":</span> <span class="string">"usePodCidr"</span> <span class="string">&#125;,</span></span><br><span class="line">        <span class="attr">"policy":</span> <span class="string">&#123;</span> <span class="attr">"type":</span> <span class="string">"k8s"</span> <span class="string">&#125;,</span></span><br><span class="line">        <span class="attr">"kubernetes":</span> <span class="string">&#123;</span> <span class="attr">"kubeconfig":</span> <span class="string">"/etc/cni/net.d/calico-kubeconfig"</span> <span class="string">&#125;,</span></span><br><span class="line">      <span class="string">&#125;,</span></span><br><span class="line">      <span class="string">&#123;</span> <span class="attr">"type":</span> <span class="string">"bandwidth"</span><span class="string">,</span> <span class="attr">"capabilities":</span> <span class="string">&#123;</span> <span class="attr">"bandwidth":</span> <span class="literal">true</span> <span class="string">&#125;</span> <span class="string">&#125;,</span></span><br><span class="line">    <span class="string">],</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<p>重启 kubelet， 呵呵。Pod 终于 Running 了。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575442988039-9762993b-8113-4dae-b114-b305332405bd.png#align=left&display=inline&height=74&name=image.png&originHeight=74&originWidth=1218&size=63427&status=done&style=none&width=1218" alt="image.png"></p>
+<p>重启 kubelet， 呵呵。Pod 终于 Running 了。<br><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575442988039-9762993b-8113-4dae-b114-b305332405bd.png" alt="image.png"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行以下命令进入Pod</span></span><br><span class="line">kubectl <span class="built_in">exec</span> -it centos-deployment-01-699f7776f-5j6t5 bash</span><br><span class="line"><span class="comment"># 执行以下命令开个iperf server，iperf 什么的提前都装好了</span></span><br><span class="line">iperf -s</span><br><span class="line"><span class="comment"># 另外再开个窗口，执行以下命令进入另一个Pod</span></span><br><span class="line">kubectl <span class="built_in">exec</span> -it centos-deployment-57948c8598-jwkpr bash</span><br><span class="line"><span class="comment"># 执行以下命令进行测试</span></span><br><span class="line">iperf -c iperf -c 10.244.1.6 -t 10</span><br></pre></td></tr></table></figure>
 
 <p>数据如下:</p>
 <p>限速前：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575443012295-d2bc2306-a82c-4223-95a1-7ca0567eaa11.png#align=left&display=inline&height=127&name=image.png&originHeight=127&originWidth=630&size=45608&status=done&style=none&width=630" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575443012295-d2bc2306-a82c-4223-95a1-7ca0567eaa11.png" alt="image.png"></p>
 <p>限速后：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575443032242-0bc4e6c4-f824-4821-b254-2d16eee44ce5.png#align=left&display=inline&height=126&name=image.png&originHeight=126&originWidth=660&size=49857&status=done&style=none&width=660" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575443032242-0bc4e6c4-f824-4821-b254-2d16eee44ce5.png" alt="image.png"></p>
 <p>啊！真的限速了呢！可这限的什么鬼…</p>
 <p>明明说好的 10M，怎么变成了 301K…</p>
 <p>难道又是姿势不对？换了好多姿势，可每次数据都是不一样的吊诡…</p>
@@ -380,13 +380,13 @@
 <p>万般无奈之下，找到华为云容器团队的杜大师咨询了一下，大师不愧是大师，秒懂怎么回事儿，并教给我如下命令查看 tc 配置，因为说到底这个带宽限制还是通过 Linux TC 实现的:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tc qdisc show</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575443051065-4bc1bc1a-0b5a-4591-b3df-f57802fc1ff4.png#align=left&display=inline&height=274&name=image.png&originHeight=274&originWidth=823&size=150326&status=done&style=none&width=823" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575443051065-4bc1bc1a-0b5a-4591-b3df-f57802fc1ff4.png" alt="image.png"></p>
 <p>仔细看最后几行，10M 变成了 10K，和上述 70014 描述的 bug 一致，不过 burst 默认是 214747b 有点吊诡…</p>
 <p>好吧，总结一下，功能是有的，只不过还有 bug。</p>
 <p>折腾到这里，突然有点怀念 OpenShift ，那就测一下吧。</p>
-<h4 id="基于-OpenShift-SDN-的测试"><a href="#基于-OpenShift-SDN-的测试" class="headerlink" title="基于 OpenShift-SDN 的测试"></a>基于 OpenShift-SDN 的测试</h4><p>先看一下 openshift 的零件，竟然也是标准 CNI：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575443067485-64bda488-ce15-45e7-9208-97030040af11.png#align=left&display=inline&height=220&name=image.png&originHeight=220&originWidth=586&size=68560&status=done&style=none&width=586" alt="image.png"></p>
-<p>而且据说不用任何额外配置，直接支持带宽限制。所以，把上面的两个 deployment 直接部署，过了一会儿 Pod 就起来了。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575443083763-bea1fe29-ae77-4322-bf1f-0d955d4780a8.png#align=left&display=inline&height=74&name=image.png&originHeight=74&originWidth=684&size=42546&status=done&style=none&width=684" alt="image.png"></p>
-<p>然后跑一下 iperf 试试，数据如下：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1575443097570-ef5d3d03-4755-497c-8bbe-6ee3bbb73d03.png#align=left&display=inline&height=127&name=image.png&originHeight=127&originWidth=666&size=79395&status=done&style=none&width=666" alt="image.png"></p>
+<h4 id="基于-OpenShift-SDN-的测试"><a href="#基于-OpenShift-SDN-的测试" class="headerlink" title="基于 OpenShift-SDN 的测试"></a>基于 OpenShift-SDN 的测试</h4><p>先看一下 openshift 的零件，竟然也是标准 CNI：<br><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575443067485-64bda488-ce15-45e7-9208-97030040af11.png" alt="image.png"></p>
+<p>而且据说不用任何额外配置，直接支持带宽限制。所以，把上面的两个 deployment 直接部署，过了一会儿 Pod 就起来了。<br><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575443083763-bea1fe29-ae77-4322-bf1f-0d955d4780a8.png" alt="image.png"></p>
+<p>然后跑一下 iperf 试试，数据如下：<br><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1575443097570-ef5d3d03-4755-497c-8bbe-6ee3bbb73d03.png" alt="image.png"></p>
 <p>看看这数据，真是相当整齐了，10M 就是 10M。</p>
 <p>说到底，还是 OpenShift 好用啊。</p>
 

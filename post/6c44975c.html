@@ -71,7 +71,7 @@
 <meta property="article:tag" content="Proxmox">
 <meta property="article:tag" content=" cloud-init">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&display=inline&height=690&name=image.png&originHeight=690&originWidth=1038&size=159786&status=done&style=none&width=1038">
+<meta name="twitter:image" content="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/6c44975c.html">
 
@@ -300,25 +300,25 @@
       
         <h4 id="安装-Centos"><a href="#安装-Centos" class="headerlink" title="安装 Centos"></a>安装 Centos</h4><p>在我搭建的 Proxmox 平台中使用了 Ceph 作为虚拟机的后端存储，为了提高虚拟机磁盘性能，在安装虚拟机的时候使用 LVM raid0 逻辑分区挂载根目录。</p><ul>
 <li>在 install destination 中选中三块盘并勾选自行分区选项</li>
-</ul><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png#align=left&display=inline&height=690&name=image.png&originHeight=690&originWidth=1038&size=159786&status=done&style=none&width=1038" alt="image.png"></p><ul>
+</ul><p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565763386484-e5ca7b70-8be9-4748-a45b-729056006387.png" alt="image.png"></p><ul>
 <li>点击 automatically create lvm partition 自动创建分区，删除其它分区只保留 /boot 分区</li>
 </ul><a id="more"></a>
 
 
 
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png#align=left&display=inline&height=751&name=image.png&originHeight=751&originWidth=1043&size=125930&status=done&style=none&width=1043" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565763580611-942dc4e2-6db4-4dc3-8f80-8c34786c5b08.png" alt="image.png"></p>
 <ul>
 <li>点击 + 按钮添加新的分区，挂载点为根路径，容量超过磁盘最大容量，安装程序会自动校正到真实的最大可用容量。</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png#align=left&display=inline&height=769&name=image.png&originHeight=769&originWidth=1026&size=121666&status=done&style=none&width=1026" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565763613900-3375e62f-af48-4a23-a3c2-75d5883a1ce2.png" alt="image.png"></p>
 <ul>
 <li>点击 Modify 按钮修改新建分区的 RAID Level 为 RAID0。</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png#align=left&display=inline&height=769&name=image.png&originHeight=769&originWidth=1041&size=165004&status=done&style=none&width=1041" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565763651682-d3ed9a9e-6388-4d4f-802a-09929eaab7af.png" alt="image.png"></p>
 <ul>
 <li>以下是创建完成的分区，保存后按照常规步骤继续安装操作系统。</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png#align=left&display=inline&height=733&name=image.png&originHeight=733&originWidth=1020&size=132613&status=done&style=none&width=1020" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565763668133-da5c4ce4-c19a-493c-b20d-fa91ac1c38f9.png" alt="image.png"></p>
 <h4 id="调整安装好的操作系统"><a href="#调整安装好的操作系统" class="headerlink" title="调整安装好的操作系统"></a>调整安装好的操作系统</h4><ul>
 <li>进入操作系统，首先关闭 selinux、firewalld 和  NetworkManager。</li>
 </ul>
@@ -356,15 +356,15 @@
 <ul>
 <li>关机，并在 Proxmox 中为之添加 CloudInit Drive。</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png#align=left&display=inline&height=633&name=image.png&originHeight=633&originWidth=719&size=92450&status=done&style=none&width=719" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565765481819-2158abbc-ff3a-4f5e-870f-40f545b0acd1.png" alt="image.png"></p>
 <ul>
 <li>填写相关 init 参数并 regenerate image。</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565765613783-81f32306-e298-4d18-a553-128415466232.png#align=left&display=inline&height=388&name=image.png&originHeight=388&originWidth=533&size=35717&status=done&style=none&width=533" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565765613783-81f32306-e298-4d18-a553-128415466232.png" alt="image.png"></p>
 <ul>
 <li>启用 qemu-agent</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png#align=left&display=inline&height=645&name=image.png&originHeight=645&originWidth=720&size=68736&status=done&style=none&width=720" alt="image.png"></p>
+<p><img src="https://xyc-blog-images.oss-cn-hongkong.aliyuncs.com/1565768472227-62c14d9c-88ec-47dd-b030-841d773cef94.png" alt="image.png"></p>
 <ul>
 <li>将虚拟机转为模板，之后就可以以此为基础创建新的虚拟机。</li>
 </ul>
