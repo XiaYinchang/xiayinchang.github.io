@@ -5,18 +5,9 @@ const FormData = require("form-data");
 const request = require("request");
 const OSS = require("ali-oss");
 const PassThrough = require("stream").PassThrough;
-// let STS = OSS.STS;
-// let sts = new STS({
-//   accessKeyId: process.env.OSS_ACCESS_KEY,
-//   accessKeySecret: process.env.OSS_SECRET_KEY,
-// });
-// let token = await sts.assumeRole(
-//   `acs:ram::${process.env.ALI_ACCOUNT_ID}:role/blog-images`,
-//   "",
-//   "",
-//   "uploadImage"
-// );
-
+const StormDB = require("stormdb");
+const engine = new StormDB.localFileEngine("./imageMap.json");
+const db = new StormDB(engine);
 const publicDir = "./public";
 // Loop through all the files in the temp directory
 function readDir(dir) {
@@ -51,9 +42,6 @@ function sleep(millis) {
 }
 
 function replaceImgAddr(filename) {
-  const imageStr = String(fs.readFileSync("./imageMap.json", "utf8"));
-  let imagesMap = JSON.parse(imageStr);
-
   if (path.extname(filename) === ".html") {
     fs.readFile(filename, "utf8", async (err, data) => {
       if (err) throw err;
@@ -66,19 +54,24 @@ function replaceImgAddr(filename) {
         if (imgAddr.startsWith("https://cdn.nlark.com/yuque")) {
           let imagePath = "";
           let imageName = getImageName(imgAddr);
-          let imageMap = imagesMap.images.find((ele) => ele.name === imageName);
+          let imageMap = db
+            .get("images")
+            .filter((ele) => ele.name === imageName)
+            .get(0)
+            .value();
           if (imageMap) {
             imagePath = imageMap.oss;
           } else {
             try {
-              await sleep(5000 * Math.random());
               imagePath = await uploadToOSS(imgAddr);
               if (imagePath) {
-                imagesMap.images.push({
-                  origin: imgAddr,
-                  oss: imagePath,
-                  name: imageName,
-                });
+                db.get("images")
+                  .push({
+                    origin: imgAddr,
+                    oss: imagePath,
+                    name: imageName,
+                  })
+                  .save();
               }
             } catch (error) {
               console.log(error);
@@ -88,16 +81,11 @@ function replaceImgAddr(filename) {
             imagePath = downloadToLocal(imgAddr);
           }
           if (imagePath) {
-            dataStr = dataStr.replace(imgAddr, imagePath);
+            dataStr = dataStr.replaceAll(imgAddr, imagePath);
           }
         }
       }
       fs.writeFileSync(filename, dataStr, "utf8");
-      fs.writeFileSync(
-        "./imageMap.json",
-        JSON.stringify(imagesMap, null, 2),
-        "utf8"
-      );
     });
   }
 }
@@ -204,9 +192,5 @@ function uploadToSMMS(imgAddr) {
     });
   });
 }
-
-setTimeout(() => {
-  process.exit(0);
-}, 50000);
 
 readDir(publicDir);

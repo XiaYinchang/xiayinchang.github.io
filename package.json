@@ -42,7 +42,8 @@
     "hexo-renderer-stylus": "^1.1.0",
     "hexo-server": "^1.0.0",
     "hexo-symbols-count-time": "^0.7.1",
-    "mime": "^2.4.7"
+    "mime": "^2.4.7",
+    "stormdb": "^0.4.1"
   },
   "devDependencies": {
     "hexo-generator-baidu-sitemap": "^0.1.9",
