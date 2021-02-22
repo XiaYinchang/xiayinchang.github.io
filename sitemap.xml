@@ -9,6 +9,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiayinchang.top/post/b489449e.html</loc>
+    
+    <lastmod>2021-02-21</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiayinchang.top/post/e9aa727.html</loc>
     
     <lastmod>2021-02-14</lastmod>
@@ -33,13 +40,6 @@
     <loc>https://www.xiayinchang.top/post/9caa466a.html</loc>
     
     <lastmod>2021-01-22</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiayinchang.top/post/b489449e.html</loc>
-    
-    <lastmod>2021-01-18</lastmod>
     
   </url>
   
@@ -571,13 +571,6 @@
   </url>
   
   <url>
-    <loc>https://www.xiayinchang.top/tags/Kubernetes/</loc>
-    <lastmod>2021-02-22</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://www.xiayinchang.top/tags/Docker/</loc>
     <lastmod>2021-02-22</lastmod>
     <changefreq>daily</changefreq>
@@ -628,6 +621,13 @@
   
   <url>
     <loc>https://www.xiayinchang.top/tags/kubernetes/</loc>
+    <lastmod>2021-02-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xiayinchang.top/tags/Kubernetes/</loc>
     <lastmod>2021-02-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -986,13 +986,6 @@
   </url>
   
   <url>
-    <loc>https://www.xiayinchang.top/categories/Kubernetes/</loc>
-    <lastmod>2021-02-22</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://www.xiayinchang.top/categories/Ceph/</loc>
     <lastmod>2021-02-22</lastmod>
     <changefreq>daily</changefreq>
@@ -1029,6 +1022,13 @@
   
   <url>
     <loc>https://www.xiayinchang.top/categories/Go/</loc>
+    <lastmod>2021-02-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xiayinchang.top/categories/Kubernetes/</loc>
     <lastmod>2021-02-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

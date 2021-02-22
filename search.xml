@@ -96,76 +96,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Ceph 对接 Kubernetes 的两种方式</title>
-    <url>/post/466a6051.html</url>
-    <content><![CDATA[<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ul>
-<li>创建 rbd 存储池</li>
-</ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ceph osd pool create rbd 128 128</span><br><span class="line">rbd pool init rbd</span><br></pre></td></tr></table></figure><ul>
-<li>获取 ceph 集群基本信息</li>
-</ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 执行 cat 查看 ceph 配置文件</span><br><span class="line">cat &#x2F;etc&#x2F;ceph&#x2F;ceph.conf</span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">bluestore block db size &#x3D; 10737418240</span><br><span class="line">bluestore block fast create &#x3D; False</span><br><span class="line">bluestore block fast size &#x3D; 10737418240</span><br><span class="line">cluster network &#x3D; 10.10.0.0&#x2F;16</span><br><span class="line">fsid &#x3D; 5db6cfe0-e485-4884-89eb-8f926fd6d677</span><br><span class="line">mon allow pool delete &#x3D; True</span><br><span class="line">mon health preluminous compat warning &#x3D; False</span><br><span class="line">mon host &#x3D; [v2:10.10.46.236:3300,v1:10.10.46.236:6789],[v2:10.10.66.143:3300,v1:10.10.66.143:6789],[v2:10.10.178.231:3300,v1:10.10.178.231:6789]</span><br><span class="line">mon initial members &#x3D; u1,u2,u3</span><br><span class="line">mon_max_pg_per_osd &#x3D; 400</span><br><span class="line">osd pool default crush rule &#x3D; -1</span><br><span class="line">public network &#x3D; 10.10.0.0&#x2F;16</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-
-
-<p>由上述信息可知，ceph 集群 clusterid 为  5db6cfe0-e485-4884-89eb-8f926fd6d677，monitor 节点信息为：10.10.46.236:6789，10.10.66.143:6789，10.10.178.231:6789。</p>
-<ul>
-<li>获取 client.admin keyring</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  ~ cat &#x2F;etc&#x2F;ceph&#x2F;ceph.client.admin.keyring</span><br><span class="line">[client.admin]</span><br><span class="line">	key &#x3D; AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;</span><br><span class="line">	caps mds &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps mgr &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps mon &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps osd &#x3D; &quot;allow *&quot;</span><br></pre></td></tr></table></figure>
-
-<p>记录 admin 用户的 key 为  AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ==。</p>
-<h4 id="In-tree"><a href="#In-tree" class="headerlink" title="In-tree"></a>In-tree</h4><p>In-tree 插件是比较早和成熟的方式，调用不同存后端的代码包含在 Kubernetes 核心代码中，缺乏灵活性，不利于更新迭代，而且使用起来比较麻烦，需要在每个需要 PV 的命名空间都创建 role 和 secret key，不建议使用。如需使用，参见  <a href="https://medium.com/velotio-perspectives/an-innovators-guide-to-kubernetes-storage-using-ceph-a4b919f4e469" target="_blank" rel="external nofollow noopener noreferrer">An Innovator’s Guide to Kubernetes Storage Using Ceph</a> 。</p>
-<h4 id="Out-tree"><a href="#Out-tree" class="headerlink" title="Out-tree"></a>Out-tree</h4><p>Out-tree 存储插件主要是 CSI ，Kubernetes 核心代码定义了调用接口，具体的实现由第三方插件开发商自行维护，是未来主流的使用方式，目前 Ceph-CSI rbd 相关功能已经 GA。</p>
-<ul>
-<li>下载最新的 ceph-csi 代码，地址：<a href="https://github.com/ceph/ceph-csi/archive/v1.2.0.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/ceph/ceph-csi/archive/v1.2.0.tar.gz</a></li>
-<li>解压后目录结构如下：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  ceph-csi-1.2.0 tree -L 1</span><br><span class="line">.</span><br><span class="line">├── assets</span><br><span class="line">├── cmd</span><br><span class="line">├── deploy</span><br><span class="line">├── deploy.sh</span><br><span class="line">├── docs</span><br><span class="line">├── e2e</span><br><span class="line">├── examples</span><br><span class="line">├── Gopkg.lock</span><br><span class="line">├── Gopkg.toml</span><br><span class="line">├── LICENSE</span><br><span class="line">├── Makefile</span><br><span class="line">├── pkg</span><br><span class="line">├── README.md</span><br><span class="line">├── scripts</span><br><span class="line">├── troubleshooting</span><br><span class="line">└── vendor</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>以 rbd 配置为例，先修改  deploy/rbd/kubernetes/v1.14+/csi-config-map.yaml 文件内容，将 ceph 集群信息填写进去：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ConfigMap</span><br><span class="line">data:</span><br><span class="line">  config.json: |-</span><br><span class="line">    [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;clusterID&quot;: &quot;5db6cfe0-e485-4884-89eb-8f926fd6d677&quot;,</span><br><span class="line">        &quot;monitors&quot;: [</span><br><span class="line">          &quot;10.10.46.236&quot;,</span><br><span class="line">          &quot;10.10.66.143&quot;,</span><br><span class="line">          &quot;10.10.178.231&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-csi-config</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>执行以下脚本进行部署</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;examples&#x2F;rbd&#x2F;plugin-deploy.sh</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>创建 rbd-secret</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic csi-rbd-secret --from-literal&#x3D;adminID&#x3D;&quot;admin&quot; --from-literal&#x3D;adminKey&#x3D;&quot;AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;&quot; --from-literal&#x3D;userID&#x3D;&quot;admin&quot; --from-literal&#x3D;userKey&#x3D;&quot;AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改 examples/rbd/storageclass.yaml 文件，主要是填上 clusterID</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apiVersion: storage.k8s.io&#x2F;v1</span><br><span class="line">kind: StorageClass</span><br><span class="line">metadata:</span><br><span class="line">   name: csi-rbd-sc</span><br><span class="line">provisioner: rbd.csi.ceph.com</span><br><span class="line">parameters:</span><br><span class="line">   # String representing a Ceph cluster to provision storage from.</span><br><span class="line">   # Should be unique across all Ceph clusters in use for provisioning,</span><br><span class="line">   # cannot be greater than 36 bytes in length, and should remain immutable for</span><br><span class="line">   # the lifetime of the StorageClass in use.</span><br><span class="line">   # Ensure to create an entry in the config map named ceph-csi-config, based on</span><br><span class="line">   # csi-config-map-sample.yaml, to accompany the string chosen to</span><br><span class="line">   # represent the Ceph cluster in clusterID below</span><br><span class="line">   clusterID: 5db6cfe0-e485-4884-89eb-8f926fd6d677</span><br><span class="line"></span><br><span class="line">   # Ceph pool into which the RBD image shall be created</span><br><span class="line">   pool: rbd</span><br><span class="line"></span><br><span class="line">   # RBD image format. Defaults to &quot;2&quot;.</span><br><span class="line">   imageFormat: &quot;2&quot;</span><br><span class="line"></span><br><span class="line">   # RBD image features. Available for imageFormat: &quot;2&quot;</span><br><span class="line">   # CSI RBD currently supports only &#96;layering&#96; feature.</span><br><span class="line">   imageFeatures: layering</span><br><span class="line"></span><br><span class="line">   # The secrets have to contain Ceph credentials with required access</span><br><span class="line">   # to the &#39;pool&#39;.</span><br><span class="line">   csi.storage.k8s.io&#x2F;provisioner-secret-name: csi-rbd-secret</span><br><span class="line">   csi.storage.k8s.io&#x2F;provisioner-secret-namespace: default</span><br><span class="line">   csi.storage.k8s.io&#x2F;node-stage-secret-name: csi-rbd-secret</span><br><span class="line">   csi.storage.k8s.io&#x2F;node-stage-secret-namespace: default</span><br><span class="line">   # Specify the filesystem type of the volume. If not specified,</span><br><span class="line">   # csi-provisioner will set default as &#96;ext4&#96;.</span><br><span class="line">   csi.storage.k8s.io&#x2F;fstype: xfs</span><br><span class="line">   # uncomment the following to use rbd-nbd as mounter on supported nodes</span><br><span class="line">   # mounter: rbd-nbd</span><br><span class="line">reclaimPolicy: Delete</span><br><span class="line">mountOptions:</span><br><span class="line">   - discard</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>创建 storage-class</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl apply -f examples&#x2F;rbd&#x2F;storageclass.yaml</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>设置该 storage-class 为默认</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl patch storageclass csi-rbd-sc -p &#39;&#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;:&#123;&quot;storageclass.kubernetes.io&#x2F;is-default-class&quot;:&quot;true&quot;&#125;&#125;&#125;&#39;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>以上部署主要使用了默认值，相关插件都部署在 default 命名空间，可以根据需要进行调整。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Kubernetes</category>
-      </categories>
-      <tags>
-        <tag>Ceph</tag>
-        <tag>Kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ceph 常用操作</title>
     <url>/post/e8bac896.html</url>
     <content><![CDATA[<h4 id="删除-rbd-image-时提示有-watcher"><a href="#删除-rbd-image-时提示有-watcher" class="headerlink" title="删除 rbd image 时提示有 watcher"></a>删除 rbd image 时提示有 watcher</h4><p>查看该 image 信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd info vm-109-cloudinit --pool cloud-disk</span></span><br><span class="line">rbd image <span class="string">'vm-109-cloudinit'</span>:</span><br><span class="line">        size 4 MiB <span class="keyword">in</span> 1 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: 85a71142d8c136</span><br><span class="line">        block_name_prefix: rbd_data.85a71142d8c136</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">        op_features:</span><br><span class="line">        flags:</span><br><span class="line">        create_timestamp: Wed Aug 28 10:04:09 2019</span><br><span class="line">        access_timestamp: Mon Sep  2 13:59:31 2019</span><br><span class="line">        modify_timestamp: Mon Sep  2 13:59:31 2019</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -2703,6 +2633,9 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打印一行内容并随后打印当前行的 NF 值</span><br><span class="line">awk &#39;&#123;print ; print NF&#125;&#39; infile</span><br><span class="line"># 打印每行的 NR 值</span><br><span class="line">awk &#39;&#123;print NR&#125;&#39; infile</span><br><span class="line"># sar 打印系统使用的 file 和 inode 数量</span><br><span class="line">sar -v 1 2</span><br><span class="line">09:38:17 AM dentunusd   file-nr  inode-nr    pty-nr</span><br><span class="line">09:38:18 AM     33059      2048     32077         1</span><br><span class="line">09:38:19 AM     33059      2048     32077         1</span><br><span class="line">Average:        33059      2048     32077         1</span><br></pre></td></tr></table></figure>
 
 <h4 id="Linux-系统启动过程"><a href="#Linux-系统启动过程" class="headerlink" title="Linux 系统启动过程"></a>Linux 系统启动过程</h4><p>上电 -&gt; 从固件读取 BIOS -&gt; 从磁盘固定位置（或者网络、CD 等）读取 BootLoader（通常是 GRUB2）-&gt; BootLoader 加载内核和初始根文件系统 -&gt; 加载文件系统 -&gt; 初始化工作完成后启动 1 号用户进程 init。参考：<a href="https://segmentfault.com/a/1190000006872609" target="_blank" rel="external nofollow noopener noreferrer">简述 Linux 的启动过程</a></p>
+<h4 id="如何找到环境变量是在哪里被设置的"><a href="#如何找到环境变量是在哪里被设置的" class="headerlink" title="如何找到环境变量是在哪里被设置的"></a>如何找到环境变量是在哪里被设置的</h4><p>参考：<a href="https://unix.stackexchange.com/a/154971" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/a/154971</a>，<a href="https://unix.stackexchange.com/a/249922" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/a/249922</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">PS4=<span class="string">'+$BASH_SOURCE&gt; '</span> BASH_XTRACEFD=7 bash -xl 7&gt;&amp;2</span><br></pre></td></tr></table></figure>
+
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
 <li>pandoc 可以借助第三方引擎实现各种文档格式之间的转换：<a href="https://pandoc.org/" target="_blank" rel="external nofollow noopener noreferrer">https://pandoc.org/</a>。</li>
@@ -4578,6 +4511,76 @@
       <tags>
         <tag>RateLimit</tag>
         <tag>S3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ceph 对接 Kubernetes 的两种方式</title>
+    <url>/post/466a6051.html</url>
+    <content><![CDATA[<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ul>
+<li>创建 rbd 存储池</li>
+</ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ceph osd pool create rbd 128 128</span><br><span class="line">rbd pool init rbd</span><br></pre></td></tr></table></figure><ul>
+<li>获取 ceph 集群基本信息</li>
+</ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 执行 cat 查看 ceph 配置文件</span><br><span class="line">cat &#x2F;etc&#x2F;ceph&#x2F;ceph.conf</span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">bluestore block db size &#x3D; 10737418240</span><br><span class="line">bluestore block fast create &#x3D; False</span><br><span class="line">bluestore block fast size &#x3D; 10737418240</span><br><span class="line">cluster network &#x3D; 10.10.0.0&#x2F;16</span><br><span class="line">fsid &#x3D; 5db6cfe0-e485-4884-89eb-8f926fd6d677</span><br><span class="line">mon allow pool delete &#x3D; True</span><br><span class="line">mon health preluminous compat warning &#x3D; False</span><br><span class="line">mon host &#x3D; [v2:10.10.46.236:3300,v1:10.10.46.236:6789],[v2:10.10.66.143:3300,v1:10.10.66.143:6789],[v2:10.10.178.231:3300,v1:10.10.178.231:6789]</span><br><span class="line">mon initial members &#x3D; u1,u2,u3</span><br><span class="line">mon_max_pg_per_osd &#x3D; 400</span><br><span class="line">osd pool default crush rule &#x3D; -1</span><br><span class="line">public network &#x3D; 10.10.0.0&#x2F;16</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+
+<p>由上述信息可知，ceph 集群 clusterid 为  5db6cfe0-e485-4884-89eb-8f926fd6d677，monitor 节点信息为：10.10.46.236:6789，10.10.66.143:6789，10.10.178.231:6789。</p>
+<ul>
+<li>获取 client.admin keyring</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  ~ cat &#x2F;etc&#x2F;ceph&#x2F;ceph.client.admin.keyring</span><br><span class="line">[client.admin]</span><br><span class="line">	key &#x3D; AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;</span><br><span class="line">	caps mds &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps mgr &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps mon &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps osd &#x3D; &quot;allow *&quot;</span><br></pre></td></tr></table></figure>
+
+<p>记录 admin 用户的 key 为  AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ==。</p>
+<h4 id="In-tree"><a href="#In-tree" class="headerlink" title="In-tree"></a>In-tree</h4><p>In-tree 插件是比较早和成熟的方式，调用不同存后端的代码包含在 Kubernetes 核心代码中，缺乏灵活性，不利于更新迭代，而且使用起来比较麻烦，需要在每个需要 PV 的命名空间都创建 role 和 secret key，不建议使用。如需使用，参见  <a href="https://medium.com/velotio-perspectives/an-innovators-guide-to-kubernetes-storage-using-ceph-a4b919f4e469" target="_blank" rel="external nofollow noopener noreferrer">An Innovator’s Guide to Kubernetes Storage Using Ceph</a> 。</p>
+<h4 id="Out-tree"><a href="#Out-tree" class="headerlink" title="Out-tree"></a>Out-tree</h4><p>Out-tree 存储插件主要是 CSI ，Kubernetes 核心代码定义了调用接口，具体的实现由第三方插件开发商自行维护，是未来主流的使用方式，目前 Ceph-CSI rbd 相关功能已经 GA。</p>
+<ul>
+<li>下载最新的 ceph-csi 代码，地址：<a href="https://github.com/ceph/ceph-csi/archive/v1.2.0.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/ceph/ceph-csi/archive/v1.2.0.tar.gz</a></li>
+<li>解压后目录结构如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  ceph-csi-1.2.0 tree -L 1</span><br><span class="line">.</span><br><span class="line">├── assets</span><br><span class="line">├── cmd</span><br><span class="line">├── deploy</span><br><span class="line">├── deploy.sh</span><br><span class="line">├── docs</span><br><span class="line">├── e2e</span><br><span class="line">├── examples</span><br><span class="line">├── Gopkg.lock</span><br><span class="line">├── Gopkg.toml</span><br><span class="line">├── LICENSE</span><br><span class="line">├── Makefile</span><br><span class="line">├── pkg</span><br><span class="line">├── README.md</span><br><span class="line">├── scripts</span><br><span class="line">├── troubleshooting</span><br><span class="line">└── vendor</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>以 rbd 配置为例，先修改  deploy/rbd/kubernetes/v1.14+/csi-config-map.yaml 文件内容，将 ceph 集群信息填写进去：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ConfigMap</span><br><span class="line">data:</span><br><span class="line">  config.json: |-</span><br><span class="line">    [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;clusterID&quot;: &quot;5db6cfe0-e485-4884-89eb-8f926fd6d677&quot;,</span><br><span class="line">        &quot;monitors&quot;: [</span><br><span class="line">          &quot;10.10.46.236&quot;,</span><br><span class="line">          &quot;10.10.66.143&quot;,</span><br><span class="line">          &quot;10.10.178.231&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-csi-config</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行以下脚本进行部署</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;examples&#x2F;rbd&#x2F;plugin-deploy.sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建 rbd-secret</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic csi-rbd-secret --from-literal&#x3D;adminID&#x3D;&quot;admin&quot; --from-literal&#x3D;adminKey&#x3D;&quot;AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;&quot; --from-literal&#x3D;userID&#x3D;&quot;admin&quot; --from-literal&#x3D;userKey&#x3D;&quot;AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 examples/rbd/storageclass.yaml 文件，主要是填上 clusterID</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apiVersion: storage.k8s.io&#x2F;v1</span><br><span class="line">kind: StorageClass</span><br><span class="line">metadata:</span><br><span class="line">   name: csi-rbd-sc</span><br><span class="line">provisioner: rbd.csi.ceph.com</span><br><span class="line">parameters:</span><br><span class="line">   # String representing a Ceph cluster to provision storage from.</span><br><span class="line">   # Should be unique across all Ceph clusters in use for provisioning,</span><br><span class="line">   # cannot be greater than 36 bytes in length, and should remain immutable for</span><br><span class="line">   # the lifetime of the StorageClass in use.</span><br><span class="line">   # Ensure to create an entry in the config map named ceph-csi-config, based on</span><br><span class="line">   # csi-config-map-sample.yaml, to accompany the string chosen to</span><br><span class="line">   # represent the Ceph cluster in clusterID below</span><br><span class="line">   clusterID: 5db6cfe0-e485-4884-89eb-8f926fd6d677</span><br><span class="line"></span><br><span class="line">   # Ceph pool into which the RBD image shall be created</span><br><span class="line">   pool: rbd</span><br><span class="line"></span><br><span class="line">   # RBD image format. Defaults to &quot;2&quot;.</span><br><span class="line">   imageFormat: &quot;2&quot;</span><br><span class="line"></span><br><span class="line">   # RBD image features. Available for imageFormat: &quot;2&quot;</span><br><span class="line">   # CSI RBD currently supports only &#96;layering&#96; feature.</span><br><span class="line">   imageFeatures: layering</span><br><span class="line"></span><br><span class="line">   # The secrets have to contain Ceph credentials with required access</span><br><span class="line">   # to the &#39;pool&#39;.</span><br><span class="line">   csi.storage.k8s.io&#x2F;provisioner-secret-name: csi-rbd-secret</span><br><span class="line">   csi.storage.k8s.io&#x2F;provisioner-secret-namespace: default</span><br><span class="line">   csi.storage.k8s.io&#x2F;node-stage-secret-name: csi-rbd-secret</span><br><span class="line">   csi.storage.k8s.io&#x2F;node-stage-secret-namespace: default</span><br><span class="line">   # Specify the filesystem type of the volume. If not specified,</span><br><span class="line">   # csi-provisioner will set default as &#96;ext4&#96;.</span><br><span class="line">   csi.storage.k8s.io&#x2F;fstype: xfs</span><br><span class="line">   # uncomment the following to use rbd-nbd as mounter on supported nodes</span><br><span class="line">   # mounter: rbd-nbd</span><br><span class="line">reclaimPolicy: Delete</span><br><span class="line">mountOptions:</span><br><span class="line">   - discard</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建 storage-class</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl apply -f examples&#x2F;rbd&#x2F;storageclass.yaml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置该 storage-class 为默认</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl patch storageclass csi-rbd-sc -p &#39;&#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;:&#123;&quot;storageclass.kubernetes.io&#x2F;is-default-class&quot;:&quot;true&quot;&#125;&#125;&#125;&#39;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>以上部署主要使用了默认值，相关插件都部署在 default 命名空间，可以根据需要进行调整。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Ceph</tag>
+        <tag>Kubernetes</tag>
       </tags>
   </entry>
 </search>
