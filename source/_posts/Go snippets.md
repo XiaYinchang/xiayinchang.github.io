@@ -10,7 +10,7 @@ tags:
 keywords: 'Go, snippets'
 description: Go 可复用的代码片段。
 abbrlink: beea4a6b
-updated: 2020-10-21 00:00:00
+updated: 2021-02-25 00:00:00
 ---
 
 #### 生成 csv 文件
@@ -534,4 +534,18 @@ if _, err := os.Stat("/path/to/whatever"); err == nil {
 		<-sigc
 		cancel()
 	}()
+```
+
+#### 流式下载并保存文件
+
+```go
+import ("net/http"; "io"; "os")
+...
+out, err := os.Create("output.txt")
+defer out.Close()
+...
+resp, err := http.Get("http://example.com/")
+defer resp.Body.Close()
+...
+n, err := io.Copy(out, resp.Body)
 ```
