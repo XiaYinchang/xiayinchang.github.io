@@ -1,7 +1,7 @@
 ---
 title: Linux 基础网络知识
 urlname: ggqnsg
-date: '2019-10-09 00:00:00 +0800'
+date: '2019-10-09 00:00:00 +0000'
 layout: post
 comments: true
 categories: 网络

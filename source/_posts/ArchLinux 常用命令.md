@@ -1,7 +1,7 @@
 ---
 title: ArchLinux 常用命令
 urlname: egtn5p
-date: '2019-09-04 00:00:00 +0800'
+date: '2019-09-04 00:00:00 +0000'
 layout: post
 comments: true
 categories: Linux

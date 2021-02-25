@@ -1,7 +1,7 @@
 ---
 title: Linux 进程管理基础知识
 urlname: wgve4b
-date: '2019-12-14 00:00:00 +0800'
+date: '2019-12-14 00:00:00 +0000'
 layout: post
 comments: true
 categories: Linux

@@ -1,7 +1,7 @@
 ---
 title: Rust 基础知识
 urlname: gt4uko
-date: '2020-09-11 00:00:00 +0800'
+date: '2020-09-11 00:00:00 +0000'
 layout: post
 comments: true
 categories: Rust

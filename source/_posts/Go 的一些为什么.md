@@ -1,7 +1,7 @@
 ---
 title: Go 的一些为什么
 urlname: aqgwbs
-date: '2020-12-24 00:00:00 +0800'
+date: '2020-12-24 00:00:00 +0000'
 layout: post
 comments: true
 categories: Go

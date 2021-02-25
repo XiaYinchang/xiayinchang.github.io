@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 集群升级
 urlname: ni161b
-date: '2020-09-06 00:00:00 +0800'
+date: '2020-09-06 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes

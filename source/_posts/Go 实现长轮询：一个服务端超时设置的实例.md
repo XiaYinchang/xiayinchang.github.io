@@ -1,7 +1,7 @@
 ---
 title: Go 实现长轮询：一个服务端超时设置的实例
 urlname: mel61p
-date: '2019-12-08 00:00:00 +0800'
+date: '2019-12-08 00:00:00 +0000'
 updated: 2019-12-8
 layout: post
 comments: true

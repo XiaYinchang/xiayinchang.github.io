@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 周边工具
 urlname: txw09z
-date: '2020-10-16 00:00:00 +0800'
+date: '2020-10-16 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes

@@ -1,7 +1,7 @@
 ---
 title: Qt 常见编译问题汇总
 urlname: feaklo
-date: '2017-04-07 00:00:00 +0800'
+date: '2017-04-07 00:00:00 +0000'
 layout: post
 comments: true
 categories: Qt

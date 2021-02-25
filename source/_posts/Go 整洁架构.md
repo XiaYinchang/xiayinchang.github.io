@@ -1,7 +1,7 @@
 ---
 title: Go 整洁架构
 urlname: aeqw3t
-date: '2018-09-17 22:50:56 +0800'
+date: '2018-09-17 22:50:56 +0000'
 <br />title: Go 整洁架构实践
 layout: post
 comments: true

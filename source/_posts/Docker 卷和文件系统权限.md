@@ -1,7 +1,7 @@
 ---
 title: Docker 卷和文件系统权限
 urlname: vngkut
-date: '2019-10-17 00:00:00 +0800'
+date: '2019-10-17 00:00:00 +0000'
 layout: post
 comments: true
 categories: 译文

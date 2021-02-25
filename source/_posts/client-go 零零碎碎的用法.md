@@ -1,7 +1,7 @@
 ---
 title: client-go 的零零碎碎的用法
 urlname: ftrb7u
-date: '2021-01-10 00:00:00 +0800'
+date: '2021-01-10 00:00:00 +0000'
 layout: post
 comments: true
 categories: kubernetes

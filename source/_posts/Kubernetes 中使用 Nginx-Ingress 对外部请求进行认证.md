@@ -1,7 +1,7 @@
 ---
 title: Kubernetes 中使用 Nginx-Ingress 对外部请求进行认证
 urlname: hvu32r
-date: '2019-12-03 00:00:00 +0800'
+date: '2019-12-03 00:00:00 +0000'
 updated: 2019-12-7
 layout: post
 comments: true

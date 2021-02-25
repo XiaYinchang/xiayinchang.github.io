@@ -1,7 +1,7 @@
 ---
 title: Go snippets
 urlname: mhnb8f
-date: '2020-10-21 00:00:00 +0800'
+date: '2020-10-21 00:00:00 +0000'
 layout: post
 comments: true
 categories: Go

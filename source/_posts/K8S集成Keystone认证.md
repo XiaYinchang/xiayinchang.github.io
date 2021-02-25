@@ -1,7 +1,7 @@
 ---
 title: K8S集成Keystone认证
 urlname: ioddt3
-date: '2019-02-12 00:00:00 +0800'
+date: '2019-02-12 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes

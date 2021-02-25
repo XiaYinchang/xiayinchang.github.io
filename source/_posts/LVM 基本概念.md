@@ -1,7 +1,7 @@
 ---
 title: LVM 基本概念
 urlname: poq0bg
-date: '2019-09-08 16:08:50 +0800'
+date: '2019-09-08 16:08:50 +0000'
 layout: post
 comments: true
 categories: 译文

@@ -1,7 +1,7 @@
 ---
 title: Linux 内存管理基础知识
 urlname: wwl0x3
-date: '2020-12-18 00:00:00 +0800'
+date: '2020-12-18 00:00:00 +0000'
 layout: post
 comments: true
 categories: Linux

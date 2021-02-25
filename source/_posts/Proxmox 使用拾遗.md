@@ -1,7 +1,7 @@
 ---
 title: Proxmox 使用拾遗
 urlname: ngycql
-date: '2019-09-03 00:00:00 +0800'
+date: '2019-09-03 00:00:00 +0000'
 layout: post
 comments: true
 categories: Proxmox

@@ -1,7 +1,7 @@
 ---
 title: Ceph 对接 Kubernetes 的两种方式
 urlname: yek3gp
-date: '2019-09-11 00:00:00 +0800'
+date: '2019-09-11 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes

@@ -1,7 +1,7 @@
 ---
 title: 常用 Kubernetes Operator
 urlname: lm90a1
-date: '2020-08-30 00:00:00 +0800'
+date: '2020-08-30 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes

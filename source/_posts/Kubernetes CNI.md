@@ -1,7 +1,7 @@
 ---
 title: Kubernetes CNI
 urlname: fu66qr
-date: '2020-10-16 00:00:00 +0800'
+date: '2020-10-16 00:00:00 +0000'
 layout: post
 comments: true
 categories: Kubernetes

@@ -1,7 +1,7 @@
 ---
 title: Linux 实用命令集合
 urlname: qyggmq
-date: '2019-11-09 00:00:00 +0800'
+date: '2019-11-09 00:00:00 +0000'
 layout: post
 categories: Linux
 tags:
@@ -10,7 +10,7 @@ tags:
 keywords: 'Linux, Docker'
 description: 在云计算场景下常用的 Linux 命令记录。
 abbrlink: b489449e
-updated: 2021-01-19 00:00:00
+updated: 2021-02-22 00:00:00
 ---
 
 #### CentOS
@@ -1359,6 +1359,14 @@ Average:        33059      2048     32077         1
 #### Linux 系统启动过程
 
 上电 -> 从固件读取 BIOS -> 从磁盘固定位置（或者网络、CD 等）读取 BootLoader（通常是 GRUB2）-> BootLoader 加载内核和初始根文件系统 -> 加载文件系统 -> 初始化工作完成后启动 1 号用户进程 init。参考：[简述 Linux 的启动过程](https://segmentfault.com/a/1190000006872609)
+
+#### 如何找到环境变量是在哪里被设置的
+
+参考：[https://unix.stackexchange.com/a/154971](https://unix.stackexchange.com/a/154971)，[https://unix.stackexchange.com/a/249922](https://unix.stackexchange.com/a/249922)
+
+```bash
+PS4='+$BASH_SOURCE> ' BASH_XTRACEFD=7 bash -xl 7>&2
+```
 
 #### 实用工具
 

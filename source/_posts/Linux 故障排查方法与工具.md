@@ -1,7 +1,7 @@
 ---
 title: Linux 故障排查方法与工具
 urlname: vdixb5
-date: '2020-08-04 00:00:00 +0800'
+date: '2020-08-04 00:00:00 +0000'
 layout: post
 categories: Linux
 tags:

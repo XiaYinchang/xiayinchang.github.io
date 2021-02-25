@@ -1,7 +1,7 @@
 ---
 title: Go 开发与调试工具与方法
 urlname: sxpwav
-date: '2020-12-16 00:00:00 +0800'
+date: '2020-12-16 00:00:00 +0000'
 layout: post
 comments: true
 categories: Go

@@ -1,7 +1,7 @@
 ---
 title: IO 同步、异步及阻塞、非阻塞
 urlname: riyfd8
-date: '2019-12-08 00:00:00 +0800'
+date: '2019-12-08 00:00:00 +0000'
 layout: post
 comments: true
 categories: Linux

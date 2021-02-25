@@ -1,7 +1,7 @@
 ---
 title: MeshCentral - 管理远程设备的利器
 urlname: mgvvhs
-date: '2020-06-20 00:00:00 +0800'
+date: '2020-06-20 00:00:00 +0000'
 layout: post
 categories: 开发工具
 tags:

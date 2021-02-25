@@ -1,7 +1,7 @@
 ---
 title: 在 Go 中不要拷贝锁
 urlname: nfeqc2
-date: '2019-12-07 00:00:00 +0800'
+date: '2019-12-07 00:00:00 +0000'
 updated: 2019-12-7
 layout: post
 comments: true

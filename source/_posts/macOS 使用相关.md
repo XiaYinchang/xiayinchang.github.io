@@ -1,7 +1,7 @@
 ---
 title: macOS 使用相关
 urlname: kgdfl4
-date: '2020-05-06 00:00:00 +0800'
+date: '2020-05-06 00:00:00 +0000'
 layout: post
 categories: 开发工具
 tags:

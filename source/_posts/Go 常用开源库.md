@@ -1,7 +1,7 @@
 ---
 title: Go 常用开源库
 urlname: iekhgs
-date: '2020-10-12 00:00:00 +0800'
+date: '2020-10-12 00:00:00 +0000'
 layout: post
 comments: true
 categories: Go

@@ -1,7 +1,7 @@
 ---
 title: Git 常用命令
 urlname: vz3l55
-date: '2020-04-21 00:00:00 +0800'
+date: '2020-04-21 00:00:00 +0000'
 layout: post
 categories: 开发工具
 tags:

@@ -1,7 +1,7 @@
 ---
 title: gRPC snippets
 urlname: xs66n7
-date: '2019-11-14 00:00:00 +0800'
+date: '2019-11-14 00:00:00 +0000'
 layout: post
 comments: true
 categories: gRPC
