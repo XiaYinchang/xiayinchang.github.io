@@ -8,6 +8,7 @@ jobs:
     strategy:
       matrix:
         node-version: [15.x]
+        go-version: [1.16.x]
 
     steps:
       - uses: actions/checkout@master
@@ -17,12 +18,17 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: ${{ matrix.node-version }}
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
       - name: npm install, build
         run: |
           npm install
           sed -i "s/LIVERE_UID/$LIVERE_UID/g" themes/next/_config.yml
           npm run generate
-          node relace-image.js
+          go mod tidy
+          go run replace-image.go
+          # node relace-image.js
         env:
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
           LIVERE_UID: ${{ secrets.LIVERE_UID }}
