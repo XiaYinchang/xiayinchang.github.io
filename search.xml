@@ -339,19 +339,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Envoy 知识汇总</title>
-    <url>/post/111604be.html</url>
-    <content><![CDATA[<h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="编写-Lua-脚本"><a href="#编写-Lua-脚本" class="headerlink" title="编写 Lua 脚本"></a>编写 Lua 脚本</h4><ul>
-<li>一个简单的案例，使用 Lua 脚本为 Http 请求添加了 Authorization 请求头：<a href="https://segmentfault.com/a/1190000020650955" target="_blank" rel="external nofollow noopener noreferrer">https://segmentfault.com/a/1190000020650955</a></li>
-</ul>]]></content>
-      <categories>
-        <category>Envoy</category>
-      </categories>
-      <tags>
-        <tag>Envoy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker 知识点与命令集合</title>
     <url>/post/f8a08eb2.html</url>
     <content><![CDATA[<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>参考：<a href="https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/" target="_blank" rel="external nofollow noopener noreferrer">清华镜像源</a>，<a href="https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.3e221b11R2we8Y" target="_blank" rel="external nofollow noopener noreferrer">阿里镜像源</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum remove docker docker-common docker-selinux docker-engine</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sed -i <span class="string">'s+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+'</span> /etc/yum.repos.d/docker-ce.repo</span><br><span class="line">yum install docker-ce docker-ce-cli containerd.io</span><br><span class="line">systemctl <span class="built_in">enable</span> --now docker</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -430,6 +417,19 @@
       <tags>
         <tag>Docker</tag>
         <tag> 云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Envoy 知识汇总</title>
+    <url>/post/111604be.html</url>
+    <content><![CDATA[<h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="编写-Lua-脚本"><a href="#编写-Lua-脚本" class="headerlink" title="编写 Lua 脚本"></a>编写 Lua 脚本</h4><ul>
+<li>一个简单的案例，使用 Lua 脚本为 Http 请求添加了 Authorization 请求头：<a href="https://segmentfault.com/a/1190000020650955" target="_blank" rel="external nofollow noopener noreferrer">https://segmentfault.com/a/1190000020650955</a></li>
+</ul>]]></content>
+      <categories>
+        <category>Envoy</category>
+      </categories>
+      <tags>
+        <tag>Envoy</tag>
       </tags>
   </entry>
   <entry>
@@ -2746,87 +2746,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux 文件系统基础知识</title>
-    <url>/post/c957e495.html</url>
-    <content><![CDATA[<h4 id="superblock-inode-dentry-file"><a href="#superblock-inode-dentry-file" class="headerlink" title="superblock, inode, dentry, file"></a>superblock, inode, dentry, file</h4><p>理解这几个概念，首先需要搞清楚元数据（metadata ）的概念，借用维基百科的定义，元数据是关于数据的数据，即元数据包含了某段数据的一些信息。就好像你买了一辆车，而这辆车的型号、品牌及产地等信息即为该车的元数据。这些信息并不是车本身的一部分而是关于车的描述，因此称为车的元数据。在 Linux 文件系统中，元数据本身又分为了多个层级。<br>superblock 超级块是文件系统的元数据，定义了文件系统的大小、类型状态以及一些其它元数据结构的信息（因此可称超级块是元数据的元数据）。超级块是处于较高层级的文件系统的元数据结构，是文件系统非常关键的信息，一旦损坏则会导致所有的数据不可用，所以一般文件系统中超级块的内容会保存多份，必要时可使用工具找到备份的超级块信息恢复损坏的文件系统。<br>inode 定义了文件的元数据信息。在 Linux 系统中，为了简洁和统一，文件、目录、设备等都被视为 file。inode 包含的元数据中，不包含文件名信息，主要包含：文件的归属关系、读写权限、文件类型以及 inode 描述的 file 在磁盘存储的数据块地址等信息。问题来了，如果 inode 不包含文件名信息，而文件名信息又必然保存在磁盘上（因为将磁盘在不同的计算机上挂载都能够看到文件名，所以文件名信息不可能是保存在某一特定计算机上），而 Linux 文件系统中保存在磁盘上的除了 inode、superblock 等元数据，也就只有数据区了，所以文件名信息必然保存在数据区，那具体是怎么保存呢？刚才提到 inode 指向的也有可能是一个目录，所以猜想这个目录对象的数据区中即保存了相关文件的文件名。<br>dentry 是仅存在与内核中的对象，用于将内核中的 file 对象与 inode 对象联系起来。dentry 中保存了文件的文件名信息，该文件名也是根据 inode number 信息从磁盘数据中获取的。dentry 是 Linux 内核用来跟踪目录中文件层次结构的工具。 每个 dentry 将一个 inode 号映射到一个文件名。dentry 在文件访问加速和目录遍历等操作中发挥作用。<br>file 则是最接近用户的文件的定义，对于编程人员来说，操作文件时内核都会创建一个  file 对象，该对象包含文件存储位置和使用该文件的进程的信息和读写文件时的游标信息以及指向的 dentry（在 5.8-rc6 内核源码中看起来是直接指向的 inode ） 信息。 文件对象 (但不包括文件数据本身) 在关闭文件时被丢弃。<br>以上几种元数据中，superblock 和 inode 都会保存在磁盘上，在操作系统操作文件系统时被读入内核空间，所以在内核空间也会有相关的数据结构和相应的对象，而 dentry 和 file 则是根据内核操作文件的需要动态地进行创建和销毁，是临时存在的对象，不会持久化到磁盘上进行存储。<br>dentry 是仅存在于内存的目录项缓存，为了提高查找性能而设计，基于文件系统中存储目录信息的 inode 的数据构建，形成一个树状结构，用于从文件名到 inode 号的对应查找，从而能够快速将用户操作的 file 与底层 inode 关联起来。<br>进程每打开一个文件，就会有一个 file 结构与之对应。同一个进程可以多次打开同一个文件而得到多个不同的 file 结构，file 结构描述被打开文件的属性，如文件的当前偏移量等信息。<br>两个不同的 file 结构可以对应同一个 dentry 结构。进程多次打开同一个文件时，对应的只有一个 dentry 结构。dentry 结构存储目录项和对应文件（inode）的信息。<br>在存储介质中，每个文件对应唯一的 inode 结点，但是每个文件又可以有多个文件名。即可以通过不同的文件名访问同一个文件。这里多个文件名对应一个文件的关系在数据结构中表示就是 dentry 和 inode 的关系。<br>Inode 中不存储文件的名字，它只存储节点号；而 dentry 则保存有名字和与其对应的节点号，所以就可以通过不同的 dentry 访问同一个 inode。<br>指向同一个 inode 的不同的 dentry 则是通过文件链接（ln 命令）来实现的。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&display=inline&height=150&margin=%5Bobject%20Object%5D&name=image.png&originHeight=299&originWidth=441&size=14934&status=done&style=none&width=220.5" alt="image.png"><br>参考： <a href="https://www.wikiwand.com/en/Inode" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/Inode</a>，<a href="https://unix.stackexchange.com/a/4403" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/a/4403</a>，<a href="https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html" target="_blank" rel="external nofollow noopener noreferrer">https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html</a></p><a id="more"></a>
-<h4 id="软链接和硬链接的区别"><a href="#软链接和硬链接的区别" class="headerlink" title="软链接和硬链接的区别"></a>软链接和硬链接的区别</h4><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&margin=%5Bobject%20Object%5D&name=image.png&originHeight=255&originWidth=514&size=34517&status=done&style=none&width=514" alt="image.png"></p>
-<ul>
-<li>参考：<a href="https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link</a></li>
-<li>硬链接是对 inode 的引用，只有所有引用都删除后 inode 才会被删除，删除源文件，通过硬链接创建的文件仍然能够访问之前保存的数据；软链接指向源文件，源文件被删除后，访问软链接会提示文件不存在， inode 一般在源文件删除后即被删除（除非有硬链接指向该 inode）。</li>
-<li>创建硬链接时源文件必须存在；而软链接可以指向不存在的对象以及不同文件系统（如 nfs）的对象（目录或文件）。</li>
-<li>创建硬链接增加了针对指定 inode 的引用项，创建软链接增加了一条包含指定路径名称的记录项，由此在内核中构建的 dentry 记录也会有所差别。</li>
-<li>关于为什么不允许对目录创建硬链接的个人理解：硬链接创建的是和源文件同样类型的文件系统对象，在硬链接创建完成后，文件系统已经无法区分新建出来的文件系统对象是否是通过硬链接创建出来的，因此在执行目录遍历时便会将其作为普通的文件对象对待，因此一旦允许硬链接指向目录，则在出现环路时会永不停止的遍历下去，造成文件系统无法正常工作；而对目录创建软链接可以工作是因为，软链接创建出来的文件系统对象和普通的文件系统对象类型是不一样的，因此文件系统可以区分出软链接创建出来的文件系统对象并在进行目录遍历时获取到软链接指向的最短路径（readlink -f soft-link）后就终止对其进行遍历，从而能够正常工作；其关键在于是否可识别，如果能够识别就可以区别对待。</li>
-</ul>
-<h4 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h4><p>chroot 改变了进程及其子进程能够访问的文件系统的入口点，使得该应用只能访问新的根目录下的文件内容而无法访问根目录以外的文件，将应用置于沙盒中从而限制其能够访问的文件和设备等资源，实现对应用的安全隔离。</p>
-<h4 id="软链接和-bind-mount-的比较"><a href="#软链接和-bind-mount-的比较" class="headerlink" title="软链接和 bind mount 的比较"></a>软链接和 bind mount 的比较</h4><ul>
-<li>其相同之处是都可以实现对源目录进行跨文件系统的定位和访问。</li>
-<li>其主要的不同点在于它们的控制主体和表现形式，软链接由文件系统负责管理，是文件系统中的对象；bind mount 由内核直接控制，是内核中的实体，比文件系统层级更低（因此 bind mount 需要 root 权限，创建软链接并不需要 root 权限），它可以更改文件系统的底层拓扑结构而使得文件系统毫无察觉（因此 bind mount 过程不会持久化保存，系统重启时必须重新进行 bind mount，一般将其写入到 /etc/fstab）。</li>
-<li>软链接的创建可以使用相对路径或绝对路径，表示对象中保存的源路径与输入路径完全一致，因此有可能使得软链接在某些情况无法访问（例如，在由软链接建立的循环路径中相对路径可能失效）；bind mount 在使用相对路径作为源路径时会将其解析为绝对路径后保存并挂载。</li>
-<li>在使用 chroot 的情况下，软链接的范围仅限于当前新的根目录下（源目录与目的目录均在当前 chroot 下），而 bind mount 可以将 chroot 外的文件挂载到当前 chroot 中使用（过程是怎样的？）</li>
-<li>容器文件系统的挂载过程借助了 bind mount。</li>
-<li>bind mount 是将内核中的数据结构从源端拷贝到目的端。</li>
-<li>改变目录树视图的文件系统可被称为 overlay 文件系统，bindfs/overlay2/aufs 均可称为 overlay 文件系统。</li>
-<li>参考：<a href="https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix" target="_blank" rel="external nofollow noopener noreferrer">https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix</a></li>
-<li>参考：<a href="https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount</a></li>
-</ul>
-<h4 id="mount-namespace"><a href="#mount-namespace" class="headerlink" title="mount namespace"></a>mount namespace</h4><ul>
-<li><a href="https://lwn.net/Articles/689856/" target="_blank" rel="external nofollow noopener noreferrer">https://lwn.net/Articles/689856/</a></li>
-<li>新的 mount namespace 会继承原 mount namespace 的挂载点（因为是 clone），之后挂载点会各自变化。</li>
-<li>Creating a mount namespace is similar to a recursive bind mount of / followed by chroot into the bind mount. Chroot creating is simular to creating a mount namespace followed by pivot_root.</li>
-<li><a href="https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces</a></li>
-</ul>
-<h4 id="bind-mount-写入-fstab"><a href="#bind-mount-写入-fstab" class="headerlink" title="bind mount 写入 fstab"></a>bind mount 写入 fstab</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;cephfs&#x2F;storage &#x2F;storage none defaults,bind 0 0</span><br></pre></td></tr></table></figure>
-
-<h4 id="文件的-atime-mtime-ctime"><a href="#文件的-atime-mtime-ctime" class="headerlink" title="文件的 atime/mtime/ctime"></a>文件的 atime/mtime/ctime</h4><p>atime 是文件最后被访问的时间，mtime 是文件最后更新的时间，ctime 是文件权限/所有者等元数据发生变化的时间，<code>ls -l</code> 默认显示文件的 mtime，<code>touch</code> 命令用于更新文件的 atime/mtime/ctime 为当前时间。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 stat 命令可以查看文件的三种时间戳</span></span><br><span class="line"><span class="built_in">stat</span> Dockerfile</span><br><span class="line"><span class="comment"># 输出如下</span></span><br><span class="line">  File: Dockerfile</span><br><span class="line">  Size: 714       	Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: 801h/2049d	Inode: 1730866260  Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/     xyc)   Gid: (  985/   users)</span><br><span class="line">Access: 2020-07-20 18:30:18.011746992 +0800</span><br><span class="line">Modify: 2020-07-20 18:28:45.569930146 +0800</span><br><span class="line">Change: 2020-07-20 18:28:45.569930146 +0800</span><br><span class="line"> Birth: 2020-07-20 18:28:45.569930146 +0800</span><br></pre></td></tr></table></figure>
-
-<h4 id="系统启动时加载-initrd-initramfs"><a href="#系统启动时加载-initrd-initramfs" class="headerlink" title="系统启动时加载 initrd (initramfs)"></a>系统启动时加载 initrd (initramfs)</h4><p>grub 在加载内核的同时，还需要加载 initrd (initramfs)，并交给内核进行挂载。grub 完成自己的任务后会把系统启动的工作移交给内核继续进行，initrd 提供了内核执行启动工作所必须的最小资源集，包括网卡驱动、磁盘驱动、各种文件系统驱动和扩展内核模块等，可视为一个临时的根文件系统，当内核从中获取必要的驱动与模块从而有能力操作各种外设后，将会挂载最终的根文件系统来替换掉该临时的文件系统。<br>initrd (initial ram disk) 和 initramfs (initial ram file system) 所承载的内容是一样的，区别在于其工作模式。<br>顾名思义，initrd 是内存盘的镜像，内核在读取其内容时将其作为块设备处理，且这个块设备完整存在于内存中，占用了内存空间，再加上内核从块设备读取数据时会将数据拷贝到 page cache（对于文件数据）和 dentry cache（(对于目录项），相当于同样的数据在内存中存在了两份从而造成浪费。initrd 的另一个特点是，既然它是一个块设备，则在其之上必然存在一种系统（一般是 ext2 ）才能承载可供内核读取的数据，同时内核在编译时也必须加入此种文件系统的驱动。块设备大小固定，所以可能存在内存空间浪费或所需空间不足的情况。<br>显然，initramfs 是一份文件系统的数据镜像，其所使用的文件系统名为 tmpfs，是一种 dummy 文件系统，它提供给 VFS （虚拟文件系统）的接口仅包含了能够保证正常工作的最少功能集。基于 tmpfs 的文件读写均是对内核中同一份数据的操作，且不需要块设备驱动的介入。另外，tmpfs 基于 Linux cache 系统构建，仅增加少量代码，是内核原生支持的文件系统格式，而无需加入额外的驱动支持。<br>参考：<a href="https://stackoverflow.com/a/10604667" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/10604667</a>，<a href="https://blog.csdn.net/findstr/article/details/6990807" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/findstr/article/details/6990807</a></p>
-<h4 id="xfs-文件系统"><a href="#xfs-文件系统" class="headerlink" title="xfs 文件系统"></a>xfs 文件系统</h4><p>参考：<a href="http://landoflinux.com/linux_xfs_filesystem_introduction.html" target="_blank" rel="external nofollow noopener noreferrer">http://landoflinux.com/linux_xfs_filesystem_introduction.html</a>，<a href="https://www.wikiwand.com/en/XFS" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/XFS</a>，<a href="https://righteousit.wordpress.com/2018/05/21/xfs-part-1-superblock/" target="_blank" rel="external nofollow noopener noreferrer">https://righteousit.wordpress.com/2018/05/21/xfs-part-1-superblock/</a></p>
-<h4 id="tmpfs"><a href="#tmpfs" class="headerlink" title="tmpfs"></a>tmpfs</h4><p>tmpfs 是基于内存的文件系统，它使用虚拟内存空间，可被交换至 swap 分区，初始挂载时使用很小的空间，其占用的内存空间大小随实际文件的大小变化，当文件被删除时内存空间会被释放。挂载时可指定可用空间大小，若未指定，则默认为内存空间大小的一半。tmpfs 基于 ramfs 和 page cache 构建，不同于 ramfs 的是 tmpfs 中的内容可被交换至 swap 分区，tmpfs 所用内存大小和 inode 数量可被限制，防止内存被耗尽。ramfs 基于物理内存，所以无法使用 swap 分区；tmpfs 基于虚拟内存，可使用物理内存和 swap 空间。<br>tmpfs 通常被用在 /tmp, /var/lock, /var/run 挂载点，也被挂载在 /dev/shm 用于 POSIX 共享内存，挂载至 /dev/shm 由 systemd 自动完成。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 手动挂载，size=0 意味不限制大小，nr_inodes=0 意味不限制 inode 数量</span><br><span class="line">mount -t tmpfs -o size=20m tmpfs /mnt/tmp</span><br><span class="line">// 写入 fstab</span><br><span class="line">tmpfs /tmp tmpfs size=2m 0 0</span><br></pre></td></tr></table></figure>
-
-<h4 id="ls-列出的文件信息"><a href="#ls-列出的文件信息" class="headerlink" title="ls 列出的文件信息"></a>ls 列出的文件信息</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ls -ltrh</span><br><span class="line">total 19M</span><br><span class="line">drwxr-xr-x  4 root root   35 Jul  1 18:07 uk8s-demo</span><br><span class="line">-rw-r--r--  1 root root  21K Jul  3 12:52 prometheus.yaml</span><br><span class="line">-rw-r--r--  1 root root  998 Jul  3 15:02 prometheus-instance.yaml</span><br><span class="line">-rw-r--r--  1 root root 1.5K Jul  3 15:05 prometheus-operator-old.yaml</span><br><span class="line">-rw-r--r--  1 root root 1.4K Jul  3 16:19 etcd-sm.yaml</span><br><span class="line">-rw-r--r--  1 root root  202 Jul  8 15:35 delete-cm.bash</span><br><span class="line">-rw-r--r--  1 root root  32K Jul  8 16:45 prometheus-new.yaml</span><br><span class="line">-rw-r--r--  1 root root  325 Jul  8 18:12 prometheus-svc.yaml</span><br><span class="line">-rw-r--r--  1 root root 2.4K Jul 21 10:33 prometheus-sts.yaml</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th>第一列</th>
-<th>第二列</th>
-<th>第三列</th>
-<th>第四列</th>
-<th>第五列</th>
-<th>第六列</th>
-<th>第七列</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>drwxr-xr-x</td>
-<td>4</td>
-<td>root</td>
-<td>root</td>
-<td>35</td>
-<td>Jul  1 18:07</td>
-<td>uk8s-demo</td>
-</tr>
-</tbody></table>
-<p>| 文件的类型和文件权限<br>第一个字符表示文件类型：d 目录 , - 文件 , l 链接 , s: socket , p: named pipe , b: block device , c: character device。<br>文件权限中 x 位为 s 时，表示在文件执行时把进程的属主或组 ID 置为该文件的文件属主。 | 文件链接个数 | 文件的所有者 | 文件的属组 | 文件大小 | 文件内容被修改的最后时间 | 文件名称 |</p>
-<h4 id="dev-ptmx"><a href="#dev-ptmx" class="headerlink" title="/dev/ptmx"></a>/dev/ptmx</h4><p>伪终端 (pseudoterminal) : ptmx, pts (伪终端 master 和伪终端 slave )。/dev/ptmx 用于创建伪终端主从设备对。当我们用 open 打开 /dev/ptmx 设备后, 返回主设备的文件描述符，并且在 /dev/pts/ 目录下创建一个伪终端从设备。在成功打开 /dev/ptmx 后, 可以通过函数 ptsname() 来获取从设备的 path 。想要打开 open 伪终端从设备,必须先使用主设备的文件描述符调用 grantpt() , unlockpt() 。当主设备和从设备都打开后, 在主设备写入的数据可以在从设备上读取, 在从设备上写入的数据可以在主设备读取。</p>
-<h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4><ul>
-<li><a href="https://helpdeskgeek.com/linux-tips/what-are-inodes-in-linux-and-how-are-they-used/" target="_blank" rel="external nofollow noopener noreferrer">What Are Inodes in Linux and How Are They Used</a></li>
-<li><a href="https://www.wikiwand.com/en/Inode" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/Inode</a></li>
-<li><a href="https://www.thegeekdiary.com/unix-file-basics-inode-soft-vs-hard-link-device-files/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/unix-file-basics-inode-soft-vs-hard-link-device-files/</a></li>
-<li><a href="https://www.kernel.org/doc/html/latest/filesystems/tmpfs.html" target="_blank" rel="external nofollow noopener noreferrer">Tmpfs</a>，<a href="https://wiki.archlinux.org/index.php/Tmpfs" target="_blank" rel="external nofollow noopener noreferrer">archwiki-Tmpfs</a></li>
-<li><a href="https://www.cnblogs.com/sparkdev/p/9651622.html" target="_blank" rel="external nofollow noopener noreferrer">Linux 特殊权限 SUID,SGID,SBIT</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux 故障排查方法与工具</title>
     <url>/post/c2292029.html</url>
     <content><![CDATA[<h3 id="负载模拟与分析"><a href="#负载模拟与分析" class="headerlink" title="负载模拟与分析"></a>负载模拟与分析</h3><h4 id="CPU-密集型"><a href="#CPU-密集型" class="headerlink" title="CPU 密集型"></a>CPU 密集型</h4><ol>
@@ -2942,6 +2861,87 @@
       <tags>
         <tag>Linux</tag>
         <tag>故障排查</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 文件系统基础知识</title>
+    <url>/post/c957e495.html</url>
+    <content><![CDATA[<h4 id="superblock-inode-dentry-file"><a href="#superblock-inode-dentry-file" class="headerlink" title="superblock, inode, dentry, file"></a>superblock, inode, dentry, file</h4><p>理解这几个概念，首先需要搞清楚元数据（metadata ）的概念，借用维基百科的定义，元数据是关于数据的数据，即元数据包含了某段数据的一些信息。就好像你买了一辆车，而这辆车的型号、品牌及产地等信息即为该车的元数据。这些信息并不是车本身的一部分而是关于车的描述，因此称为车的元数据。在 Linux 文件系统中，元数据本身又分为了多个层级。<br>superblock 超级块是文件系统的元数据，定义了文件系统的大小、类型状态以及一些其它元数据结构的信息（因此可称超级块是元数据的元数据）。超级块是处于较高层级的文件系统的元数据结构，是文件系统非常关键的信息，一旦损坏则会导致所有的数据不可用，所以一般文件系统中超级块的内容会保存多份，必要时可使用工具找到备份的超级块信息恢复损坏的文件系统。<br>inode 定义了文件的元数据信息。在 Linux 系统中，为了简洁和统一，文件、目录、设备等都被视为 file。inode 包含的元数据中，不包含文件名信息，主要包含：文件的归属关系、读写权限、文件类型以及 inode 描述的 file 在磁盘存储的数据块地址等信息。问题来了，如果 inode 不包含文件名信息，而文件名信息又必然保存在磁盘上（因为将磁盘在不同的计算机上挂载都能够看到文件名，所以文件名信息不可能是保存在某一特定计算机上），而 Linux 文件系统中保存在磁盘上的除了 inode、superblock 等元数据，也就只有数据区了，所以文件名信息必然保存在数据区，那具体是怎么保存呢？刚才提到 inode 指向的也有可能是一个目录，所以猜想这个目录对象的数据区中即保存了相关文件的文件名。<br>dentry 是仅存在与内核中的对象，用于将内核中的 file 对象与 inode 对象联系起来。dentry 中保存了文件的文件名信息，该文件名也是根据 inode number 信息从磁盘数据中获取的。dentry 是 Linux 内核用来跟踪目录中文件层次结构的工具。 每个 dentry 将一个 inode 号映射到一个文件名。dentry 在文件访问加速和目录遍历等操作中发挥作用。<br>file 则是最接近用户的文件的定义，对于编程人员来说，操作文件时内核都会创建一个  file 对象，该对象包含文件存储位置和使用该文件的进程的信息和读写文件时的游标信息以及指向的 dentry（在 5.8-rc6 内核源码中看起来是直接指向的 inode ） 信息。 文件对象 (但不包括文件数据本身) 在关闭文件时被丢弃。<br>以上几种元数据中，superblock 和 inode 都会保存在磁盘上，在操作系统操作文件系统时被读入内核空间，所以在内核空间也会有相关的数据结构和相应的对象，而 dentry 和 file 则是根据内核操作文件的需要动态地进行创建和销毁，是临时存在的对象，不会持久化到磁盘上进行存储。<br>dentry 是仅存在于内存的目录项缓存，为了提高查找性能而设计，基于文件系统中存储目录信息的 inode 的数据构建，形成一个树状结构，用于从文件名到 inode 号的对应查找，从而能够快速将用户操作的 file 与底层 inode 关联起来。<br>进程每打开一个文件，就会有一个 file 结构与之对应。同一个进程可以多次打开同一个文件而得到多个不同的 file 结构，file 结构描述被打开文件的属性，如文件的当前偏移量等信息。<br>两个不同的 file 结构可以对应同一个 dentry 结构。进程多次打开同一个文件时，对应的只有一个 dentry 结构。dentry 结构存储目录项和对应文件（inode）的信息。<br>在存储介质中，每个文件对应唯一的 inode 结点，但是每个文件又可以有多个文件名。即可以通过不同的文件名访问同一个文件。这里多个文件名对应一个文件的关系在数据结构中表示就是 dentry 和 inode 的关系。<br>Inode 中不存储文件的名字，它只存储节点号；而 dentry 则保存有名字和与其对应的节点号，所以就可以通过不同的 dentry 访问同一个 inode。<br>指向同一个 inode 的不同的 dentry 则是通过文件链接（ln 命令）来实现的。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&display=inline&height=150&margin=%5Bobject%20Object%5D&name=image.png&originHeight=299&originWidth=441&size=14934&status=done&style=none&width=220.5" alt="image.png"><br>参考： <a href="https://www.wikiwand.com/en/Inode" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/Inode</a>，<a href="https://unix.stackexchange.com/a/4403" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/a/4403</a>，<a href="https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html" target="_blank" rel="external nofollow noopener noreferrer">https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html</a></p><a id="more"></a>
+<h4 id="软链接和硬链接的区别"><a href="#软链接和硬链接的区别" class="headerlink" title="软链接和硬链接的区别"></a>软链接和硬链接的区别</h4><p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&margin=%5Bobject%20Object%5D&name=image.png&originHeight=255&originWidth=514&size=34517&status=done&style=none&width=514" alt="image.png"></p>
+<ul>
+<li>参考：<a href="https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link</a></li>
+<li>硬链接是对 inode 的引用，只有所有引用都删除后 inode 才会被删除，删除源文件，通过硬链接创建的文件仍然能够访问之前保存的数据；软链接指向源文件，源文件被删除后，访问软链接会提示文件不存在， inode 一般在源文件删除后即被删除（除非有硬链接指向该 inode）。</li>
+<li>创建硬链接时源文件必须存在；而软链接可以指向不存在的对象以及不同文件系统（如 nfs）的对象（目录或文件）。</li>
+<li>创建硬链接增加了针对指定 inode 的引用项，创建软链接增加了一条包含指定路径名称的记录项，由此在内核中构建的 dentry 记录也会有所差别。</li>
+<li>关于为什么不允许对目录创建硬链接的个人理解：硬链接创建的是和源文件同样类型的文件系统对象，在硬链接创建完成后，文件系统已经无法区分新建出来的文件系统对象是否是通过硬链接创建出来的，因此在执行目录遍历时便会将其作为普通的文件对象对待，因此一旦允许硬链接指向目录，则在出现环路时会永不停止的遍历下去，造成文件系统无法正常工作；而对目录创建软链接可以工作是因为，软链接创建出来的文件系统对象和普通的文件系统对象类型是不一样的，因此文件系统可以区分出软链接创建出来的文件系统对象并在进行目录遍历时获取到软链接指向的最短路径（readlink -f soft-link）后就终止对其进行遍历，从而能够正常工作；其关键在于是否可识别，如果能够识别就可以区别对待。</li>
+</ul>
+<h4 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h4><p>chroot 改变了进程及其子进程能够访问的文件系统的入口点，使得该应用只能访问新的根目录下的文件内容而无法访问根目录以外的文件，将应用置于沙盒中从而限制其能够访问的文件和设备等资源，实现对应用的安全隔离。</p>
+<h4 id="软链接和-bind-mount-的比较"><a href="#软链接和-bind-mount-的比较" class="headerlink" title="软链接和 bind mount 的比较"></a>软链接和 bind mount 的比较</h4><ul>
+<li>其相同之处是都可以实现对源目录进行跨文件系统的定位和访问。</li>
+<li>其主要的不同点在于它们的控制主体和表现形式，软链接由文件系统负责管理，是文件系统中的对象；bind mount 由内核直接控制，是内核中的实体，比文件系统层级更低（因此 bind mount 需要 root 权限，创建软链接并不需要 root 权限），它可以更改文件系统的底层拓扑结构而使得文件系统毫无察觉（因此 bind mount 过程不会持久化保存，系统重启时必须重新进行 bind mount，一般将其写入到 /etc/fstab）。</li>
+<li>软链接的创建可以使用相对路径或绝对路径，表示对象中保存的源路径与输入路径完全一致，因此有可能使得软链接在某些情况无法访问（例如，在由软链接建立的循环路径中相对路径可能失效）；bind mount 在使用相对路径作为源路径时会将其解析为绝对路径后保存并挂载。</li>
+<li>在使用 chroot 的情况下，软链接的范围仅限于当前新的根目录下（源目录与目的目录均在当前 chroot 下），而 bind mount 可以将 chroot 外的文件挂载到当前 chroot 中使用（过程是怎样的？）</li>
+<li>容器文件系统的挂载过程借助了 bind mount。</li>
+<li>bind mount 是将内核中的数据结构从源端拷贝到目的端。</li>
+<li>改变目录树视图的文件系统可被称为 overlay 文件系统，bindfs/overlay2/aufs 均可称为 overlay 文件系统。</li>
+<li>参考：<a href="https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix" target="_blank" rel="external nofollow noopener noreferrer">https://www.quora.com/What-are-the-differences-between-bind-mounts-and-symlink-on-Unix</a></li>
+<li>参考：<a href="https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/198590/what-is-a-bind-mount</a></li>
+</ul>
+<h4 id="mount-namespace"><a href="#mount-namespace" class="headerlink" title="mount namespace"></a>mount namespace</h4><ul>
+<li><a href="https://lwn.net/Articles/689856/" target="_blank" rel="external nofollow noopener noreferrer">https://lwn.net/Articles/689856/</a></li>
+<li>新的 mount namespace 会继承原 mount namespace 的挂载点（因为是 clone），之后挂载点会各自变化。</li>
+<li>Creating a mount namespace is similar to a recursive bind mount of / followed by chroot into the bind mount. Chroot creating is simular to creating a mount namespace followed by pivot_root.</li>
+<li><a href="https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/questions/456620/how-to-perform-chroot-with-linux-namespaces</a></li>
+</ul>
+<h4 id="bind-mount-写入-fstab"><a href="#bind-mount-写入-fstab" class="headerlink" title="bind mount 写入 fstab"></a>bind mount 写入 fstab</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;cephfs&#x2F;storage &#x2F;storage none defaults,bind 0 0</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件的-atime-mtime-ctime"><a href="#文件的-atime-mtime-ctime" class="headerlink" title="文件的 atime/mtime/ctime"></a>文件的 atime/mtime/ctime</h4><p>atime 是文件最后被访问的时间，mtime 是文件最后更新的时间，ctime 是文件权限/所有者等元数据发生变化的时间，<code>ls -l</code> 默认显示文件的 mtime，<code>touch</code> 命令用于更新文件的 atime/mtime/ctime 为当前时间。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 stat 命令可以查看文件的三种时间戳</span></span><br><span class="line"><span class="built_in">stat</span> Dockerfile</span><br><span class="line"><span class="comment"># 输出如下</span></span><br><span class="line">  File: Dockerfile</span><br><span class="line">  Size: 714       	Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: 801h/2049d	Inode: 1730866260  Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: ( 1000/     xyc)   Gid: (  985/   users)</span><br><span class="line">Access: 2020-07-20 18:30:18.011746992 +0800</span><br><span class="line">Modify: 2020-07-20 18:28:45.569930146 +0800</span><br><span class="line">Change: 2020-07-20 18:28:45.569930146 +0800</span><br><span class="line"> Birth: 2020-07-20 18:28:45.569930146 +0800</span><br></pre></td></tr></table></figure>
+
+<h4 id="系统启动时加载-initrd-initramfs"><a href="#系统启动时加载-initrd-initramfs" class="headerlink" title="系统启动时加载 initrd (initramfs)"></a>系统启动时加载 initrd (initramfs)</h4><p>grub 在加载内核的同时，还需要加载 initrd (initramfs)，并交给内核进行挂载。grub 完成自己的任务后会把系统启动的工作移交给内核继续进行，initrd 提供了内核执行启动工作所必须的最小资源集，包括网卡驱动、磁盘驱动、各种文件系统驱动和扩展内核模块等，可视为一个临时的根文件系统，当内核从中获取必要的驱动与模块从而有能力操作各种外设后，将会挂载最终的根文件系统来替换掉该临时的文件系统。<br>initrd (initial ram disk) 和 initramfs (initial ram file system) 所承载的内容是一样的，区别在于其工作模式。<br>顾名思义，initrd 是内存盘的镜像，内核在读取其内容时将其作为块设备处理，且这个块设备完整存在于内存中，占用了内存空间，再加上内核从块设备读取数据时会将数据拷贝到 page cache（对于文件数据）和 dentry cache（(对于目录项），相当于同样的数据在内存中存在了两份从而造成浪费。initrd 的另一个特点是，既然它是一个块设备，则在其之上必然存在一种系统（一般是 ext2 ）才能承载可供内核读取的数据，同时内核在编译时也必须加入此种文件系统的驱动。块设备大小固定，所以可能存在内存空间浪费或所需空间不足的情况。<br>显然，initramfs 是一份文件系统的数据镜像，其所使用的文件系统名为 tmpfs，是一种 dummy 文件系统，它提供给 VFS （虚拟文件系统）的接口仅包含了能够保证正常工作的最少功能集。基于 tmpfs 的文件读写均是对内核中同一份数据的操作，且不需要块设备驱动的介入。另外，tmpfs 基于 Linux cache 系统构建，仅增加少量代码，是内核原生支持的文件系统格式，而无需加入额外的驱动支持。<br>参考：<a href="https://stackoverflow.com/a/10604667" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/10604667</a>，<a href="https://blog.csdn.net/findstr/article/details/6990807" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/findstr/article/details/6990807</a></p>
+<h4 id="xfs-文件系统"><a href="#xfs-文件系统" class="headerlink" title="xfs 文件系统"></a>xfs 文件系统</h4><p>参考：<a href="http://landoflinux.com/linux_xfs_filesystem_introduction.html" target="_blank" rel="external nofollow noopener noreferrer">http://landoflinux.com/linux_xfs_filesystem_introduction.html</a>，<a href="https://www.wikiwand.com/en/XFS" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/XFS</a>，<a href="https://righteousit.wordpress.com/2018/05/21/xfs-part-1-superblock/" target="_blank" rel="external nofollow noopener noreferrer">https://righteousit.wordpress.com/2018/05/21/xfs-part-1-superblock/</a></p>
+<h4 id="tmpfs"><a href="#tmpfs" class="headerlink" title="tmpfs"></a>tmpfs</h4><p>tmpfs 是基于内存的文件系统，它使用虚拟内存空间，可被交换至 swap 分区，初始挂载时使用很小的空间，其占用的内存空间大小随实际文件的大小变化，当文件被删除时内存空间会被释放。挂载时可指定可用空间大小，若未指定，则默认为内存空间大小的一半。tmpfs 基于 ramfs 和 page cache 构建，不同于 ramfs 的是 tmpfs 中的内容可被交换至 swap 分区，tmpfs 所用内存大小和 inode 数量可被限制，防止内存被耗尽。ramfs 基于物理内存，所以无法使用 swap 分区；tmpfs 基于虚拟内存，可使用物理内存和 swap 空间。<br>tmpfs 通常被用在 /tmp, /var/lock, /var/run 挂载点，也被挂载在 /dev/shm 用于 POSIX 共享内存，挂载至 /dev/shm 由 systemd 自动完成。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 手动挂载，size=0 意味不限制大小，nr_inodes=0 意味不限制 inode 数量</span><br><span class="line">mount -t tmpfs -o size=20m tmpfs /mnt/tmp</span><br><span class="line">// 写入 fstab</span><br><span class="line">tmpfs /tmp tmpfs size=2m 0 0</span><br></pre></td></tr></table></figure>
+
+<h4 id="ls-列出的文件信息"><a href="#ls-列出的文件信息" class="headerlink" title="ls 列出的文件信息"></a>ls 列出的文件信息</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ls -ltrh</span><br><span class="line">total 19M</span><br><span class="line">drwxr-xr-x  4 root root   35 Jul  1 18:07 uk8s-demo</span><br><span class="line">-rw-r--r--  1 root root  21K Jul  3 12:52 prometheus.yaml</span><br><span class="line">-rw-r--r--  1 root root  998 Jul  3 15:02 prometheus-instance.yaml</span><br><span class="line">-rw-r--r--  1 root root 1.5K Jul  3 15:05 prometheus-operator-old.yaml</span><br><span class="line">-rw-r--r--  1 root root 1.4K Jul  3 16:19 etcd-sm.yaml</span><br><span class="line">-rw-r--r--  1 root root  202 Jul  8 15:35 delete-cm.bash</span><br><span class="line">-rw-r--r--  1 root root  32K Jul  8 16:45 prometheus-new.yaml</span><br><span class="line">-rw-r--r--  1 root root  325 Jul  8 18:12 prometheus-svc.yaml</span><br><span class="line">-rw-r--r--  1 root root 2.4K Jul 21 10:33 prometheus-sts.yaml</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>第一列</th>
+<th>第二列</th>
+<th>第三列</th>
+<th>第四列</th>
+<th>第五列</th>
+<th>第六列</th>
+<th>第七列</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>drwxr-xr-x</td>
+<td>4</td>
+<td>root</td>
+<td>root</td>
+<td>35</td>
+<td>Jul  1 18:07</td>
+<td>uk8s-demo</td>
+</tr>
+</tbody></table>
+<p>| 文件的类型和文件权限<br>第一个字符表示文件类型：d 目录 , - 文件 , l 链接 , s: socket , p: named pipe , b: block device , c: character device。<br>文件权限中 x 位为 s 时，表示在文件执行时把进程的属主或组 ID 置为该文件的文件属主。 | 文件链接个数 | 文件的所有者 | 文件的属组 | 文件大小 | 文件内容被修改的最后时间 | 文件名称 |</p>
+<h4 id="dev-ptmx"><a href="#dev-ptmx" class="headerlink" title="/dev/ptmx"></a>/dev/ptmx</h4><p>伪终端 (pseudoterminal) : ptmx, pts (伪终端 master 和伪终端 slave )。/dev/ptmx 用于创建伪终端主从设备对。当我们用 open 打开 /dev/ptmx 设备后, 返回主设备的文件描述符，并且在 /dev/pts/ 目录下创建一个伪终端从设备。在成功打开 /dev/ptmx 后, 可以通过函数 ptsname() 来获取从设备的 path 。想要打开 open 伪终端从设备,必须先使用主设备的文件描述符调用 grantpt() , unlockpt() 。当主设备和从设备都打开后, 在主设备写入的数据可以在从设备上读取, 在从设备上写入的数据可以在主设备读取。</p>
+<h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4><ul>
+<li><a href="https://helpdeskgeek.com/linux-tips/what-are-inodes-in-linux-and-how-are-they-used/" target="_blank" rel="external nofollow noopener noreferrer">What Are Inodes in Linux and How Are They Used</a></li>
+<li><a href="https://www.wikiwand.com/en/Inode" target="_blank" rel="external nofollow noopener noreferrer">https://www.wikiwand.com/en/Inode</a></li>
+<li><a href="https://www.thegeekdiary.com/unix-file-basics-inode-soft-vs-hard-link-device-files/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/unix-file-basics-inode-soft-vs-hard-link-device-files/</a></li>
+<li><a href="https://www.kernel.org/doc/html/latest/filesystems/tmpfs.html" target="_blank" rel="external nofollow noopener noreferrer">Tmpfs</a>，<a href="https://wiki.archlinux.org/index.php/Tmpfs" target="_blank" rel="external nofollow noopener noreferrer">archwiki-Tmpfs</a></li>
+<li><a href="https://www.cnblogs.com/sparkdev/p/9651622.html" target="_blank" rel="external nofollow noopener noreferrer">Linux 特殊权限 SUID,SGID,SBIT</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -3430,6 +3430,48 @@
       </tags>
   </entry>
   <entry>
+    <title>Thanos基本功能总结</title>
+    <url>/post/1f42eec9.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">01/07/2018</td>
+<td align="center">初始版本：根据杭州 Service Mesh 线下 Meet Up 中唐老师相关讲解内容和官方文档简单总结.</td>
+</tr>
+</tbody></table><p>Prometheus 和 Grafana 作为监控界的仙侣组合为我们进行系统运行状况的监控提供了极大的便利，简单说，Prometheus 对数据进行采集，Grafana 对对数据进行图表形式的展示。当然它们也提供了更多高级功能。</p><a id="more"></a>
+
+<p>在规模不大且结构简单的系统中，Prometheus 的基本功能已经可以完全满足用户需求。但在一些复杂场景下 Prometheus 的应用会面临一些问题，Prometheus 本身应对这些问题略显吃力。而 Thanos 正是 Improbable-eng 团队为解决这些问题而开发的一款开源中间层框架，它对 Grafana 提供与 Prometheus 一致的数据源接口，同时可以无缝地部署到现有的 Prometheus 环境中，不需要对 Prometheus 做任何定制。</p>
+<h3 id="Prometheus-面临的问题"><a href="#Prometheus-面临的问题" class="headerlink" title="Prometheus 面临的问题"></a>Prometheus 面临的问题</h3><ol>
+<li>全局视图</li>
+</ol>
+<p>当 Prometheus 用于监控多个 Kubernetes 集群时，它并没有提供一种较好的全局统一的数据采集方式。举个例子，需要实现当有 60%的集群处于掉线状态时监控系统进行报警，通过 Prometheus 该如何实现？如何将来自不同集群的数据进行聚合？ 2. 高可用</p>
+<p>Prometheus 如何方便的实现高可用？较为简单的方案是在同一个 server 上启动两个 Prometheus 实例，通过简单的反向代理实现高可。但问题是两个 Prometheus 实例的数据信息出现不一致时该如何处理，例如一段时间内其中一个实例的数据为空，另一个实例的数据可用，则在前端的不同查询可能会对同一时间段的信息展示出现完全不同的效果，影响监控人员的使用。因此需要进行数据合并。 3. 历史数据的处理</p>
+<p>Prometheus 本身使用本地存储，为保证存储空间可用，会定时清理存储的监控数据，如果监控人员需要对长期的监控数据，例如 1 年的数据，进行分析，进而分析系统的潜在问题。对于 Prometheus 来说纵向扩充硬盘的体积是较为简单的解决方案，然而这种形式成本高昂，也不方便数据管理和迁移。</p>
+<h3 id="Thanos-的解决方案"><a href="#Thanos-的解决方案" class="headerlink" title="Thanos 的解决方案"></a>Thanos 的解决方案</h3><p>Thanos 致力于通过一种简单的可无缝接入当前系统的方案解决这些问题。其主要功能点通过 Sidecar、Querier、Store 和 Compactor 来实现，这里做一个简单介绍。</p>
+<ol>
+<li>Sidecar</li>
+</ol>
+<p>Sidecar 作为一个单独的进程和已有的 Prometheus 实例运行在一个 server 上，互不影响。Sidecar 可以视为一个 Proxy 组件，所有对 Prometheus 的访问都通过 Sidecar 来代理进行。通过 Sidecar 还可以将采集到的数据直接备份到云端对象存储服务器。 2. Querier</p>
+<p>所有的 Sidecar 与 Querier 直连，同时 Querier 实现了一套 Prometheus 官方的 HTTP API 从而保证对外提供与 Prometheus 一致的数据源接口，Grafana 可以通过同一个查询接口请求不同集群的数据，Querier 负责找到对应的集群并通过 Sidecar 获取数据。Querier 本身也是水平可扩展的，因而可以实现高可部署，而且 Querier 可以实现对高可部署的 Prometheus 的数据进行合并从而保证多次查询结果的一致性，从而解决全局视图和高可用的问题。 3. Store</p>
+<p>Store 实现了一套和 Sidecar 完全一致的 API 提供给 Querier 用于查询 Sidecar 备份到云端对象存储的数据。因为 Sidecar 在完成数据备份后，Prometheus 会清理掉本地数据保证本地空间可用。所以当监控人员需要调取历史数据时只能去对象存储空间获取，而 Store 就提供了这样一个接口。Store Gateway 只会缓存对象存储的基本信息，例如存储块的索引，从而保证实现快速查询的同时占用较少本地空间。 4. Comactor</p>
+<p>Compactor 主要用于对采集到的数据进行压缩，实现将数据存储至对象存储时节省空间。</p>
+<h3 id="Thanos-的生产可用性"><a href="#Thanos-的生产可用性" class="headerlink" title="Thanos 的生产可用性"></a>Thanos 的生产可用性</h3><p>Thanos 诞生还不到一年，目前最新的发布版本为 0.1.0-rc.1，大量的生产实践还未看到，短期预计还不具备生产可用性，但是解决问题的理念值得长期关注。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>云计算</tag>
+        <tag>Thanos</tag>
+        <tag>Prometheus</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>VMware Workstation 虚拟机 root 分区扩容</title>
     <url>/post/eca5e5f3.html</url>
     <content><![CDATA[<table>
@@ -3495,48 +3537,6 @@
       <tags>
         <tag>云计算</tag>
         <tag>Virtaulization</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Thanos基本功能总结</title>
-    <url>/post/1f42eec9.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">01/07/2018</td>
-<td align="center">初始版本：根据杭州 Service Mesh 线下 Meet Up 中唐老师相关讲解内容和官方文档简单总结.</td>
-</tr>
-</tbody></table><p>Prometheus 和 Grafana 作为监控界的仙侣组合为我们进行系统运行状况的监控提供了极大的便利，简单说，Prometheus 对数据进行采集，Grafana 对对数据进行图表形式的展示。当然它们也提供了更多高级功能。</p><a id="more"></a>
-
-<p>在规模不大且结构简单的系统中，Prometheus 的基本功能已经可以完全满足用户需求。但在一些复杂场景下 Prometheus 的应用会面临一些问题，Prometheus 本身应对这些问题略显吃力。而 Thanos 正是 Improbable-eng 团队为解决这些问题而开发的一款开源中间层框架，它对 Grafana 提供与 Prometheus 一致的数据源接口，同时可以无缝地部署到现有的 Prometheus 环境中，不需要对 Prometheus 做任何定制。</p>
-<h3 id="Prometheus-面临的问题"><a href="#Prometheus-面临的问题" class="headerlink" title="Prometheus 面临的问题"></a>Prometheus 面临的问题</h3><ol>
-<li>全局视图</li>
-</ol>
-<p>当 Prometheus 用于监控多个 Kubernetes 集群时，它并没有提供一种较好的全局统一的数据采集方式。举个例子，需要实现当有 60%的集群处于掉线状态时监控系统进行报警，通过 Prometheus 该如何实现？如何将来自不同集群的数据进行聚合？ 2. 高可用</p>
-<p>Prometheus 如何方便的实现高可用？较为简单的方案是在同一个 server 上启动两个 Prometheus 实例，通过简单的反向代理实现高可。但问题是两个 Prometheus 实例的数据信息出现不一致时该如何处理，例如一段时间内其中一个实例的数据为空，另一个实例的数据可用，则在前端的不同查询可能会对同一时间段的信息展示出现完全不同的效果，影响监控人员的使用。因此需要进行数据合并。 3. 历史数据的处理</p>
-<p>Prometheus 本身使用本地存储，为保证存储空间可用，会定时清理存储的监控数据，如果监控人员需要对长期的监控数据，例如 1 年的数据，进行分析，进而分析系统的潜在问题。对于 Prometheus 来说纵向扩充硬盘的体积是较为简单的解决方案，然而这种形式成本高昂，也不方便数据管理和迁移。</p>
-<h3 id="Thanos-的解决方案"><a href="#Thanos-的解决方案" class="headerlink" title="Thanos 的解决方案"></a>Thanos 的解决方案</h3><p>Thanos 致力于通过一种简单的可无缝接入当前系统的方案解决这些问题。其主要功能点通过 Sidecar、Querier、Store 和 Compactor 来实现，这里做一个简单介绍。</p>
-<ol>
-<li>Sidecar</li>
-</ol>
-<p>Sidecar 作为一个单独的进程和已有的 Prometheus 实例运行在一个 server 上，互不影响。Sidecar 可以视为一个 Proxy 组件，所有对 Prometheus 的访问都通过 Sidecar 来代理进行。通过 Sidecar 还可以将采集到的数据直接备份到云端对象存储服务器。 2. Querier</p>
-<p>所有的 Sidecar 与 Querier 直连，同时 Querier 实现了一套 Prometheus 官方的 HTTP API 从而保证对外提供与 Prometheus 一致的数据源接口，Grafana 可以通过同一个查询接口请求不同集群的数据，Querier 负责找到对应的集群并通过 Sidecar 获取数据。Querier 本身也是水平可扩展的，因而可以实现高可部署，而且 Querier 可以实现对高可部署的 Prometheus 的数据进行合并从而保证多次查询结果的一致性，从而解决全局视图和高可用的问题。 3. Store</p>
-<p>Store 实现了一套和 Sidecar 完全一致的 API 提供给 Querier 用于查询 Sidecar 备份到云端对象存储的数据。因为 Sidecar 在完成数据备份后，Prometheus 会清理掉本地数据保证本地空间可用。所以当监控人员需要调取历史数据时只能去对象存储空间获取，而 Store 就提供了这样一个接口。Store Gateway 只会缓存对象存储的基本信息，例如存储块的索引，从而保证实现快速查询的同时占用较少本地空间。 4. Comactor</p>
-<p>Compactor 主要用于对采集到的数据进行压缩，实现将数据存储至对象存储时节省空间。</p>
-<h3 id="Thanos-的生产可用性"><a href="#Thanos-的生产可用性" class="headerlink" title="Thanos 的生产可用性"></a>Thanos 的生产可用性</h3><p>Thanos 诞生还不到一年，目前最新的发布版本为 0.1.0-rc.1，大量的生产实践还未看到，短期预计还不具备生产可用性，但是解决问题的理念值得长期关注。</p>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>云计算</tag>
-        <tag>Thanos</tag>
-        <tag>Prometheus</tag>
       </tags>
   </entry>
   <entry>
@@ -4097,66 +4097,6 @@
       </tags>
   </entry>
   <entry>
-    <title>喜欢的音乐</title>
-    <url>/post/102c919d.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">04/08/2017</td>
-<td align="center">初始版本，增加’Stories’, ‘万神纪’, ‘手纸 拝启 十五の君’, ‘永遠語り～風ノ歌～’, ‘与君说’, ‘だんご大家族’.</td>
-</tr>
-<tr>
-<td align="center">04/16/2017</td>
-<td align="center">增加“锦鲤抄”。</td>
-</tr>
-</tbody></table><p>本文汇总了一些好听的歌。</p><h3 id="Stories"><a href="#Stories" class="headerlink" title="Stories"></a>Stories</h3><p>All Hail Lelouch !</p><a id="more"></a>
-
-
-<center style="padding:0px;">  <p style="font: bold 20px arial,sans-serif; margin:0px; padding:0px;">All Hail Lelouch !</p>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22805139&auto=0&height=66"></iframe>  </center>
-
-<h3 id="万神纪"><a href="#万神纪" class="headerlink" title="万神纪"></a>万神纪</h3><center style="padding:0px;">    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=459554803&auto=0&height=66"></iframe>   
-<iframe src="https://player.bilibili.com/player.html?aid=8542373" frameborder="no" allowfullscreen="true"></iframe>
-</center> 
-
-<h3 id="锦鲤抄"><a href="#锦鲤抄" class="headerlink" title="锦鲤抄"></a>锦鲤抄</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28188434&auto=0&height=66"></iframe>
-<iframe src="https://player.bilibili.com/player.html?aid=9119029" frameborder="no" allowfullscreen="true"></iframe>
-</center>  
-
-<h3 id="手纸-拝启-十五の君-信-写给十五岁的自己"><a href="#手纸-拝启-十五の君-信-写给十五岁的自己" class="headerlink" title="手纸 拝启 十五の君 (信 写给十五岁的自己)"></a>手纸 拝启 十五の君 (信 写给十五岁的自己)</h3><center style="padding:0px;">
-
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=550667&auto=1&height=66"></iframe>
-</center>
-
-<h3 id="永遠語り～風ノ歌～-永远语-风之歌"><a href="#永遠語り～風ノ歌～-永远语-风之歌" class="headerlink" title="永遠語り～風ノ歌～ (永远语 风之歌)"></a>永遠語り～風ノ歌～ (永远语 风之歌)</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=31168232&auto=0&height=66"></iframe>
-</center>
-
-<h3 id="与君说"><a href="#与君说" class="headerlink" title="与君说"></a>与君说</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=462688968&auto=0&height=66"></iframe>
-<iframe src="https://player.bilibili.com/player.html?aid=7536941" frameborder="no" allowfullscreen="true"></iframe>
-</center>
-
-<h3 id="だんご大家族-团子大家族"><a href="#だんご大家族-团子大家族" class="headerlink" title="だんご大家族 (团子大家族)"></a>だんご大家族 (团子大家族)</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=760533&auto=0&height=66"></iframe>
-</center>
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script>window.onload = window.onresize = function() {  $(".fluid-vids").css({ margin: "0px", padding: "0px", height: "86px"});  $("center>iframe").css({ width: "97%" });  $("center>iframe").height($("center>iframe").width() * 0.60);  $("center>br").remove();}; </script>
-]]></content>
-      <categories>
-        <category>音乐</category>
-      </categories>
-      <tags>
-        <tag>音乐</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>前端知识点滴</title>
     <url>/post/a68ff6.html</url>
     <content><![CDATA[<h4 id="swagger-client"><a href="#swagger-client" class="headerlink" title="swagger-client"></a>swagger-client</h4><p>swagger-client 是一个 js 包，可以读取并解析  Swagger 2.0 和 OpenAPI 3 的 json 文档并生成可以对文档中定义的 API 进行调用的 client，简化 api 请求过程。</p><h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><p>服务端响应的 Header 中可以设置 <code>Content-Disposition: attachment; filename=test.txt</code>  指定文件名称，一般设置 <code>Content-Type: application/octet-stream</code>  对于小的文本文件也可以设置为  <code>Content-Type: text/plain; charset=utf-8</code>  告诉浏览器可以直接在浏览器窗口打开。</p><a id="more"></a>
@@ -4255,6 +4195,66 @@
       </categories>
       <tags>
         <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>喜欢的音乐</title>
+    <url>/post/102c919d.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">04/08/2017</td>
+<td align="center">初始版本，增加’Stories’, ‘万神纪’, ‘手纸 拝启 十五の君’, ‘永遠語り～風ノ歌～’, ‘与君说’, ‘だんご大家族’.</td>
+</tr>
+<tr>
+<td align="center">04/16/2017</td>
+<td align="center">增加“锦鲤抄”。</td>
+</tr>
+</tbody></table><p>本文汇总了一些好听的歌。</p><h3 id="Stories"><a href="#Stories" class="headerlink" title="Stories"></a>Stories</h3><p>All Hail Lelouch !</p><a id="more"></a>
+
+
+<center style="padding:0px;">  <p style="font: bold 20px arial,sans-serif; margin:0px; padding:0px;">All Hail Lelouch !</p>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22805139&auto=0&height=66"></iframe>  </center>
+
+<h3 id="万神纪"><a href="#万神纪" class="headerlink" title="万神纪"></a>万神纪</h3><center style="padding:0px;">    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=459554803&auto=0&height=66"></iframe>   
+<iframe src="https://player.bilibili.com/player.html?aid=8542373" frameborder="no" allowfullscreen="true"></iframe>
+</center> 
+
+<h3 id="锦鲤抄"><a href="#锦鲤抄" class="headerlink" title="锦鲤抄"></a>锦鲤抄</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28188434&auto=0&height=66"></iframe>
+<iframe src="https://player.bilibili.com/player.html?aid=9119029" frameborder="no" allowfullscreen="true"></iframe>
+</center>  
+
+<h3 id="手纸-拝启-十五の君-信-写给十五岁的自己"><a href="#手纸-拝启-十五の君-信-写给十五岁的自己" class="headerlink" title="手纸 拝启 十五の君 (信 写给十五岁的自己)"></a>手纸 拝启 十五の君 (信 写给十五岁的自己)</h3><center style="padding:0px;">
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=550667&auto=1&height=66"></iframe>
+</center>
+
+<h3 id="永遠語り～風ノ歌～-永远语-风之歌"><a href="#永遠語り～風ノ歌～-永远语-风之歌" class="headerlink" title="永遠語り～風ノ歌～ (永远语 风之歌)"></a>永遠語り～風ノ歌～ (永远语 风之歌)</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=31168232&auto=0&height=66"></iframe>
+</center>
+
+<h3 id="与君说"><a href="#与君说" class="headerlink" title="与君说"></a>与君说</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=462688968&auto=0&height=66"></iframe>
+<iframe src="https://player.bilibili.com/player.html?aid=7536941" frameborder="no" allowfullscreen="true"></iframe>
+</center>
+
+<h3 id="だんご大家族-团子大家族"><a href="#だんご大家族-团子大家族" class="headerlink" title="だんご大家族 (团子大家族)"></a>だんご大家族 (团子大家族)</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=760533&auto=0&height=66"></iframe>
+</center>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>window.onload = window.onresize = function() {  $(".fluid-vids").css({ margin: "0px", padding: "0px", height: "86px"});  $("center>iframe").css({ width: "97%" });  $("center>iframe").height($("center>iframe").width() * 0.60);  $("center>br").remove();}; </script>
+]]></content>
+      <categories>
+        <category>音乐</category>
+      </categories>
+      <tags>
+        <tag>音乐</tag>
       </tags>
   </entry>
   <entry>
