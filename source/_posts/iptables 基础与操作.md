@@ -10,7 +10,7 @@ tags:
 keywords: 'Linux,iptables'
 description: iptables 基础与操作。
 abbrlink: 26e8b8c9
-updated: 2021-02-05 00:00:00
+updated: 2021-03-11 00:00:00
 ---
 
 #### 防火墙
@@ -84,6 +84,12 @@ iptables -t filter -I INPUT -j NEW_CHAIN
 iptables -D INPUT 1
 iptables -F NEW_CHAIN
 iptables -X NEW_CHAIN
+```
+
+#### 查看统计信息
+
+```bash
+iptables -nvL [INPUT|FORWARD|OUTPUT|myCHAINNAME] --line-numbers | less
 ```
 
 #### 观测工具
