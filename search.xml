@@ -3666,6 +3666,7 @@
 <h4 id="安装-iproute2"><a href="#安装-iproute2" class="headerlink" title="安装 iproute2"></a>安装 iproute2</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew install iproute2mac</span><br></pre></td></tr></table></figure>
 
 <h4 id="强制退出进程"><a href="#强制退出进程" class="headerlink" title="强制退出进程"></a>强制退出进程</h4><p>Command + Option + Shift + Esc</p>
+<h4 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install --cask docker</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>开发工具</category>
