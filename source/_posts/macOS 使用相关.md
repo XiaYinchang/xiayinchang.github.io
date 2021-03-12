@@ -10,7 +10,7 @@ tags:
 keywords: macOS
 description: macOS 使用相关。
 abbrlink: e9aa727
-updated: 2021-02-15 00:00:00
+updated: 2021-03-12 00:00:00
 ---
 
 #### 安装  source-code-pro 字体
@@ -50,3 +50,9 @@ brew install iproute2mac
 #### 强制退出进程
 
 Command + Option + Shift + Esc
+
+#### 安装 Docker
+
+```bash
+brew install --cask docker
+```
