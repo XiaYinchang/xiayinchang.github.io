@@ -28,7 +28,7 @@ git rebase --continue
 # 设置为当前时间
 GIT_COMMITTER_DATE="$(date '+%Y-%m-%d %H:%M:%S')" git commit --amend --no-edit --date "$(date)"
 # 设置为指定时间
-GIT_COMMITTER_DATE="Mon 20 Aug 2018 20:19:19 BST" git commit --amend --no-edit --date "Mon 20 Aug 2018 20:19:19 BST"
+GIT_COMMITTER_DATE="2021-03-19 17:54:27 GMT+8" git commit --amend --no-edit --date "2021-03-19 17:54:27 GMT+8"
 ```
 
 #### 比较两个分支的不同
