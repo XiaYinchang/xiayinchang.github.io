@@ -9,6 +9,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiayinchang.top/post/f07e554d.html</loc>
+    
+    <lastmod>2021-04-10</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.xiayinchang.top/post/d2d8a73b.html</loc>
     
     <lastmod>2021-03-31</lastmod>
@@ -45,13 +52,6 @@
   
   <url>
     <loc>https://www.xiayinchang.top/post/5fddf106.html</loc>
-    
-    <lastmod>2021-01-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.xiayinchang.top/post/f07e554d.html</loc>
     
     <lastmod>2021-01-30</lastmod>
     
@@ -725,6 +725,13 @@
   </url>
   
   <url>
+    <loc>https://www.xiayinchang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2021-04-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://www.xiayinchang.top/tags/Proxmox/</loc>
     <lastmod>2021-04-11</lastmod>
     <changefreq>daily</changefreq>
@@ -1064,6 +1071,13 @@
   
   <url>
     <loc>https://www.xiayinchang.top/categories/%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2021-04-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xiayinchang.top/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2021-04-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
