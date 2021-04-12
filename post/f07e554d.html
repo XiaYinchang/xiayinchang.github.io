@@ -58,7 +58,7 @@
 <meta property="og:description" content="MongoDB 使用记录。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-04-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-11T16:00:00.000Z">
 <meta property="article:author" content="夏印昌">
 <meta property="article:tag" content="SQL">
 <meta name="twitter:card" content="summary">
@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-11 00:00:00" itemprop="dateModified" datetime="2021-04-11T00:00:00+08:00">2021-04-11</time>
+                <time title="修改时间：2021-04-12 00:00:00" itemprop="dateModified" datetime="2021-04-12T00:00:00+08:00">2021-04-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,14 +268,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>600</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
             <div class="post-description">MongoDB 使用记录。</div>
 
@@ -288,7 +288,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 选择数据库</span><br><span class="line">use testdb;</span><br><span class="line">&#x2F;&#x2F; 打印所有文档</span><br><span class="line">db.clusters.find().pretty();</span><br><span class="line">&#x2F;&#x2F; 删除文档</span><br><span class="line">db.clusters.remove(&#123;&quot;name&quot;: &quot;test&quot;&#125;);</span><br><span class="line">&#x2F;&#x2F; 更新文档</span><br><span class="line">db.clusters.update(&#123;&#39;name&#39;:&#39;test100&#39;&#125;,&#123;$set:&#123;&#39;kubeConfig&#39;:&#39;111&#39;&#125;&#125;)</span><br><span class="line">&#x2F;&#x2F; 插入文档</span><br><span class="line">db.records.insertOne(&#123;&quot;RunID&quot;:&quot;606d866135cece2969a106c9&quot;&#125;)</span><br><span class="line">&#x2F;&#x2F; 复制文档</span><br><span class="line">var newOne &#x3D; db.clusters.findOne(&#123;name: &#39;devbox&#39;&#125;)</span><br><span class="line">newOne._id &#x3D; ObjectId(&#39;60702cf406aa28fd97c11011&#39;)</span><br><span class="line">db.clusters.insertOne(newOne)</span><br></pre></td></tr></table></figure>
+        <h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 选择数据库</span><br><span class="line">use testdb;</span><br><span class="line">&#x2F;&#x2F; 打印所有文档</span><br><span class="line">db.clusters.find().pretty();</span><br><span class="line">&#x2F;&#x2F; 删除文档</span><br><span class="line">db.clusters.remove(&#123;&quot;name&quot;: &quot;test&quot;&#125;);</span><br><span class="line">&#x2F;&#x2F; 更新文档</span><br><span class="line">db.clusters.update(&#123;&#39;name&#39;:&#39;test100&#39;&#125;,&#123;$set:&#123;&#39;kubeConfig&#39;:&#39;111&#39;&#125;&#125;)</span><br><span class="line">&#x2F;&#x2F; 插入文档</span><br><span class="line">db.records.insertOne(&#123;&quot;RunID&quot;:&quot;606d866135cece2969a106c9&quot;&#125;)</span><br><span class="line">&#x2F;&#x2F; 复制文档</span><br><span class="line">var newOne &#x3D; db.clusters.findOne(&#123;name: &#39;devbox&#39;&#125;)</span><br><span class="line">newOne._id &#x3D; ObjectId(&#39;60702cf406aa28fd97c11011&#39;)</span><br><span class="line">db.clusters.insertOne(newOne)</span><br><span class="line">&#x2F;&#x2F; 备份数据库</span><br><span class="line">mongodump -d cp -o mongo-cp</span><br><span class="line">&#x2F;&#x2F; 恢复数据库</span><br><span class="line">mongorestore -d cp cp</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+<h4 id="K8S-中部署-MongoDB-副本集"><a href="#K8S-中部署-MongoDB-副本集" class="headerlink" title="K8S 中部署 MongoDB 副本集"></a>K8S 中部署 MongoDB 副本集</h4><p>参考：<a href="https://kubernetes.io/blog/2017/01/running-mongodb-on-kubernetes-with-statefulsets/" target="_blank" rel="external nofollow noopener noreferrer">https://kubernetes.io/blog/2017/01/running-mongodb-on-kubernetes-with-statefulsets/</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">mongo</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">mongo</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mongo</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">27017</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">27017</span></span><br><span class="line">  <span class="attr">clusterIP:</span> <span class="string">None</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">mongo</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">StatefulSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">mongo</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">mongo</span></span><br><span class="line">  <span class="attr">serviceName:</span> <span class="string">"mongo"</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">mongo</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mongo</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">mongo:latest</span></span><br><span class="line">          <span class="attr">command:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">mongod</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">"--bind_ip_all"</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">"--replSet"</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">rs0</span></span><br><span class="line">          <span class="attr">ports:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">27017</span></span><br><span class="line">          <span class="attr">volumeMounts:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mongo-data</span></span><br><span class="line">              <span class="attr">mountPath:</span> <span class="string">/data/db</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mongo-sidecar</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">cvallance/mongo-k8s-sidecar</span></span><br><span class="line">          <span class="attr">env:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">MONGO_SIDECAR_POD_LABELS</span></span><br><span class="line">              <span class="attr">value:</span> <span class="string">"app=mongo"</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mongo-data</span></span><br><span class="line">          <span class="attr">emptyDir:</span> <span class="string">&#123;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>部署完成进行初始化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kd-cp <span class="built_in">exec</span> -it -n mongo mongo-0 -- bash</span><br><span class="line">// 进入 mongo 交互窗口</span><br><span class="line">cfg = &#123; _id:<span class="string">"rs0"</span> , members: [&#123; _id: 0, host: <span class="string">"mongo-0.mongo.mongo"</span>&#125;,&#123; _id: 1, host: <span class="string">"mongo-1.mongo.mongo"</span>&#125;,&#123; _id: 2, host: <span class="string">"mongo-2.mongo.mongo"</span>&#125;] &#125;;</span><br><span class="line">rs.initiate(cfg)</span><br><span class="line">rs.status()</span><br></pre></td></tr></table></figure>
+
+<p>连接数据库使用如下 URL：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodb://mongo-0.mongo.mongo,mongo-1.mongo.mongo,mongo-2.mongo.mongo/?replicaSet=rs0</span><br></pre></td></tr></table></figure>
+
+<p>如此部署的 MongoDB 只能在 K8S 集群中使用。</p>
+
     </div>
 
     
@@ -389,7 +401,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K8S-中部署-MongoDB-副本集"><span class="nav-number">2.</span> <span class="nav-text">K8S 中部署 MongoDB 副本集</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -467,13 +479,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">317k</span>
+    <span title="站点总字数">318k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:48</span>
+    <span title="站点阅读时长">4:49</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>
