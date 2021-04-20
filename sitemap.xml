@@ -648,7 +648,7 @@
   </url>
   
   <url>
-    <loc>https://www.xiayinchang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <loc>https://www.xiayinchang.top/tags/%E6%B5%8B%E8%AF%95/</loc>
     <lastmod>2021-04-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -740,6 +740,13 @@
   
   <url>
     <loc>https://www.xiayinchang.top/tags/MeshCentral/</loc>
+    <lastmod>2021-04-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xiayinchang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2021-04-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1077,13 +1084,6 @@
   </url>
   
   <url>
-    <loc>https://www.xiayinchang.top/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-    <lastmod>2021-04-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://www.xiayinchang.top/categories/kubernetes/</loc>
     <lastmod>2021-04-20</lastmod>
     <changefreq>daily</changefreq>
@@ -1099,6 +1099,13 @@
   
   <url>
     <loc>https://www.xiayinchang.top/categories/%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2021-04-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.xiayinchang.top/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2021-04-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
