@@ -10,7 +10,7 @@ tags:
 keywords: 'Go, snippets'
 description: Go 可复用的代码片段。
 abbrlink: beea4a6b
-updated: 2021-02-25 00:00:00
+updated: 2021-04-20 00:00:00
 ---
 
 #### 生成 csv 文件
@@ -579,4 +579,29 @@ func PrintContextInternals(ctx interface{}, inner bool) {
 		fmt.Printf("context is empty (int)\n")
 	}
 }
+```
+
+#### 对耗时操作添加超时处理
+
+```go
+go func() {
+    errChan := make(chan error, 1)
+    go func() {
+        _, err := doSomethingNeedLongTime()
+        errChan <- err
+    }()
+    select {
+        case <-time.After(10 * time.Second):
+            log.Error("timeout")
+            state.Set(fail)
+            return
+        case err := <-errChan:
+            if err != nil {
+                log.Error("error")
+                state.Set(fail)
+                return
+            }
+            state.Set(success)
+    }
+}()
 ```
