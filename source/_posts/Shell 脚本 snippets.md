@@ -11,7 +11,7 @@ tags:
 keywords: shell
 description: Shell 脚本 snippets。
 abbrlink: d2d8a73b
-updated: 2021-01-19 00:00:00
+updated: 2021-04-01 00:00:00
 ---
 
 #### 重试逻辑
@@ -57,6 +57,8 @@ retry ping invalidserver
 
 #### 检查环境变量是否设置
 
+[https://stackoverflow.com/a/307735](https://stackoverflow.com/a/307735)
+
 ```bash
 # -z 检查目标变量值长度是否为零
 if [[ -z "${DEPLOY_ENV}" ]]; then
@@ -70,8 +72,12 @@ fi
 [[ -z "${DEPLOY_ENV}" ]] && MyVar='default' || MyVar="${DEPLOY_ENV}"
 
 # or even shorter use
-
 MyVar="${DEPLOY_ENV:-default_value}"
+
+# 未设置则报错
+: "${STATE?Need to set STATE}"
+: "${DEST:?Need to set DEST non-empty}"
+[ -z "$STATE" ] && echo "Need to set STATE" && exit 1;
 ```
 
 #### 让脚本执行更安全
@@ -306,4 +312,16 @@ $ bar() { echo "$1:$2"; }
 $ foo() { bar "$@"; }
 $ foo "This is" a test
 This is:a
+```
+
+#### 使用 eval 获取变量值
+
+[https://unix.stackexchange.com/a/23117](https://unix.stackexchange.com/a/23117)
+
+```bash
+foo=10
+x=foo
+eval y='$'$x
+echo $y
+10
 ```

@@ -10,7 +10,7 @@ tags:
 keywords: Kubernetes
 description: Kubernetes 周边工具。
 abbrlink: afef0f89
-updated: 2021-01-10 00:00:00
+updated: 2021-04-13 00:00:00
 ---
 
 #### octant
@@ -49,3 +49,8 @@ cd FlameGraph/
 ./stackcollapse-go.pl kubelet.pprof > kubelet.out
 ./flamegraph.pl kubelet.out > kubelet.svg
 ```
+
+#### TUF
+
+[https://github.com/theupdateframework/tuf](https://github.com/theupdateframework/tuf)
+一款通用的用于提升软件包分发安全性的框架，Harbor 将其应用到了 OCI 制品的分发中。
