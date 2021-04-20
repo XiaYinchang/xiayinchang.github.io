@@ -52,18 +52,18 @@
 
   <meta name="description" content="MongoDB 使用记录。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MongoDB 使用">
-<meta property="og:url" content="https://www.xiayinchang.top/post/f07e554d.html">
+<meta property="og:title" content="S3 使用">
+<meta property="og:url" content="https://www.xiayinchang.top/post/28376d03.html">
 <meta property="og:site_name" content="Better">
 <meta property="og:description" content="MongoDB 使用记录。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-04-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-11T16:00:00.000Z">
 <meta property="article:author" content="夏印昌">
 <meta property="article:tag" content="SQL">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.xiayinchang.top/post/f07e554d.html">
+<link rel="canonical" href="https://www.xiayinchang.top/post/28376d03.html">
 
 
 <script id="page-configurations">
@@ -77,7 +77,7 @@
   };
 </script>
 
-  <title>MongoDB 使用 | Better</title>
+  <title>S3 使用 | Better</title>
   
 
 
@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/f07e554d.html">
+    <link itemprop="mainEntityOfPage" href="https://www.xiayinchang.top/post/28376d03.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -224,7 +224,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          MongoDB 使用
+          S3 使用
         </h2>
 
         <div class="post-meta">
@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-20 00:00:00" itemprop="dateModified" datetime="2021-04-20T00:00:00+08:00">2021-04-20</time>
+                <time title="修改时间：2021-04-12 00:00:00" itemprop="dateModified" datetime="2021-04-12T00:00:00+08:00">2021-04-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,7 +268,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.4k</span>
+              <span>3.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -303,14 +303,6 @@
 <h4 id="watch-字段变化"><a href="#watch-字段变化" class="headerlink" title="watch 字段变化"></a>watch 字段变化</h4><p>参考：<a href="https://www.cnblogs.com/flipped/p/mongo-watch-specified-fields.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/flipped/p/mongo-watch-specified-fields.html</a><br>可以 watch 的事件类型： <a href="https://docs.mongodb.com/manual/reference/change-events/" target="_blank" rel="external nofollow noopener noreferrer">https://docs.mongodb.com/manual/reference/change-events/</a></p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">func</span> <span class="string">watch(coll</span> <span class="string">*mongo.Collection)</span> <span class="string">&#123;</span></span><br><span class="line"><span class="string">match</span> <span class="string">:=</span> <span class="string">bson.D&#123;&#123;"operationType",</span> <span class="string">"update"</span><span class="string">&#125;,</span></span><br><span class="line"><span class="string">&#123;"updateDescription.updatedFields.name",</span> <span class="string">bson.D&#123;&#123;"$exists",</span> <span class="literal">true</span><span class="string">&#125;&#125;&#125;&#125;</span></span><br><span class="line"><span class="string">coll.Watch(context.Background(),</span> <span class="string">mongo.Pipeline&#123;&#123;&#123;"$match",</span> <span class="string">match&#125;&#125;&#125;,</span></span><br><span class="line"><span class="string">options.ChangeStream().SetFullDocument(options.UpdateLookup))</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="单测中-Mock-数据库"><a href="#单测中-Mock-数据库" class="headerlink" title="单测中 Mock 数据库"></a>单测中 Mock 数据库</h4><p>Mock 数据库大概有以下几种方式：</p>
-<ol>
-<li>用容器部署一个真实的数据库实例，前提是 CI 平台能够支持。</li>
-<li>提供数据库驱动包的第三方库同时提供了 mock 包。</li>
-<li>数据库驱动以 interface 而不是 struct 的形式提供功能 API，则可以基于 interface 编写 mock，此时可以在 mock 的结构体中嵌入数据库驱动 interface ，从而只 mock 使用到的相关接口，而不是全部。</li>
-<li>如果数据库驱动直接通过 struct 提供功能 API，则应当在使用数据库驱动时封装一层 DAO interface，之后依据 DAO interface 编写 mock 代码。</li>
-</ol>
-
     </div>
 
     
@@ -320,7 +312,7 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/28376d03.html" rel="bookmark">S3 使用</a></div>
+      <div class="popular-posts-title"><a href="/post/f07e554d.html" rel="bookmark">MongoDB 使用</a></div>
     </li>
   </ul>
 
@@ -366,14 +358,17 @@
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/post/28376d03.html" rel="next" title="S3 使用">
-                  <i class="fa fa-chevron-left"></i> S3 使用
+                <a href="/post/d2d8a73b.html" rel="next" title="Shell 脚本 snippets">
+                  <i class="fa fa-chevron-left"></i> Shell 脚本 snippets
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+                <a href="/post/f07e554d.html" rel="prev" title="MongoDB 使用">
+                  MongoDB 使用 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
       </footer>
@@ -417,7 +412,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K8S-中部署-MongoDB-副本集"><span class="nav-number">2.</span> <span class="nav-text">K8S 中部署 MongoDB 副本集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#watch-字段变化"><span class="nav-number">3.</span> <span class="nav-text">watch 字段变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单测中-Mock-数据库"><span class="nav-number">4.</span> <span class="nav-text">单测中 Mock 数据库</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K8S-中部署-MongoDB-副本集"><span class="nav-number">2.</span> <span class="nav-text">K8S 中部署 MongoDB 副本集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#watch-字段变化"><span class="nav-number">3.</span> <span class="nav-text">watch 字段变化</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
