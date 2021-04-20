@@ -268,7 +268,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>3.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -302,6 +302,8 @@
 <p>如此部署的 MongoDB 只能在 K8S 集群中使用。</p>
 <h4 id="watch-字段变化"><a href="#watch-字段变化" class="headerlink" title="watch 字段变化"></a>watch 字段变化</h4><p>参考：<a href="https://www.cnblogs.com/flipped/p/mongo-watch-specified-fields.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/flipped/p/mongo-watch-specified-fields.html</a><br>可以 watch 的事件类型： <a href="https://docs.mongodb.com/manual/reference/change-events/" target="_blank" rel="external nofollow noopener noreferrer">https://docs.mongodb.com/manual/reference/change-events/</a></p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">func</span> <span class="string">watch(coll</span> <span class="string">*mongo.Collection)</span> <span class="string">&#123;</span></span><br><span class="line"><span class="string">match</span> <span class="string">:=</span> <span class="string">bson.D&#123;&#123;"operationType",</span> <span class="string">"update"</span><span class="string">&#125;,</span></span><br><span class="line"><span class="string">&#123;"updateDescription.updatedFields.name",</span> <span class="string">bson.D&#123;&#123;"$exists",</span> <span class="literal">true</span><span class="string">&#125;&#125;&#125;&#125;</span></span><br><span class="line"><span class="string">coll.Watch(context.Background(),</span> <span class="string">mongo.Pipeline&#123;&#123;&#123;"$match",</span> <span class="string">match&#125;&#125;&#125;,</span></span><br><span class="line"><span class="string">options.ChangeStream().SetFullDocument(options.UpdateLookup))</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="bson-反序列化到结构体"><a href="#bson-反序列化到结构体" class="headerlink" title="bson 反序列化到结构体"></a>bson 反序列化到结构体</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cluster = ⊧.Cluster&#123;&#125;</span><br><span class="line"><span class="keyword">if</span> fullDocument, ok := fullDocument.(bson.M); ok &#123;</span><br><span class="line">    data, _ := bson.Marshal(fullDocument)</span><br><span class="line">    <span class="comment">// 使用 bson.Unmarshal 应该也可以</span></span><br><span class="line">    _ = bson.UnmarshalWithRegistry(bson.DefaultRegistry, data, cluster)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -406,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K8S-中部署-MongoDB-副本集"><span class="nav-number">2.</span> <span class="nav-text">K8S 中部署 MongoDB 副本集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#watch-字段变化"><span class="nav-number">3.</span> <span class="nav-text">watch 字段变化</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本操作"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K8S-中部署-MongoDB-副本集"><span class="nav-number">2.</span> <span class="nav-text">K8S 中部署 MongoDB 副本集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#watch-字段变化"><span class="nav-number">3.</span> <span class="nav-text">watch 字段变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bson-反序列化到结构体"><span class="nav-number">4.</span> <span class="nav-text">bson 反序列化到结构体</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -484,7 +486,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">323k</span>
+    <span title="站点总字数">324k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
