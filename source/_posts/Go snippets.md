@@ -605,3 +605,12 @@ go func() {
     }
 }()
 ```
+
+#### 封装 Reader 为 ReadCloser
+
+如果确定 Reader 不需要进行真实的关闭操作，而接口又需要传入一个 ReadCloser，则可以使用以下方法进行简单封装：
+
+```go
+stringReader := strings.NewReader("shiny!")
+stringReadCloser := io.NopCloser(stringReader)
+```
