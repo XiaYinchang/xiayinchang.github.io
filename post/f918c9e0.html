@@ -262,7 +262,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>370</span>
+              <span>470</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -288,7 +288,12 @@
 <li>数据库驱动以 interface 而不是 struct 的形式提供功能 API，则可以基于 interface 编写 mock，此时可以在 mock 的结构体中嵌入数据库驱动 interface ，从而只 mock 使用到的相关接口，而不是全部。</li>
 <li>如果数据库驱动直接通过 struct 提供功能 API，则应当在使用数据库驱动时封装一层 DAO interface，之后依据 DAO interface 编写 mock 代码，实际上增加一层 DAO 并没有带来特别的收益，除非后续有切换数据库的可能，否则也只是方便进行 mock 测试，在现代编程中，层层封装过于泛滥。</li>
 <li>如果单测实现特别困难，则需考虑是不是应该在集成测试中对目标功能进行测试。</li>
+</ol><a id="more"></a>
+
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><ol>
+<li><a href="https://betterprogramming.pub/unit-testing-code-using-the-mongo-go-driver-in-golang-7166d1aa72c0" target="_blank" rel="external nofollow noopener noreferrer">https://betterprogramming.pub/unit-testing-code-using-the-mongo-go-driver-in-golang-7166d1aa72c0</a></li>
 </ol>
+
     </div>
 
     
@@ -389,7 +394,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#单测中-Mock-数据库"><span class="nav-number">1.</span> <span class="nav-text">单测中 Mock 数据库</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#单测中-Mock-数据库"><span class="nav-number">1.</span> <span class="nav-text">单测中 Mock 数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -473,7 +478,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:51</span>
+    <span title="站点阅读时长">4:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>
