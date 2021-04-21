@@ -211,6 +211,22 @@ func main() {
 }
 ```
 
+#### 获取 clientset
+
+```go
+// use the current context in kubeconfig
+config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+if err != nil {
+    panic(err.Error())
+}
+
+// create the clientset
+clientset, err := kubernetes.NewForConfig(config)
+if err != nil {
+    panic(err.Error())
+}
+```
+
 #### 批量删除资源
 
 ```go
