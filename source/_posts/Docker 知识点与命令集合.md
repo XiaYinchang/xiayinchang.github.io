@@ -10,7 +10,7 @@ tags:
 keywords: Docker
 description: Docker 相关的基础知识与常用操作记录。
 abbrlink: f8a08eb2
-updated: 2020-12-09 00:00:00
+updated: 2021-04-22 00:00:00
 ---
 
 #### 安装
@@ -230,3 +230,26 @@ COPY 比 ADD 多两个特性：可以自动解压 src 为 gzip 等压缩格式�
 #### ENTRYPOINT 与 CMD
 
 ENTRYPOINT 必须是可执行的程序，CMD 作为参数传递给 ENTRYPOINT。
+
+#### 清理 Docker 所有容器和镜像
+
+```bash
+docker ps -aq
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+docker rmi $(docker images -q)
+```
+
+#### 设置 HTTP 代理
+
+```bash
+mkdir -p /etc/systemd/system/docker.service.d
+echo '
+[Service]
+Environment="HTTP_PROXY=http://10.20.47.147:3128"
+Environment="HTTPS_PROXY=http://10.20.47.147:3128"
+Environment="NO_PROXY=localhost,127.0.0.1,10.0.0.0/8,172.0.0.0/8,100.0.0.0/8,10.8.10.222,*.some.org"
+' | tee /etc/systemd/system/docker.service.d/http-proxy.conf
+systemctl daemon-reload
+systemctl restart docker
+```
