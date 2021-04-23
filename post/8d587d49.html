@@ -50,17 +50,17 @@
   };
 </script>
 
-  <meta name="description" content="Git 常用命令记录。">
+  <meta name="description" content="PostgreSQL 使用记录。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PostgreSQL 使用">
 <meta property="og:url" content="https://www.xiayinchang.top/post/8d587d49.html">
 <meta property="og:site_name" content="Better">
-<meta property="og:description" content="Git 常用命令记录。">
+<meta property="og:description" content="PostgreSQL 使用记录。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-04-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-01-30T16:00:00.000Z">
+<meta property="article:published_time" content="2021-03-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-22T16:00:00.000Z">
 <meta property="article:author" content="夏印昌">
-<meta property="article:tag" content="Git">
+<meta property="article:tag" content="SQL">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://www.xiayinchang.top/post/8d587d49.html">
@@ -234,14 +234,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-04-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-21T00:00:00+08:00">2020-04-21</time>
+              <time title="创建时间：2021-04-01 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-01T00:00:00+08:00">2021-04-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-31 00:00:00" itemprop="dateModified" datetime="2021-01-31T00:00:00+08:00">2021-01-31</time>
+                <time title="修改时间：2021-04-23 00:00:00" itemprop="dateModified" datetime="2021-04-23T00:00:00+08:00">2021-04-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -249,8 +249,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
-                    <span itemprop="name">开发工具</span>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
             </span>
@@ -268,16 +268,16 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3k</span>
+              <span>176</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>1 分钟</span>
             </span>
-            <div class="post-description">Git 常用命令记录。</div>
+            <div class="post-description">PostgreSQL 使用记录。</div>
 
         </div>
       </header>
@@ -288,62 +288,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="修改历史-commit-信息"><a href="#修改历史-commit-信息" class="headerlink" title="修改历史 commit 信息"></a>修改历史 commit 信息</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD~2</span><br><span class="line">pick -&gt; edit</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure><h4 id="修改-commit-时间"><a href="#修改-commit-时间" class="headerlink" title="修改 commit 时间"></a>修改 commit 时间</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 设置为当前时间</span><br><span class="line">GIT_COMMITTER_DATE&#x3D;&quot;$(date &#39;+%Y-%m-%d %H:%M:%S&#39;)&quot; git commit --amend --no-edit --date &quot;$(date)&quot;</span><br><span class="line"># 设置为指定时间</span><br><span class="line">GIT_COMMITTER_DATE&#x3D;&quot;2021-03-19 17:54:27 GMT+8&quot; git commit --amend --no-edit --date &quot;2021-03-19 17:54:27 GMT+8&quot;</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-<h4 id="比较两个分支的不同"><a href="#比较两个分支的不同" class="headerlink" title="比较两个分支的不同"></a>比较两个分支的不同</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff branch_1..branch_2</span><br></pre></td></tr></table></figure>
-
-<h4 id="列出不同分支之间的所有-commit"><a href="#列出不同分支之间的所有-commit" class="headerlink" title="列出不同分支之间的所有 commit"></a>列出不同分支之间的所有 commit</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> --left-right --cherry-pick --oneline v1.14.6..v1.14.10</span><br></pre></td></tr></table></figure>
-
-<h4 id="比较两个分支中指定文件或目录"><a href="#比较两个分支中指定文件或目录" class="headerlink" title="比较两个分支中指定文件或目录"></a>比较两个分支中指定文件或目录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff mybranch master -- myfile.cs</span><br></pre></td></tr></table></figure>
-
-<h4 id="merge-时使用指定方代码解决冲突"><a href="#merge-时使用指定方代码解决冲突" class="headerlink" title="merge 时使用指定方代码解决冲突"></a>merge 时使用指定方代码解决冲突</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git merge -X theirs origin/dev</span><br><span class="line">git merge -X ours origin/dev</span><br></pre></td></tr></table></figure>
-
-<h4 id="查看一个文件完整的修改历史"><a href="#查看一个文件完整的修改历史" class="headerlink" title="查看一个文件完整的修改历史"></a>查看一个文件完整的修改历史</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --follow -p -- _config.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="将当前分支下子目录内容提交至另一个分支"><a href="#将当前分支下子目录内容提交至另一个分支" class="headerlink" title="将当前分支下子目录内容提交至另一个分支"></a>将当前分支下子目录内容提交至另一个分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git subtree push --prefix dist origin gh-pages</span><br></pre></td></tr></table></figure>
-
-<h4 id="删除-submodule"><a href="#删除-submodule" class="headerlink" title="删除 submodule"></a>删除 submodule</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git submodule deinit &lt;path_to_submodule&gt;</span><br><span class="line">git rm &lt;path_to_submodule&gt;</span><br><span class="line">git commit -m &quot;Removed submodule &quot;</span><br></pre></td></tr></table></figure>
-
-<h4 id="合并所有-commit-为一个"><a href="#合并所有-commit-为一个" class="headerlink" title="合并所有 commit 为一个"></a>合并所有 commit 为一个</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rebase --root -i</span><br><span class="line">&#x2F;&#x2F; 使用以下命令可以将需要 rebase 的 commit 的时间全部设置为当前时间</span><br><span class="line">git rebase --ignore-date 303a824f46b497f71582e2e5d493c132b85e3e0a</span><br></pre></td></tr></table></figure>
-
-<h4 id="删除所有没有远程分支的本地分支"><a href="#删除所有没有远程分支的本地分支" class="headerlink" title="删除所有没有远程分支的本地分支"></a>删除所有没有远程分支的本地分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch -p &amp;&amp; git branch -vv | awk &#39;&#x2F;: gone]&#x2F;&#123;print $1&#125;&#39; | xargs git branch -d</span><br></pre></td></tr></table></figure>
-
-<h4 id="撤销某个-commit"><a href="#撤销某个-commit" class="headerlink" title="撤销某个 commit"></a>撤销某个 commit</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert --strategy resolve &lt;commit&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用-ssh-替代-https-访问"><a href="#使用-ssh-替代-https-访问" class="headerlink" title="使用 ssh 替代 https 访问"></a>使用 ssh 替代 https 访问</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global url.<span class="string">"git@git.ucloudadmin.com:"</span>.insteadOf <span class="string">"https://git.ucloudadmin.com/"</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="查看-commit-内容"><a href="#查看-commit-内容" class="headerlink" title="查看 commit 内容"></a>查看 commit 内容</h4><p>查看指定 commit id 的提交内容</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">git</span> <span class="string">show</span> <span class="string">67cebafce9c45a1d65fddd3d1742c4cb42851d10</span></span><br></pre></td></tr></table></figure>
-
-<p>查看最近 n 次提交内容</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">git</span> <span class="string">log</span> <span class="string">-p</span> <span class="string">-n</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="创建和删除-tag"><a href="#创建和删除-tag" class="headerlink" title="创建和删除 tag"></a>创建和删除 tag</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 删除本地 tag</span><br><span class="line">git tag -d v0.0.1</span><br><span class="line">// 删除远程仓库 tag</span><br><span class="line">git push --delete origin v0.0.1</span><br><span class="line">// 创建本地 tag</span><br><span class="line">git tag v0.0.1 -m <span class="string">"Release version 0.0.1"</span></span><br><span class="line">// 以某个 commit 为基础创建 tag</span><br><span class="line">git tag -a v0.0.1 30728cab -m <span class="string">"Release version 0.0.1"</span></span><br><span class="line">// 推送指定 tag 到远程</span><br><span class="line">git push origin v0.0.1</span><br><span class="line">// 推送所有 tag 到远程</span><br><span class="line">git push --tags</span><br></pre></td></tr></table></figure>
-
-<h4 id="获取最近的-tag"><a href="#获取最近的-tag" class="headerlink" title="获取最近的 tag"></a>获取最近的 tag</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 获取最新的 tag</span><br><span class="line">git describe --tags $(git rev-list --tags --max-count=1)</span><br><span class="line">// 获取最新 commit 对应的 tag</span><br><span class="line">git describe --abbrev=0</span><br><span class="line">git describe --tags</span><br></pre></td></tr></table></figure>
-
-<h4 id="创建和应用-patch"><a href="#创建和应用-patch" class="headerlink" title="创建和应用 patch"></a>创建和应用 patch</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 生成 git patch</span><br><span class="line">git diff c78bca..709fcfe &gt; /tmp/cloudprovider.patch</span><br><span class="line">// 应用 patch</span><br><span class="line">git apply /tmp/cloudprovider.patch</span><br></pre></td></tr></table></figure>
-
-<h4 id="gitlab-创建-tag-和发布附件流程"><a href="#gitlab-创建-tag-和发布附件流程" class="headerlink" title="gitlab 创建 tag 和发布附件流程"></a>gitlab 创建 tag 和发布附件流程</h4><p>参考：<a href="https://stackoverflow.com/a/55415383" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/55415383</a></p>
-<h4 id="cherry-pick-时移除不需要的修改"><a href="#cherry-pick-时移除不需要的修改" class="headerlink" title="cherry-pick 时移除不需要的修改"></a>cherry-pick 时移除不需要的修改</h4><p>参考：<a href="https://stackoverflow.com/questions/5717026/how-to-git-cherry-pick-only-changes-to-certain-files" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/5717026/how-to-git-cherry-pick-only-changes-to-certain-files</a><br>如果需要移除的修改较少，可使用以下方式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick -n 1683355bf81435ffdcbf332ad3558cb92853c9eb</span><br><span class="line">&#x2F;&#x2F; 丢弃该 commit 对 go.mod 文件的修改</span><br><span class="line">git restore --staged go.mod</span><br><span class="line">&#x2F;&#x2F; 或者</span><br><span class="line">git checkout HEAD go.mod</span><br><span class="line">&#x2F;&#x2F; 直接提交即可, commit 信息使用上述 commit 的</span><br><span class="line">git commit</span><br></pre></td></tr></table></figure>
-
-<p>如果大部分修改都需要移除，可采用：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick -n 1683355bf81435ffdcbf332ad3558cb92853c9eb</span><br><span class="line">git reset HEAD</span><br><span class="line">&#x2F;&#x2F; 添加需要保留的修改</span><br><span class="line">git add &lt;path&gt;</span><br><span class="line">&#x2F;&#x2F; 移除所有不需要保存的修改</span><br><span class="line">git clean -f</span><br></pre></td></tr></table></figure>
-
-<p>如果仅有一两项文件或目录的修改需要保留，可执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 应用对文件或目录下文件的修改</span><br><span class="line">git show SHA -- file1.txt file2.txt | git apply -</span><br><span class="line">git show SHA -- dir1 dir2 | git apply -</span><br><span class="line">&#x2F;&#x2F; 保存修改</span><br><span class="line">git add file1.txt file2.txt</span><br><span class="line">git commit -c SHA</span><br><span class="line">&#x2F;&#x2F; 或者二合一</span><br><span class="line">git show SHA -- file1.txt file2.txt | git apply --cached -</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用指定-commit-中的内容覆盖指定文件或目录"><a href="#使用指定-commit-中的内容覆盖指定文件或目录" class="headerlink" title="使用指定 commit 中的内容覆盖指定文件或目录"></a>使用指定 commit 中的内容覆盖指定文件或目录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout c5f567 -- file1/to/restore file2/to/restore</span><br></pre></td></tr></table></figure>
-
-<h4 id="github-actions"><a href="#github-actions" class="headerlink" title="github actions"></a>github actions</h4><ul>
-<li>自动创建发布：<a href="https://github.com/actions/upload-release-asset" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/actions/upload-release-asset</a></li>
-</ul>
-<h4 id="clone-all-projects-in-group"><a href="#clone-all-projects-in-group" class="headerlink" title="clone all projects in group"></a>clone all projects in group</h4><p><a href="https://github.com/gabrie30/ghorg" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/gabrie30/ghorg</a><br>或者</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> repo <span class="keyword">in</span> $(curl -s --header <span class="string">"PRIVATE-TOKEN: your_private_token"</span> https://&lt;your-host&gt;/api/v4/groups/&lt;group_id&gt; | jq <span class="string">".projects[].ssh_url_to_repo"</span> | tr -d <span class="string">'"'</span>); <span class="keyword">do</span> git <span class="built_in">clone</span> <span class="variable">$repo</span>; <span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
-
+        <h4 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u postgres psql</span><br><span class="line">ALTER USER postgres WITH PASSWORD <span class="string">'postgres'</span>;</span><br></pre></td></tr></table></figure><h4 id="备份和恢复数据库"><a href="#备份和恢复数据库" class="headerlink" title="备份和恢复数据库"></a>备份和恢复数据库</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 备份</span><br><span class="line">pg_dump mydatabase &gt; data.backup</span><br><span class="line">// 恢复</span><br><span class="line">psql</span><br><span class="line">create database mydatabase;</span><br><span class="line">psql -f data.backup mydatabase</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -353,19 +298,7 @@
   <div class="popular-posts-header">相关文章</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/5fddf106.html" rel="bookmark">Git 常用命令</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/bda105fe.html" rel="bookmark">ArchLinux 常用命令</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/dc552b49.html" rel="bookmark">Centos 编译安装 zfs</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/e8bac896.html" rel="bookmark">Ceph 常用操作</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/d830a7d8.html" rel="bookmark">IO 同步、异步及阻塞、非阻塞</a></div>
+      <div class="popular-posts-title"><a href="/post/f07e554d.html" rel="bookmark">MongoDB 使用</a></div>
     </li>
   </ul>
 
@@ -404,24 +337,23 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" rel="tag"># 开发工具</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/post/f8a08eb2.html" rel="next" title="Docker 知识点与命令集合">
-                  <i class="fa fa-chevron-left"></i> Docker 知识点与命令集合
+                <a href="/post/d2d8a73b.html" rel="next" title="Shell 脚本 snippets">
+                  <i class="fa fa-chevron-left"></i> Shell 脚本 snippets
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/post/5fddf106.html" rel="prev" title="Git 常用命令">
-                  Git 常用命令 <i class="fa fa-chevron-right"></i>
+                <a href="/post/f07e554d.html" rel="prev" title="MongoDB 使用">
+                  MongoDB 使用 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -466,7 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改历史-commit-信息"><span class="nav-number">1.</span> <span class="nav-text">修改历史 commit 信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改-commit-时间"><span class="nav-number">2.</span> <span class="nav-text">修改 commit 时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#比较两个分支的不同"><span class="nav-number">3.</span> <span class="nav-text">比较两个分支的不同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列出不同分支之间的所有-commit"><span class="nav-number">4.</span> <span class="nav-text">列出不同分支之间的所有 commit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#比较两个分支中指定文件或目录"><span class="nav-number">5.</span> <span class="nav-text">比较两个分支中指定文件或目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#merge-时使用指定方代码解决冲突"><span class="nav-number">6.</span> <span class="nav-text">merge 时使用指定方代码解决冲突</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看一个文件完整的修改历史"><span class="nav-number">7.</span> <span class="nav-text">查看一个文件完整的修改历史</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将当前分支下子目录内容提交至另一个分支"><span class="nav-number">8.</span> <span class="nav-text">将当前分支下子目录内容提交至另一个分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-submodule"><span class="nav-number">9.</span> <span class="nav-text">删除 submodule</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#合并所有-commit-为一个"><span class="nav-number">10.</span> <span class="nav-text">合并所有 commit 为一个</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除所有没有远程分支的本地分支"><span class="nav-number">11.</span> <span class="nav-text">删除所有没有远程分支的本地分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#撤销某个-commit"><span class="nav-number">12.</span> <span class="nav-text">撤销某个 commit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-ssh-替代-https-访问"><span class="nav-number">13.</span> <span class="nav-text">使用 ssh 替代 https 访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看-commit-内容"><span class="nav-number">14.</span> <span class="nav-text">查看 commit 内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建和删除-tag"><span class="nav-number">15.</span> <span class="nav-text">创建和删除 tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取最近的-tag"><span class="nav-number">16.</span> <span class="nav-text">获取最近的 tag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建和应用-patch"><span class="nav-number">17.</span> <span class="nav-text">创建和应用 patch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gitlab-创建-tag-和发布附件流程"><span class="nav-number">18.</span> <span class="nav-text">gitlab 创建 tag 和发布附件流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cherry-pick-时移除不需要的修改"><span class="nav-number">19.</span> <span class="nav-text">cherry-pick 时移除不需要的修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用指定-commit-中的内容覆盖指定文件或目录"><span class="nav-number">20.</span> <span class="nav-text">使用指定 commit 中的内容覆盖指定文件或目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#github-actions"><span class="nav-number">21.</span> <span class="nav-text">github actions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clone-all-projects-in-group"><span class="nav-number">22.</span> <span class="nav-text">clone all projects in group</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改用户密码"><span class="nav-number">1.</span> <span class="nav-text">修改用户密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#备份和恢复数据库"><span class="nav-number">2.</span> <span class="nav-text">备份和恢复数据库</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -544,13 +476,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">324k</span>
+    <span title="站点总字数">321k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:54</span>
+    <span title="站点阅读时长">4:52</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.2.1
   </div>

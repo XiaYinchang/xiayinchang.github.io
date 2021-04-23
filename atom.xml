@@ -80,6 +80,27 @@
   </entry>
   
   <entry>
+    <title>PostgreSQL 使用</title>
+    <link href="https://www.xiayinchang.top/post/8d587d49.html"/>
+    <id>https://www.xiayinchang.top/post/8d587d49.html</id>
+    <published>2021-03-31T16:00:00.000Z</published>
+    <updated>2021-04-22T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      PostgreSQL 使用记录。
+    
+    </summary>
+    
+    
+      <category term="数据库" scheme="https://www.xiayinchang.top/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+      <category term="数据库" scheme="https://www.xiayinchang.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Shell 脚本 snippets</title>
     <link href="https://www.xiayinchang.top/post/d2d8a73b.html"/>
     <id>https://www.xiayinchang.top/post/d2d8a73b.html</id>
@@ -422,29 +443,6 @@
     
     
       <category term="Rust" scheme="https://www.xiayinchang.top/tags/Rust/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Kubernetes 集群升级</title>
-    <link href="https://www.xiayinchang.top/post/67293294.html"/>
-    <id>https://www.xiayinchang.top/post/67293294.html</id>
-    <published>2020-09-05T16:00:00.000Z</published>
-    <updated>2020-09-05T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      Kubernetes 集群升级的方法探寻。
-    
-    </summary>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/categories/Kubernetes/"/>
-    
-    
-      <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-      <category term="集群升级" scheme="https://www.xiayinchang.top/tags/%E9%9B%86%E7%BE%A4%E5%8D%87%E7%BA%A7/"/>
     
   </entry>
   
