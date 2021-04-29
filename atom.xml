@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2021-04-19T16:00:00.000Z</updated>
+  <updated>2021-04-28T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://www.xiayinchang.top/post/f918c9e0.html"/>
     <id>https://www.xiayinchang.top/post/f918c9e0.html</id>
     <published>2021-04-19T16:00:00.000Z</published>
-    <updated>2021-04-19T16:00:00.000Z</updated>
+    <updated>2021-04-28T16:00:00.000Z</updated>
     
     <summary type="html">
     
@@ -42,7 +42,7 @@
     <link href="https://www.xiayinchang.top/post/28376d03.html"/>
     <id>https://www.xiayinchang.top/post/28376d03.html</id>
     <published>2021-04-19T16:00:00.000Z</published>
-    <updated>2021-04-19T16:00:00.000Z</updated>
+    <updated>2021-04-26T16:00:00.000Z</updated>
     
     <summary type="html">
     
@@ -124,29 +124,6 @@
   </entry>
   
   <entry>
-    <title>client-go 的零零碎碎的用法</title>
-    <link href="https://www.xiayinchang.top/post/91373500.html"/>
-    <id>https://www.xiayinchang.top/post/91373500.html</id>
-    <published>2021-01-09T16:00:00.000Z</published>
-    <updated>2021-04-19T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      client-go 使用过程的中一些零碎知识的记录。
-    
-    </summary>
-    
-    
-      <category term="kubernetes" scheme="https://www.xiayinchang.top/categories/kubernetes/"/>
-    
-    
-      <category term="kubernetes" scheme="https://www.xiayinchang.top/tags/kubernetes/"/>
-    
-      <category term="client-go" scheme="https://www.xiayinchang.top/tags/client-go/"/>
-    
-  </entry>
-  
-  <entry>
     <title>context 相关知识与用法</title>
     <link href="https://www.xiayinchang.top/post/b246b51.html"/>
     <id>https://www.xiayinchang.top/post/b246b51.html</id>
@@ -166,6 +143,29 @@
       <category term="go" scheme="https://www.xiayinchang.top/tags/go/"/>
     
       <category term="context" scheme="https://www.xiayinchang.top/tags/context/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>client-go 的零零碎碎的用法</title>
+    <link href="https://www.xiayinchang.top/post/91373500.html"/>
+    <id>https://www.xiayinchang.top/post/91373500.html</id>
+    <published>2021-01-09T16:00:00.000Z</published>
+    <updated>2021-04-19T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      client-go 使用过程的中一些零碎知识的记录。
+    
+    </summary>
+    
+    
+      <category term="kubernetes" scheme="https://www.xiayinchang.top/categories/kubernetes/"/>
+    
+    
+      <category term="kubernetes" scheme="https://www.xiayinchang.top/tags/kubernetes/"/>
+    
+      <category term="client-go" scheme="https://www.xiayinchang.top/tags/client-go/"/>
     
   </entry>
   
