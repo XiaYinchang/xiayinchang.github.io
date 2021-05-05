@@ -268,7 +268,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>176</span>
+              <span>219</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -288,7 +288,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u postgres psql</span><br><span class="line">ALTER USER postgres WITH PASSWORD <span class="string">'postgres'</span>;</span><br></pre></td></tr></table></figure><h4 id="备份和恢复数据库"><a href="#备份和恢复数据库" class="headerlink" title="备份和恢复数据库"></a>备份和恢复数据库</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 备份</span><br><span class="line">pg_dump mydatabase &gt; data.backup</span><br><span class="line">// 恢复</span><br><span class="line">psql</span><br><span class="line">create database mydatabase;</span><br><span class="line">psql -f data.backup mydatabase</span><br></pre></td></tr></table></figure>
+        <h4 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u postgres psql</span><br><span class="line">ALTER USER postgres WITH PASSWORD <span class="string">'postgres'</span>;</span><br></pre></td></tr></table></figure><h4 id="备份和恢复数据库"><a href="#备份和恢复数据库" class="headerlink" title="备份和恢复数据库"></a>备份和恢复数据库</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 备份</span><br><span class="line">pg_dump mydatabase &gt; data.backup</span><br><span class="line">// 恢复</span><br><span class="line">psql</span><br><span class="line">create database mydatabase;</span><br><span class="line">psql -f data.backup mydatabase</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<h4 id="通用的可操作多种数据库的命令行工具"><a href="#通用的可操作多种数据库的命令行工具" class="headerlink" title="通用的可操作多种数据库的命令行工具"></a>通用的可操作多种数据库的命令行工具</h4><p><a href="https://github.com/xo/usql" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/xo/usql</a></p>
+
     </div>
 
     
@@ -398,7 +403,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改用户密码"><span class="nav-number">1.</span> <span class="nav-text">修改用户密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#备份和恢复数据库"><span class="nav-number">2.</span> <span class="nav-text">备份和恢复数据库</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改用户密码"><span class="nav-number">1.</span> <span class="nav-text">修改用户密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#备份和恢复数据库"><span class="nav-number">2.</span> <span class="nav-text">备份和恢复数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通用的可操作多种数据库的命令行工具"><span class="nav-number">3.</span> <span class="nav-text">通用的可操作多种数据库的命令行工具</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
