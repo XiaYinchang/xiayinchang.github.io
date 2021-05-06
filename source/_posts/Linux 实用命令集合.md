@@ -671,6 +671,17 @@ sort -k 2 file.txt
 ip route get 106.75.220.2
 ```
 
+#### nc
+
+检查端口是否开启
+
+```bash
+while ! nc -z <ip> <port>
+do
+    sleep 1
+done
+```
+
 #### 正则匹配
 
 ```bash
