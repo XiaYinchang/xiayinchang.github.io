@@ -3898,6 +3898,26 @@
       </tags>
   </entry>
   <entry>
+    <title>从 RESTful 到 gRPC-Web 的平滑切换</title>
+    <url>/post/bd5bd15.html</url>
+    <content><![CDATA[<h4 id="gRPC-Web"><a href="#gRPC-Web" class="headerlink" title="gRPC-Web"></a>gRPC-Web</h4><ul>
+<li>安装</li>
+</ul><p>参考<a href="https://grpc-ecosystem.github.io/grpc-gateway/docs/usage.html" target="_blank" rel="external nofollow noopener noreferrer">官方安装说明</a>，需要指出的是有可能如果出现以下报错：</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">protoc: error while loading shared libraries: libprotobuf.so.20: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>此时，需要执行以下命令更新环境变量中关于 LIB 的信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ldconfig</span><br><span class="line">或者</span><br><span class="line">export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;lib</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>RESTful</tag>
+        <tag>gRPC-Web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用 kolla-ansible 部署 OpenStack</title>
     <url>/post/43354256.html</url>
     <content><![CDATA[<table>
@@ -4016,26 +4036,6 @@
       <tags>
         <tag> 云计算</tag>
         <tag>OpenStack</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>从 RESTful 到 gRPC-Web 的平滑切换</title>
-    <url>/post/bd5bd15.html</url>
-    <content><![CDATA[<h4 id="gRPC-Web"><a href="#gRPC-Web" class="headerlink" title="gRPC-Web"></a>gRPC-Web</h4><ul>
-<li>安装</li>
-</ul><p>参考<a href="https://grpc-ecosystem.github.io/grpc-gateway/docs/usage.html" target="_blank" rel="external nofollow noopener noreferrer">官方安装说明</a>，需要指出的是有可能如果出现以下报错：</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">protoc: error while loading shared libraries: libprotobuf.so.20: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-<p>此时，需要执行以下命令更新环境变量中关于 LIB 的信息：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo ldconfig</span><br><span class="line">或者</span><br><span class="line">export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;lib</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Go</category>
-      </categories>
-      <tags>
-        <tag>RESTful</tag>
-        <tag>gRPC-Web</tag>
       </tags>
   </entry>
   <entry>
