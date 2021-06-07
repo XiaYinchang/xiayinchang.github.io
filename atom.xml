@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.xiayinchang.top/"/>
-  <updated>2021-05-23T16:00:00.000Z</updated>
+  <updated>2021-06-06T16:00:00.000Z</updated>
   <id>https://www.xiayinchang.top/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>helm 常用命令</title>
+    <link href="https://www.xiayinchang.top/post/848070c7.html"/>
+    <id>https://www.xiayinchang.top/post/848070c7.html</id>
+    <published>2021-06-06T16:00:00.000Z</published>
+    <updated>2021-06-06T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      helm 常用命令记录。
+    
+    </summary>
+    
+    
+      <category term="helm" scheme="https://www.xiayinchang.top/categories/helm/"/>
+    
+    
+      <category term="helm" scheme="https://www.xiayinchang.top/tags/helm/"/>
+    
+  </entry>
   
   <entry>
     <title>认证与鉴权</title>
@@ -422,29 +443,6 @@
     
     
       <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 常用系统调用</title>
-    <link href="https://www.xiayinchang.top/post/fa6b61f1.html"/>
-    <id>https://www.xiayinchang.top/post/fa6b61f1.html</id>
-    <published>2020-09-10T16:00:00.000Z</published>
-    <updated>2020-09-10T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      Linux 常用系统调用。
-    
-    </summary>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://www.xiayinchang.top/tags/Linux/"/>
-    
-      <category term="系统调用" scheme="https://www.xiayinchang.top/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/"/>
     
   </entry>
   
