@@ -4099,6 +4099,20 @@
       </tags>
   </entry>
   <entry>
+    <title>公钥与证书</title>
+    <url>/post/3e994927.html</url>
+    <content><![CDATA[<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><p>Epic【史诗级故事】，可简单理解为软件的版本好了，不需要太详细的秒速，但是要说清楚这个版本需要哪些大功能。<br>Feature【特性】，你都在【史诗级故事】中说好了要哪些大功能了，那作为它的子级的【特性】自然就是每个你需要的大功能的描述，但是由于一个大功能的实现有许多众所周知或者实际做了才知道的前置的或者后发的条件，所以【特性】的完成一定被项目中所有成员认可是一个较长的过程，所以肯定还需要进一步细化。<br>Story【用户故事/积压工作项】，把特性细化了以后就是这个了，故事之所以叫故事是因为内容读起来就像故事，参考中小学生作文吧，故事的三要素：参与者、行为、结果，（管理员在 XX 界面点击了【XXX】按钮后，界面跳转至【XXXX】界面）仅供参考。可以看出，故事要细致，描述细节，有明确的验收标准，任何人看完都应该知道如何操作，测试人员也可以以此来作为测试用例。<br>Task【任务】，这是只有开发才知道的细节了，上面几个都是无论什么人都能看懂的东西，任务描述的应该是开发中的细节，比如（修改 AAA 类的 BBB 方法，提升执行效率）或者（将 XXX 功能的原有做法改为使用命令模式），只有开发才懂得的细节，由于此类工作也需要耗时，而且耗时可能还不短，这会违背“快速迭代”的基本价值观，所以当一个【故事】涉及到此类的行为时，就可能需要较长时间来迭代，所以应该在【故事】下建立【任务】来说明工作的具体内容。</p><a id="more"></a>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://wiki.mbalib.com/wiki/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91" target="_blank" rel="external nofollow noopener noreferrer">https://wiki.mbalib.com/wiki/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91</a></p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>agile</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于K8S中Pod带宽限制的问题</title>
     <url>/post/2c3c5a80.html</url>
     <content><![CDATA[<table>
@@ -4350,66 +4364,6 @@
       </categories>
       <tags>
         <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>喜欢的音乐</title>
-    <url>/post/102c919d.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">04/08/2017</td>
-<td align="center">初始版本，增加’Stories’, ‘万神纪’, ‘手纸 拝启 十五の君’, ‘永遠語り～風ノ歌～’, ‘与君说’, ‘だんご大家族’.</td>
-</tr>
-<tr>
-<td align="center">04/16/2017</td>
-<td align="center">增加“锦鲤抄”。</td>
-</tr>
-</tbody></table><p>本文汇总了一些好听的歌。</p><h3 id="Stories"><a href="#Stories" class="headerlink" title="Stories"></a>Stories</h3><p>All Hail Lelouch !</p><a id="more"></a>
-
-
-<center style="padding:0px;">  <p style="font: bold 20px arial,sans-serif; margin:0px; padding:0px;">All Hail Lelouch !</p>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22805139&auto=0&height=66"></iframe>  </center>
-
-<h3 id="万神纪"><a href="#万神纪" class="headerlink" title="万神纪"></a>万神纪</h3><center style="padding:0px;">    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=459554803&auto=0&height=66"></iframe>   
-<iframe src="https://player.bilibili.com/player.html?aid=8542373" frameborder="no" allowfullscreen="true"></iframe>
-</center> 
-
-<h3 id="锦鲤抄"><a href="#锦鲤抄" class="headerlink" title="锦鲤抄"></a>锦鲤抄</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28188434&auto=0&height=66"></iframe>
-<iframe src="https://player.bilibili.com/player.html?aid=9119029" frameborder="no" allowfullscreen="true"></iframe>
-</center>  
-
-<h3 id="手纸-拝启-十五の君-信-写给十五岁的自己"><a href="#手纸-拝启-十五の君-信-写给十五岁的自己" class="headerlink" title="手纸 拝启 十五の君 (信 写给十五岁的自己)"></a>手纸 拝启 十五の君 (信 写给十五岁的自己)</h3><center style="padding:0px;">
-
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=550667&auto=1&height=66"></iframe>
-</center>
-
-<h3 id="永遠語り～風ノ歌～-永远语-风之歌"><a href="#永遠語り～風ノ歌～-永远语-风之歌" class="headerlink" title="永遠語り～風ノ歌～ (永远语 风之歌)"></a>永遠語り～風ノ歌～ (永远语 风之歌)</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=31168232&auto=0&height=66"></iframe>
-</center>
-
-<h3 id="与君说"><a href="#与君说" class="headerlink" title="与君说"></a>与君说</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=462688968&auto=0&height=66"></iframe>
-<iframe src="https://player.bilibili.com/player.html?aid=7536941" frameborder="no" allowfullscreen="true"></iframe>
-</center>
-
-<h3 id="だんご大家族-团子大家族"><a href="#だんご大家族-团子大家族" class="headerlink" title="だんご大家族 (团子大家族)"></a>だんご大家族 (团子大家族)</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=760533&auto=0&height=66"></iframe>
-</center>
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script>window.onload = window.onresize = function() {  $(".fluid-vids").css({ margin: "0px", padding: "0px", height: "86px"});  $("center>iframe").css({ width: "97%" });  $("center>iframe").height($("center>iframe").width() * 0.60);  $("center>br").remove();}; </script>
-]]></content>
-      <categories>
-        <category>音乐</category>
-      </categories>
-      <tags>
-        <tag>音乐</tag>
       </tags>
   </entry>
   <entry>
@@ -4764,6 +4718,66 @@
       <tags>
         <tag>RateLimit</tag>
         <tag>S3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>喜欢的音乐</title>
+    <url>/post/102c919d.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">04/08/2017</td>
+<td align="center">初始版本，增加’Stories’, ‘万神纪’, ‘手纸 拝启 十五の君’, ‘永遠語り～風ノ歌～’, ‘与君说’, ‘だんご大家族’.</td>
+</tr>
+<tr>
+<td align="center">04/16/2017</td>
+<td align="center">增加“锦鲤抄”。</td>
+</tr>
+</tbody></table><p>本文汇总了一些好听的歌。</p><h3 id="Stories"><a href="#Stories" class="headerlink" title="Stories"></a>Stories</h3><p>All Hail Lelouch !</p><a id="more"></a>
+
+
+<center style="padding:0px;">  <p style="font: bold 20px arial,sans-serif; margin:0px; padding:0px;">All Hail Lelouch !</p>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22805139&auto=0&height=66"></iframe>  </center>
+
+<h3 id="万神纪"><a href="#万神纪" class="headerlink" title="万神纪"></a>万神纪</h3><center style="padding:0px;">    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=459554803&auto=0&height=66"></iframe>   
+<iframe src="https://player.bilibili.com/player.html?aid=8542373" frameborder="no" allowfullscreen="true"></iframe>
+</center> 
+
+<h3 id="锦鲤抄"><a href="#锦鲤抄" class="headerlink" title="锦鲤抄"></a>锦鲤抄</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28188434&auto=0&height=66"></iframe>
+<iframe src="https://player.bilibili.com/player.html?aid=9119029" frameborder="no" allowfullscreen="true"></iframe>
+</center>  
+
+<h3 id="手纸-拝启-十五の君-信-写给十五岁的自己"><a href="#手纸-拝启-十五の君-信-写给十五岁的自己" class="headerlink" title="手纸 拝启 十五の君 (信 写给十五岁的自己)"></a>手纸 拝启 十五の君 (信 写给十五岁的自己)</h3><center style="padding:0px;">
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=550667&auto=1&height=66"></iframe>
+</center>
+
+<h3 id="永遠語り～風ノ歌～-永远语-风之歌"><a href="#永遠語り～風ノ歌～-永远语-风之歌" class="headerlink" title="永遠語り～風ノ歌～ (永远语 风之歌)"></a>永遠語り～風ノ歌～ (永远语 风之歌)</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=31168232&auto=0&height=66"></iframe>
+</center>
+
+<h3 id="与君说"><a href="#与君说" class="headerlink" title="与君说"></a>与君说</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=462688968&auto=0&height=66"></iframe>
+<iframe src="https://player.bilibili.com/player.html?aid=7536941" frameborder="no" allowfullscreen="true"></iframe>
+</center>
+
+<h3 id="だんご大家族-团子大家族"><a href="#だんご大家族-团子大家族" class="headerlink" title="だんご大家族 (团子大家族)"></a>だんご大家族 (团子大家族)</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=760533&auto=0&height=66"></iframe>
+</center>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>window.onload = window.onresize = function() {  $(".fluid-vids").css({ margin: "0px", padding: "0px", height: "86px"});  $("center>iframe").css({ width: "97%" });  $("center>iframe").height($("center>iframe").width() * 0.60);  $("center>br").remove();}; </script>
+]]></content>
+      <categories>
+        <category>音乐</category>
+      </categories>
+      <tags>
+        <tag>音乐</tag>
       </tags>
   </entry>
 </search>

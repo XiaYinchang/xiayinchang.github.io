@@ -17,6 +17,29 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>公钥与证书</title>
+    <link href="https://www.xiayinchang.top/post/3e994927.html"/>
+    <id>https://www.xiayinchang.top/post/3e994927.html</id>
+    <published>2021-06-14T16:00:00.000Z</published>
+    <updated>2021-06-14T16:00:00.000Z</updated>
+    
+    <summary type="html">
+    
+      敏捷开发笔记。
+    
+    </summary>
+    
+    
+      <category term="敏捷" scheme="https://www.xiayinchang.top/categories/%E6%95%8F%E6%8D%B7/"/>
+    
+    
+      <category term="敏捷" scheme="https://www.xiayinchang.top/tags/%E6%95%8F%E6%8D%B7/"/>
+    
+      <category term="agile" scheme="https://www.xiayinchang.top/tags/agile/"/>
+    
+  </entry>
+  
+  <entry>
     <title>敏捷笔记</title>
     <link href="https://www.xiayinchang.top/post/d753fa14.html"/>
     <id>https://www.xiayinchang.top/post/d753fa14.html</id>
@@ -424,27 +447,6 @@
     
     
       <category term="Kubernetes" scheme="https://www.xiayinchang.top/tags/Kubernetes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Go 常用开源库</title>
-    <link href="https://www.xiayinchang.top/post/2ebf5f2a.html"/>
-    <id>https://www.xiayinchang.top/post/2ebf5f2a.html</id>
-    <published>2020-10-11T16:00:00.000Z</published>
-    <updated>2021-01-04T16:00:00.000Z</updated>
-    
-    <summary type="html">
-    
-      Go 编程常用的开源库。
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/categories/Go/"/>
-    
-    
-      <category term="Go" scheme="https://www.xiayinchang.top/tags/Go/"/>
     
   </entry>
   
