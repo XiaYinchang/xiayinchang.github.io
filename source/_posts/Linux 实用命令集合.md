@@ -10,7 +10,7 @@ tags:
 keywords: 'Linux, Docker'
 description: 在云计算场景下常用的 Linux 命令记录。
 abbrlink: b489449e
-updated: 2021-02-22 00:00:00
+updated: 2021-07-14 00:00:00
 ---
 
 #### CentOS
@@ -886,6 +886,17 @@ coredumpctl dump pid
 coredumpctl dump chrome
 coredumpctl -o core.dump dump chrome
 coredumpctl gdb pid
+```
+
+#### gdb 生成 coredump
+
+```bash
+$ gdb --pid=26426
+(gdb) gcore
+Saved corefile core.26426
+(gdb) detach
+// 或者
+gcore $(pidof processname)
 ```
 
 #### 终端设置全局代理，对 ssh 和 http 均有效
