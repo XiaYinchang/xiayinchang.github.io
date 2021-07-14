@@ -2623,6 +2623,8 @@
 
 <h4 id="coredumpctl"><a href="#coredumpctl" class="headerlink" title="coredumpctl"></a>coredumpctl</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">coredumpctl list</span><br><span class="line">coredumpctl dump pid</span><br><span class="line">coredumpctl dump chrome</span><br><span class="line">coredumpctl -o core.dump dump chrome</span><br><span class="line">coredumpctl gdb pid</span><br></pre></td></tr></table></figure>
 
+<h4 id="gdb-生成-coredump"><a href="#gdb-生成-coredump" class="headerlink" title="gdb 生成 coredump"></a>gdb 生成 coredump</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ gdb --pid=26426</span><br><span class="line">(gdb) gcore</span><br><span class="line">Saved corefile core.26426</span><br><span class="line">(gdb) detach</span><br><span class="line">// 或者</span><br><span class="line">gcore $(pidof processname)</span><br></pre></td></tr></table></figure>
+
 <h4 id="终端设置全局代理，对-ssh-和-http-均有效"><a href="#终端设置全局代理，对-ssh-和-http-均有效" class="headerlink" title="终端设置全局代理，对 ssh 和 http 均有效"></a>终端设置全局代理，对 ssh 和 http 均有效</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ALL_PROXY=socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
 
 <h4 id="fpm-制作-deb-rpm-安装包"><a href="#fpm-制作-deb-rpm-安装包" class="headerlink" title="fpm 制作 deb/rpm 安装包"></a>fpm 制作 deb/rpm 安装包</h4><p>参考：<a href="https://askubuntu.com/a/1121733" target="_blank" rel="external nofollow noopener noreferrer">https://askubuntu.com/a/1121733</a></p>
