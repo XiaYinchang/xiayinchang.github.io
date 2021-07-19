@@ -1115,6 +1115,17 @@
       </tags>
   </entry>
   <entry>
+    <title>IPVS 模式下 NodePort 的工作过程浅析</title>
+    <url>/post/4c49613e.html</url>
+    <content><![CDATA[<p>###</p>]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>K8S PVC 在线扩容</title>
     <url>/post/99dfe25e.html</url>
     <content><![CDATA[<ol>
@@ -1310,17 +1321,6 @@
       </tags>
   </entry>
   <entry>
-    <title>IPVS 模式下 NodePort 的工作过程浅析</title>
-    <url>/post/4c49613e.html</url>
-    <content><![CDATA[<p>###</p>]]></content>
-      <categories>
-        <category>Kubernetes</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Keepalived 和 Kubeadm 部署高可用 Kubernetes</title>
     <url>/post/c9063311.html</url>
     <content><![CDATA[<h3 id="准备-k8s-离线安装包"><a href="#准备-k8s-离线安装包" class="headerlink" title="准备 k8s 离线安装包"></a>准备 k8s 离线安装包</h3><p>在 k8s Github 仓库的 <a href="https://github.com/kubernetes/kubernetes/releases" target="_blank" rel="external nofollow noopener noreferrer">Release 页面</a>  找到最新稳定版本，点击对应的如   <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.14.md#downloads-for-v1142" target="_blank" rel="external nofollow noopener noreferrer">CHANGELOG-1.14.md</a>  链接进入该版本的安装包下载页面。分别下载 AMD64 版本的 Server 和 Node 安装包  <a href="https://dl.k8s.io/v1.14.2/kubernetes-server-linux-amd64.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">kubernetes-server-linux-amd64.tar.gz</a>  与  <a href="https://dl.k8s.io/v1.14.2/kubernetes-node-linux-amd64.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">kubernetes-node-linux-amd64.tar.gz</a>。然后使用 tar 命令解压缩并将所有文件汇总到一个集中的目录，如下，其中 coredns、etcd 和 pause 的镜像不包含在上述两个压缩包中，需要自行下载：</p><a id="more"></a>
@@ -1331,8 +1331,8 @@
         <category>kubernetes</category>
       </categories>
       <tags>
-        <tag>云计算</tag>
         <tag>kubernetes</tag>
+        <tag>云计算</tag>
       </tags>
   </entry>
   <entry>
