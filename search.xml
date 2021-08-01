@@ -1568,6 +1568,171 @@
       </tags>
   </entry>
   <entry>
+    <title>LVM 基本概念</title>
+    <url>/post/31e91381.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">2019/05/28</td>
+<td align="center">初始版本.</td>
+</tr>
+<tr>
+<td align="center">2019/09/08</td>
+<td align="center">添加逻辑卷扩容.</td>
+</tr>
+</tbody></table><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://www.thegeekdiary.com/redhat-centos-a-beginners-guide-to-lvm-logical-volume-manager/" target="_blank" rel="external nofollow noopener noreferrer">RedHat / CentOS : A beginners guide to LVM</a></p><h3 id="什么是-LVM"><a href="#什么是-LVM" class="headerlink" title="什么是 LVM"></a>什么是 LVM</h3><p>逻辑卷管理（LVM）在物理磁盘和文件系统之间引入了额外的一层从而使得文件系统具有了如下特性：</p><a id="more"></a>
+
+
+<ul>
+<li>方便地在线扩容和移动，不需要系统范围的中断</li>
+<li>利用磁盘不连续的空间</li>
+<li>有含义的卷名取代通常的晦涩的设备名</li>
+<li>跨多个物理磁盘</li>
+</ul>
+<p>Linux LVM 和 HP-UX LVM 非常相似，但是提供了更多诸如磁盘快照、集群支持（GFS2、OCFS 和  Lustre）等高级功能。</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>LVM 包含几项概念上的分层：物理卷（PV）、逻辑卷（LV）和文件系统。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559006793676-717ab08e-f951-4f4c-b181-9167f797adb9.png#align=left&display=inline&height=316&name=image.png&originHeight=316&originWidth=260&size=21399&status=done&width=260" alt="image.png"><br>这些分层又由较小的单元组成，例如物理卷由一组 PE（Physical Extents）组成、逻辑卷由一组 LE（Logical Extents）组成。Extent 在这里指的是组成卷的最小逻辑单元。Extent 在磁盘管理中指的是一些连续的 block，一个 extent 由起始的 block 加上长度进行定义。 Extent 是 btrfs 管理磁盘空间的最小单位，由 extent tree 管理。 Btrfs 分配 data 或 metadata 都需要查询 extent tree 以便获得空闲空间的信息。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559008329932-64cc00c4-b926-40f1-be09-d0ab8e0f90d9.png#align=left&display=inline&height=179&name=image.png&originHeight=179&originWidth=563&size=39153&status=done&width=563" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559007427978-1c2c017c-ab1a-4b34-a21a-55b313d17ac5.png#align=left&display=inline&height=258&name=image.png&originHeight=258&originWidth=671&size=23025&status=done&width=671" alt="image.png"></p>
+<h4 id="物理卷（PV）"><a href="#物理卷（PV）" class="headerlink" title="物理卷（PV）"></a>物理卷（PV）</h4><p>每个物理卷可以是磁盘分区，整个磁盘，元设备或回环文件。 使用命令 pvcreate 初始化存储空间以供 LVM 使用。 将块设备初始化为物理卷会在设备的开头放置标签。</p>
+<h4 id="卷组（VG）"><a href="#卷组（VG）" class="headerlink" title="卷组（VG）"></a>卷组（VG）</h4><p>一个卷组将一组逻辑卷和物理卷纳入到一个管理单元。卷组被切分成一组大小固定的 PE。vgcreate 命令使用先前 pvcreate 为 LVM 配置的物理卷路径创建一个卷组。</p>
+<ul>
+<li>卷组由物理卷构成，物理卷由 PE 构成。不同卷组包含的 PE 大小可以不同，具体是在创建卷组时指定。</li>
+<li>PE 的默认大小是 4MB，但是可以在创建 VG 的时候指定不同的值。</li>
+<li>一般来讲，PE 大小越大性能越好，逻辑卷的控制粒度也会降低。</li>
+</ul>
+<h4 id="逻辑卷（LV）"><a href="#逻辑卷（LV）" class="headerlink" title="逻辑卷（LV）"></a>逻辑卷（LV）</h4><p>逻辑卷在概念上和非 LVM 系统中的硬盘分区等价。逻辑卷就是一些在从属于同一卷组的 PE 的基础上创建的块设备。可以使用 lvcreate 命令在某个卷组里创建逻辑卷。</p>
+<h4 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h4><p>文件系统构建在逻辑卷之上。使用 mkfs 命令可以在基于逻辑卷创建文件系统。文件系统创建完成后就可以根据需要挂载使用。</p>
+<h3 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h3><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>接下来的操作中我们将会：</p>
+<ol>
+<li>基于三个物理磁盘（/dev/sdb,/dev/sdc,/dev/sdd）创建三个物理卷。</li>
+<li>基于三个物理卷创建一个卷组（/dev/vg01）。</li>
+<li>在卷组中创建一个逻辑卷。</li>
+<li>在逻辑卷上创建文件系统并且挂载（/data01）。</li>
+</ol>
+<h4 id="创建物理卷"><a href="#创建物理卷" class="headerlink" title="创建物理卷"></a>创建物理卷</h4><p>使用 pvcreate 命令初始化 LVM 使用的物理卷。在创建物理卷之前需要确保目标磁盘在操作系统中可见。使用 lvmdiskscan 扫描可用于创建物理卷的块设备。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvmdiskscan</span></span><br><span class="line">.......</span><br><span class="line">  /dev/sdb   [       2.00 GiB]</span><br><span class="line">  /dev/sdc   [       2.00 GiB]</span><br><span class="line">  /dev/sdd   [       2.00 GiB]</span><br><span class="line">  3 disks</span><br><span class="line">  19 partitions</span><br><span class="line">  0 LVM physical volume whole disks</span><br><span class="line">  0 LVM physical volumes</span><br></pre></td></tr></table></figure>
+
+<p>初始化块设备：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvcreate /dev/sdb /dev/sdc /dev/sdd</span></span><br><span class="line">  Physical volume <span class="string">"/dev/sdb"</span> successfully created</span><br><span class="line">  Physical volume <span class="string">"/dev/sdc"</span> successfully created</span><br><span class="line">  Physical volume <span class="string">"/dev/sdd"</span> successfully created</span><br></pre></td></tr></table></figure>
+
+<p>查看物理卷：<br>可以使用 pvdisplay、pvs 和 pvscan 查看刚刚创建的物理卷。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvdisplay</span></span><br><span class="line">  <span class="string">"/dev/sdb"</span> is a new physical volume of <span class="string">"2.00 GiB"</span></span><br><span class="line">  --- NEW Physical volume ---</span><br><span class="line">  PV Name               /dev/sdb</span><br><span class="line">  VG Name</span><br><span class="line">  PV Size               2.00 GiB</span><br><span class="line">  Allocatable           NO</span><br><span class="line">  PE Size               0</span><br><span class="line">  Total PE              0</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          0</span><br><span class="line">  PV UUID               Mt3F7z-a2AV-28Vn-uXe2-QejE-Z6tP-UMlQGM</span><br><span class="line"></span><br><span class="line">  <span class="string">"/dev/sdc"</span> is a new physical volume of <span class="string">"2.00 GiB"</span></span><br><span class="line">  --- NEW Physical volume ---</span><br><span class="line">  PV Name               /dev/sdc</span><br><span class="line">  VG Name</span><br><span class="line">  PV Size               2.00 GiB</span><br><span class="line">  Allocatable           NO</span><br><span class="line">  PE Size               0</span><br><span class="line">  Total PE              0</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          0</span><br><span class="line">  PV UUID               5m1Fuc-yTRn-I2vG-bMfU-6SE7-53EA-s8VQjt</span><br><span class="line"></span><br><span class="line">  <span class="string">"/dev/sdd"</span> is a new physical volume of <span class="string">"2.00 GiB"</span></span><br><span class="line">  --- NEW Physical volume ---</span><br><span class="line">  PV Name               /dev/sdd</span><br><span class="line">  VG Name</span><br><span class="line">  PV Size               2.00 GiB</span><br><span class="line">  Allocatable           NO</span><br><span class="line">  PE Size               0</span><br><span class="line">  Total PE              0</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          0</span><br><span class="line">  PV UUID               1x3e2A-C0Lt-DrUA-tPSM-lsMu-sn70-qg1j8p</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvscan</span></span><br><span class="line">  PV /dev/sdb                      lvm2 [2.00 GiB]</span><br><span class="line">  PV /dev/sdc                      lvm2 [2.00 GiB]</span><br><span class="line">  PV /dev/sdd                      lvm2 [2.00 GiB]</span><br><span class="line">  Total: 3 [6.00 GiB] / <span class="keyword">in</span> use: 0 [0   ] / <span class="keyword">in</span> no VG: 3 [6.00 GiB]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvs</span></span><br><span class="line">  PV         VG   Fmt  Attr PSize PFree</span><br><span class="line">  /dev/sdb        lvm2 a--  2.00g 2.00g</span><br><span class="line">  /dev/sdc        lvm2 a--  2.00g 2.00g</span><br><span class="line">  /dev/sdd        lvm2 a--  2.00g 2.00g</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建卷组"><a href="#创建卷组" class="headerlink" title="创建卷组"></a>创建卷组</h4><p>使用 vgcreate 命令创建新的卷组 vg01，卷组用到了刚刚创建的三个 PV。使用通过传入 -s 参数指定 PE 的大小、传入 -p 指定 PV 的最大数量、传入 -I 指定 LV 的最大数量。这些参数都是可选项。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgcreate vg01 /dev/sdb /dev/sdc /dev/sdd</span></span><br><span class="line">  Volume group <span class="string">"vg01"</span> successfully created</span><br></pre></td></tr></table></figure>
+
+<p>pvcreate 命令可选参数列表如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Option</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">-s</td>
+<td align="left">Physical extent size</td>
+</tr>
+<tr>
+<td align="left">-p</td>
+<td align="left">Max number of PVs</td>
+</tr>
+<tr>
+<td align="left">-l</td>
+<td align="left">Max number of LVs</td>
+</tr>
+<tr>
+<td align="left">–alloc</td>
+<td align="left">allocation policy (either contiguous, anywhere, or cling)</td>
+</tr>
+</tbody></table>
+<p>使用 vgs 和 vgdisplay 命令可以查看卷组信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgs vg01</span></span><br><span class="line">  VG   <span class="comment">#PV #LV #SN Attr   VSize VFree</span></span><br><span class="line">  vg01   3   0   0 wz--n- 5.99g 5.99g</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgdisplay vg01</span></span><br><span class="line">  --- Volume group ---</span><br><span class="line">  VG Name               vg01</span><br><span class="line">  System ID</span><br><span class="line">  Format                lvm2</span><br><span class="line">  Metadata Areas        3</span><br><span class="line">  Metadata Sequence No  1</span><br><span class="line">  VG Access             <span class="built_in">read</span>/write</span><br><span class="line">  VG Status             resizable</span><br><span class="line">  MAX LV                0</span><br><span class="line">  Cur LV                0</span><br><span class="line">  Open LV               0</span><br><span class="line">  Max PV                0</span><br><span class="line">  Cur PV                3</span><br><span class="line">  Act PV                3</span><br><span class="line">  VG Size               5.99 GiB</span><br><span class="line">  PE Size               4.00 MiB</span><br><span class="line">  Total PE              1533</span><br><span class="line">  Alloc PE / Size       0 / 0</span><br><span class="line">  Free  PE / Size       1533 / 5.99 GiB</span><br><span class="line">  VG UUID               Cw7GGz-NH3o-Sax2-5jPv-buZS-938T-tmNKFa</span><br></pre></td></tr></table></figure>
+
+<p>使用 vgchange 命令可以  activate/deactivate 卷组。<br>激活卷组：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgchange -a n vg01</span></span><br><span class="line">  0 logical volume(s) <span class="keyword">in</span> volume group <span class="string">"vg01"</span> now active</span><br></pre></td></tr></table></figure>
+
+<p>停用卷组：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgchange -a y vg01</span></span><br><span class="line">  1 logical volume(s) <span class="keyword">in</span> volume group <span class="string">"vg01"</span> now active</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建逻辑卷"><a href="#创建逻辑卷" class="headerlink" title="创建逻辑卷"></a>创建逻辑卷</h4><p>使用 lvcreate 命令在卷组中创建逻辑卷。</p>
+<ul>
+<li>如果在创建逻辑卷时未指定卷名，默认卷名是 lvol#，#代表逻辑卷序号。</li>
+<li>一般来讲，如果在创建逻辑卷时不指定所用物理卷，逻辑卷会在紧邻当前位置的下一个可用 PV 上创建。</li>
+</ul>
+<p>创建一个 5GB 大小的名称为 lvol01 的逻辑卷：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvcreate -L 5G -n lvol01 vg01</span></span><br><span class="line">  Logical volume <span class="string">"lvol01"</span> created</span><br></pre></td></tr></table></figure>
+
+<p>创建一个 stripped 卷，通过以下命令创建一个跨越三个物理卷的 stripped 逻辑卷：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvcreate -L 5G -I 4096 -i 3 -n lvol01 vg01</span></span><br><span class="line">  Rounding size (1280 extents) up to stripe boundary size (1281 extents)</span><br><span class="line">  Logical volume <span class="string">"lvol01"</span> created</span><br></pre></td></tr></table></figure>
+
+<p>lvcreate 命令的部分参数说明如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">I - PVs to span <span class="keyword">while</span> creating striped volume</span><br><span class="line">i - stripe unit</span><br></pre></td></tr></table></figure>
+
+<p>创建 mirrored 卷，使用如下命令创建一个跨越三个物理卷的含有三路镜像的卷：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvcreate -L 1G -m 2 -n lvol01 vg01</span></span><br><span class="line">  Logical volume <span class="string">"lvol01"</span> created</span><br></pre></td></tr></table></figure>
+
+<p>在创建镜像逻辑卷时可以指定使用哪些物理卷，这里卷组中只有三个物理卷，所以默认逻辑卷默认在这三个物理卷上创建。</p>
+<p>查看逻辑卷<br>可以使用  lvdisplay、lvs 和 lvscan 命令查看创建的逻辑卷：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvs /dev/vg01/lvol01</span></span><br><span class="line">  LV     VG   Attr      LSize Pool Origin Data%  Move Log         Cpy%Sync Convert</span><br><span class="line">  lvol01 vg01 mwi<span class="_">-a</span>-m-- 1.00g                         lvol01_mlog   100.00</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvdisplay /dev/vg01/lvol01</span></span><br><span class="line">  --- Logical volume ---</span><br><span class="line">  LV Path                /dev/vg01/lvol01</span><br><span class="line">  LV Name                lvol01</span><br><span class="line">  VG Name                vg01</span><br><span class="line">  LV UUID                ptlmAV-mO42-fWiJ-e2Ml-r9kj-PFcC-MOexxw</span><br><span class="line">  LV Write Access        <span class="built_in">read</span>/write</span><br><span class="line">  LV Creation host, time localhost.localdomain, 2014-10-22 09:04:25 -0700</span><br><span class="line">  LV Status              available</span><br><span class="line">  <span class="comment"># open                 0</span></span><br><span class="line">  LV Size                1.00 GiB</span><br><span class="line">  Current LE             256</span><br><span class="line">  Mirrored volumes       3</span><br><span class="line">  Segments               1</span><br><span class="line">  Allocation             inherit</span><br><span class="line">  Read ahead sectors     auto</span><br><span class="line">  - currently <span class="built_in">set</span> to     256</span><br><span class="line">  Block device           253:4</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvscan</span></span><br><span class="line">  ACTIVE            <span class="string">'/dev/vg01/lvol01'</span> [1.00 GiB] inherit</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a>创建文件系统</h4><p>最后一步是在刚刚创建好的逻辑卷上创建文件系统并将其挂载到系统目录从而能够访问它并且存储数据。使用 mkfs 命令在逻辑卷上创建文件系统。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mkfs.ext4 /dev/vg01/lvol01</span></span><br><span class="line">mke2fs 1.41.12 (17-May-2010)</span><br><span class="line">Filesystem label=</span><br><span class="line">OS <span class="built_in">type</span>: Linux</span><br><span class="line">Block size=4096 (<span class="built_in">log</span>=2)</span><br><span class="line">Fragment size=4096 (<span class="built_in">log</span>=2)</span><br><span class="line">Stride=0 blocks, Stripe width=0 blocks</span><br><span class="line">65536 inodes, 262144 blocks</span><br><span class="line">13107 blocks (5.00%) reserved <span class="keyword">for</span> the super user</span><br><span class="line">First data block=0</span><br><span class="line">Maximum filesystem blocks=268435456</span><br><span class="line">8 block groups</span><br><span class="line">32768 blocks per group, 32768 fragments per group</span><br><span class="line">8192 inodes per group</span><br><span class="line">Superblock backups stored on blocks:</span><br><span class="line">	32768, 98304, 163840, 229376</span><br><span class="line"></span><br><span class="line">Writing inode tables: <span class="keyword">done</span></span><br><span class="line">Creating journal (8192 blocks): <span class="keyword">done</span></span><br><span class="line">Writing superblocks and filesystem accounting information: <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">This filesystem will be automatically checked every 37 mounts or</span><br><span class="line">180 days, whichever comes first.  Use tune2fs -c or -i to override.</span><br></pre></td></tr></table></figure>
+
+<p>文件系统创建完成后，相应的逻辑卷就可以用来挂载了。请确保在 /etc/fstab 文件中添加相应的条目，然后在系统启动时就可以自动挂载逻辑卷到相应的目录了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mkdir /data01</span></span><br><span class="line"><span class="comment"># mount /dev/vg01/lvol01 /data01</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vi /etc/fstab</span></span><br><span class="line">/dev/vg01/lvol01	/data01			ext4	defaults	0 0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># df -h /data01</span></span><br><span class="line">Filesystem                   Size  Used  Avail  Use%  Mounted on</span><br><span class="line">/dev/mapper/vg01-lvol01     1008M   34M  924M   4%    /data01</span><br></pre></td></tr></table></figure>
+
+<p>使用带 GUI 的工具管理 LVM<br>如果你想使用图形化界面管理 LVM，推荐  system-config-lvm。 使用以下命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># yum install system-config-lvm</span></span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令启动：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">system-config-lvm</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559628183097-f4e684b1-2ab3-432d-b062-075ed84278f4.png#align=left&display=inline&height=568&name=image.png&originHeight=568&originWidth=970&size=83085&status=done&width=970" alt="image.png"></p>
+<ul>
+<li>逻辑卷扩容</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 扩容到 12G</span></span><br><span class="line">lvextend -L12G /dev/vg01/lvol01</span><br><span class="line"><span class="comment"># 容量增加 1G</span></span><br><span class="line">lvextend -L+1G /dev/vg01/lvol01</span><br><span class="line"><span class="comment"># 占用 vg 所有剩余空间</span></span><br><span class="line">lvextend -l +100%FREE /dev/vg01/lvol01</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>译文</category>
+      </categories>
+      <tags>
+        <tag>译文</tag>
+        <tag>LVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 内存管理基础知识</title>
+    <url>/post/51188647.html</url>
+    <content><![CDATA[<h4 id="buffer-与-cache"><a href="#buffer-与-cache" class="headerlink" title="buffer 与 cache"></a>buffer 与 cache</h4><p>buffer 一般用于数据的批量处理，减少操作次数；cache 一般是缓存一部分文件内容在内存，命中缓存时就不需要从磁盘读取，减少 I/O 读操作。</p>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>内存管理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Kubernetes 实践</title>
     <url>/post/9caa466a.html</url>
     <content><![CDATA[<h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用原始 URL 获取资源信息</span></span><br><span class="line">kubectl get --raw <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span><br><span class="line"><span class="comment"># 定制输出列</span></span><br><span class="line">kubectl get nodes -o=custom-columns=NAME:.metadata.name,TAINTS:.spec.taints</span><br><span class="line"><span class="comment"># 删除所有 evicted pods</span></span><br><span class="line">kubectl get po --all-namespaces --field-selector <span class="string">'status.phase!=Running'</span> -o json | kubectl delete -f -</span><br><span class="line">kubectl get pods --all-namespaces | grep Evicted | awk <span class="string">'&#123;print $2 " --namespace=" $1&#125;'</span> | xargs kubectl delete pod</span><br><span class="line">kubectl get pods --all-namespaces | grep -E <span class="string">'ImagePullBackOff|ErrImagePull|Evicted'</span> | awk <span class="string">'&#123;print $2 " --namespace=" $1&#125;'</span> | xargs kubectl delete pod</span><br><span class="line">kubectl get pods -n rook-ceph | grep -i Evicted | sed <span class="string">'s/\s\s*/ /g'</span> |cut -d<span class="string">" "</span> -f1 | xargs kubectl delete pod -n rook-ceph --force --grace-period=0</span><br><span class="line"><span class="comment"># 列出所有位于指定节点的 pod</span></span><br><span class="line">kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=10.25.150.64</span><br><span class="line"><span class="comment"># 从 cronjob 手动触发一个 job</span></span><br><span class="line">kubectl create job tmp-daily-report-job-02 --from=cronjob/job-1119051325-app-v1-0  -n data-infra</span><br><span class="line"><span class="comment"># 更新镜像</span></span><br><span class="line">kubectl <span class="built_in">set</span> image deployment/my-deployment mycontainer=myimage:latest</span><br><span class="line"><span class="comment"># 获取某个字段信息</span></span><br><span class="line">kubectl get deployment nginx-deployment -o jsonpath=<span class="string">'&#123;.spec.replicas&#125;'</span></span><br><span class="line"><span class="comment"># 按实际内存使用量排序</span></span><br><span class="line">kubectl top pod --no-headers --all-namespaces | sort --reverse --key 4 --numeric</span><br><span class="line"><span class="comment"># watch pod 变化，并带上时间戳</span></span><br><span class="line">kubectl get pods --watch-only | <span class="keyword">while</span> <span class="built_in">read</span> line ; <span class="keyword">do</span> <span class="built_in">echo</span> -e <span class="string">"<span class="variable">$(date +"%Y-%m-%d %H:%M:%S.%3N")</span>\t pods\t <span class="variable">$line</span>"</span> ; <span class="keyword">done</span></span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -1995,171 +2160,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>Kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LVM 基本概念</title>
-    <url>/post/31e91381.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">2019/05/28</td>
-<td align="center">初始版本.</td>
-</tr>
-<tr>
-<td align="center">2019/09/08</td>
-<td align="center">添加逻辑卷扩容.</td>
-</tr>
-</tbody></table><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://www.thegeekdiary.com/redhat-centos-a-beginners-guide-to-lvm-logical-volume-manager/" target="_blank" rel="external nofollow noopener noreferrer">RedHat / CentOS : A beginners guide to LVM</a></p><h3 id="什么是-LVM"><a href="#什么是-LVM" class="headerlink" title="什么是 LVM"></a>什么是 LVM</h3><p>逻辑卷管理（LVM）在物理磁盘和文件系统之间引入了额外的一层从而使得文件系统具有了如下特性：</p><a id="more"></a>
-
-
-<ul>
-<li>方便地在线扩容和移动，不需要系统范围的中断</li>
-<li>利用磁盘不连续的空间</li>
-<li>有含义的卷名取代通常的晦涩的设备名</li>
-<li>跨多个物理磁盘</li>
-</ul>
-<p>Linux LVM 和 HP-UX LVM 非常相似，但是提供了更多诸如磁盘快照、集群支持（GFS2、OCFS 和  Lustre）等高级功能。</p>
-<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>LVM 包含几项概念上的分层：物理卷（PV）、逻辑卷（LV）和文件系统。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559006793676-717ab08e-f951-4f4c-b181-9167f797adb9.png#align=left&display=inline&height=316&name=image.png&originHeight=316&originWidth=260&size=21399&status=done&width=260" alt="image.png"><br>这些分层又由较小的单元组成，例如物理卷由一组 PE（Physical Extents）组成、逻辑卷由一组 LE（Logical Extents）组成。Extent 在这里指的是组成卷的最小逻辑单元。Extent 在磁盘管理中指的是一些连续的 block，一个 extent 由起始的 block 加上长度进行定义。 Extent 是 btrfs 管理磁盘空间的最小单位，由 extent tree 管理。 Btrfs 分配 data 或 metadata 都需要查询 extent tree 以便获得空闲空间的信息。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559008329932-64cc00c4-b926-40f1-be09-d0ab8e0f90d9.png#align=left&display=inline&height=179&name=image.png&originHeight=179&originWidth=563&size=39153&status=done&width=563" alt="image.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559007427978-1c2c017c-ab1a-4b34-a21a-55b313d17ac5.png#align=left&display=inline&height=258&name=image.png&originHeight=258&originWidth=671&size=23025&status=done&width=671" alt="image.png"></p>
-<h4 id="物理卷（PV）"><a href="#物理卷（PV）" class="headerlink" title="物理卷（PV）"></a>物理卷（PV）</h4><p>每个物理卷可以是磁盘分区，整个磁盘，元设备或回环文件。 使用命令 pvcreate 初始化存储空间以供 LVM 使用。 将块设备初始化为物理卷会在设备的开头放置标签。</p>
-<h4 id="卷组（VG）"><a href="#卷组（VG）" class="headerlink" title="卷组（VG）"></a>卷组（VG）</h4><p>一个卷组将一组逻辑卷和物理卷纳入到一个管理单元。卷组被切分成一组大小固定的 PE。vgcreate 命令使用先前 pvcreate 为 LVM 配置的物理卷路径创建一个卷组。</p>
-<ul>
-<li>卷组由物理卷构成，物理卷由 PE 构成。不同卷组包含的 PE 大小可以不同，具体是在创建卷组时指定。</li>
-<li>PE 的默认大小是 4MB，但是可以在创建 VG 的时候指定不同的值。</li>
-<li>一般来讲，PE 大小越大性能越好，逻辑卷的控制粒度也会降低。</li>
-</ul>
-<h4 id="逻辑卷（LV）"><a href="#逻辑卷（LV）" class="headerlink" title="逻辑卷（LV）"></a>逻辑卷（LV）</h4><p>逻辑卷在概念上和非 LVM 系统中的硬盘分区等价。逻辑卷就是一些在从属于同一卷组的 PE 的基础上创建的块设备。可以使用 lvcreate 命令在某个卷组里创建逻辑卷。</p>
-<h4 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h4><p>文件系统构建在逻辑卷之上。使用 mkfs 命令可以在基于逻辑卷创建文件系统。文件系统创建完成后就可以根据需要挂载使用。</p>
-<h3 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h3><h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>接下来的操作中我们将会：</p>
-<ol>
-<li>基于三个物理磁盘（/dev/sdb,/dev/sdc,/dev/sdd）创建三个物理卷。</li>
-<li>基于三个物理卷创建一个卷组（/dev/vg01）。</li>
-<li>在卷组中创建一个逻辑卷。</li>
-<li>在逻辑卷上创建文件系统并且挂载（/data01）。</li>
-</ol>
-<h4 id="创建物理卷"><a href="#创建物理卷" class="headerlink" title="创建物理卷"></a>创建物理卷</h4><p>使用 pvcreate 命令初始化 LVM 使用的物理卷。在创建物理卷之前需要确保目标磁盘在操作系统中可见。使用 lvmdiskscan 扫描可用于创建物理卷的块设备。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvmdiskscan</span></span><br><span class="line">.......</span><br><span class="line">  /dev/sdb   [       2.00 GiB]</span><br><span class="line">  /dev/sdc   [       2.00 GiB]</span><br><span class="line">  /dev/sdd   [       2.00 GiB]</span><br><span class="line">  3 disks</span><br><span class="line">  19 partitions</span><br><span class="line">  0 LVM physical volume whole disks</span><br><span class="line">  0 LVM physical volumes</span><br></pre></td></tr></table></figure>
-
-<p>初始化块设备：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvcreate /dev/sdb /dev/sdc /dev/sdd</span></span><br><span class="line">  Physical volume <span class="string">"/dev/sdb"</span> successfully created</span><br><span class="line">  Physical volume <span class="string">"/dev/sdc"</span> successfully created</span><br><span class="line">  Physical volume <span class="string">"/dev/sdd"</span> successfully created</span><br></pre></td></tr></table></figure>
-
-<p>查看物理卷：<br>可以使用 pvdisplay、pvs 和 pvscan 查看刚刚创建的物理卷。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvdisplay</span></span><br><span class="line">  <span class="string">"/dev/sdb"</span> is a new physical volume of <span class="string">"2.00 GiB"</span></span><br><span class="line">  --- NEW Physical volume ---</span><br><span class="line">  PV Name               /dev/sdb</span><br><span class="line">  VG Name</span><br><span class="line">  PV Size               2.00 GiB</span><br><span class="line">  Allocatable           NO</span><br><span class="line">  PE Size               0</span><br><span class="line">  Total PE              0</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          0</span><br><span class="line">  PV UUID               Mt3F7z-a2AV-28Vn-uXe2-QejE-Z6tP-UMlQGM</span><br><span class="line"></span><br><span class="line">  <span class="string">"/dev/sdc"</span> is a new physical volume of <span class="string">"2.00 GiB"</span></span><br><span class="line">  --- NEW Physical volume ---</span><br><span class="line">  PV Name               /dev/sdc</span><br><span class="line">  VG Name</span><br><span class="line">  PV Size               2.00 GiB</span><br><span class="line">  Allocatable           NO</span><br><span class="line">  PE Size               0</span><br><span class="line">  Total PE              0</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          0</span><br><span class="line">  PV UUID               5m1Fuc-yTRn-I2vG-bMfU-6SE7-53EA-s8VQjt</span><br><span class="line"></span><br><span class="line">  <span class="string">"/dev/sdd"</span> is a new physical volume of <span class="string">"2.00 GiB"</span></span><br><span class="line">  --- NEW Physical volume ---</span><br><span class="line">  PV Name               /dev/sdd</span><br><span class="line">  VG Name</span><br><span class="line">  PV Size               2.00 GiB</span><br><span class="line">  Allocatable           NO</span><br><span class="line">  PE Size               0</span><br><span class="line">  Total PE              0</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          0</span><br><span class="line">  PV UUID               1x3e2A-C0Lt-DrUA-tPSM-lsMu-sn70-qg1j8p</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvscan</span></span><br><span class="line">  PV /dev/sdb                      lvm2 [2.00 GiB]</span><br><span class="line">  PV /dev/sdc                      lvm2 [2.00 GiB]</span><br><span class="line">  PV /dev/sdd                      lvm2 [2.00 GiB]</span><br><span class="line">  Total: 3 [6.00 GiB] / <span class="keyword">in</span> use: 0 [0   ] / <span class="keyword">in</span> no VG: 3 [6.00 GiB]</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pvs</span></span><br><span class="line">  PV         VG   Fmt  Attr PSize PFree</span><br><span class="line">  /dev/sdb        lvm2 a--  2.00g 2.00g</span><br><span class="line">  /dev/sdc        lvm2 a--  2.00g 2.00g</span><br><span class="line">  /dev/sdd        lvm2 a--  2.00g 2.00g</span><br></pre></td></tr></table></figure>
-
-<h4 id="创建卷组"><a href="#创建卷组" class="headerlink" title="创建卷组"></a>创建卷组</h4><p>使用 vgcreate 命令创建新的卷组 vg01，卷组用到了刚刚创建的三个 PV。使用通过传入 -s 参数指定 PE 的大小、传入 -p 指定 PV 的最大数量、传入 -I 指定 LV 的最大数量。这些参数都是可选项。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgcreate vg01 /dev/sdb /dev/sdc /dev/sdd</span></span><br><span class="line">  Volume group <span class="string">"vg01"</span> successfully created</span><br></pre></td></tr></table></figure>
-
-<p>pvcreate 命令可选参数列表如下：</p>
-<table>
-<thead>
-<tr>
-<th align="left">Option</th>
-<th align="left">Meaning</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">-s</td>
-<td align="left">Physical extent size</td>
-</tr>
-<tr>
-<td align="left">-p</td>
-<td align="left">Max number of PVs</td>
-</tr>
-<tr>
-<td align="left">-l</td>
-<td align="left">Max number of LVs</td>
-</tr>
-<tr>
-<td align="left">–alloc</td>
-<td align="left">allocation policy (either contiguous, anywhere, or cling)</td>
-</tr>
-</tbody></table>
-<p>使用 vgs 和 vgdisplay 命令可以查看卷组信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgs vg01</span></span><br><span class="line">  VG   <span class="comment">#PV #LV #SN Attr   VSize VFree</span></span><br><span class="line">  vg01   3   0   0 wz--n- 5.99g 5.99g</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgdisplay vg01</span></span><br><span class="line">  --- Volume group ---</span><br><span class="line">  VG Name               vg01</span><br><span class="line">  System ID</span><br><span class="line">  Format                lvm2</span><br><span class="line">  Metadata Areas        3</span><br><span class="line">  Metadata Sequence No  1</span><br><span class="line">  VG Access             <span class="built_in">read</span>/write</span><br><span class="line">  VG Status             resizable</span><br><span class="line">  MAX LV                0</span><br><span class="line">  Cur LV                0</span><br><span class="line">  Open LV               0</span><br><span class="line">  Max PV                0</span><br><span class="line">  Cur PV                3</span><br><span class="line">  Act PV                3</span><br><span class="line">  VG Size               5.99 GiB</span><br><span class="line">  PE Size               4.00 MiB</span><br><span class="line">  Total PE              1533</span><br><span class="line">  Alloc PE / Size       0 / 0</span><br><span class="line">  Free  PE / Size       1533 / 5.99 GiB</span><br><span class="line">  VG UUID               Cw7GGz-NH3o-Sax2-5jPv-buZS-938T-tmNKFa</span><br></pre></td></tr></table></figure>
-
-<p>使用 vgchange 命令可以  activate/deactivate 卷组。<br>激活卷组：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgchange -a n vg01</span></span><br><span class="line">  0 logical volume(s) <span class="keyword">in</span> volume group <span class="string">"vg01"</span> now active</span><br></pre></td></tr></table></figure>
-
-<p>停用卷组：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vgchange -a y vg01</span></span><br><span class="line">  1 logical volume(s) <span class="keyword">in</span> volume group <span class="string">"vg01"</span> now active</span><br></pre></td></tr></table></figure>
-
-<h4 id="创建逻辑卷"><a href="#创建逻辑卷" class="headerlink" title="创建逻辑卷"></a>创建逻辑卷</h4><p>使用 lvcreate 命令在卷组中创建逻辑卷。</p>
-<ul>
-<li>如果在创建逻辑卷时未指定卷名，默认卷名是 lvol#，#代表逻辑卷序号。</li>
-<li>一般来讲，如果在创建逻辑卷时不指定所用物理卷，逻辑卷会在紧邻当前位置的下一个可用 PV 上创建。</li>
-</ul>
-<p>创建一个 5GB 大小的名称为 lvol01 的逻辑卷：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvcreate -L 5G -n lvol01 vg01</span></span><br><span class="line">  Logical volume <span class="string">"lvol01"</span> created</span><br></pre></td></tr></table></figure>
-
-<p>创建一个 stripped 卷，通过以下命令创建一个跨越三个物理卷的 stripped 逻辑卷：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvcreate -L 5G -I 4096 -i 3 -n lvol01 vg01</span></span><br><span class="line">  Rounding size (1280 extents) up to stripe boundary size (1281 extents)</span><br><span class="line">  Logical volume <span class="string">"lvol01"</span> created</span><br></pre></td></tr></table></figure>
-
-<p>lvcreate 命令的部分参数说明如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">I - PVs to span <span class="keyword">while</span> creating striped volume</span><br><span class="line">i - stripe unit</span><br></pre></td></tr></table></figure>
-
-<p>创建 mirrored 卷，使用如下命令创建一个跨越三个物理卷的含有三路镜像的卷：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvcreate -L 1G -m 2 -n lvol01 vg01</span></span><br><span class="line">  Logical volume <span class="string">"lvol01"</span> created</span><br></pre></td></tr></table></figure>
-
-<p>在创建镜像逻辑卷时可以指定使用哪些物理卷，这里卷组中只有三个物理卷，所以默认逻辑卷默认在这三个物理卷上创建。</p>
-<p>查看逻辑卷<br>可以使用  lvdisplay、lvs 和 lvscan 命令查看创建的逻辑卷：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvs /dev/vg01/lvol01</span></span><br><span class="line">  LV     VG   Attr      LSize Pool Origin Data%  Move Log         Cpy%Sync Convert</span><br><span class="line">  lvol01 vg01 mwi<span class="_">-a</span>-m-- 1.00g                         lvol01_mlog   100.00</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvdisplay /dev/vg01/lvol01</span></span><br><span class="line">  --- Logical volume ---</span><br><span class="line">  LV Path                /dev/vg01/lvol01</span><br><span class="line">  LV Name                lvol01</span><br><span class="line">  VG Name                vg01</span><br><span class="line">  LV UUID                ptlmAV-mO42-fWiJ-e2Ml-r9kj-PFcC-MOexxw</span><br><span class="line">  LV Write Access        <span class="built_in">read</span>/write</span><br><span class="line">  LV Creation host, time localhost.localdomain, 2014-10-22 09:04:25 -0700</span><br><span class="line">  LV Status              available</span><br><span class="line">  <span class="comment"># open                 0</span></span><br><span class="line">  LV Size                1.00 GiB</span><br><span class="line">  Current LE             256</span><br><span class="line">  Mirrored volumes       3</span><br><span class="line">  Segments               1</span><br><span class="line">  Allocation             inherit</span><br><span class="line">  Read ahead sectors     auto</span><br><span class="line">  - currently <span class="built_in">set</span> to     256</span><br><span class="line">  Block device           253:4</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># lvscan</span></span><br><span class="line">  ACTIVE            <span class="string">'/dev/vg01/lvol01'</span> [1.00 GiB] inherit</span><br></pre></td></tr></table></figure>
-
-<h4 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a>创建文件系统</h4><p>最后一步是在刚刚创建好的逻辑卷上创建文件系统并将其挂载到系统目录从而能够访问它并且存储数据。使用 mkfs 命令在逻辑卷上创建文件系统。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mkfs.ext4 /dev/vg01/lvol01</span></span><br><span class="line">mke2fs 1.41.12 (17-May-2010)</span><br><span class="line">Filesystem label=</span><br><span class="line">OS <span class="built_in">type</span>: Linux</span><br><span class="line">Block size=4096 (<span class="built_in">log</span>=2)</span><br><span class="line">Fragment size=4096 (<span class="built_in">log</span>=2)</span><br><span class="line">Stride=0 blocks, Stripe width=0 blocks</span><br><span class="line">65536 inodes, 262144 blocks</span><br><span class="line">13107 blocks (5.00%) reserved <span class="keyword">for</span> the super user</span><br><span class="line">First data block=0</span><br><span class="line">Maximum filesystem blocks=268435456</span><br><span class="line">8 block groups</span><br><span class="line">32768 blocks per group, 32768 fragments per group</span><br><span class="line">8192 inodes per group</span><br><span class="line">Superblock backups stored on blocks:</span><br><span class="line">	32768, 98304, 163840, 229376</span><br><span class="line"></span><br><span class="line">Writing inode tables: <span class="keyword">done</span></span><br><span class="line">Creating journal (8192 blocks): <span class="keyword">done</span></span><br><span class="line">Writing superblocks and filesystem accounting information: <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">This filesystem will be automatically checked every 37 mounts or</span><br><span class="line">180 days, whichever comes first.  Use tune2fs -c or -i to override.</span><br></pre></td></tr></table></figure>
-
-<p>文件系统创建完成后，相应的逻辑卷就可以用来挂载了。请确保在 /etc/fstab 文件中添加相应的条目，然后在系统启动时就可以自动挂载逻辑卷到相应的目录了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mkdir /data01</span></span><br><span class="line"><span class="comment"># mount /dev/vg01/lvol01 /data01</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vi /etc/fstab</span></span><br><span class="line">/dev/vg01/lvol01	/data01			ext4	defaults	0 0</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># df -h /data01</span></span><br><span class="line">Filesystem                   Size  Used  Avail  Use%  Mounted on</span><br><span class="line">/dev/mapper/vg01-lvol01     1008M   34M  924M   4%    /data01</span><br></pre></td></tr></table></figure>
-
-<p>使用带 GUI 的工具管理 LVM<br>如果你想使用图形化界面管理 LVM，推荐  system-config-lvm。 使用以下命令进行安装：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># yum install system-config-lvm</span></span><br></pre></td></tr></table></figure>
-
-<p>执行以下命令启动：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">system-config-lvm</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559628183097-f4e684b1-2ab3-432d-b062-075ed84278f4.png#align=left&display=inline&height=568&name=image.png&originHeight=568&originWidth=970&size=83085&status=done&width=970" alt="image.png"></p>
-<ul>
-<li>逻辑卷扩容</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 扩容到 12G</span></span><br><span class="line">lvextend -L12G /dev/vg01/lvol01</span><br><span class="line"><span class="comment"># 容量增加 1G</span></span><br><span class="line">lvextend -L+1G /dev/vg01/lvol01</span><br><span class="line"><span class="comment"># 占用 vg 所有剩余空间</span></span><br><span class="line">lvextend -l +100%FREE /dev/vg01/lvol01</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>译文</tag>
-        <tag>LVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 内存管理基础知识</title>
-    <url>/post/51188647.html</url>
-    <content><![CDATA[<h4 id="buffer-与-cache"><a href="#buffer-与-cache" class="headerlink" title="buffer 与 cache"></a>buffer 与 cache</h4><p>buffer 一般用于数据的批量处理，减少操作次数；cache 一般是缓存一部分文件内容在内存，命中缓存时就不需要从磁盘读取，减少 I/O 读操作。</p>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>内存管理</tag>
       </tags>
   </entry>
   <entry>
