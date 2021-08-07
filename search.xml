@@ -166,6 +166,126 @@
       </tags>
   </entry>
   <entry>
+    <title>Ceph 常用操作</title>
+    <url>/post/e8bac896.html</url>
+    <content><![CDATA[<h4 id="删除-rbd-image-时提示有-watcher"><a href="#删除-rbd-image-时提示有-watcher" class="headerlink" title="删除 rbd image 时提示有 watcher"></a>删除 rbd image 时提示有 watcher</h4><p>查看该 image 信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd info vm-109-cloudinit --pool cloud-disk</span></span><br><span class="line">rbd image <span class="string">'vm-109-cloudinit'</span>:</span><br><span class="line">        size 4 MiB <span class="keyword">in</span> 1 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: 85a71142d8c136</span><br><span class="line">        block_name_prefix: rbd_data.85a71142d8c136</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">        op_features:</span><br><span class="line">        flags:</span><br><span class="line">        create_timestamp: Wed Aug 28 10:04:09 2019</span><br><span class="line">        access_timestamp: Mon Sep  2 13:59:31 2019</span><br><span class="line">        modify_timestamp: Mon Sep  2 13:59:31 2019</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<p>从 info 中  block_name_prefix: rbd_data.85a71142d8c136 获知 rados 对象名称为 rbd_header.85a71142d8c136 ，然后列出对象所有 watcher：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rados listwatchers --pool cloud-disk rbd_header.85a71142d8c136</span></span><br><span class="line">watcher=192.168.180.116:0/2072981162 client.27537920 cookie=139876735669120</span><br></pre></td></tr></table></figure>
+
+<p>或者直接通过 rbd 命令列出 watcher：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd status --pool cloud-disk vm-109-cloudinit</span></span><br><span class="line">Watchers:</span><br><span class="line">        watcher=192.168.180.116:0/2072981162 client.27537920 cookie=139876735669120</span><br></pre></td></tr></table></figure>
+
+<p>将 watcher 加入黑名单：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd blacklist add 192.168.180.116:0/2072981162</span><br></pre></td></tr></table></figure>
+
+<p>此时再次查看 image 的 watcher ：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd status --pool cloud-disk vm-109-cloudinit</span></span><br><span class="line">Watchers: none</span><br></pre></td></tr></table></figure>
+
+<p>没有了 watcher 我们就可以继续删除该 image ：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd rm --pool cloud-disk vm-109-cloudinit</span><br></pre></td></tr></table></figure>
+
+<p>然后将 watcher 从黑名单剔除或者不手动操作，默认 1 个小时后自动恢复：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist ls</span></span><br><span class="line">listed 1 entries</span><br><span class="line">192.168.180.116:0/2072981162 2019-09-03 11:19:24.466205</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist rm 192.168.180.116:0/2072981162</span></span><br><span class="line">un-blacklisting 192.168.180.116:0/2072981162</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist clear</span></span><br><span class="line"> removed all blacklist entries</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist ls</span></span><br><span class="line">listed 0 entries</span><br></pre></td></tr></table></figure>
+
+<h4 id="scrub-errors-修复"><a href="#scrub-errors-修复" class="headerlink" title="scrub errors 修复"></a>scrub errors 修复</h4><p>错误如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor21:~<span class="comment"># ceph -s</span></span><br><span class="line">  cluster:</span><br><span class="line">    id:     d6aadfd6-9e08-4000-98bd-a5a14f59ef97</span><br><span class="line">    health: HEALTH_ERR</span><br><span class="line">            30 scrub errors</span><br><span class="line">            Reduced data availability: 25 pgs inactive</span><br><span class="line">            Possible data damage: 1 pg inconsistent</span><br><span class="line">            Degraded data redundancy: 60273/2821944 objects degraded (2.136%), 68 pgs degraded, 57 pgs undersized</span><br><span class="line"></span><br><span class="line">  services:</span><br><span class="line">    mon: 3 daemons, quorum openstack-compute-04,openstack-compute-02,openstack-compute-03 (age 63m)</span><br><span class="line">    mgr: openstack-compute-02(active, since 8d), standbys: openstack-compute-04, openstack-compute-03</span><br><span class="line">    mds: cephfs:1 &#123;0=openstack-compute-04=up:active&#125; 2 up:standby</span><br><span class="line">    osd: 19 osds: 18 up (since 8m), 18 <span class="keyword">in</span> (since 53m); 57 remapped pgs</span><br><span class="line"></span><br><span class="line">  data:</span><br><span class="line">    pools:   12 pools, 1076 pgs</span><br><span class="line">    objects: 1.41M objects, 5.3 TiB</span><br><span class="line">    usage:   4.9 TiB used, 11 TiB / 16 TiB avail</span><br><span class="line">    pgs:     2.323% pgs not active</span><br><span class="line">             60273/2821944 objects degraded (2.136%)</span><br><span class="line">             1006 active+clean</span><br><span class="line">             32   active+undersized+degraded+remapped+backfill_wait</span><br><span class="line">             18   undersized+degraded+remapped+backfill_wait+peered</span><br><span class="line">             11   active+recovery_wait+degraded</span><br><span class="line">             7    undersized+degraded+remapped+backfilling+peered</span><br><span class="line">             1    active+recovery_wait</span><br><span class="line">             1    active+clean+inconsistent</span><br><span class="line"></span><br><span class="line">  io:</span><br><span class="line">    recovery: 40 MiB/s, 21 objects/s</span><br></pre></td></tr></table></figure>
+
+<p>查看详细信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor21:~<span class="comment"># ceph health detail</span></span><br><span class="line">HEALTH_ERR 30 scrub errors; Reduced data availability: 25 pgs inactive; Possible data damage: 1 pg inconsistent; Degraded data redundancy: 59572/2821944 objects degraded (2.111%), 68 pgs degraded, 57 pgs undersized</span><br><span class="line">OSD_SCRUB_ERRORS 30 scrub errors</span><br><span class="line">PG_AVAILABILITY Reduced data availability: 25 pgs inactive</span><br><span class="line">    pg 1.1 is stuck inactive <span class="keyword">for</span> 3867.682789, current state undersized+degraded+remapped+backfill_wait+peered, last acting [26]</span><br><span class="line">    pg 1.1b is stuck inactive <span class="keyword">for</span> 3867.800588, current state undersized+degraded+remapped+backfill_wait+peered, last acting [24]</span><br><span class="line">    pg 1.26 is stuck inactive <span class="keyword">for</span> 3867.806862, current state undersized+degraded+remapped+backfill_wait+peered, last acting [6]</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>修复 pg</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph pg repair &lt;pg_id&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除-Monitor"><a href="#删除-Monitor" class="headerlink" title="删除 Monitor"></a>删除 Monitor</h4><p>更复杂情况参考：<a href="https://www.jianshu.com/p/b78cf33e558f" target="_blank" rel="external nofollow noopener noreferrer">https://www.jianshu.com/p/b78cf33e558f</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl stop ceph-mon@openstack-compute-02.service</span><br><span class="line">&#x2F;&#x2F; 如果停止一个 ceph-mon 后无法执行 ceph 命令，则应当先删除 mon 再停止 ceph-mon 服务</span><br><span class="line">ceph mon remove openstack-compute-02</span><br><span class="line">&#x2F;&#x2F; 移除 ceph.conf 中的相关信息</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加-Monitor"><a href="#添加-Monitor" class="headerlink" title="添加 Monitor"></a>添加 Monitor</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 预先安装 ceph-common ，再安装 ceph-mon</span><br><span class="line">yum -y install ceph-common</span><br><span class="line">&#x2F;&#x2F; 在目标节点上创建 mon 目录，一般使用 hostname 作为 mon-id</span><br><span class="line">mkdir -p &#x2F;var&#x2F;lib&#x2F;ceph&#x2F;mon&#x2F;ceph-&#96;hostname&#96;</span><br><span class="line">&#x2F;&#x2F; 从已有 ceph 节点复制 ceph 配置</span><br><span class="line">scp 192.168.180.7:&#x2F;etc&#x2F;ceph&#x2F;* &#x2F;etc&#x2F;ceph&#x2F;</span><br><span class="line">&#x2F;&#x2F; 获取 mon keyring</span><br><span class="line">ceph auth get mon. -o &#x2F;tmp&#x2F;mon.keyring</span><br><span class="line">&#x2F;&#x2F; 获取 mon map</span><br><span class="line">ceph mon getmap -o &#x2F;tmp&#x2F;mon.map</span><br><span class="line">&#x2F;&#x2F; 格式化 mon 数据目录</span><br><span class="line">ceph-mon -i &#96;hostname&#96; --mkfs --monmap &#x2F;tmp&#x2F;mon.map --keyring &#x2F;tmp&#x2F;mon.keyring</span><br><span class="line">&#x2F;&#x2F; 更改目录所属用户为 ceph</span><br><span class="line">chown -R ceph:ceph &#x2F;etc&#x2F;ceph &#x2F;var&#x2F;lib&#x2F;ceph</span><br><span class="line">&#x2F;&#x2F; 启动 ceph-mon 服务</span><br><span class="line">systemctl enable --now ceph-mon@&#96;hostname&#96;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ceph-ansible-部署"><a href="#ceph-ansible-部署" class="headerlink" title="ceph-ansible 部署"></a>ceph-ansible 部署</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph-ansible.git</span><br><span class="line">git checkout v4.0.9</span><br><span class="line">// 在部署节点安装</span><br><span class="line">yum install -y python-paramiko sshpass</span><br><span class="line">rpm -i https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.8.9-1.el7.ans.noarch.rpm</span><br><span class="line">// 在所有 ceph 节点安装</span><br><span class="line">yum install -y python-netaddr</span><br></pre></td></tr></table></figure>
+
+<p>cd  到 ceph-ansible ， 创建 hosts 文件如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[CephGroup:children]</span><br><span class="line">mons</span><br><span class="line">osds</span><br><span class="line"><span class="comment">#mdss</span></span><br><span class="line">mgrs</span><br><span class="line">rgws</span><br><span class="line">[CephGroup:vars]</span><br><span class="line">ansible_ssh_user=root</span><br><span class="line">ansible_ssh_pass=<span class="built_in">test</span></span><br><span class="line">ansible_port=22</span><br><span class="line"></span><br><span class="line">[mons]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br><span class="line">[osds]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br><span class="line"><span class="comment">#[mdss]</span></span><br><span class="line"><span class="comment">#ceph-csi-01 ansible_host=10.8.107.149</span></span><br><span class="line"><span class="comment">#ceph-csi-02 ansible_host=10.8.185.232</span></span><br><span class="line"><span class="comment">#ceph-csi-03 ansible_host=10.8.143.178</span></span><br><span class="line">[mgrs]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br><span class="line">[rgws]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br><span class="line">[grafana-server]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br></pre></td></tr></table></figure>
+
+<p>cd 到  group_vars 目录：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp all.yml.sample all.yml</span><br><span class="line">// 填入以下内容并修改 public_network 与当前网络匹配</span><br><span class="line">ceph_origin: repository</span><br><span class="line">ceph_repository: community</span><br><span class="line">ceph_mirror: https://mirrors.aliyun.com/ceph</span><br><span class="line">ceph_stable_key: https://mirrors.aliyun.com/ceph/keys/release.asc</span><br><span class="line">ceph_stable_release: nautilus</span><br><span class="line">monitor_interface: eth0</span><br><span class="line">public_network: 10.23.0.0/16</span><br><span class="line">radosgw_interface: eth0</span><br><span class="line"></span><br><span class="line">cp osds.yml.sample osds.yml</span><br><span class="line">// 添加安装盘信息</span><br><span class="line">devices:</span><br><span class="line">  - /dev/vdb</span><br><span class="line">  - /dev/vdc</span><br><span class="line">  - /dev/vdd</span><br></pre></td></tr></table></figure>
+
+<p>回到项目根目录执行安装:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp site.yml.sample site.yml</span><br><span class="line">ansible-playbook -i hosts -v site.yml</span><br></pre></td></tr></table></figure>
+
+<p>删除集群：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ansible-playbook -i hosts infrastructure-playbooks/purge-cluster.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="ceph-ansible-添加-osd"><a href="#ceph-ansible-添加-osd" class="headerlink" title="ceph-ansible 添加 osd"></a>ceph-ansible 添加 osd</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;ceph-ansible</span><br><span class="line">cp infrastructure-playbooks&#x2F;add-osd.yml .&#x2F;</span><br><span class="line">&#x2F;&#x2F; 修改 group_vars&#x2F;osd.yml 磁盘信息</span><br><span class="line">ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml</span><br><span class="line">&#x2F;&#x2F; 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样</span><br><span class="line">&#x2F;&#x2F; 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决</span><br><span class="line">ceph osd unset noup</span><br></pre></td></tr></table></figure>
+
+<h4 id="rbd-image-使用"><a href="#rbd-image-使用" class="headerlink" title="rbd image 使用"></a>rbd image 使用</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 创建大小为 1G 的 image</span><br><span class="line">rbd create rbd&#x2F;myimage --size 1024</span><br><span class="line">rbd map rbd&#x2F;myimage</span><br><span class="line">mkfs.xfs &#x2F;dev&#x2F;rbd0</span><br><span class="line">mkdir &#x2F;data</span><br><span class="line">mount &#x2F;dev&#x2F;rbd0 &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 扩容</span><br><span class="line">rbd resize --image&#x3D;rbd&#x2F;myimage --size 10G</span><br><span class="line">xfs_growfs &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 卸载</span><br><span class="line">umount &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 检查占用设备的进程</span><br><span class="line">fuser -m -v &#x2F;dev&#x2F;rbd0</span><br><span class="line">rbd unmap &#x2F;dev&#x2F;rbd0</span><br><span class="line">rbd rm rbd&#x2F;myimage</span><br><span class="line">&#x2F;&#x2F; rbd image 转换 format，也可用于 image 复制</span><br><span class="line">rbd export rbd&#x2F;myrbd - | rbd import --image-format 2 - rbd&#x2F;myrbd_v2</span><br><span class="line">&#x2F;&#x2F; rbd bench</span><br><span class="line">rados bench -p rbd 20 -b 4K write -t 1 --no-cleanup</span><br><span class="line">rbd create --size 4G test</span><br><span class="line">rbd bench-write test</span><br></pre></td></tr></table></figure>
+
+<h4 id="Cinder-创建-Volume-副本并-Boot-with-it"><a href="#Cinder-创建-Volume-副本并-Boot-with-it" class="headerlink" title="Cinder 创建 Volume 副本并 Boot with it"></a>Cinder 创建 Volume 副本并 Boot with it</h4><p>OpenStack: import existing Ceph volumes in Cinder：<a href="https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/" target="_blank" rel="external nofollow noopener noreferrer">https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/</a></p>
+<h4 id="查看并修改-crushmap"><a href="#查看并修改-crushmap" class="headerlink" title="查看并修改 crushmap"></a>查看并修改 crushmap</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 获取集群 crushmap</span><br><span class="line">ceph osd getcrushmap -o &#123;file1&#125;</span><br><span class="line">&#123;file1&#125; 为自定义的文件名，该文件为二进制文件，不可编辑。要想编辑此文件，需要用工具将其反编译解析，如 crushtool 工具。</span><br><span class="line"></span><br><span class="line">2 反编译 crushmap</span><br><span class="line">crushtool -d &#123;file1&#125; -o &#123;file2&#125;</span><br><span class="line">反编译二进制文件 &#123;file1&#125; 得到可编辑文件 &#123;file2&#125;</span><br><span class="line"></span><br><span class="line">3. 编辑 crushmap</span><br><span class="line">按自我需求修改可编辑文件 &#123;file2&#125;</span><br><span class="line"></span><br><span class="line">4. 编译 crushmap</span><br><span class="line">要想编辑后的文件机器能够识别，必须用工具编译它生成二进制文件。</span><br><span class="line">crushtool -c &#123;file2&#125; -o &#123;file3&#125;</span><br><span class="line"></span><br><span class="line">5. 注入 crushmap</span><br><span class="line">要想新的 crushmap 在集群中生效，必须将其注入要集群。</span><br><span class="line">ceph osd setcrushmap -i &#123;file3&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基本理解：<a href="https://www.dovefi.com/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3crush1%E7%90%86%E8%A7%A3crush_map%E6%96%87%E4%BB%B6/" target="_blank" rel="external nofollow noopener noreferrer">深入理解 ceph crush (1)—- 理解 crush map 文件</a>／Crush 算法：<a href="http://www.xuxiaopang.com/2016/11/08/easy-ceph-CRUSH/" target="_blank" rel="external nofollow noopener noreferrer">大话 Ceph–CRUSH 那点事儿</a>／Crush 查看：<a href="https://www.jianshu.com/p/2355701459e9" target="_blank" rel="external nofollow noopener noreferrer">Ceph 实践之 Crushmap 相关</a>。</p>
+<h4 id="OSD-过度使用内存"><a href="#OSD-过度使用内存" class="headerlink" title="OSD 过度使用内存"></a>OSD 过度使用内存</h4><p>在使用  Bluestore 时，bluestore_cache_autotune 默认已经启用，Bluestore 会将 OSD 堆内存使用量保持在指定的大小之下，通过配置选项 osd_memory_target 来控制，默认为 4G。对于内存较少但 OSD 节点较多的情况，仍然会可能造成内存几乎全部被 OSD 所用，最终致使宿主机死机。可以通过两种方式来缓解这种情况，一种是在启用自动配置时调小  osd_memory_target 值，例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[osd]</span><br><span class="line">osd memory target &#x3D; 2147483648</span><br></pre></td></tr></table></figure>
+
+<p>另一种是禁用自动配置并手动指定缓存大小：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[osd]</span><br><span class="line">bluestore_cache_autotune &#x3D; False</span><br><span class="line">bluestore_min_alloc_size_ssd &#x3D; 32768</span><br><span class="line">bluestore_min_alloc_size_hdd &#x3D; 32768</span><br><span class="line">bluestore_min_alloc_size &#x3D; 32768</span><br><span class="line">bluestore_cache_kv_max &#x3D; 6442450944</span><br><span class="line">bluestore_cache_kv_ratio &#x3D; 0.990000</span><br><span class="line">bluestore_cache_meta_ratio &#x3D; 0.010000</span><br><span class="line">bluestore_cache_size &#x3D; 12884901888</span><br><span class="line">bluestore_cache_size_hdd &#x3D; 12884901888</span><br><span class="line">bluestore_cache_size_ssd &#x3D; 12884901888</span><br></pre></td></tr></table></figure>
+
+<h4 id="ceph-查看存储池-IO"><a href="#ceph-查看存储池-IO" class="headerlink" title="ceph 查看存储池 IO"></a>ceph 查看存储池 IO</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool stats</span><br></pre></td></tr></table></figure>
+
+<h4 id="ceph-总体及各存储池使用量"><a href="#ceph-总体及各存储池使用量" class="headerlink" title="ceph 总体及各存储池使用量"></a>ceph 总体及各存储池使用量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph df detail</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除存储池"><a href="#删除存储池" class="headerlink" title="删除存储池"></a>删除存储池</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ceph tell mon.\* injectargs <span class="string">'--mon-allow-pool-delete=true'</span></span><br><span class="line"><span class="comment">## The following will delete the pool</span></span><br><span class="line">$ ceph osd pool delete &lt;pool-name&gt; &lt;pool-name&gt; --yes-i-really-really-mean-it</span><br><span class="line">$ ceph tell mon.\* injectargs <span class="string">'--mon-allow-pool-delete=false'</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="rados-对象操作"><a href="#rados-对象操作" class="headerlink" title="rados 对象操作"></a>rados 对象操作</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 上传文件</span><br><span class="line">rados -p &lt;pool-name&gt; put &lt;object-name&gt; &lt;file&gt;</span><br><span class="line">// 下载文件</span><br><span class="line">rados -p &lt;pool-name&gt; get &lt;object-name&gt; &lt;file&gt;</span><br><span class="line">// 列出文件</span><br><span class="line">rados -p &lt;pool-name&gt; ls</span><br><span class="line">// 删除文件</span><br><span class="line">rados -p &lt;pool-name&gt; rm &lt;object-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="挂载-cephfs-到本地"><a href="#挂载-cephfs-到本地" class="headerlink" title="挂载 cephfs 到本地"></a>挂载 cephfs 到本地</h4><p>用户态挂载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-fuse -y</span><br><span class="line">mkdir -p /mnt/cephfs</span><br><span class="line">ceph-fuse -n client.admin --key AQBvN8lbCuTBFhAAJPMWYwu+Jho8B1QGt80jAA== --host 10.23.229.102,10.23.109.25 /mnt/cephfs</span><br></pre></td></tr></table></figure>
+
+<p>内核态挂载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/cephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==</span><br></pre></td></tr></table></figure>
+
+<p>写入到 fstab 中，开机自动挂载</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:&#x2F; &#x2F;mnt&#x2F;cephfs ceph name&#x3D;admin,secret&#x3D;AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw&#x3D;&#x3D;,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
+
+<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">&#x2F;&#x2F; 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 查看自动增加的 pg 数量</span><br><span class="line">ceph osd pool autoscale-status</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除-OSD-节点"><a href="#删除-OSD-节点" class="headerlink" title="删除 OSD 节点"></a>删除 OSD 节点</h4><p>参考先删后增节点时如何减少数据迁移：<a href="https://www.cnblogs.com/schangech/p/8036191.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/schangech/p/8036191.html</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 停止指定 OSD 进程</span><br><span class="line">systemctl stop ceph-osd@15</span><br><span class="line">// out 指定 OSD</span><br><span class="line">ceph osd out 15</span><br><span class="line">// crush remove 指定 OSD</span><br><span class="line">ceph osd crush remove osd.15</span><br><span class="line">// 删除 osd 对应的 auth</span><br><span class="line">ceph auth del osd.15</span><br><span class="line">// 删除 osd</span><br><span class="line">ceph osd rm 15</span><br><span class="line">// 按照上述步骤删除节点上所有 osd 后，crush remove 指定节点</span><br><span class="line">ceph osd crush rm osd-host</span><br></pre></td></tr></table></figure>
+
+<h4 id="CentOS-安装-ceph-common"><a href="#CentOS-安装-ceph-common" class="headerlink" title="CentOS 安装 ceph-common"></a>CentOS 安装 ceph-common</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -Uvh https:&#x2F;&#x2F;download.ceph.com&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">&#x2F;&#x2F; 或使用镜像源</span><br><span class="line">rpm -Uvh https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ceph&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">sed -i &#39;s+download.ceph.com+mirrors.tuna.tsinghua.edu.cn&#x2F;ceph+&#39; &#x2F;etc&#x2F;yum.repos.d&#x2F;ceph.repo</span><br><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install ceph-common</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看使用-ceph-volume-创建的-osd-信息"><a href="#查看使用-ceph-volume-创建的-osd-信息" class="headerlink" title="查看使用 ceph-volume 创建的 osd 信息"></a>查看使用 ceph-volume 创建的 osd 信息</h4><p>ceph-volume 使用逻辑卷创建 osd，ceph-disk 使用物理盘创建 osd，物理盘创建的 osd 与 盘符对应关系往往一目了然，逻辑卷创建的 osd 与盘符的对应关系需要执行以下命令查询：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ceph-volume inventory &#x2F;dev&#x2F;sda</span><br></pre></td></tr></table></figure>
+
+<h4 id="var-lib-ceph-osd-ceph-x-使用内存盘"><a href="#var-lib-ceph-osd-ceph-x-使用内存盘" class="headerlink" title="/var/lib/ceph/osd/ceph-x 使用内存盘"></a>/var/lib/ceph/osd/ceph-x 使用内存盘</h4><p>使用 bluestore 的 OSD，所有需要持久化的数据均存储在 LVM metadata 中，所以  /var/lib/ceph/osd/ceph-x 使用 tmpfs 是预期行为， OSD 启动时会从 metadata 中取出相关数据填充到 tmpfs 文件中。参见：<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html" target="_blank" rel="external nofollow noopener noreferrer">http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html</a></p>
+<h4 id="osd-near-full-的解决方法"><a href="#osd-near-full-的解决方法" class="headerlink" title="osd (near) full 的解决方法"></a>osd (near) full 的解决方法</h4><p>根本解决之道是添加 osd，临时解决方法是删除无用数据，osd full 时所有的读写操作都无法进行，可通过两种方法恢复读写后再执行删除数据的命令：</p>
+<ul>
+<li>一是调整 full osd 的权重：<code>ceph osd crush reweight osd.33 0.7</code>  或者 <code>ceph osd reweight-by-utilization</code></li>
+<li>二是调高 full 的上限：<code>ceph osd set-full-ratio 0.98</code>，参见：<a href="https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space" target="_blank" rel="external nofollow noopener noreferrer">no-free-drive-space</a></li>
+</ul>
+<h4 id="ceph-dashboard-303-状态码"><a href="#ceph-dashboard-303-状态码" class="headerlink" title="ceph dashboard 303 状态码"></a>ceph dashboard 303 状态码</h4><p>需要代理网关的后端服务设置为处于 active 状态的 mgr 节点，参考：<a href="https://docs.ceph.com/docs/master/mgr/dashboard/#proxy-configuration" target="_blank" rel="external nofollow noopener noreferrer">https://docs.ceph.com/docs/master/mgr/dashboard/#proxy-configuration</a></p>
+<h4 id="pools-have-many-more-objects-per-pg-than-average"><a href="#pools-have-many-more-objects-per-pg-than-average" class="headerlink" title="pools have many more objects per pg than average"></a>pools have many more objects per pg than average</h4><p>反应的问题是各个存储池 pg 数据量不均衡，可参考：<a href="https://www.dazhuanlan.com/2019/08/23/5d5f27fe6de04/" target="_blank" rel="external nofollow noopener noreferrer">https://www.dazhuanlan.com/2019/08/23/5d5f27fe6de04/</a>，<a href="https://blog.csdn.net/ygtlovezf/article/details/60778091" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/ygtlovezf/article/details/60778091</a><br>临时解决，关闭不均衡告警，参考：<a href="https://github.com/rook/rook/issues/4739" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/rook/rook/issues/4739</a></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">ceph</span> <span class="string">config</span> <span class="string">set</span> <span class="string">mgr</span> <span class="string">mon_pg_warn_max_object_skew</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="rgw-多个存储池的数据分布情况"><a href="#rgw-多个存储池的数据分布情况" class="headerlink" title="rgw 多个存储池的数据分布情况"></a>rgw 多个存储池的数据分布情况</h4><p>参考：<a href="https://docs.ceph.com/docs/master/radosgw/layout/" target="_blank" rel="external nofollow noopener noreferrer">https://docs.ceph.com/docs/master/radosgw/layout/</a><br>如果需要快速清除所有 rgw 数据，可手动删除并重建 default.rgw.meta , default.rgw.buckets.index, default.rgw.buckets.data 存储池，需要执行 application enable 并重建用户和存储桶。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool application <span class="built_in">enable</span> default.rgw.buckets.data rgw</span><br><span class="line">ceph osd pool ls detail</span><br><span class="line">radosgw-admin -n client.admin user create --uid=<span class="built_in">test</span> --access-key=<span class="built_in">test</span> --secret-key=<span class="built_in">test</span> --display-name=<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="设置日志等级"><a href="#设置日志等级" class="headerlink" title="设置日志等级"></a>设置日志等级</h4><p>参考：<a href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/troubleshooting_guide/configuring-logging" target="_blank" rel="external nofollow noopener noreferrer">https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/troubleshooting_guide/configuring-logging</a><br>设置 osd 日志等级时，除了 debug_osd 选项，还有一些其它选项也要跟随调整：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">debug_ms &#x3D; 5</span><br><span class="line">debug_osd &#x3D; 20</span><br><span class="line">debug_filestore &#x3D; 20</span><br><span class="line">debug_journal &#x3D; 20</span><br></pre></td></tr></table></figure>
+
+<h4 id="导出-Cephfs-为-NFS"><a href="#导出-Cephfs-为-NFS" class="headerlink" title="导出 Cephfs 为 NFS"></a>导出 Cephfs 为 NFS</h4><p>参考：<a href="https://documentation.suse.com/ses/6/html/ses-all/cha-ceph-nfsganesha.html" target="_blank" rel="external nofollow noopener noreferrer">https://documentation.suse.com/ses/6/html/ses-all/cha-ceph-nfsganesha.html</a></p>
+<h4 id="集群网络配置"><a href="#集群网络配置" class="headerlink" title="集群网络配置"></a>集群网络配置</h4><p>网络配置选项不是必需的， Ceph 假设所有主机都运行于公共网（public network），除非你特意配置了一个集群网（cluster network）。</p>
+]]></content>
+      <categories>
+        <category>Ceph</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Ceph</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker 卷和文件系统权限</title>
     <url>/post/86bd2460.html</url>
     <content><![CDATA[<table>
@@ -216,6 +336,19 @@
       <tags>
         <tag>Docker</tag>
         <tag>译文</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Envoy 知识汇总</title>
+    <url>/post/111604be.html</url>
+    <content><![CDATA[<h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="编写-Lua-脚本"><a href="#编写-Lua-脚本" class="headerlink" title="编写 Lua 脚本"></a>编写 Lua 脚本</h4><ul>
+<li>一个简单的案例，使用 Lua 脚本为 Http 请求添加了 Authorization 请求头：<a href="https://segmentfault.com/a/1190000020650955" target="_blank" rel="external nofollow noopener noreferrer">https://segmentfault.com/a/1190000020650955</a></li>
+</ul>]]></content>
+      <categories>
+        <category>Envoy</category>
+      </categories>
+      <tags>
+        <tag>Envoy</tag>
       </tags>
   </entry>
   <entry>
@@ -300,19 +433,6 @@
       <tags>
         <tag>Docker</tag>
         <tag> 云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Envoy 知识汇总</title>
-    <url>/post/111604be.html</url>
-    <content><![CDATA[<h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="编写-Lua-脚本"><a href="#编写-Lua-脚本" class="headerlink" title="编写 Lua 脚本"></a>编写 Lua 脚本</h4><ul>
-<li>一个简单的案例，使用 Lua 脚本为 Http 请求添加了 Authorization 请求头：<a href="https://segmentfault.com/a/1190000020650955" target="_blank" rel="external nofollow noopener noreferrer">https://segmentfault.com/a/1190000020650955</a></li>
-</ul>]]></content>
-      <categories>
-        <category>Envoy</category>
-      </categories>
-      <tags>
-        <tag>Envoy</tag>
       </tags>
   </entry>
   <entry>
@@ -709,126 +829,6 @@
       </categories>
       <tags>
         <tag>测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ceph 常用操作</title>
-    <url>/post/e8bac896.html</url>
-    <content><![CDATA[<h4 id="删除-rbd-image-时提示有-watcher"><a href="#删除-rbd-image-时提示有-watcher" class="headerlink" title="删除 rbd image 时提示有 watcher"></a>删除 rbd image 时提示有 watcher</h4><p>查看该 image 信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd info vm-109-cloudinit --pool cloud-disk</span></span><br><span class="line">rbd image <span class="string">'vm-109-cloudinit'</span>:</span><br><span class="line">        size 4 MiB <span class="keyword">in</span> 1 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: 85a71142d8c136</span><br><span class="line">        block_name_prefix: rbd_data.85a71142d8c136</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">        op_features:</span><br><span class="line">        flags:</span><br><span class="line">        create_timestamp: Wed Aug 28 10:04:09 2019</span><br><span class="line">        access_timestamp: Mon Sep  2 13:59:31 2019</span><br><span class="line">        modify_timestamp: Mon Sep  2 13:59:31 2019</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-<p>从 info 中  block_name_prefix: rbd_data.85a71142d8c136 获知 rados 对象名称为 rbd_header.85a71142d8c136 ，然后列出对象所有 watcher：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rados listwatchers --pool cloud-disk rbd_header.85a71142d8c136</span></span><br><span class="line">watcher=192.168.180.116:0/2072981162 client.27537920 cookie=139876735669120</span><br></pre></td></tr></table></figure>
-
-<p>或者直接通过 rbd 命令列出 watcher：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd status --pool cloud-disk vm-109-cloudinit</span></span><br><span class="line">Watchers:</span><br><span class="line">        watcher=192.168.180.116:0/2072981162 client.27537920 cookie=139876735669120</span><br></pre></td></tr></table></figure>
-
-<p>将 watcher 加入黑名单：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd blacklist add 192.168.180.116:0/2072981162</span><br></pre></td></tr></table></figure>
-
-<p>此时再次查看 image 的 watcher ：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd status --pool cloud-disk vm-109-cloudinit</span></span><br><span class="line">Watchers: none</span><br></pre></td></tr></table></figure>
-
-<p>没有了 watcher 我们就可以继续删除该 image ：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rbd rm --pool cloud-disk vm-109-cloudinit</span><br></pre></td></tr></table></figure>
-
-<p>然后将 watcher 从黑名单剔除或者不手动操作，默认 1 个小时后自动恢复：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist ls</span></span><br><span class="line">listed 1 entries</span><br><span class="line">192.168.180.116:0/2072981162 2019-09-03 11:19:24.466205</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist rm 192.168.180.116:0/2072981162</span></span><br><span class="line">un-blacklisting 192.168.180.116:0/2072981162</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist clear</span></span><br><span class="line"> removed all blacklist entries</span><br><span class="line">root@openstack-compute-02:~<span class="comment"># ceph osd blacklist ls</span></span><br><span class="line">listed 0 entries</span><br></pre></td></tr></table></figure>
-
-<h4 id="scrub-errors-修复"><a href="#scrub-errors-修复" class="headerlink" title="scrub errors 修复"></a>scrub errors 修复</h4><p>错误如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor21:~<span class="comment"># ceph -s</span></span><br><span class="line">  cluster:</span><br><span class="line">    id:     d6aadfd6-9e08-4000-98bd-a5a14f59ef97</span><br><span class="line">    health: HEALTH_ERR</span><br><span class="line">            30 scrub errors</span><br><span class="line">            Reduced data availability: 25 pgs inactive</span><br><span class="line">            Possible data damage: 1 pg inconsistent</span><br><span class="line">            Degraded data redundancy: 60273/2821944 objects degraded (2.136%), 68 pgs degraded, 57 pgs undersized</span><br><span class="line"></span><br><span class="line">  services:</span><br><span class="line">    mon: 3 daemons, quorum openstack-compute-04,openstack-compute-02,openstack-compute-03 (age 63m)</span><br><span class="line">    mgr: openstack-compute-02(active, since 8d), standbys: openstack-compute-04, openstack-compute-03</span><br><span class="line">    mds: cephfs:1 &#123;0=openstack-compute-04=up:active&#125; 2 up:standby</span><br><span class="line">    osd: 19 osds: 18 up (since 8m), 18 <span class="keyword">in</span> (since 53m); 57 remapped pgs</span><br><span class="line"></span><br><span class="line">  data:</span><br><span class="line">    pools:   12 pools, 1076 pgs</span><br><span class="line">    objects: 1.41M objects, 5.3 TiB</span><br><span class="line">    usage:   4.9 TiB used, 11 TiB / 16 TiB avail</span><br><span class="line">    pgs:     2.323% pgs not active</span><br><span class="line">             60273/2821944 objects degraded (2.136%)</span><br><span class="line">             1006 active+clean</span><br><span class="line">             32   active+undersized+degraded+remapped+backfill_wait</span><br><span class="line">             18   undersized+degraded+remapped+backfill_wait+peered</span><br><span class="line">             11   active+recovery_wait+degraded</span><br><span class="line">             7    undersized+degraded+remapped+backfilling+peered</span><br><span class="line">             1    active+recovery_wait</span><br><span class="line">             1    active+clean+inconsistent</span><br><span class="line"></span><br><span class="line">  io:</span><br><span class="line">    recovery: 40 MiB/s, 21 objects/s</span><br></pre></td></tr></table></figure>
-
-<p>查看详细信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@umstor21:~<span class="comment"># ceph health detail</span></span><br><span class="line">HEALTH_ERR 30 scrub errors; Reduced data availability: 25 pgs inactive; Possible data damage: 1 pg inconsistent; Degraded data redundancy: 59572/2821944 objects degraded (2.111%), 68 pgs degraded, 57 pgs undersized</span><br><span class="line">OSD_SCRUB_ERRORS 30 scrub errors</span><br><span class="line">PG_AVAILABILITY Reduced data availability: 25 pgs inactive</span><br><span class="line">    pg 1.1 is stuck inactive <span class="keyword">for</span> 3867.682789, current state undersized+degraded+remapped+backfill_wait+peered, last acting [26]</span><br><span class="line">    pg 1.1b is stuck inactive <span class="keyword">for</span> 3867.800588, current state undersized+degraded+remapped+backfill_wait+peered, last acting [24]</span><br><span class="line">    pg 1.26 is stuck inactive <span class="keyword">for</span> 3867.806862, current state undersized+degraded+remapped+backfill_wait+peered, last acting [6]</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-
-<p>修复 pg</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph pg repair &lt;pg_id&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="删除-Monitor"><a href="#删除-Monitor" class="headerlink" title="删除 Monitor"></a>删除 Monitor</h4><p>更复杂情况参考：<a href="https://www.jianshu.com/p/b78cf33e558f" target="_blank" rel="external nofollow noopener noreferrer">https://www.jianshu.com/p/b78cf33e558f</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl stop ceph-mon@openstack-compute-02.service</span><br><span class="line">&#x2F;&#x2F; 如果停止一个 ceph-mon 后无法执行 ceph 命令，则应当先删除 mon 再停止 ceph-mon 服务</span><br><span class="line">ceph mon remove openstack-compute-02</span><br><span class="line">&#x2F;&#x2F; 移除 ceph.conf 中的相关信息</span><br></pre></td></tr></table></figure>
-
-<h4 id="添加-Monitor"><a href="#添加-Monitor" class="headerlink" title="添加 Monitor"></a>添加 Monitor</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 预先安装 ceph-common ，再安装 ceph-mon</span><br><span class="line">yum -y install ceph-common</span><br><span class="line">&#x2F;&#x2F; 在目标节点上创建 mon 目录，一般使用 hostname 作为 mon-id</span><br><span class="line">mkdir -p &#x2F;var&#x2F;lib&#x2F;ceph&#x2F;mon&#x2F;ceph-&#96;hostname&#96;</span><br><span class="line">&#x2F;&#x2F; 从已有 ceph 节点复制 ceph 配置</span><br><span class="line">scp 192.168.180.7:&#x2F;etc&#x2F;ceph&#x2F;* &#x2F;etc&#x2F;ceph&#x2F;</span><br><span class="line">&#x2F;&#x2F; 获取 mon keyring</span><br><span class="line">ceph auth get mon. -o &#x2F;tmp&#x2F;mon.keyring</span><br><span class="line">&#x2F;&#x2F; 获取 mon map</span><br><span class="line">ceph mon getmap -o &#x2F;tmp&#x2F;mon.map</span><br><span class="line">&#x2F;&#x2F; 格式化 mon 数据目录</span><br><span class="line">ceph-mon -i &#96;hostname&#96; --mkfs --monmap &#x2F;tmp&#x2F;mon.map --keyring &#x2F;tmp&#x2F;mon.keyring</span><br><span class="line">&#x2F;&#x2F; 更改目录所属用户为 ceph</span><br><span class="line">chown -R ceph:ceph &#x2F;etc&#x2F;ceph &#x2F;var&#x2F;lib&#x2F;ceph</span><br><span class="line">&#x2F;&#x2F; 启动 ceph-mon 服务</span><br><span class="line">systemctl enable --now ceph-mon@&#96;hostname&#96;</span><br></pre></td></tr></table></figure>
-
-<h4 id="ceph-ansible-部署"><a href="#ceph-ansible-部署" class="headerlink" title="ceph-ansible 部署"></a>ceph-ansible 部署</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ceph/ceph-ansible.git</span><br><span class="line">git checkout v4.0.9</span><br><span class="line">// 在部署节点安装</span><br><span class="line">yum install -y python-paramiko sshpass</span><br><span class="line">rpm -i https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.8.9-1.el7.ans.noarch.rpm</span><br><span class="line">// 在所有 ceph 节点安装</span><br><span class="line">yum install -y python-netaddr</span><br></pre></td></tr></table></figure>
-
-<p>cd  到 ceph-ansible ， 创建 hosts 文件如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[CephGroup:children]</span><br><span class="line">mons</span><br><span class="line">osds</span><br><span class="line"><span class="comment">#mdss</span></span><br><span class="line">mgrs</span><br><span class="line">rgws</span><br><span class="line">[CephGroup:vars]</span><br><span class="line">ansible_ssh_user=root</span><br><span class="line">ansible_ssh_pass=<span class="built_in">test</span></span><br><span class="line">ansible_port=22</span><br><span class="line"></span><br><span class="line">[mons]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br><span class="line">[osds]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br><span class="line"><span class="comment">#[mdss]</span></span><br><span class="line"><span class="comment">#ceph-csi-01 ansible_host=10.8.107.149</span></span><br><span class="line"><span class="comment">#ceph-csi-02 ansible_host=10.8.185.232</span></span><br><span class="line"><span class="comment">#ceph-csi-03 ansible_host=10.8.143.178</span></span><br><span class="line">[mgrs]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br><span class="line">[rgws]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br><span class="line">[grafana-server]</span><br><span class="line">ceph-csi-01 ansible_host=10.8.107.149</span><br><span class="line">ceph-csi-02 ansible_host=10.8.185.232</span><br><span class="line">ceph-csi-03 ansible_host=10.8.143.178</span><br></pre></td></tr></table></figure>
-
-<p>cd 到  group_vars 目录：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp all.yml.sample all.yml</span><br><span class="line">// 填入以下内容并修改 public_network 与当前网络匹配</span><br><span class="line">ceph_origin: repository</span><br><span class="line">ceph_repository: community</span><br><span class="line">ceph_mirror: https://mirrors.aliyun.com/ceph</span><br><span class="line">ceph_stable_key: https://mirrors.aliyun.com/ceph/keys/release.asc</span><br><span class="line">ceph_stable_release: nautilus</span><br><span class="line">monitor_interface: eth0</span><br><span class="line">public_network: 10.23.0.0/16</span><br><span class="line">radosgw_interface: eth0</span><br><span class="line"></span><br><span class="line">cp osds.yml.sample osds.yml</span><br><span class="line">// 添加安装盘信息</span><br><span class="line">devices:</span><br><span class="line">  - /dev/vdb</span><br><span class="line">  - /dev/vdc</span><br><span class="line">  - /dev/vdd</span><br></pre></td></tr></table></figure>
-
-<p>回到项目根目录执行安装:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp site.yml.sample site.yml</span><br><span class="line">ansible-playbook -i hosts -v site.yml</span><br></pre></td></tr></table></figure>
-
-<p>删除集群：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ansible-playbook -i hosts infrastructure-playbooks/purge-cluster.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="ceph-ansible-添加-osd"><a href="#ceph-ansible-添加-osd" class="headerlink" title="ceph-ansible 添加 osd"></a>ceph-ansible 添加 osd</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;ceph-ansible</span><br><span class="line">cp infrastructure-playbooks&#x2F;add-osd.yml .&#x2F;</span><br><span class="line">&#x2F;&#x2F; 修改 group_vars&#x2F;osd.yml 磁盘信息</span><br><span class="line">ansible-playbook -vv -i hosts --limit 192.168.203.143 add-osd.yml</span><br><span class="line">&#x2F;&#x2F; 新增一个 osd 宿主节点和在已有的 osd 节点上增加一块盘步骤一样</span><br><span class="line">&#x2F;&#x2F; 添加完 osd 如果卡在 restart osd daemon 可通过执行以下命令解决</span><br><span class="line">ceph osd unset noup</span><br></pre></td></tr></table></figure>
-
-<h4 id="rbd-image-使用"><a href="#rbd-image-使用" class="headerlink" title="rbd image 使用"></a>rbd image 使用</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 创建大小为 1G 的 image</span><br><span class="line">rbd create rbd&#x2F;myimage --size 1024</span><br><span class="line">rbd map rbd&#x2F;myimage</span><br><span class="line">mkfs.xfs &#x2F;dev&#x2F;rbd0</span><br><span class="line">mkdir &#x2F;data</span><br><span class="line">mount &#x2F;dev&#x2F;rbd0 &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 扩容</span><br><span class="line">rbd resize --image&#x3D;rbd&#x2F;myimage --size 10G</span><br><span class="line">xfs_growfs &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 卸载</span><br><span class="line">umount &#x2F;data</span><br><span class="line">&#x2F;&#x2F; 检查占用设备的进程</span><br><span class="line">fuser -m -v &#x2F;dev&#x2F;rbd0</span><br><span class="line">rbd unmap &#x2F;dev&#x2F;rbd0</span><br><span class="line">rbd rm rbd&#x2F;myimage</span><br><span class="line">&#x2F;&#x2F; rbd image 转换 format，也可用于 image 复制</span><br><span class="line">rbd export rbd&#x2F;myrbd - | rbd import --image-format 2 - rbd&#x2F;myrbd_v2</span><br><span class="line">&#x2F;&#x2F; rbd bench</span><br><span class="line">rados bench -p rbd 20 -b 4K write -t 1 --no-cleanup</span><br><span class="line">rbd create --size 4G test</span><br><span class="line">rbd bench-write test</span><br></pre></td></tr></table></figure>
-
-<h4 id="Cinder-创建-Volume-副本并-Boot-with-it"><a href="#Cinder-创建-Volume-副本并-Boot-with-it" class="headerlink" title="Cinder 创建 Volume 副本并 Boot with it"></a>Cinder 创建 Volume 副本并 Boot with it</h4><p>OpenStack: import existing Ceph volumes in Cinder：<a href="https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/" target="_blank" rel="external nofollow noopener noreferrer">https://ceph.com/geen-categorie/openstack-import-existing-ceph-volumes-in-cinder/</a></p>
-<h4 id="查看并修改-crushmap"><a href="#查看并修改-crushmap" class="headerlink" title="查看并修改 crushmap"></a>查看并修改 crushmap</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 获取集群 crushmap</span><br><span class="line">ceph osd getcrushmap -o &#123;file1&#125;</span><br><span class="line">&#123;file1&#125; 为自定义的文件名，该文件为二进制文件，不可编辑。要想编辑此文件，需要用工具将其反编译解析，如 crushtool 工具。</span><br><span class="line"></span><br><span class="line">2 反编译 crushmap</span><br><span class="line">crushtool -d &#123;file1&#125; -o &#123;file2&#125;</span><br><span class="line">反编译二进制文件 &#123;file1&#125; 得到可编辑文件 &#123;file2&#125;</span><br><span class="line"></span><br><span class="line">3. 编辑 crushmap</span><br><span class="line">按自我需求修改可编辑文件 &#123;file2&#125;</span><br><span class="line"></span><br><span class="line">4. 编译 crushmap</span><br><span class="line">要想编辑后的文件机器能够识别，必须用工具编译它生成二进制文件。</span><br><span class="line">crushtool -c &#123;file2&#125; -o &#123;file3&#125;</span><br><span class="line"></span><br><span class="line">5. 注入 crushmap</span><br><span class="line">要想新的 crushmap 在集群中生效，必须将其注入要集群。</span><br><span class="line">ceph osd setcrushmap -i &#123;file3&#125;</span><br></pre></td></tr></table></figure>
-
-<p>基本理解：<a href="https://www.dovefi.com/post/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3crush1%E7%90%86%E8%A7%A3crush_map%E6%96%87%E4%BB%B6/" target="_blank" rel="external nofollow noopener noreferrer">深入理解 ceph crush (1)—- 理解 crush map 文件</a>／Crush 算法：<a href="http://www.xuxiaopang.com/2016/11/08/easy-ceph-CRUSH/" target="_blank" rel="external nofollow noopener noreferrer">大话 Ceph–CRUSH 那点事儿</a>／Crush 查看：<a href="https://www.jianshu.com/p/2355701459e9" target="_blank" rel="external nofollow noopener noreferrer">Ceph 实践之 Crushmap 相关</a>。</p>
-<h4 id="OSD-过度使用内存"><a href="#OSD-过度使用内存" class="headerlink" title="OSD 过度使用内存"></a>OSD 过度使用内存</h4><p>在使用  Bluestore 时，bluestore_cache_autotune 默认已经启用，Bluestore 会将 OSD 堆内存使用量保持在指定的大小之下，通过配置选项 osd_memory_target 来控制，默认为 4G。对于内存较少但 OSD 节点较多的情况，仍然会可能造成内存几乎全部被 OSD 所用，最终致使宿主机死机。可以通过两种方式来缓解这种情况，一种是在启用自动配置时调小  osd_memory_target 值，例如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[osd]</span><br><span class="line">osd memory target &#x3D; 2147483648</span><br></pre></td></tr></table></figure>
-
-<p>另一种是禁用自动配置并手动指定缓存大小：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[osd]</span><br><span class="line">bluestore_cache_autotune &#x3D; False</span><br><span class="line">bluestore_min_alloc_size_ssd &#x3D; 32768</span><br><span class="line">bluestore_min_alloc_size_hdd &#x3D; 32768</span><br><span class="line">bluestore_min_alloc_size &#x3D; 32768</span><br><span class="line">bluestore_cache_kv_max &#x3D; 6442450944</span><br><span class="line">bluestore_cache_kv_ratio &#x3D; 0.990000</span><br><span class="line">bluestore_cache_meta_ratio &#x3D; 0.010000</span><br><span class="line">bluestore_cache_size &#x3D; 12884901888</span><br><span class="line">bluestore_cache_size_hdd &#x3D; 12884901888</span><br><span class="line">bluestore_cache_size_ssd &#x3D; 12884901888</span><br></pre></td></tr></table></figure>
-
-<h4 id="ceph-查看存储池-IO"><a href="#ceph-查看存储池-IO" class="headerlink" title="ceph 查看存储池 IO"></a>ceph 查看存储池 IO</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool stats</span><br></pre></td></tr></table></figure>
-
-<h4 id="ceph-总体及各存储池使用量"><a href="#ceph-总体及各存储池使用量" class="headerlink" title="ceph 总体及各存储池使用量"></a>ceph 总体及各存储池使用量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph df detail</span><br></pre></td></tr></table></figure>
-
-<h4 id="删除存储池"><a href="#删除存储池" class="headerlink" title="删除存储池"></a>删除存储池</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ceph tell mon.\* injectargs <span class="string">'--mon-allow-pool-delete=true'</span></span><br><span class="line"><span class="comment">## The following will delete the pool</span></span><br><span class="line">$ ceph osd pool delete &lt;pool-name&gt; &lt;pool-name&gt; --yes-i-really-really-mean-it</span><br><span class="line">$ ceph tell mon.\* injectargs <span class="string">'--mon-allow-pool-delete=false'</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="rados-对象操作"><a href="#rados-对象操作" class="headerlink" title="rados 对象操作"></a>rados 对象操作</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 上传文件</span><br><span class="line">rados -p &lt;pool-name&gt; put &lt;object-name&gt; &lt;file&gt;</span><br><span class="line">// 下载文件</span><br><span class="line">rados -p &lt;pool-name&gt; get &lt;object-name&gt; &lt;file&gt;</span><br><span class="line">// 列出文件</span><br><span class="line">rados -p &lt;pool-name&gt; ls</span><br><span class="line">// 删除文件</span><br><span class="line">rados -p &lt;pool-name&gt; rm &lt;object-name&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="挂载-cephfs-到本地"><a href="#挂载-cephfs-到本地" class="headerlink" title="挂载 cephfs 到本地"></a>挂载 cephfs 到本地</h4><p>用户态挂载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install ceph-fuse -y</span><br><span class="line">mkdir -p /mnt/cephfs</span><br><span class="line">ceph-fuse -n client.admin --key AQBvN8lbCuTBFhAAJPMWYwu+Jho8B1QGt80jAA== --host 10.23.229.102,10.23.109.25 /mnt/cephfs</span><br></pre></td></tr></table></figure>
-
-<p>内核态挂载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ceph 192.168.0.1:6789,192.168.0.2:6789:/ /mnt/cephfs -o name=admin,secret=AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ==</span><br></pre></td></tr></table></figure>
-
-<p>写入到 fstab 中，开机自动挂载</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">192.168.180.125:6789,192.168.180.115:6789:&#x2F; &#x2F;mnt&#x2F;cephfs ceph name&#x3D;admin,secret&#x3D;AQAoDAZdss8dEhAA1IQSOpkYbJrUN8vTceYKMw&#x3D;&#x3D;,_netdev,noatime     0 0</span><br></pre></td></tr></table></figure>
-
-<h4 id="开启存储池-pg-num-自动调整"><a href="#开启存储池-pg-num-自动调整" class="headerlink" title="开启存储池 pg_num 自动调整"></a>开启存储池 pg_num 自动调整</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 启用自动调整模块</span><br><span class="line">ceph mgr module enable pg_autoscaler</span><br><span class="line">&#x2F;&#x2F; 为已经存在的存储池开启自动调整</span><br><span class="line">ceph osd pool ls | xargs -I &#123;&#125; ceph osd pool set &#123;&#125; pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 为后续新创建的存储池默认开启</span><br><span class="line">ceph config set global osd_pool_default_pg_autoscale_mode on</span><br><span class="line">&#x2F;&#x2F; 查看自动增加的 pg 数量</span><br><span class="line">ceph osd pool autoscale-status</span><br></pre></td></tr></table></figure>
-
-<h4 id="删除-OSD-节点"><a href="#删除-OSD-节点" class="headerlink" title="删除 OSD 节点"></a>删除 OSD 节点</h4><p>参考先删后增节点时如何减少数据迁移：<a href="https://www.cnblogs.com/schangech/p/8036191.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/schangech/p/8036191.html</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 停止指定 OSD 进程</span><br><span class="line">systemctl stop ceph-osd@15</span><br><span class="line">// out 指定 OSD</span><br><span class="line">ceph osd out 15</span><br><span class="line">// crush remove 指定 OSD</span><br><span class="line">ceph osd crush remove osd.15</span><br><span class="line">// 删除 osd 对应的 auth</span><br><span class="line">ceph auth del osd.15</span><br><span class="line">// 删除 osd</span><br><span class="line">ceph osd rm 15</span><br><span class="line">// 按照上述步骤删除节点上所有 osd 后，crush remove 指定节点</span><br><span class="line">ceph osd crush rm osd-host</span><br></pre></td></tr></table></figure>
-
-<h4 id="CentOS-安装-ceph-common"><a href="#CentOS-安装-ceph-common" class="headerlink" title="CentOS 安装 ceph-common"></a>CentOS 安装 ceph-common</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -Uvh https:&#x2F;&#x2F;download.ceph.com&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">&#x2F;&#x2F; 或使用镜像源</span><br><span class="line">rpm -Uvh https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ceph&#x2F;rpm-nautilus&#x2F;el7&#x2F;noarch&#x2F;ceph-release-1-1.el7.noarch.rpm</span><br><span class="line">sed -i &#39;s+download.ceph.com+mirrors.tuna.tsinghua.edu.cn&#x2F;ceph+&#39; &#x2F;etc&#x2F;yum.repos.d&#x2F;ceph.repo</span><br><span class="line">yum -y install epel-release</span><br><span class="line">yum -y install ceph-common</span><br></pre></td></tr></table></figure>
-
-<h4 id="查看使用-ceph-volume-创建的-osd-信息"><a href="#查看使用-ceph-volume-创建的-osd-信息" class="headerlink" title="查看使用 ceph-volume 创建的 osd 信息"></a>查看使用 ceph-volume 创建的 osd 信息</h4><p>ceph-volume 使用逻辑卷创建 osd，ceph-disk 使用物理盘创建 osd，物理盘创建的 osd 与 盘符对应关系往往一目了然，逻辑卷创建的 osd 与盘符的对应关系需要执行以下命令查询：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ceph-volume inventory &#x2F;dev&#x2F;sda</span><br></pre></td></tr></table></figure>
-
-<h4 id="var-lib-ceph-osd-ceph-x-使用内存盘"><a href="#var-lib-ceph-osd-ceph-x-使用内存盘" class="headerlink" title="/var/lib/ceph/osd/ceph-x 使用内存盘"></a>/var/lib/ceph/osd/ceph-x 使用内存盘</h4><p>使用 bluestore 的 OSD，所有需要持久化的数据均存储在 LVM metadata 中，所以  /var/lib/ceph/osd/ceph-x 使用 tmpfs 是预期行为， OSD 启动时会从 metadata 中取出相关数据填充到 tmpfs 文件中。参见：<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html" target="_blank" rel="external nofollow noopener noreferrer">http://lists.ceph.com/pipermail/ceph-users-ceph.com/2019-February/032797.html</a></p>
-<h4 id="osd-near-full-的解决方法"><a href="#osd-near-full-的解决方法" class="headerlink" title="osd (near) full 的解决方法"></a>osd (near) full 的解决方法</h4><p>根本解决之道是添加 osd，临时解决方法是删除无用数据，osd full 时所有的读写操作都无法进行，可通过两种方法恢复读写后再执行删除数据的命令：</p>
-<ul>
-<li>一是调整 full osd 的权重：<code>ceph osd crush reweight osd.33 0.7</code>  或者 <code>ceph osd reweight-by-utilization</code></li>
-<li>二是调高 full 的上限：<code>ceph osd set-full-ratio 0.98</code>，参见：<a href="https://docs.ceph.com/docs/master/rados/troubleshooting/troubleshooting-osd/#no-free-drive-space" target="_blank" rel="external nofollow noopener noreferrer">no-free-drive-space</a></li>
-</ul>
-<h4 id="ceph-dashboard-303-状态码"><a href="#ceph-dashboard-303-状态码" class="headerlink" title="ceph dashboard 303 状态码"></a>ceph dashboard 303 状态码</h4><p>需要代理网关的后端服务设置为处于 active 状态的 mgr 节点，参考：<a href="https://docs.ceph.com/docs/master/mgr/dashboard/#proxy-configuration" target="_blank" rel="external nofollow noopener noreferrer">https://docs.ceph.com/docs/master/mgr/dashboard/#proxy-configuration</a></p>
-<h4 id="pools-have-many-more-objects-per-pg-than-average"><a href="#pools-have-many-more-objects-per-pg-than-average" class="headerlink" title="pools have many more objects per pg than average"></a>pools have many more objects per pg than average</h4><p>反应的问题是各个存储池 pg 数据量不均衡，可参考：<a href="https://www.dazhuanlan.com/2019/08/23/5d5f27fe6de04/" target="_blank" rel="external nofollow noopener noreferrer">https://www.dazhuanlan.com/2019/08/23/5d5f27fe6de04/</a>，<a href="https://blog.csdn.net/ygtlovezf/article/details/60778091" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/ygtlovezf/article/details/60778091</a><br>临时解决，关闭不均衡告警，参考：<a href="https://github.com/rook/rook/issues/4739" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/rook/rook/issues/4739</a></p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">ceph</span> <span class="string">config</span> <span class="string">set</span> <span class="string">mgr</span> <span class="string">mon_pg_warn_max_object_skew</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="rgw-多个存储池的数据分布情况"><a href="#rgw-多个存储池的数据分布情况" class="headerlink" title="rgw 多个存储池的数据分布情况"></a>rgw 多个存储池的数据分布情况</h4><p>参考：<a href="https://docs.ceph.com/docs/master/radosgw/layout/" target="_blank" rel="external nofollow noopener noreferrer">https://docs.ceph.com/docs/master/radosgw/layout/</a><br>如果需要快速清除所有 rgw 数据，可手动删除并重建 default.rgw.meta , default.rgw.buckets.index, default.rgw.buckets.data 存储池，需要执行 application enable 并重建用户和存储桶。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ceph osd pool application <span class="built_in">enable</span> default.rgw.buckets.data rgw</span><br><span class="line">ceph osd pool ls detail</span><br><span class="line">radosgw-admin -n client.admin user create --uid=<span class="built_in">test</span> --access-key=<span class="built_in">test</span> --secret-key=<span class="built_in">test</span> --display-name=<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="设置日志等级"><a href="#设置日志等级" class="headerlink" title="设置日志等级"></a>设置日志等级</h4><p>参考：<a href="https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/troubleshooting_guide/configuring-logging" target="_blank" rel="external nofollow noopener noreferrer">https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/troubleshooting_guide/configuring-logging</a><br>设置 osd 日志等级时，除了 debug_osd 选项，还有一些其它选项也要跟随调整：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">debug_ms &#x3D; 5</span><br><span class="line">debug_osd &#x3D; 20</span><br><span class="line">debug_filestore &#x3D; 20</span><br><span class="line">debug_journal &#x3D; 20</span><br></pre></td></tr></table></figure>
-
-<h4 id="导出-Cephfs-为-NFS"><a href="#导出-Cephfs-为-NFS" class="headerlink" title="导出 Cephfs 为 NFS"></a>导出 Cephfs 为 NFS</h4><p>参考：<a href="https://documentation.suse.com/ses/6/html/ses-all/cha-ceph-nfsganesha.html" target="_blank" rel="external nofollow noopener noreferrer">https://documentation.suse.com/ses/6/html/ses-all/cha-ceph-nfsganesha.html</a></p>
-<h4 id="集群网络配置"><a href="#集群网络配置" class="headerlink" title="集群网络配置"></a>集群网络配置</h4><p>网络配置选项不是必需的， Ceph 假设所有主机都运行于公共网（public network），除非你特意配置了一个集群网（cluster network）。</p>
-]]></content>
-      <categories>
-        <category>Ceph</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Ceph</tag>
       </tags>
   </entry>
   <entry>
@@ -2324,6 +2324,136 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux 常用系统调用</title>
+    <url>/post/fa6b61f1.html</url>
+    <content><![CDATA[<h4 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h4><p>用于操作文件描述符，可以改变已打开文件的性质，fcntl 针对描述符提供控制，参数 fd 是被参数 cmd 操作的描述符，根据 cmd 的类型，fcntl 能够接受第三个参数 int arg :</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置 fd 为非阻塞</span><br><span class="line">fcntl(fd, F_SETFL, flags | O_NONBLOCK);</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>系统调用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 故障排查方法与工具</title>
+    <url>/post/c2292029.html</url>
+    <content><![CDATA[<h3 id="负载模拟与分析"><a href="#负载模拟与分析" class="headerlink" title="负载模拟与分析"></a>负载模拟与分析</h3><h4 id="CPU-密集型"><a href="#CPU-密集型" class="headerlink" title="CPU 密集型"></a>CPU 密集型</h4><ol>
+<li><code>stress-ng --cpu 2 --timeout 600 模拟 CPU</code> 负载；</li>
+<li>通过 <code>uptime</code> 可以观察到，系统平均负载很高，通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 2 个 CPU 使用率很高，平均负载也很高，而 iowait 为 0 ，说明进程是 CPU 密集型的，一般是由进程使用 CPU 密集导致系统平均负载变高;</li>
+<li>通过 <code>pidstat -u 1</code> 查看是哪个进程导致 CPU 使用率较高。</li>
+</ol><a id="more"></a>
+<h4 id="I-O-密集型"><a href="#I-O-密集型" class="headerlink" title="I/O 密集型"></a>I/O 密集型</h4><ol>
+<li><code>stress-ng -i 4 --hdd 1 --timeout 600</code> 模拟磁盘 IO；</li>
+<li>可以通过 <code>uptime</code> 观察到，系统平均负载很高，通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 CPU 使用率很低，iowait 很高，一直在等待 IO 处理，说明是 IO 密集型的场景；</li>
+<li>通过 <code>pidstat -d 1</code> 可以查看哪个进程磁盘读写速度高，也可以通过 <code>iotop</code> 查看 IO 高的进程。</li>
+</ol>
+<h4 id="大量进程争抢-CPU"><a href="#大量进程争抢-CPU" class="headerlink" title="大量进程争抢 CPU"></a>大量进程争抢 CPU</h4><ol>
+<li><code>stress-ng -c 16 --timeout 600</code> 模拟大量进程；</li>
+<li>通过 <code>uptime</code> 观察到系统平均负载很高，通过通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 CPU 使用率也很高，iowait 为 0，说明此进程是 CPU 密集型的，或者在进行 CPU 的争用；</li>
+<li>通过 <code>pidstat -u 1</code> 观察到 wait 指标很高，则说明进程间存在 CPU 争用的情况，可以判断系统中存在大量的进程在等待使用 CPU；大量的进程，超出了 CPU 的计算能力，导致的系统的平均负载很高;</li>
+<li>通过 <code>pidstat -w 1</code> 也可以看到存在大量的非自愿进程上下文切换。</li>
+</ol>
+<h4 id="单进程多线程争抢-CPU"><a href="#单进程多线程争抢-CPU" class="headerlink" title="单进程多线程争抢 CPU"></a>单进程多线程争抢 CPU</h4><ol>
+<li><code>sysbench --threads=10 --time=300 threads run</code> 模拟多线程；</li>
+<li>观察步骤类似大量进程争抢，不同的是 <code>pidstat -w 1 10</code> 看到 sysbench 无上下文切换，因为默认显示的是进程间的上下文切换；而使用 <code>pidstat -w -t</code> 可以看到存在大量 sysbench 相关的非自愿上下文切换。</li>
+</ol>
+<h4 id="网络包注入"><a href="#网络包注入" class="headerlink" title="网络包注入"></a>网络包注入</h4><p>使用 Python 包 scapy 可以模拟网络包注入，参考：<a href="https://www.cnblogs.com/darkpig/p/7629854.html" target="_blank" rel="external nofollow noopener noreferrer">用 Python 模拟 TCP 三次握手连接及发送数据</a>，<a href="https://www.cnblogs.com/lsdb/p/10496171.html" target="_blank" rel="external nofollow noopener noreferrer">Python3 + Scapy 安装使用教程</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.all <span class="keyword">import</span> *</span><br><span class="line">ans = sr1(IP(src=<span class="string">'107.55.66.38'</span>,dst=<span class="string">'106.75.175.95'</span>)/TCP(dport=<span class="number">80</span>, sport=<span class="number">56789</span>,seq=<span class="number">123</span>, flags=<span class="string">'S'</span>), verbose=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><h4 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h4><p>vmstat 可查看系统 CPU 、内存、IO 的基本使用状态信息。vmstat 展示的是整体 CPU 的使用情况，而不是单个 CPU。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root@10-9-23-85 ~# vmstat 1 10</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 1  0      0 262052      0 1843248    0    0     1    55    0    7  3  2 94  0  0</span><br><span class="line"> 0  0      0 262232      0 1843260    0    0     0    57 1656 2956  3  2 95  0  0</span><br><span class="line"> 0  0      0 261744      0 1843308    0    0     0    56 2038 3790  3  2 95  0  0</span><br><span class="line"> 0  0      0 261712      0 1843312    0    0     0   146 2043 3590  2  2 96  1  0</span><br><span class="line"> 0  0      0 261776      0 1843312    0    0     0    50 1771 3263  2  2 96  1  0</span><br><span class="line"> 0  0      0 261680      0 1843316    0    0     0    48 1461 2896  1  1 98  0  0</span><br><span class="line"> 0  0      0 260360      0 1843276    0    0    16    36 1971 3538  3  2 95  0  0</span><br><span class="line"> 0  0      0 260168      0 1843256    0    0     0   129 1542 2906  2  2 96  1  0</span><br><span class="line"> 1  0      0 259572      0 1843256    0    0     0    82 2417 4036  6  3 91  1  0</span><br><span class="line"> 0  0      0 259604      0 1843260    0    0     0   128 1707 3228  2  2 96  1  0</span><br></pre></td></tr></table></figure>
+
+<p>其中各项数据的含义如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">procs</th>
+<th align="center">r</th>
+<th>等待运行的进程数。如果等待运行的进程数越多，意味着 CPU 非常繁忙。另外，如果该参数长期大于 cpu 核心数 3 倍，说明 CPU 资源可能存在较大的瓶颈。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center">b</td>
+<td>处在不可中断睡眠状态的进程数。一般是等待 IO 的进程。</td>
+</tr>
+<tr>
+<td align="center">memory</td>
+<td align="center">swpd</td>
+<td>已使用的虚拟内存大小。如果虚拟内存使用较多，可能系统的物理内存比较吃紧，需要采取合适的方式来减少物理内存的使用。swapd 不为 0 ，并不意味物理内存吃紧，如果 swapd 没变化，si、so 的值长期为 0 ，也表明系统没有问题。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">free</td>
+<td>空闲的物理内存的大小。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">buff</td>
+<td>用来做 buffer（缓存，主要用于块设备缓存）的内存数，单位：KB。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">cache</td>
+<td>用作缓存的内存大小，如果 cache 的值大的时候，说明 cache 处的文件数多，如果频繁访问到的文件都能被 cache 处，那么磁盘的读 IO bi 会非常小，单位：KB 。</td>
+</tr>
+<tr>
+<td align="center">swap</td>
+<td align="center">si</td>
+<td>从磁盘写入到 swap 虚拟内存的交换页数量，单位：KB/秒。如果这个值大于 0，表示物理内存不够用或者内存泄露了。</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">so</td>
+<td>从 swap 虚拟内读出的数据。即从 swap 中的数据写入到磁盘的交换页数量，单位：KB/秒，如果这个值大于 0 ，表示物理内存不够用或者内存泄露了。</td>
+</tr>
+</tbody></table>
+<p>内存够用的时候，这两个值都是 0，如果这两个值长期大于 0 时，系统性能会受到影响，磁盘 IO 和 CPU 资源都会被消耗。<br>当看到空闲内存（free）很少的或接近于 0 时，就认为内存不够用了，这个是不正确的。不能光看这一点，还要结合 si 和 so 。如果 free 很少，但是 si 和 so 是 0，那么不用担心，系统性能这时不会受到影响的。 |<br>| io | bi | 每秒从块设备接收到的块数，单位：块/秒 也就是读块设备。bi 通常是读磁盘的数据。 |<br>| | bo | 每秒发送到块设备的块数，单位：块/秒 也就是写块设备。bo 通常是写磁盘的数据。 |<br>| system | in | 每秒的中断数，包括时钟中断。 |<br>| | cs | 每秒的环境（上下文）切换次数。比如我们调用系统函数，就要进行上下文切换，而过多的上下文切换会浪费较多的 CPU 资源，这个数值应该越小越好。 |<br>| cpu | us | 用户态使用 CPU 的时间（非内核进程占用时间）（单位为百分比）。 us 的值比较高时，说明用户进程消耗的 CPU 时间多。 |<br>| | sy | 系统使用的 CPU 时间（单位为百分比）。sy 的值高时，说明系统内核消耗的 CPU 资源多，这并不是良性表现，我们应该检查原因。 |<br>| | id | 空闲的 CPU 的时间（百分比）。 |<br>| | wa | 等待 IO 的 CPU 时间。这个指标意味着 CPU 在等待硬盘读写操作的时间，用百分比表示。wa 越大则机器 IO 性能就越差。说明 IO 等待比较严重，这可能由于对磁盘大量随机访问造成，也有可能磁盘出现瓶颈（块操作）。 |<br>| | st | 虚拟机占用 cpu 时间的百分比。如果 CentOS 系统上运行了 KVM 虚拟机监视器，而 KVM 上运行了几个虚拟机，那么这个值将显示这个几个正在运行的虚拟机从物理机中窃取 CPU 运行时间的百分比。 |</p>
+<h4 id="stress-ng"><a href="#stress-ng" class="headerlink" title="stress-ng"></a>stress-ng</h4><p>stress-ng 是 stress 的增强版本，兼容 stress 命令的同时提供了更丰富的压力模拟场景。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install stress-ng</span><br><span class="line"># 两个 worker 计算圆周率测试，top 命令可以看到 cpu 时间均被消耗在用户空间</span><br><span class="line">stress-ng -c 2 --cpu-method pi</span><br><span class="line"># 两个 worker 遍历所有压力测试算法</span><br><span class="line">stress-ng -c 2 --cpu-method all</span><br><span class="line"># 一个 worker 产生 socket 相关的操作，top 命令可以看到 cpu 时间主要被内核以及软中断占用</span><br><span class="line"># --taskset 选项将任务绑定到指定 cpu 处理</span><br><span class="line">stress-ng --sock 1 --taskset 1</span><br><span class="line"># 不断执行 sync 操作</span><br><span class="line">stress-ng --io 2 --timeout 60s --metrics-brief</span><br><span class="line"># 执行 mmap 申请内存并写入内容</span><br><span class="line">stress-ng --vm 2 --vm-bytes 1G --timeout 60s</span><br></pre></td></tr></table></figure>
+
+<h4 id="mpstat"><a href="#mpstat" class="headerlink" title="mpstat"></a>mpstat</h4><p>mpstat 是 Multiprocessor Statistics 的缩写，可用于获取 CPU 实时统计指标信息，其数据来源于 /proc/stat 文件。mpstat 区别于 vmstat 的一点是：可以查看多核 CPU 中每个计算核心的统计数据。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 显示整体状态</span><br><span class="line">mpstat</span><br><span class="line"># 显示指定 CPU 状态</span><br><span class="line">mpstat -P 0</span><br><span class="line"># 每隔 2 秒显示所有 CPU 的使用信息，共打印 5 次</span><br><span class="line">mpstat -P ALL 2 5</span><br><span class="line"># 显示所有 CPU 上的各种中断每秒总次数</span><br><span class="line">mpstat -I SUM -P ALL</span><br><span class="line"># 显示指定 CPU 的中断总次数</span><br><span class="line">mpstat -I SUM -P 0</span><br><span class="line"># 查看各个 CPU 上各种中断次数</span><br><span class="line">mpstat -I CPU</span><br><span class="line"># 查看各个 CPU 上各种软中断次数</span><br><span class="line">mpstat -I SCPU</span><br></pre></td></tr></table></figure>
+
+<h4 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h4><p>参考：<a href="https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/" target="_blank" rel="external nofollow noopener noreferrer">How to Monitor Linux Systems Performance with iostat command</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">iostat -d -x -m 1 6</span><br></pre></td></tr></table></figure>
+
+<h4 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h4><p>sar 可用于获取进程和网络等各种系统活动统计信息，参考：<a href="https://www.computerhope.com/unix/usar.htm#:~:text=The%20sar%20command%20extracts%20and,data%20of%20that%20days%20ago." target="_blank" rel="external nofollow noopener noreferrer">Linux sar command</a>，<a href="https://www.cnblogs.com/xhyan/p/6531098.html" target="_blank" rel="external nofollow noopener noreferrer">Linux Sar 命令详解</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取 CPU 利用率信息</span></span><br><span class="line">sar -u 2 5</span><br><span class="line"><span class="comment"># 获取 127 号中断向量统计信息</span></span><br><span class="line">sar -I 127 1 10</span><br><span class="line"><span class="comment"># 获取内存统计信息</span></span><br><span class="line">sar -r 1 2</span><br><span class="line"><span class="comment"># 获取网卡统计信息</span></span><br><span class="line">sar -n DEV 1 2</span><br><span class="line"><span class="comment"># 获取所有系统统计信息</span></span><br><span class="line">sar -A 1 2</span><br><span class="line"><span class="comment"># 从文件中获取历史统计信息，DD 指的是当天在本月是第几天</span></span><br><span class="line">sar -r -f /var/<span class="built_in">log</span>/sa/saDD</span><br><span class="line"><span class="comment"># 查看换页情况，其中 pgsteal/s 表示每秒钟从 cache 中被清除来满足内存需要的页个数，数值较大说明确实内存严重不足</span></span><br><span class="line">sar -B 10 3</span><br><span class="line"><span class="comment"># 获取块设备统计信息</span></span><br><span class="line">sar -d 1 2</span><br><span class="line"><span class="comment"># 上下文切换信息</span></span><br><span class="line">sar -w 1 5</span><br><span class="line"><span class="comment"># socket 信息</span></span><br><span class="line">sar -n SOCK 5 5</span><br><span class="line"><span class="comment"># TCP 信息</span></span><br><span class="line">sar -n TCP 1 5</span><br><span class="line"><span class="comment"># 文件系统统计信息</span></span><br><span class="line">sar -F 2 4</span><br></pre></td></tr></table></figure>
+
+<h4 id="pidstat"><a href="#pidstat" class="headerlink" title="pidstat"></a>pidstat</h4><p>用于显示进程相关统计信息。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 以下命令均可添加 -p PID 只显示指定进程信息，加上数字指定刷新间隔，另外可追加 -t 参数显示线程相关信息，默认只显示进程信息</span></span><br><span class="line"><span class="comment"># 显示 CPU 信息</span></span><br><span class="line">pidstat -u</span><br><span class="line"><span class="comment"># 显示内存信息，其中 Cswch/s 表示主动上下文切换，Nvcswch/s 表示被动上下文切换</span></span><br><span class="line">pidstat -r</span><br><span class="line"><span class="comment"># 显示磁盘 IO 信息</span></span><br><span class="line">pidstat -d</span><br><span class="line"><span class="comment"># 显示上下文切换</span></span><br><span class="line">pidstat -w</span><br><span class="line"><span class="comment"># 显示线程相关信息</span></span><br><span class="line">pidstat -t -p 9252</span><br><span class="line"><span class="comment"># 显示独立 TASK 即进程信息，默认显示 CPU 使用信息，可通过追加 -r / -d / -w 等指定显示的信息</span></span><br><span class="line">pidstat -T TASK</span><br><span class="line"><span class="comment"># 显示进程下所有线程信息，默认显示 CPU 使用信息，可通过追加 -r / -d / -w 等指定显示的信息</span></span><br><span class="line">pidstat -T CHILD</span><br><span class="line"><span class="comment"># 以下命令在新版本 sysstat 中才有</span></span><br><span class="line"><span class="comment"># 列出启动命令中包含指定字符串的进程</span></span><br><span class="line">pidstat -G kube</span><br><span class="line"><span class="comment"># -t 包括线程</span></span><br><span class="line">pidstat -t -G kube</span><br><span class="line"><span class="comment"># 显示调度相关信息</span></span><br><span class="line">pidstat -R</span><br></pre></td></tr></table></figure>
+
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>P - 按照 CPU 使用率排序；M - 按照内存使用量排序；T - 按照进程启动后占用的 CPU 时间总和排序</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -u 指定用户 -d 指定刷新间隔</span></span><br><span class="line">top -u ceph -d 0.5</span><br></pre></td></tr></table></figure>
+
+<h4 id="iotop"><a href="#iotop" class="headerlink" title="iotop"></a>iotop</h4><p><code>iotop</code>  进程或线程的当前 I/O 使用情况，显示每个进程/线程读写 I/O 带宽以及等待换入和等待 I/O 的线程/进程花费的时间的百分比。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 仅显示正在进行 IO 操作的进程或线程信息</span><br><span class="line">iotop -o</span><br><span class="line"># 只显示进程（线程读写也算到所属进程）</span><br><span class="line">iotop -P -o</span><br></pre></td></tr></table></figure>
+
+<h4 id="nethogs"><a href="#nethogs" class="headerlink" title="nethogs"></a>nethogs</h4><p>查看进程网络流量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nethogs</span><br></pre></td></tr></table></figure>
+
+<h4 id="arp"><a href="#arp" class="headerlink" title="arp"></a>arp</h4><p>查看 arp 缓存</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arp -e</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://blog.csdn.net/weixin_41843699/article/details/97614157" target="_blank" rel="external nofollow noopener noreferrer">CPU-IO-网络-内核参数调优</a></li>
+<li><a href="https://coolshell.cn/articles/7490.html" target="_blank" rel="external nofollow noopener noreferrer">性能调优攻略</a></li>
+<li><a href="https://www.cyberciti.biz/faq/stress-test-linux-unix-server-with-stress-ng/" target="_blank" rel="external nofollow noopener noreferrer">Stress Test CPU and Memory (VM) On a Linux / Unix With Stress-ng</a></li>
+<li><a href="https://www.cnblogs.com/xudong-bupt/p/8643094.html" target="_blank" rel="external nofollow noopener noreferrer">linux top 命令看到的实存(RES)与虚存(VIRT)分析</a></li>
+<li><a href="https://www.jellythink.com/archives/438" target="_blank" rel="external nofollow noopener noreferrer">Linux iostat 命令详解</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>故障排查</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 实用命令集合</title>
     <url>/post/b489449e.html</url>
     <content><![CDATA[<h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h4><ul>
@@ -2778,136 +2908,6 @@
       <tags>
         <tag>Linux</tag>
         <tag> 云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 常用系统调用</title>
-    <url>/post/fa6b61f1.html</url>
-    <content><![CDATA[<h4 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h4><p>用于操作文件描述符，可以改变已打开文件的性质，fcntl 针对描述符提供控制，参数 fd 是被参数 cmd 操作的描述符，根据 cmd 的类型，fcntl 能够接受第三个参数 int arg :</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置 fd 为非阻塞</span><br><span class="line">fcntl(fd, F_SETFL, flags | O_NONBLOCK);</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>系统调用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 故障排查方法与工具</title>
-    <url>/post/c2292029.html</url>
-    <content><![CDATA[<h3 id="负载模拟与分析"><a href="#负载模拟与分析" class="headerlink" title="负载模拟与分析"></a>负载模拟与分析</h3><h4 id="CPU-密集型"><a href="#CPU-密集型" class="headerlink" title="CPU 密集型"></a>CPU 密集型</h4><ol>
-<li><code>stress-ng --cpu 2 --timeout 600 模拟 CPU</code> 负载；</li>
-<li>通过 <code>uptime</code> 可以观察到，系统平均负载很高，通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 2 个 CPU 使用率很高，平均负载也很高，而 iowait 为 0 ，说明进程是 CPU 密集型的，一般是由进程使用 CPU 密集导致系统平均负载变高;</li>
-<li>通过 <code>pidstat -u 1</code> 查看是哪个进程导致 CPU 使用率较高。</li>
-</ol><a id="more"></a>
-<h4 id="I-O-密集型"><a href="#I-O-密集型" class="headerlink" title="I/O 密集型"></a>I/O 密集型</h4><ol>
-<li><code>stress-ng -i 4 --hdd 1 --timeout 600</code> 模拟磁盘 IO；</li>
-<li>可以通过 <code>uptime</code> 观察到，系统平均负载很高，通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 CPU 使用率很低，iowait 很高，一直在等待 IO 处理，说明是 IO 密集型的场景；</li>
-<li>通过 <code>pidstat -d 1</code> 可以查看哪个进程磁盘读写速度高，也可以通过 <code>iotop</code> 查看 IO 高的进程。</li>
-</ol>
-<h4 id="大量进程争抢-CPU"><a href="#大量进程争抢-CPU" class="headerlink" title="大量进程争抢 CPU"></a>大量进程争抢 CPU</h4><ol>
-<li><code>stress-ng -c 16 --timeout 600</code> 模拟大量进程；</li>
-<li>通过 <code>uptime</code> 观察到系统平均负载很高，通过通过 <code>mpstat -P ALL 1 5</code> 或 <code>top</code> 观察到 CPU 使用率也很高，iowait 为 0，说明此进程是 CPU 密集型的，或者在进行 CPU 的争用；</li>
-<li>通过 <code>pidstat -u 1</code> 观察到 wait 指标很高，则说明进程间存在 CPU 争用的情况，可以判断系统中存在大量的进程在等待使用 CPU；大量的进程，超出了 CPU 的计算能力，导致的系统的平均负载很高;</li>
-<li>通过 <code>pidstat -w 1</code> 也可以看到存在大量的非自愿进程上下文切换。</li>
-</ol>
-<h4 id="单进程多线程争抢-CPU"><a href="#单进程多线程争抢-CPU" class="headerlink" title="单进程多线程争抢 CPU"></a>单进程多线程争抢 CPU</h4><ol>
-<li><code>sysbench --threads=10 --time=300 threads run</code> 模拟多线程；</li>
-<li>观察步骤类似大量进程争抢，不同的是 <code>pidstat -w 1 10</code> 看到 sysbench 无上下文切换，因为默认显示的是进程间的上下文切换；而使用 <code>pidstat -w -t</code> 可以看到存在大量 sysbench 相关的非自愿上下文切换。</li>
-</ol>
-<h4 id="网络包注入"><a href="#网络包注入" class="headerlink" title="网络包注入"></a>网络包注入</h4><p>使用 Python 包 scapy 可以模拟网络包注入，参考：<a href="https://www.cnblogs.com/darkpig/p/7629854.html" target="_blank" rel="external nofollow noopener noreferrer">用 Python 模拟 TCP 三次握手连接及发送数据</a>，<a href="https://www.cnblogs.com/lsdb/p/10496171.html" target="_blank" rel="external nofollow noopener noreferrer">Python3 + Scapy 安装使用教程</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scapy.all <span class="keyword">import</span> *</span><br><span class="line">ans = sr1(IP(src=<span class="string">'107.55.66.38'</span>,dst=<span class="string">'106.75.175.95'</span>)/TCP(dport=<span class="number">80</span>, sport=<span class="number">56789</span>,seq=<span class="number">123</span>, flags=<span class="string">'S'</span>), verbose=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h3><h4 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h4><p>vmstat 可查看系统 CPU 、内存、IO 的基本使用状态信息。vmstat 展示的是整体 CPU 的使用情况，而不是单个 CPU。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root@10-9-23-85 ~# vmstat 1 10</span><br><span class="line">procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----</span><br><span class="line"> r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st</span><br><span class="line"> 1  0      0 262052      0 1843248    0    0     1    55    0    7  3  2 94  0  0</span><br><span class="line"> 0  0      0 262232      0 1843260    0    0     0    57 1656 2956  3  2 95  0  0</span><br><span class="line"> 0  0      0 261744      0 1843308    0    0     0    56 2038 3790  3  2 95  0  0</span><br><span class="line"> 0  0      0 261712      0 1843312    0    0     0   146 2043 3590  2  2 96  1  0</span><br><span class="line"> 0  0      0 261776      0 1843312    0    0     0    50 1771 3263  2  2 96  1  0</span><br><span class="line"> 0  0      0 261680      0 1843316    0    0     0    48 1461 2896  1  1 98  0  0</span><br><span class="line"> 0  0      0 260360      0 1843276    0    0    16    36 1971 3538  3  2 95  0  0</span><br><span class="line"> 0  0      0 260168      0 1843256    0    0     0   129 1542 2906  2  2 96  1  0</span><br><span class="line"> 1  0      0 259572      0 1843256    0    0     0    82 2417 4036  6  3 91  1  0</span><br><span class="line"> 0  0      0 259604      0 1843260    0    0     0   128 1707 3228  2  2 96  1  0</span><br></pre></td></tr></table></figure>
-
-<p>其中各项数据的含义如下：</p>
-<table>
-<thead>
-<tr>
-<th align="center">procs</th>
-<th align="center">r</th>
-<th>等待运行的进程数。如果等待运行的进程数越多，意味着 CPU 非常繁忙。另外，如果该参数长期大于 cpu 核心数 3 倍，说明 CPU 资源可能存在较大的瓶颈。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"></td>
-<td align="center">b</td>
-<td>处在不可中断睡眠状态的进程数。一般是等待 IO 的进程。</td>
-</tr>
-<tr>
-<td align="center">memory</td>
-<td align="center">swpd</td>
-<td>已使用的虚拟内存大小。如果虚拟内存使用较多，可能系统的物理内存比较吃紧，需要采取合适的方式来减少物理内存的使用。swapd 不为 0 ，并不意味物理内存吃紧，如果 swapd 没变化，si、so 的值长期为 0 ，也表明系统没有问题。</td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center">free</td>
-<td>空闲的物理内存的大小。</td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center">buff</td>
-<td>用来做 buffer（缓存，主要用于块设备缓存）的内存数，单位：KB。</td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center">cache</td>
-<td>用作缓存的内存大小，如果 cache 的值大的时候，说明 cache 处的文件数多，如果频繁访问到的文件都能被 cache 处，那么磁盘的读 IO bi 会非常小，单位：KB 。</td>
-</tr>
-<tr>
-<td align="center">swap</td>
-<td align="center">si</td>
-<td>从磁盘写入到 swap 虚拟内存的交换页数量，单位：KB/秒。如果这个值大于 0，表示物理内存不够用或者内存泄露了。</td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center">so</td>
-<td>从 swap 虚拟内读出的数据。即从 swap 中的数据写入到磁盘的交换页数量，单位：KB/秒，如果这个值大于 0 ，表示物理内存不够用或者内存泄露了。</td>
-</tr>
-</tbody></table>
-<p>内存够用的时候，这两个值都是 0，如果这两个值长期大于 0 时，系统性能会受到影响，磁盘 IO 和 CPU 资源都会被消耗。<br>当看到空闲内存（free）很少的或接近于 0 时，就认为内存不够用了，这个是不正确的。不能光看这一点，还要结合 si 和 so 。如果 free 很少，但是 si 和 so 是 0，那么不用担心，系统性能这时不会受到影响的。 |<br>| io | bi | 每秒从块设备接收到的块数，单位：块/秒 也就是读块设备。bi 通常是读磁盘的数据。 |<br>| | bo | 每秒发送到块设备的块数，单位：块/秒 也就是写块设备。bo 通常是写磁盘的数据。 |<br>| system | in | 每秒的中断数，包括时钟中断。 |<br>| | cs | 每秒的环境（上下文）切换次数。比如我们调用系统函数，就要进行上下文切换，而过多的上下文切换会浪费较多的 CPU 资源，这个数值应该越小越好。 |<br>| cpu | us | 用户态使用 CPU 的时间（非内核进程占用时间）（单位为百分比）。 us 的值比较高时，说明用户进程消耗的 CPU 时间多。 |<br>| | sy | 系统使用的 CPU 时间（单位为百分比）。sy 的值高时，说明系统内核消耗的 CPU 资源多，这并不是良性表现，我们应该检查原因。 |<br>| | id | 空闲的 CPU 的时间（百分比）。 |<br>| | wa | 等待 IO 的 CPU 时间。这个指标意味着 CPU 在等待硬盘读写操作的时间，用百分比表示。wa 越大则机器 IO 性能就越差。说明 IO 等待比较严重，这可能由于对磁盘大量随机访问造成，也有可能磁盘出现瓶颈（块操作）。 |<br>| | st | 虚拟机占用 cpu 时间的百分比。如果 CentOS 系统上运行了 KVM 虚拟机监视器，而 KVM 上运行了几个虚拟机，那么这个值将显示这个几个正在运行的虚拟机从物理机中窃取 CPU 运行时间的百分比。 |</p>
-<h4 id="stress-ng"><a href="#stress-ng" class="headerlink" title="stress-ng"></a>stress-ng</h4><p>stress-ng 是 stress 的增强版本，兼容 stress 命令的同时提供了更丰富的压力模拟场景。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install stress-ng</span><br><span class="line"># 两个 worker 计算圆周率测试，top 命令可以看到 cpu 时间均被消耗在用户空间</span><br><span class="line">stress-ng -c 2 --cpu-method pi</span><br><span class="line"># 两个 worker 遍历所有压力测试算法</span><br><span class="line">stress-ng -c 2 --cpu-method all</span><br><span class="line"># 一个 worker 产生 socket 相关的操作，top 命令可以看到 cpu 时间主要被内核以及软中断占用</span><br><span class="line"># --taskset 选项将任务绑定到指定 cpu 处理</span><br><span class="line">stress-ng --sock 1 --taskset 1</span><br><span class="line"># 不断执行 sync 操作</span><br><span class="line">stress-ng --io 2 --timeout 60s --metrics-brief</span><br><span class="line"># 执行 mmap 申请内存并写入内容</span><br><span class="line">stress-ng --vm 2 --vm-bytes 1G --timeout 60s</span><br></pre></td></tr></table></figure>
-
-<h4 id="mpstat"><a href="#mpstat" class="headerlink" title="mpstat"></a>mpstat</h4><p>mpstat 是 Multiprocessor Statistics 的缩写，可用于获取 CPU 实时统计指标信息，其数据来源于 /proc/stat 文件。mpstat 区别于 vmstat 的一点是：可以查看多核 CPU 中每个计算核心的统计数据。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 显示整体状态</span><br><span class="line">mpstat</span><br><span class="line"># 显示指定 CPU 状态</span><br><span class="line">mpstat -P 0</span><br><span class="line"># 每隔 2 秒显示所有 CPU 的使用信息，共打印 5 次</span><br><span class="line">mpstat -P ALL 2 5</span><br><span class="line"># 显示所有 CPU 上的各种中断每秒总次数</span><br><span class="line">mpstat -I SUM -P ALL</span><br><span class="line"># 显示指定 CPU 的中断总次数</span><br><span class="line">mpstat -I SUM -P 0</span><br><span class="line"># 查看各个 CPU 上各种中断次数</span><br><span class="line">mpstat -I CPU</span><br><span class="line"># 查看各个 CPU 上各种软中断次数</span><br><span class="line">mpstat -I SCPU</span><br></pre></td></tr></table></figure>
-
-<h4 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h4><p>参考：<a href="https://www.linuxtechi.com/monitor-linux-systems-performance-iostat-command/" target="_blank" rel="external nofollow noopener noreferrer">How to Monitor Linux Systems Performance with iostat command</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">iostat -d -x -m 1 6</span><br></pre></td></tr></table></figure>
-
-<h4 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h4><p>sar 可用于获取进程和网络等各种系统活动统计信息，参考：<a href="https://www.computerhope.com/unix/usar.htm#:~:text=The%20sar%20command%20extracts%20and,data%20of%20that%20days%20ago." target="_blank" rel="external nofollow noopener noreferrer">Linux sar command</a>，<a href="https://www.cnblogs.com/xhyan/p/6531098.html" target="_blank" rel="external nofollow noopener noreferrer">Linux Sar 命令详解</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取 CPU 利用率信息</span></span><br><span class="line">sar -u 2 5</span><br><span class="line"><span class="comment"># 获取 127 号中断向量统计信息</span></span><br><span class="line">sar -I 127 1 10</span><br><span class="line"><span class="comment"># 获取内存统计信息</span></span><br><span class="line">sar -r 1 2</span><br><span class="line"><span class="comment"># 获取网卡统计信息</span></span><br><span class="line">sar -n DEV 1 2</span><br><span class="line"><span class="comment"># 获取所有系统统计信息</span></span><br><span class="line">sar -A 1 2</span><br><span class="line"><span class="comment"># 从文件中获取历史统计信息，DD 指的是当天在本月是第几天</span></span><br><span class="line">sar -r -f /var/<span class="built_in">log</span>/sa/saDD</span><br><span class="line"><span class="comment"># 查看换页情况，其中 pgsteal/s 表示每秒钟从 cache 中被清除来满足内存需要的页个数，数值较大说明确实内存严重不足</span></span><br><span class="line">sar -B 10 3</span><br><span class="line"><span class="comment"># 获取块设备统计信息</span></span><br><span class="line">sar -d 1 2</span><br><span class="line"><span class="comment"># 上下文切换信息</span></span><br><span class="line">sar -w 1 5</span><br><span class="line"><span class="comment"># socket 信息</span></span><br><span class="line">sar -n SOCK 5 5</span><br><span class="line"><span class="comment"># TCP 信息</span></span><br><span class="line">sar -n TCP 1 5</span><br><span class="line"><span class="comment"># 文件系统统计信息</span></span><br><span class="line">sar -F 2 4</span><br></pre></td></tr></table></figure>
-
-<h4 id="pidstat"><a href="#pidstat" class="headerlink" title="pidstat"></a>pidstat</h4><p>用于显示进程相关统计信息。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 以下命令均可添加 -p PID 只显示指定进程信息，加上数字指定刷新间隔，另外可追加 -t 参数显示线程相关信息，默认只显示进程信息</span></span><br><span class="line"><span class="comment"># 显示 CPU 信息</span></span><br><span class="line">pidstat -u</span><br><span class="line"><span class="comment"># 显示内存信息，其中 Cswch/s 表示主动上下文切换，Nvcswch/s 表示被动上下文切换</span></span><br><span class="line">pidstat -r</span><br><span class="line"><span class="comment"># 显示磁盘 IO 信息</span></span><br><span class="line">pidstat -d</span><br><span class="line"><span class="comment"># 显示上下文切换</span></span><br><span class="line">pidstat -w</span><br><span class="line"><span class="comment"># 显示线程相关信息</span></span><br><span class="line">pidstat -t -p 9252</span><br><span class="line"><span class="comment"># 显示独立 TASK 即进程信息，默认显示 CPU 使用信息，可通过追加 -r / -d / -w 等指定显示的信息</span></span><br><span class="line">pidstat -T TASK</span><br><span class="line"><span class="comment"># 显示进程下所有线程信息，默认显示 CPU 使用信息，可通过追加 -r / -d / -w 等指定显示的信息</span></span><br><span class="line">pidstat -T CHILD</span><br><span class="line"><span class="comment"># 以下命令在新版本 sysstat 中才有</span></span><br><span class="line"><span class="comment"># 列出启动命令中包含指定字符串的进程</span></span><br><span class="line">pidstat -G kube</span><br><span class="line"><span class="comment"># -t 包括线程</span></span><br><span class="line">pidstat -t -G kube</span><br><span class="line"><span class="comment"># 显示调度相关信息</span></span><br><span class="line">pidstat -R</span><br></pre></td></tr></table></figure>
-
-<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>P - 按照 CPU 使用率排序；M - 按照内存使用量排序；T - 按照进程启动后占用的 CPU 时间总和排序</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -u 指定用户 -d 指定刷新间隔</span></span><br><span class="line">top -u ceph -d 0.5</span><br></pre></td></tr></table></figure>
-
-<h4 id="iotop"><a href="#iotop" class="headerlink" title="iotop"></a>iotop</h4><p><code>iotop</code>  进程或线程的当前 I/O 使用情况，显示每个进程/线程读写 I/O 带宽以及等待换入和等待 I/O 的线程/进程花费的时间的百分比。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 仅显示正在进行 IO 操作的进程或线程信息</span><br><span class="line">iotop -o</span><br><span class="line"># 只显示进程（线程读写也算到所属进程）</span><br><span class="line">iotop -P -o</span><br></pre></td></tr></table></figure>
-
-<h4 id="nethogs"><a href="#nethogs" class="headerlink" title="nethogs"></a>nethogs</h4><p>查看进程网络流量</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install nethogs</span><br></pre></td></tr></table></figure>
-
-<h4 id="arp"><a href="#arp" class="headerlink" title="arp"></a>arp</h4><p>查看 arp 缓存</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arp -e</span><br></pre></td></tr></table></figure>
-
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
-<li><a href="https://blog.csdn.net/weixin_41843699/article/details/97614157" target="_blank" rel="external nofollow noopener noreferrer">CPU-IO-网络-内核参数调优</a></li>
-<li><a href="https://coolshell.cn/articles/7490.html" target="_blank" rel="external nofollow noopener noreferrer">性能调优攻略</a></li>
-<li><a href="https://www.cyberciti.biz/faq/stress-test-linux-unix-server-with-stress-ng/" target="_blank" rel="external nofollow noopener noreferrer">Stress Test CPU and Memory (VM) On a Linux / Unix With Stress-ng</a></li>
-<li><a href="https://www.cnblogs.com/xudong-bupt/p/8643094.html" target="_blank" rel="external nofollow noopener noreferrer">linux top 命令看到的实存(RES)与虚存(VIRT)分析</a></li>
-<li><a href="https://www.jellythink.com/archives/438" target="_blank" rel="external nofollow noopener noreferrer">Linux iostat 命令详解</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>故障排查</tag>
       </tags>
   </entry>
   <entry>
