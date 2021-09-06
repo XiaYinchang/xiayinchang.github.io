@@ -2324,18 +2324,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux 常用系统调用</title>
-    <url>/post/fa6b61f1.html</url>
-    <content><![CDATA[<h4 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h4><p>用于操作文件描述符，可以改变已打开文件的性质，fcntl 针对描述符提供控制，参数 fd 是被参数 cmd 操作的描述符，根据 cmd 的类型，fcntl 能够接受第三个参数 int arg :</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置 fd 为非阻塞</span><br><span class="line">fcntl(fd, F_SETFL, flags | O_NONBLOCK);</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>系统调用</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux 实用命令集合</title>
     <url>/post/b489449e.html</url>
     <content><![CDATA[<h4 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h4><ul>
@@ -2790,6 +2778,18 @@
       <tags>
         <tag>Linux</tag>
         <tag> 云计算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 常用系统调用</title>
+    <url>/post/fa6b61f1.html</url>
+    <content><![CDATA[<h4 id="fcntl"><a href="#fcntl" class="headerlink" title="fcntl"></a>fcntl</h4><p>用于操作文件描述符，可以改变已打开文件的性质，fcntl 针对描述符提供控制，参数 fd 是被参数 cmd 操作的描述符，根据 cmd 的类型，fcntl 能够接受第三个参数 int arg :</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置 fd 为非阻塞</span><br><span class="line">fcntl(fd, F_SETFL, flags | O_NONBLOCK);</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>系统调用</tag>
       </tags>
   </entry>
   <entry>
