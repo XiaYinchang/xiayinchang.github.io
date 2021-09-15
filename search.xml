@@ -2364,8 +2364,9 @@
 <p>以下示例加载 ipvs 内核模块:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modules-load.d/ipvs.conf</span><br><span class="line">ip_vs</span><br><span class="line">ip_vs_lc</span><br><span class="line">ip_vs_wlc</span><br><span class="line">ip_vs_rr</span><br><span class="line">ip_vs_wrr</span><br><span class="line">ip_vs_lblc</span><br><span class="line">ip_vs_lblcr</span><br><span class="line">ip_vs_dh</span><br><span class="line">ip_vs_sh</span><br><span class="line">ip_vs_nq</span><br><span class="line">ip_vs_sed</span><br><span class="line">ip_vs_ftp</span><br><span class="line">nf_conntrack</span><br></pre></td></tr></table></figure>
 
+<p>以下示例启用 ipv4 转发功能：</p>
 <ul>
-<li>自动设置内核参数<br>以下示例启用 ipv4 转发功能：</li>
+<li>自动设置内核参数</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/sysctl.conf</span><br><span class="line">net.bridge.bridge-nf-call-iptables=1</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables=1</span><br><span class="line">vm.max_map_count=262144</span><br><span class="line">vm.swappiness=0</span><br><span class="line">net.core.somaxconn=32768</span><br><span class="line">net.ipv4.tcp_syncookies=0</span><br><span class="line">net.ipv4.conf.all.rp_filter=1</span><br><span class="line">net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
 
@@ -2382,8 +2383,8 @@
 <ul>
 <li>在 grub 引导界面临时编辑内核启动参数</li>
 </ul>
-<p>首先，选中要编辑的内核项，按 <strong>e</strong> 进入编辑页面，编辑完成后按  <strong>Ctrl + x</strong>  启动系统。下图为编辑内核参数直接进入救援模式。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=image.png&originHeight=230&originWidth=716&size=13999&status=done&style=none&width=716" alt="image.png"></p>
+<p>首先，选中要编辑的内核项，按 <strong>e</strong> 进入编辑页面，编辑完成后按  <strong>Ctrl + x</strong>  启动系统。下图为编辑内核参数直接进入救援模式。<br>​</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#height=230&id=KOcUY&margin=%5Bobject%20Object%5D&name=image.png&originHeight=230&originWidth=716&originalType=binary%E2%88%B6=1&size=13999&status=done&style=none&width=716" alt="image.png"></p>
 <ul>
 <li>在操作系统中编辑内核启动参数并重新生成 grub 引导</li>
 </ul>
@@ -2432,7 +2433,7 @@
 <h4 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h4><ul>
 <li>替换空格为换行</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&margin=%5Bobject%20Object%5D&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&style=none&width=160" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#height=25&id=vqX5r&margin=%5Bobject%20Object%5D&name=image.png&originHeight=25&originWidth=160&originalType=binary%E2%88%B6=1&size=2640&status=done&style=none&width=160" alt="image.png"></p>
 <ul>
 <li>替换 tab 为空格</li>
 </ul>
@@ -2479,7 +2480,7 @@
 <p>可通过 top 命令进一步验证：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列出一个进程中所有线程的信息</span></span><br><span class="line">top -H -p 26200</span><br></pre></td></tr></table></figure>
 
-<p>另一个分辨方式是线程共享地址空间，一个进程中的所有线程具有相同的 VIRT，RES 和 SHR ，如下图：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/182657/1592743812467-47c3df1f-4677-4969-a005-3bff19a08a40.png#align=left&display=inline&height=771&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1542&originWidth=2700&size=902573&status=done&style=none&width=1350" alt="image.png"></p>
+<p>另一个分辨方式是线程共享地址空间，一个进程中的所有线程具有相同的 VIRT，RES 和 SHR ，如下图：<br><img src="https://cdn.nlark.com/yuque/0/2020/png/182657/1592743812467-47c3df1f-4677-4969-a005-3bff19a08a40.png#height=771&id=ddR0q&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1542&originWidth=2700&originalType=binary%E2%88%B6=1&size=902573&status=done&style=none&width=1350" alt="image.png"></p>
 <h4 id="fuser-找到正在使用某个文件的进程"><a href="#fuser-找到正在使用某个文件的进程" class="headerlink" title="fuser 找到正在使用某个文件的进程"></a>fuser 找到正在使用某个文件的进程</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// fuser 是 file user 的缩写</span><br><span class="line">fuser -uv &lt;filename&gt;</span><br><span class="line">fuser -uvm /folder</span><br><span class="line">// 查看哪个程序在占用 8000 端口</span><br><span class="line">fuser -v -n tcp 8000</span><br></pre></td></tr></table></figure>
 
 <h4 id="lsof-列出所有打开的文件"><a href="#lsof-列出所有打开的文件" class="headerlink" title="lsof 列出所有打开的文件"></a>lsof 列出所有打开的文件</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// lsof 是 list open files 的缩写</span><br><span class="line">// -i 代表列出正在打开的 IPV4[6] 文件； -n 表示不进行 DNS 反解； -P 表示不进行端口反解</span><br><span class="line">lsof -i -n -P</span><br><span class="line">// 查看当前目录下打开的文件</span><br><span class="line">lsof .</span><br><span class="line"><span class="comment"># 获取指定进程打开的文件</span></span><br><span class="line">lsof -p pid</span><br></pre></td></tr></table></figure>
@@ -2754,6 +2755,8 @@
 <h4 id="Linux-系统启动过程"><a href="#Linux-系统启动过程" class="headerlink" title="Linux 系统启动过程"></a>Linux 系统启动过程</h4><p>上电 -&gt; 从固件读取 BIOS -&gt; 从磁盘固定位置（或者网络、CD 等）读取 BootLoader（通常是 GRUB2）-&gt; BootLoader 加载内核和初始根文件系统 -&gt; 加载文件系统 -&gt; 初始化工作完成后启动 1 号用户进程 init。参考：<a href="https://segmentfault.com/a/1190000006872609" target="_blank" rel="external nofollow noopener noreferrer">简述 Linux 的启动过程</a></p>
 <h4 id="如何找到环境变量是在哪里被设置的"><a href="#如何找到环境变量是在哪里被设置的" class="headerlink" title="如何找到环境变量是在哪里被设置的"></a>如何找到环境变量是在哪里被设置的</h4><p>参考：<a href="https://unix.stackexchange.com/a/154971" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/a/154971</a>，<a href="https://unix.stackexchange.com/a/249922" target="_blank" rel="external nofollow noopener noreferrer">https://unix.stackexchange.com/a/249922</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">PS4=<span class="string">'+$BASH_SOURCE&gt; '</span> BASH_XTRACEFD=7 bash -xl 7&gt;&amp;2</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看自己的公网出口-IP"><a href="#查看自己的公网出口-IP" class="headerlink" title="查看自己的公网出口 IP"></a>查看自己的公网出口 IP</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -s ifcfg.cn/<span class="built_in">echo</span> | python -m json.tool</span><br></pre></td></tr></table></figure>
 
 <h4 id="实用工具"><a href="#实用工具" class="headerlink" title="实用工具"></a>实用工具</h4><ul>
 <li>一个在线渲染代码为图片的网站：<a href="https://carbon.now.sh/" target="_blank" rel="external nofollow noopener noreferrer">https://carbon.now.sh/</a> ， 可以通过设置修改边框等信息。</li>
