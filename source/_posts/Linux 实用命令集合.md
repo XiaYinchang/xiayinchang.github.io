@@ -158,8 +158,9 @@ ip_vs_ftp
 nf_conntrack
 ```
 
+以下示例启用 ipv4 转发功能：
+
 - 自动设置内核参数
-  以下示例启用 ipv4 转发功能：
 
 ```bash
 $ cat /etc/sysctl.conf
@@ -205,8 +206,9 @@ systemctl enable --now mariadb
 - 在 grub 引导界面临时编辑内核启动参数
 
 首先，选中要编辑的内核项，按 **e** 进入编辑页面，编辑完成后按  **Ctrl + x**  启动系统。下图为编辑内核参数直接进入救援模式。
+​
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#align=left&display=inline&height=230&margin=%5Bobject%20Object%5D&name=image.png&originHeight=230&originWidth=716&size=13999&status=done&style=none&width=716)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#height=230&id=KOcUY&margin=%5Bobject%20Object%5D&name=image.png&originHeight=230&originWidth=716&originalType=binary∶=1&size=13999&status=done&style=none&width=716)
 
 - 在操作系统中编辑内核启动参数并重新生成 grub 引导
 
@@ -300,7 +302,7 @@ sudo apt-get autoremove --purge
 
 - 替换空格为换行
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#align=left&display=inline&height=25&margin=%5Bobject%20Object%5D&name=image.png&originHeight=25&originWidth=160&size=2640&status=done&style=none&width=160)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#height=25&id=vqX5r&margin=%5Bobject%20Object%5D&name=image.png&originHeight=25&originWidth=160&originalType=binary∶=1&size=2640&status=done&style=none&width=160)
 
 - 替换 tab 为空格
 
@@ -458,7 +460,7 @@ top -H -p 26200
 ```
 
 另一个分辨方式是线程共享地址空间，一个进程中的所有线程具有相同的 VIRT，RES 和 SHR ，如下图：
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592743812467-47c3df1f-4677-4969-a005-3bff19a08a40.png#align=left&display=inline&height=771&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1542&originWidth=2700&size=902573&status=done&style=none&width=1350)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592743812467-47c3df1f-4677-4969-a005-3bff19a08a40.png#height=771&id=ddR0q&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1542&originWidth=2700&originalType=binary∶=1&size=902573&status=done&style=none&width=1350)
 
 #### fuser 找到正在使用某个文件的进程
 
@@ -1388,6 +1390,12 @@ Average:        33059      2048     32077         1
 
 ```bash
 PS4='+$BASH_SOURCE> ' BASH_XTRACEFD=7 bash -xl 7>&2
+```
+
+#### 查看自己的公网出口 IP
+
+```bash
+curl -s ifcfg.cn/echo | python -m json.tool
 ```
 
 #### 实用工具
