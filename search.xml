@@ -423,6 +423,19 @@
       </tags>
   </entry>
   <entry>
+    <title>Envoy 知识汇总</title>
+    <url>/post/111604be.html</url>
+    <content><![CDATA[<h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="编写-Lua-脚本"><a href="#编写-Lua-脚本" class="headerlink" title="编写 Lua 脚本"></a>编写 Lua 脚本</h4><ul>
+<li>一个简单的案例，使用 Lua 脚本为 Http 请求添加了 Authorization 请求头：<a href="https://segmentfault.com/a/1190000020650955" target="_blank" rel="external nofollow noopener noreferrer">https://segmentfault.com/a/1190000020650955</a></li>
+</ul>]]></content>
+      <categories>
+        <category>Envoy</category>
+      </categories>
+      <tags>
+        <tag>Envoy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git 常用命令</title>
     <url>/post/5fddf106.html</url>
     <content><![CDATA[<h4 id="修改历史-commit-信息"><a href="#修改历史-commit-信息" class="headerlink" title="修改历史 commit 信息"></a>修改历史 commit 信息</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase -i HEAD~2</span><br><span class="line">pick -&gt; edit</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure><h4 id="修改-commit-时间"><a href="#修改-commit-时间" class="headerlink" title="修改 commit 时间"></a>修改 commit 时间</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置为当前时间</span><br><span class="line">GIT_COMMITTER_DATE&#x3D;&quot;$(date &#39;+%Y-%m-%d %H:%M:%S&#39;)&quot; git commit --amend --no-edit --date &quot;$(date)&quot;</span><br><span class="line"># 设置为指定时间</span><br><span class="line">GIT_COMMITTER_DATE&#x3D;&quot;2021-03-19 17:54:27 GMT+8&quot; git commit --amend --no-edit --date &quot;2021-03-19 17:54:27 GMT+8&quot;</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -487,19 +500,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>开发工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Envoy 知识汇总</title>
-    <url>/post/111604be.html</url>
-    <content><![CDATA[<h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="编写-Lua-脚本"><a href="#编写-Lua-脚本" class="headerlink" title="编写 Lua 脚本"></a>编写 Lua 脚本</h4><ul>
-<li>一个简单的案例，使用 Lua 脚本为 Http 请求添加了 Authorization 请求头：<a href="https://segmentfault.com/a/1190000020650955" target="_blank" rel="external nofollow noopener noreferrer">https://segmentfault.com/a/1190000020650955</a></li>
-</ul>]]></content>
-      <categories>
-        <category>Envoy</category>
-      </categories>
-      <tags>
-        <tag>Envoy</tag>
       </tags>
   </entry>
   <entry>
