@@ -57,7 +57,7 @@ retry ping invalidserver
 
 #### 检查环境变量是否设置
 
-[https://stackoverflow.com/a/307735](https://stackoverflow.com/a/307735)
+[https://stackoverflow.com/a/307735](https://stackoverflow.com/a/307735)，[https://stackoverflow.com/a/39296723](https://stackoverflow.com/a/39296723)
 
 ```bash
 # -z 检查目标变量值长度是否为零
@@ -78,6 +78,15 @@ MyVar="${DEPLOY_ENV:-default_value}"
 : "${STATE?Need to set STATE}"
 : "${DEST:?Need to set DEST non-empty}"
 [ -z "$STATE" ] && echo "Need to set STATE" && exit 1;
+
+# 或者
+if [[ ! -v DEPLOY_ENV ]]; then
+    echo "DEPLOY_ENV is not set"
+elif [[ -z "$DEPLOY_ENV" ]]; then
+    echo "DEPLOY_ENV is set to the empty string"
+else
+    echo "DEPLOY_ENV has the value: $DEPLOY_ENV"
+fi
 ```
 
 #### 让脚本执行更安全
@@ -314,6 +323,41 @@ $ foo "This is" a test
 This is:a
 ```
 
+#### 获取指定序号后的剩余参数
+
+```bash
+# 一种方式是使用 shift，shifttest.sh 包含如下内容
+#!/bin/bash
+echo $1
+shift
+echo $1 $2
+echo $@
+
+# 执行脚本
+$ shifttest.sh 1 2 3
+
+# 输出
+1
+2 3
+2 3
+
+# 另外可以使用 $@ , r.sh 包含如下内容
+#!/bin/bash
+echo "params only 2    : ${@:2:1}"
+echo "params 2 and 3   : ${@:2:2}"
+echo "params all from 2: ${@:2:99}"
+echo "params all from 2: ${@:2}"
+
+# 执行脚本
+$ r.sh 1 2 3 4 5 6 7 8 9 10
+
+# 输出
+params only 2    : 2
+params 2 and 3   : 2 3
+params all from 2: 2 3 4 5 6 7 8 9 10
+params all from 2: 2 3 4 5 6 7 8 9 10
+```
+
 #### 使用 eval 获取变量值
 
 [https://unix.stackexchange.com/a/23117](https://unix.stackexchange.com/a/23117)
@@ -324,4 +368,12 @@ x=foo
 eval y='$'$x
 echo $y
 10
+```
+
+#### 分割字符串并赋值给多个变量
+
+```bash
+a='111|222|333'
+OIFS=$IFS; IFS="|"; set -- $a; aa=$1;bb=$2;cc=$3; IFS=$OIFS
+echo $aa $bb $cc
 ```
