@@ -4701,18 +4701,6 @@
       </tags>
   </entry>
   <entry>
-    <title>认证与鉴权</title>
-    <url>/post/df65a2b0.html</url>
-    <content><![CDATA[<h4 id="IAM"><a href="#IAM" class="headerlink" title="IAM"></a>IAM</h4><p>可帮助理解 IAM 的博客：<a href="https://blog.gruntwork.io/a-comprehensive-guide-to-authenticating-to-aws-on-the-command-line-63656a686799" target="_blank" rel="external nofollow noopener noreferrer">https://blog.gruntwork.io/a-comprehensive-guide-to-authenticating-to-aws-on-the-command-line-63656a686799</a></p><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4>]]></content>
-      <categories>
-        <category>认证与鉴权</category>
-      </categories>
-      <tags>
-        <tag>认证</tag>
-        <tag>鉴权</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>统一认证中心方案调研</title>
     <url>/post/c851306f.html</url>
     <content><![CDATA[<h4 id="为什么需要认证中心"><a href="#为什么需要认证中心" class="headerlink" title="为什么需要认证中心"></a>为什么需要认证中心</h4><p>认证（Authentication）和授权（Athorization）是企业级服务的基本功能，企业级应用的开发必须考虑到如何使提供的产品与用户已有的认证和授权体系结合起来，更进一步能够基于该体系提供开发接口给其它应用调用。如下图所示，不同的用户可能已经有不同的认证体系，有的用户可能用的是<br>LDAP，这是种比较老的认证方式，SAML 新一些，最新的是<br>OpenID，这些不同的认证后端都应当可以接入到统一认证中心，从而能够更好地管理用户和进行授权。</p><a id="more"></a>
@@ -4790,6 +4778,18 @@
       <tags>
         <tag>Linux</tag>
         <tag>Kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>认证与鉴权</title>
+    <url>/post/df65a2b0.html</url>
+    <content><![CDATA[<h4 id="IAM"><a href="#IAM" class="headerlink" title="IAM"></a>IAM</h4><p>可帮助理解 IAM 的博客：<a href="https://blog.gruntwork.io/a-comprehensive-guide-to-authenticating-to-aws-on-the-command-line-63656a686799" target="_blank" rel="external nofollow noopener noreferrer">https://blog.gruntwork.io/a-comprehensive-guide-to-authenticating-to-aws-on-the-command-line-63656a686799</a></p><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4>]]></content>
+      <categories>
+        <category>认证与鉴权</category>
+      </categories>
+      <tags>
+        <tag>认证</tag>
+        <tag>鉴权</tag>
       </tags>
   </entry>
   <entry>
