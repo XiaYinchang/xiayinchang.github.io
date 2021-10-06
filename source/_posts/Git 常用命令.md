@@ -213,3 +213,28 @@ git checkout c5f567 -- file1/to/restore file2/to/restore
 ```bash
 for repo in $(curl -s --header "PRIVATE-TOKEN: your_private_token" https://<your-host>/api/v4/groups/<group_id> | jq ".projects[].ssh_url_to_repo" | tr -d '"'); do git clone $repo; done;
 ```
+
+#### 设置代理
+
+```go
+git config --global http.proxy http://127.0.0.1:1080
+git config --global http.proxy socks5h://127.0.0.1:1080
+git config --global --unset http.proxy
+//#只对GitHub设置代理
+git config --global http.https://github.com.proxy socks5h://127.0.0.1:1080
+git config --global --unset http.https://github.com.proxy
+```
+
+#### 查看所有分支的最后活跃时间
+
+```bash
+for branch in `git branch -a`;
+do;
+if [ $branch != "*" ]; then;
+    hasAct=$(git log --abbrev-commit --date=relative -1 $branch);
+    lastActivity=$(echo "$hasAct" | grep Date: | sed 's/Date: //');
+    echo "$branch last activity was\033[1;31m$lastActivity\033[0m";
+    echo ""
+fi;
+done;
+```
