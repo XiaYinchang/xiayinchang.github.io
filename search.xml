@@ -493,6 +493,10 @@
 </ul>
 <h4 id="clone-all-projects-in-group"><a href="#clone-all-projects-in-group" class="headerlink" title="clone all projects in group"></a>clone all projects in group</h4><p><a href="https://github.com/gabrie30/ghorg" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/gabrie30/ghorg</a><br>或者</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> repo <span class="keyword">in</span> $(curl -s --header <span class="string">"PRIVATE-TOKEN: your_private_token"</span> https://&lt;your-host&gt;/api/v4/groups/&lt;group_id&gt; | jq <span class="string">".projects[].ssh_url_to_repo"</span> | tr -d <span class="string">'"'</span>); <span class="keyword">do</span> git <span class="built_in">clone</span> <span class="variable">$repo</span>; <span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">git config --global http.proxy http:<span class="comment">//127.0.0.1:1080</span></span><br><span class="line">git config --global http.proxy socks5h:<span class="comment">//127.0.0.1:1080</span></span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line"><span class="comment">//#只对GitHub设置代理</span></span><br><span class="line">git config --global http.https:<span class="comment">//github.com.proxy socks5h://127.0.0.1:1080</span></span><br><span class="line">git config --global --unset http.https:<span class="comment">//github.com.proxy</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="查看所有分支的最后活跃时间"><a href="#查看所有分支的最后活跃时间" class="headerlink" title="查看所有分支的最后活跃时间"></a>查看所有分支的最后活跃时间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> branch <span class="keyword">in</span> `git branch -a`;</span><br><span class="line"><span class="keyword">do</span>;</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$branch</span> != <span class="string">"*"</span> ]; <span class="keyword">then</span>;</span><br><span class="line">    hasAct=$(git <span class="built_in">log</span> --abbrev-commit --date=relative -1 <span class="variable">$branch</span>);</span><br><span class="line">    lastActivity=$(<span class="built_in">echo</span> <span class="string">"<span class="variable">$hasAct</span>"</span> | grep Date: | sed <span class="string">'s/Date: //'</span>);</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$branch</span> last activity was\033[1;31m<span class="variable">$lastActivity</span>\033[0m"</span>;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">""</span></span><br><span class="line"><span class="keyword">fi</span>;</span><br><span class="line"><span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>开发工具</category>
@@ -4390,66 +4394,6 @@
       </tags>
   </entry>
   <entry>
-    <title>喜欢的音乐</title>
-    <url>/post/102c919d.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">04/08/2017</td>
-<td align="center">初始版本，增加’Stories’, ‘万神纪’, ‘手纸 拝启 十五の君’, ‘永遠語り～風ノ歌～’, ‘与君说’, ‘だんご大家族’.</td>
-</tr>
-<tr>
-<td align="center">04/16/2017</td>
-<td align="center">增加“锦鲤抄”。</td>
-</tr>
-</tbody></table><p>本文汇总了一些好听的歌。</p><h3 id="Stories"><a href="#Stories" class="headerlink" title="Stories"></a>Stories</h3><p>All Hail Lelouch !</p><a id="more"></a>
-
-
-<center style="padding:0px;">  <p style="font: bold 20px arial,sans-serif; margin:0px; padding:0px;">All Hail Lelouch !</p>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22805139&auto=0&height=66"></iframe>  </center>
-
-<h3 id="万神纪"><a href="#万神纪" class="headerlink" title="万神纪"></a>万神纪</h3><center style="padding:0px;">    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=459554803&auto=0&height=66"></iframe>   
-<iframe src="https://player.bilibili.com/player.html?aid=8542373" frameborder="no" allowfullscreen="true"></iframe>
-</center> 
-
-<h3 id="锦鲤抄"><a href="#锦鲤抄" class="headerlink" title="锦鲤抄"></a>锦鲤抄</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28188434&auto=0&height=66"></iframe>
-<iframe src="https://player.bilibili.com/player.html?aid=9119029" frameborder="no" allowfullscreen="true"></iframe>
-</center>  
-
-<h3 id="手纸-拝启-十五の君-信-写给十五岁的自己"><a href="#手纸-拝启-十五の君-信-写给十五岁的自己" class="headerlink" title="手纸 拝启 十五の君 (信 写给十五岁的自己)"></a>手纸 拝启 十五の君 (信 写给十五岁的自己)</h3><center style="padding:0px;">
-
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=550667&auto=1&height=66"></iframe>
-</center>
-
-<h3 id="永遠語り～風ノ歌～-永远语-风之歌"><a href="#永遠語り～風ノ歌～-永远语-风之歌" class="headerlink" title="永遠語り～風ノ歌～ (永远语 风之歌)"></a>永遠語り～風ノ歌～ (永远语 风之歌)</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=31168232&auto=0&height=66"></iframe>
-</center>
-
-<h3 id="与君说"><a href="#与君说" class="headerlink" title="与君说"></a>与君说</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=462688968&auto=0&height=66"></iframe>
-<iframe src="https://player.bilibili.com/player.html?aid=7536941" frameborder="no" allowfullscreen="true"></iframe>
-</center>
-
-<h3 id="だんご大家族-团子大家族"><a href="#だんご大家族-团子大家族" class="headerlink" title="だんご大家族 (团子大家族)"></a>だんご大家族 (团子大家族)</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=760533&auto=0&height=66"></iframe>
-</center>
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script>window.onload = window.onresize = function() {  $(".fluid-vids").css({ margin: "0px", padding: "0px", height: "86px"});  $("center>iframe").css({ width: "97%" });  $("center>iframe").height($("center>iframe").width() * 0.60);  $("center>br").remove();}; </script>
-]]></content>
-      <categories>
-        <category>音乐</category>
-      </categories>
-      <tags>
-        <tag>音乐</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>在 Go 中不要拷贝锁</title>
     <url>/post/6b348626.html</url>
     <content><![CDATA[<h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://eli.thegreenplace.net/2018/beware-of-copying-mutexes-in-go/" target="_blank" rel="external nofollow noopener noreferrer">Beware of copying mutexes in Go</a></p><p>假设我们定义了一个包含一个映射表（ map）的结构体，我们想要使用结构体的方法去修改映射表的内容，如下是一个例子：</p><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Container <span class="keyword">struct</span> &#123;</span><br><span class="line">  counters <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Container)</span> <span class="title">inc</span><span class="params">(name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  c.counters[name]++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  c := Container&#123;counters: <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"a"</span>: <span class="number">0</span>, <span class="string">"b"</span>: <span class="number">0</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line">  doIncrement := <span class="function"><span class="keyword">func</span><span class="params">(name <span class="keyword">string</span>, n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">      c.inc(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  doIncrement(<span class="string">"a"</span>, <span class="number">100000</span>)</span><br><span class="line"></span><br><span class="line">  fmt.Println(c.counters)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -4548,6 +4492,66 @@
         <tag>Linux</tag>
         <tag>存储</tag>
         <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>喜欢的音乐</title>
+    <url>/post/102c919d.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">04/08/2017</td>
+<td align="center">初始版本，增加’Stories’, ‘万神纪’, ‘手纸 拝启 十五の君’, ‘永遠語り～風ノ歌～’, ‘与君说’, ‘だんご大家族’.</td>
+</tr>
+<tr>
+<td align="center">04/16/2017</td>
+<td align="center">增加“锦鲤抄”。</td>
+</tr>
+</tbody></table><p>本文汇总了一些好听的歌。</p><h3 id="Stories"><a href="#Stories" class="headerlink" title="Stories"></a>Stories</h3><p>All Hail Lelouch !</p><a id="more"></a>
+
+
+<center style="padding:0px;">  <p style="font: bold 20px arial,sans-serif; margin:0px; padding:0px;">All Hail Lelouch !</p>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22805139&auto=0&height=66"></iframe>  </center>
+
+<h3 id="万神纪"><a href="#万神纪" class="headerlink" title="万神纪"></a>万神纪</h3><center style="padding:0px;">    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=459554803&auto=0&height=66"></iframe>   
+<iframe src="https://player.bilibili.com/player.html?aid=8542373" frameborder="no" allowfullscreen="true"></iframe>
+</center> 
+
+<h3 id="锦鲤抄"><a href="#锦鲤抄" class="headerlink" title="锦鲤抄"></a>锦鲤抄</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28188434&auto=0&height=66"></iframe>
+<iframe src="https://player.bilibili.com/player.html?aid=9119029" frameborder="no" allowfullscreen="true"></iframe>
+</center>  
+
+<h3 id="手纸-拝启-十五の君-信-写给十五岁的自己"><a href="#手纸-拝启-十五の君-信-写给十五岁的自己" class="headerlink" title="手纸 拝启 十五の君 (信 写给十五岁的自己)"></a>手纸 拝启 十五の君 (信 写给十五岁的自己)</h3><center style="padding:0px;">
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=550667&auto=1&height=66"></iframe>
+</center>
+
+<h3 id="永遠語り～風ノ歌～-永远语-风之歌"><a href="#永遠語り～風ノ歌～-永远语-风之歌" class="headerlink" title="永遠語り～風ノ歌～ (永远语 风之歌)"></a>永遠語り～風ノ歌～ (永远语 风之歌)</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=31168232&auto=0&height=66"></iframe>
+</center>
+
+<h3 id="与君说"><a href="#与君说" class="headerlink" title="与君说"></a>与君说</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=462688968&auto=0&height=66"></iframe>
+<iframe src="https://player.bilibili.com/player.html?aid=7536941" frameborder="no" allowfullscreen="true"></iframe>
+</center>
+
+<h3 id="だんご大家族-团子大家族"><a href="#だんご大家族-团子大家族" class="headerlink" title="だんご大家族 (团子大家族)"></a>だんご大家族 (团子大家族)</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=760533&auto=0&height=66"></iframe>
+</center>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>window.onload = window.onresize = function() {  $(".fluid-vids").css({ margin: "0px", padding: "0px", height: "86px"});  $("center>iframe").css({ width: "97%" });  $("center>iframe").height($("center>iframe").width() * 0.60);  $("center>br").remove();}; </script>
+]]></content>
+      <categories>
+        <category>音乐</category>
+      </categories>
+      <tags>
+        <tag>音乐</tag>
       </tags>
   </entry>
   <entry>
