@@ -97,6 +97,20 @@ Checking prometheus.yml
   line 3: field static_configs not found in type config.plain
 ```
 
+#### 通过指定标签列出所有可用的监控指标
+
+```bash
+sum by(__name__)({app="bar"})
+```
+
+#### PromQL 基础使用
+
+```bash
+# 一个标签同时满足多个匹配条件
+varnish_main_client_req{namespace=~".*3.*",namespace!~".*env4.*"}
+```
+
 ### 参考资料
 
 1. [A Deep Dive into Kubernetes Metrics](https://blog.freshtracks.io/a-deep-dive-into-kubernetes-metrics-b190cc97f0f6)
+1. [https://stackoverflow.com/questions/49135746/prometheus-grouping-metrics-by-metric-names](https://stackoverflow.com/questions/49135746/prometheus-grouping-metrics-by-metric-names)
