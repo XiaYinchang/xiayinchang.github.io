@@ -1542,8 +1542,13 @@
 <h4 id="校验配置的有效性"><a href="#校验配置的有效性" class="headerlink" title="校验配置的有效性"></a>校验配置的有效性</h4><p>从 <a href="https://github.com/prometheus/prometheus/releases" target="_blank" rel="external nofollow noopener noreferrer">Prometheus 仓库</a>下载的可执行文件包含了 promtool 工具用于校验配置和 rule 的有效性。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat &gt;prometheus.yml &lt;&lt;<span class="string">'EOF'</span></span><br><span class="line">scrape_configs:</span><br><span class="line">- job_name: prometehus</span><br><span class="line">static_configs:</span><br><span class="line">  - targets: [<span class="string">'localhost:9090'</span>]</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">./promtool check config prometheus.yml</span><br><span class="line">Checking prometheus.yml</span><br><span class="line">  FAILED: parsing YAML file prometheus.yml: yaml: unmarshal errors:</span><br><span class="line">  line 3: field static_configs not found <span class="keyword">in</span> <span class="built_in">type</span> config.plain</span><br></pre></td></tr></table></figure>
 
+<h4 id="通过指定标签列出所有可用的监控指标"><a href="#通过指定标签列出所有可用的监控指标" class="headerlink" title="通过指定标签列出所有可用的监控指标"></a>通过指定标签列出所有可用的监控指标</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sum by(__name__)(&#123;app=<span class="string">"bar"</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="PromQL-基础使用"><a href="#PromQL-基础使用" class="headerlink" title="PromQL 基础使用"></a>PromQL 基础使用</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 一个标签同时满足多个匹配条件</span></span><br><span class="line">varnish_main_client_req&#123;namespace=~<span class="string">".*3.*"</span>,namespace!~<span class="string">".*env4.*"</span>&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
 <li><a href="https://blog.freshtracks.io/a-deep-dive-into-kubernetes-metrics-b190cc97f0f6" target="_blank" rel="external nofollow noopener noreferrer">A Deep Dive into Kubernetes Metrics</a></li>
+<li><a href="https://stackoverflow.com/questions/49135746/prometheus-grouping-metrics-by-metric-names" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/49135746/prometheus-grouping-metrics-by-metric-names</a></li>
 </ol>
 ]]></content>
       <categories>
