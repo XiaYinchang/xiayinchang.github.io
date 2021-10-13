@@ -38,6 +38,8 @@ kubectl get deployment nginx-deployment -o jsonpath='{.spec.replicas}'
 kubectl top pod --no-headers --all-namespaces | sort --reverse --key 4 --numeric
 # watch pod 变化，并带上时间戳
 kubectl get pods --watch-only | while read line ; do echo -e "$(date +"%Y-%m-%d %H:%M:%S.%3N")\t pods\t $line" ; done
+# 重启容器
+kubectl rollout restart deployment your_deployment_name
 ```
 
 #### 列出命名空间下所有资源对象
@@ -755,7 +757,7 @@ kill 1
 
 参考：[https://developer.aliyun.com/article/742572](https://developer.aliyun.com/article/742572)，[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection),[https://www.alibabacloud.com/help/zh/doc-detail/160384.htm](https://www.alibabacloud.com/help/zh/doc-detail/160384.htm)
 kube-apiserver
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#align=left&display=inline&height=824&margin=%5Bobject%20Object%5D&name=image.png&originHeight=824&originWidth=983&size=117967&status=done&style=none&width=983)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#height=824&id=iJVjL&margin=%5Bobject%20Object%5D&name=image.png&originHeight=824&originWidth=983&originalType=binary∶=1&size=117967&status=done&style=none&width=983)
 
 ```
 --service-account-issuer=kubernetes.default.svc \
@@ -765,7 +767,7 @@ kube-apiserver
 ```
 
 kube-controller-manager
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#align=left&display=inline&height=363&margin=%5Bobject%20Object%5D&name=image.png&originHeight=363&originWidth=924&size=65129&status=done&style=none&width=924)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#height=363&id=FIfGF&margin=%5Bobject%20Object%5D&name=image.png&originHeight=363&originWidth=924&originalType=binary∶=1&size=65129&status=done&style=none&width=924)
 
 ```
 --controllers=*,bootstrapsigner,tokencleaner,root-ca-cert-publisher \
@@ -1072,12 +1074,33 @@ go tool pprof -seconds=60 -raw -output=kubelet.pprof http://127.0.0.1:8001/api/v
 
 一种方案是使用 PostStart 脚本去调用 Container 的健康检查接口，直到容器运行正常后终止脚本，其能够工作的前提是：假如容器的  `PostStart` hook 没有正确的返回，kubelet 便不会去创建下一个容器。这种方式是有些 hack 的，而且也无法保证一直能够使用，这不是 kubernetes 保证不会变更的方式。参考：[https://mp.weixin.qq.com/s/VulB3tiXTRAjYsuWxgU1Zg](https://mp.weixin.qq.com/s/VulB3tiXTRAjYsuWxgU1Zg)。
 
+#### 通过 patch 修改 service 的 status 字段
+
+```bash
+# cat /tmp/json
+{
+    "status": {
+      "loadBalancer": {
+        "ingress": [
+          {
+            "ip": "10.5.6.79"
+          }
+        ]
+      }
+    }
+}
+
+curl --request PATCH --data "$(cat /tmp/json)" -H "Content-Type:application/merge-patch+json"
+http://localhost:8080/api/v1/namespaces/gitlab/services/git-cp/status
+
+```
+
 #### 十二因素应用
 
 - 十二因素的提出早于 Kubernetes 的大规模使用，但是一些因素和基于 Kubernetes 的服务开发部署有着很好的吻合。可参考： [https://skyao.io/learning-cloudnative/factor/](https://skyao.io/learning-cloudnative/factor/) ，[https://blog.csdn.net/zeb_perfect/article/details/52536411](https://blog.csdn.net/zeb_perfect/article/details/52536411)， [https://12factor.net/](https://12factor.net/)
 - 关于基准代码的理解：每个应用应该使用单独的代码仓库，如果多个应用有需要共享的基准代码，则应当将这部分共享代码组织为一个单独的代码仓库。
   | Factor | 描述 |
-  | :---: | :---: |
+  | --- | --- |
   | Codebase
   基准代码 | One codebase tracked in revision control, many deploys
   一份基准代码，多份部署 |
