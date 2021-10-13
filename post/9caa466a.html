@@ -271,7 +271,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>30k</span>
+              <span>31k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -291,7 +291,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用原始 URL 获取资源信息</span></span><br><span class="line">kubectl get --raw <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span><br><span class="line"><span class="comment"># 定制输出列</span></span><br><span class="line">kubectl get nodes -o=custom-columns=NAME:.metadata.name,TAINTS:.spec.taints</span><br><span class="line"><span class="comment"># 删除所有 evicted pods</span></span><br><span class="line">kubectl get po --all-namespaces --field-selector <span class="string">'status.phase!=Running'</span> -o json | kubectl delete -f -</span><br><span class="line">kubectl get pods --all-namespaces | grep Evicted | awk <span class="string">'&#123;print $2 " --namespace=" $1&#125;'</span> | xargs kubectl delete pod</span><br><span class="line">kubectl get pods --all-namespaces | grep -E <span class="string">'ImagePullBackOff|ErrImagePull|Evicted'</span> | awk <span class="string">'&#123;print $2 " --namespace=" $1&#125;'</span> | xargs kubectl delete pod</span><br><span class="line">kubectl get pods -n rook-ceph | grep -i Evicted | sed <span class="string">'s/\s\s*/ /g'</span> |cut -d<span class="string">" "</span> -f1 | xargs kubectl delete pod -n rook-ceph --force --grace-period=0</span><br><span class="line"><span class="comment"># 列出所有位于指定节点的 pod</span></span><br><span class="line">kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=10.25.150.64</span><br><span class="line"><span class="comment"># 从 cronjob 手动触发一个 job</span></span><br><span class="line">kubectl create job tmp-daily-report-job-02 --from=cronjob/job-1119051325-app-v1-0  -n data-infra</span><br><span class="line"><span class="comment"># 更新镜像</span></span><br><span class="line">kubectl <span class="built_in">set</span> image deployment/my-deployment mycontainer=myimage:latest</span><br><span class="line"><span class="comment"># 获取某个字段信息</span></span><br><span class="line">kubectl get deployment nginx-deployment -o jsonpath=<span class="string">'&#123;.spec.replicas&#125;'</span></span><br><span class="line"><span class="comment"># 按实际内存使用量排序</span></span><br><span class="line">kubectl top pod --no-headers --all-namespaces | sort --reverse --key 4 --numeric</span><br><span class="line"><span class="comment"># watch pod 变化，并带上时间戳</span></span><br><span class="line">kubectl get pods --watch-only | <span class="keyword">while</span> <span class="built_in">read</span> line ; <span class="keyword">do</span> <span class="built_in">echo</span> -e <span class="string">"<span class="variable">$(date +"%Y-%m-%d %H:%M:%S.%3N")</span>\t pods\t <span class="variable">$line</span>"</span> ; <span class="keyword">done</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+        <h4 id="kubectl"><a href="#kubectl" class="headerlink" title="kubectl"></a>kubectl</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用原始 URL 获取资源信息</span></span><br><span class="line">kubectl get --raw <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span><br><span class="line"><span class="comment"># 定制输出列</span></span><br><span class="line">kubectl get nodes -o=custom-columns=NAME:.metadata.name,TAINTS:.spec.taints</span><br><span class="line"><span class="comment"># 删除所有 evicted pods</span></span><br><span class="line">kubectl get po --all-namespaces --field-selector <span class="string">'status.phase!=Running'</span> -o json | kubectl delete -f -</span><br><span class="line">kubectl get pods --all-namespaces | grep Evicted | awk <span class="string">'&#123;print $2 " --namespace=" $1&#125;'</span> | xargs kubectl delete pod</span><br><span class="line">kubectl get pods --all-namespaces | grep -E <span class="string">'ImagePullBackOff|ErrImagePull|Evicted'</span> | awk <span class="string">'&#123;print $2 " --namespace=" $1&#125;'</span> | xargs kubectl delete pod</span><br><span class="line">kubectl get pods -n rook-ceph | grep -i Evicted | sed <span class="string">'s/\s\s*/ /g'</span> |cut -d<span class="string">" "</span> -f1 | xargs kubectl delete pod -n rook-ceph --force --grace-period=0</span><br><span class="line"><span class="comment"># 列出所有位于指定节点的 pod</span></span><br><span class="line">kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=10.25.150.64</span><br><span class="line"><span class="comment"># 从 cronjob 手动触发一个 job</span></span><br><span class="line">kubectl create job tmp-daily-report-job-02 --from=cronjob/job-1119051325-app-v1-0  -n data-infra</span><br><span class="line"><span class="comment"># 更新镜像</span></span><br><span class="line">kubectl <span class="built_in">set</span> image deployment/my-deployment mycontainer=myimage:latest</span><br><span class="line"><span class="comment"># 获取某个字段信息</span></span><br><span class="line">kubectl get deployment nginx-deployment -o jsonpath=<span class="string">'&#123;.spec.replicas&#125;'</span></span><br><span class="line"><span class="comment"># 按实际内存使用量排序</span></span><br><span class="line">kubectl top pod --no-headers --all-namespaces | sort --reverse --key 4 --numeric</span><br><span class="line"><span class="comment"># watch pod 变化，并带上时间戳</span></span><br><span class="line">kubectl get pods --watch-only | <span class="keyword">while</span> <span class="built_in">read</span> line ; <span class="keyword">do</span> <span class="built_in">echo</span> -e <span class="string">"<span class="variable">$(date +"%Y-%m-%d %H:%M:%S.%3N")</span>\t pods\t <span class="variable">$line</span>"</span> ; <span class="keyword">done</span></span><br><span class="line"><span class="comment"># 重启容器</span></span><br><span class="line">kubectl rollout restart deployment your_deployment_name</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 <h4 id="列出命名空间下所有资源对象"><a href="#列出命名空间下所有资源对象" class="headerlink" title="列出命名空间下所有资源对象"></a>列出命名空间下所有资源对象</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found -n default</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line"><span class="keyword">function</span> kubectlgetall &#123;</span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> $(kubectl api-resources --verbs=list --namespaced -o name | grep -v <span class="string">"events.events.k8s.io"</span> | grep -v <span class="string">"events"</span> | sort | uniq); <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Resource:"</span> <span class="variable">$i</span></span><br><span class="line">    kubectl -n <span class="variable">$&#123;1&#125;</span> get --ignore-not-found <span class="variable">$&#123;i&#125;</span></span><br><span class="line">  <span class="keyword">done</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -553,158 +553,160 @@
 
 <h4 id="Deployment-中使用-PVC"><a href="#Deployment-中使用-PVC" class="headerlink" title="Deployment 中使用 PVC"></a>Deployment 中使用 PVC</h4><p>一般来讲 Deployment 应当用来部署无状态应用，需要挂载 PVC 时最好使用 StatefulSet。如果 Deployment 使用了 ReadWriteOnce 的 PVC （块存储），在滚动更新时会因为需要先拉起新的 Pod 再终止旧 Pod 造成同时挂载该 PVC 的情况，这是不允许，所以会一直卡在这个状态。如果想要这样使用，可以把更新策略改成 Recreate ，这样会先删除旧 Pod 再建新 Pod，这必然导致业务中断。另一种方案是使用 ReadWriteMany 的 PVC（文件或对象存储），可以允许多 Pod 同时挂载。</p>
 <h4 id="让-Pod-中的容器按顺序启动"><a href="#让-Pod-中的容器按顺序启动" class="headerlink" title="让 Pod 中的容器按顺序启动"></a>让 Pod 中的容器按顺序启动</h4><p>一种方案是使用 PostStart 脚本去调用 Container 的健康检查接口，直到容器运行正常后终止脚本，其能够工作的前提是：假如容器的  <code>PostStart</code> hook 没有正确的返回，kubelet 便不会去创建下一个容器。这种方式是有些 hack 的，而且也无法保证一直能够使用，这不是 kubernetes 保证不会变更的方式。参考：<a href="https://mp.weixin.qq.com/s/VulB3tiXTRAjYsuWxgU1Zg" target="_blank" rel="external nofollow noopener noreferrer">https://mp.weixin.qq.com/s/VulB3tiXTRAjYsuWxgU1Zg</a>。</p>
+<h4 id="通过-patch-修改-service-的-status-字段"><a href="#通过-patch-修改-service-的-status-字段" class="headerlink" title="通过 patch 修改 service 的 status 字段"></a>通过 patch 修改 service 的 status 字段</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /tmp/json</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"status"</span>: &#123;</span><br><span class="line">      <span class="string">"loadBalancer"</span>: &#123;</span><br><span class="line">        <span class="string">"ingress"</span>: [</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="string">"ip"</span>: <span class="string">"10.5.6.79"</span></span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">curl --request PATCH --data <span class="string">"<span class="variable">$(cat /tmp/json)</span>"</span> -H <span class="string">"Content-Type:application/merge-patch+json"</span></span><br><span class="line">http://localhost:8080/api/v1/namespaces/gitlab/services/git-cp/status</span><br></pre></td></tr></table></figure>
+
 <h4 id="十二因素应用"><a href="#十二因素应用" class="headerlink" title="十二因素应用"></a>十二因素应用</h4><ul>
 <li>十二因素的提出早于 Kubernetes 的大规模使用，但是一些因素和基于 Kubernetes 的服务开发部署有着很好的吻合。可参考： <a href="https://skyao.io/learning-cloudnative/factor/" target="_blank" rel="external nofollow noopener noreferrer">https://skyao.io/learning-cloudnative/factor/</a> ，<a href="https://blog.csdn.net/zeb_perfect/article/details/52536411" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/zeb_perfect/article/details/52536411</a>， <a href="https://12factor.net/" target="_blank" rel="external nofollow noopener noreferrer">https://12factor.net/</a></li>
 <li>关于基准代码的理解：每个应用应该使用单独的代码仓库，如果多个应用有需要共享的基准代码，则应当将这部分共享代码组织为一个单独的代码仓库。<table>
 <thead>
 <tr>
-<th align="center">Factor</th>
-<th align="center">描述</th>
+<th>Factor</th>
+<th>描述</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">Codebase</td>
-<td align="center"></td>
+<td>Codebase</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">基准代码</td>
-<td align="center">One codebase tracked in revision control, many deploys</td>
+<td>基准代码</td>
+<td>One codebase tracked in revision control, many deploys</td>
 </tr>
 <tr>
-<td align="center">一份基准代码，多份部署</td>
-<td align="center"></td>
+<td>一份基准代码，多份部署</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Dependencies</td>
-<td align="center"></td>
+<td>Dependencies</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">依赖</td>
-<td align="center">Explicitly declare and isolate dependencies</td>
+<td>依赖</td>
+<td>Explicitly declare and isolate dependencies</td>
 </tr>
 <tr>
-<td align="center">显式声明依赖关系</td>
-<td align="center"></td>
+<td>显式声明依赖关系</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Config</td>
-<td align="center"></td>
+<td>Config</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">配置</td>
-<td align="center">Store config in the environment</td>
+<td>配置</td>
+<td>Store config in the environment</td>
 </tr>
 <tr>
-<td align="center">在环境中存储配置</td>
-<td align="center"></td>
+<td>在环境中存储配置</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Backing services</td>
-<td align="center"></td>
+<td>Backing services</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">后端服务</td>
-<td align="center">Treat backing services as attached resources</td>
+<td>后端服务</td>
+<td>Treat backing services as attached resources</td>
 </tr>
 <tr>
-<td align="center">把后端服务当作附加资源</td>
-<td align="center"></td>
+<td>把后端服务当作附加资源</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Build, release, run</td>
-<td align="center"></td>
+<td>Build, release, run</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">构建，发布，运行</td>
-<td align="center">Strictly separate build and run stages</td>
+<td>构建，发布，运行</td>
+<td>Strictly separate build and run stages</td>
 </tr>
 <tr>
-<td align="center">严格分离构建和运行</td>
-<td align="center"></td>
+<td>严格分离构建和运行</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Processes</td>
-<td align="center"></td>
+<td>Processes</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">进程</td>
-<td align="center">Execute the app as one or more stateless processes</td>
+<td>进程</td>
+<td>Execute the app as one or more stateless processes</td>
 </tr>
 <tr>
-<td align="center">以一个或多个无状态进程运行应用</td>
-<td align="center"></td>
+<td>以一个或多个无状态进程运行应用</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Port binding</td>
-<td align="center"></td>
+<td>Port binding</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">端口绑定</td>
-<td align="center">Export services via port binding</td>
+<td>端口绑定</td>
+<td>Export services via port binding</td>
 </tr>
 <tr>
-<td align="center">通过端口绑定提供服务</td>
-<td align="center"></td>
+<td>通过端口绑定提供服务</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Concurrency</td>
-<td align="center"></td>
+<td>Concurrency</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">并发</td>
-<td align="center">Scale out via the process model</td>
+<td>并发</td>
+<td>Scale out via the process model</td>
 </tr>
 <tr>
-<td align="center">通过进程模型进行扩展</td>
-<td align="center"></td>
+<td>通过进程模型进行扩展</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Disposability</td>
-<td align="center"></td>
+<td>Disposability</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">易处理</td>
-<td align="center">Maximize robustness with fast startup and graceful shutdown</td>
+<td>易处理</td>
+<td>Maximize robustness with fast startup and graceful shutdown</td>
 </tr>
 <tr>
-<td align="center">快速启动和优雅终止可最大化健壮性</td>
-<td align="center"></td>
+<td>快速启动和优雅终止可最大化健壮性</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Dev/prod parity</td>
-<td align="center"></td>
+<td>Dev/prod parity</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">开发环境与线上环境等价</td>
-<td align="center">Keep development, staging, and production as similar as possible</td>
+<td>开发环境与线上环境等价</td>
+<td>Keep development, staging, and production as similar as possible</td>
 </tr>
 <tr>
-<td align="center">尽可能的保持开发，预发布，线上环境相同</td>
-<td align="center"></td>
+<td>尽可能的保持开发，预发布，线上环境相同</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Logs</td>
-<td align="center"></td>
+<td>Logs</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">日志</td>
-<td align="center">Treat logs as event streams</td>
+<td>日志</td>
+<td>Treat logs as event streams</td>
 </tr>
 <tr>
-<td align="center">把日志当作事件流</td>
-<td align="center"></td>
+<td>把日志当作事件流</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">Admin processes</td>
-<td align="center"></td>
+<td>Admin processes</td>
+<td></td>
 </tr>
 <tr>
-<td align="center">管理进程</td>
-<td align="center">Run admin/management tasks as one-off processes</td>
+<td>管理进程</td>
+<td>Run admin/management tasks as one-off processes</td>
 </tr>
 <tr>
-<td align="center">后台管理任务当作一次性进程运行</td>
-<td align="center"></td>
+<td>后台管理任务当作一次性进程运行</td>
+<td></td>
 </tr>
 </tbody></table>
 </li>
@@ -731,7 +733,7 @@
       <div class="popular-posts-title"><a href="/post/e8bac896.html" rel="bookmark">Ceph 常用操作</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/post/5fddf106.html" rel="bookmark">Git 常用命令</a></div>
+      <div class="popular-posts-title"><a href="/post/d830a7d8.html" rel="bookmark">IO 同步、异步及阻塞、非阻塞</a></div>
     </li>
   </ul>
 
@@ -832,7 +834,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#kubectl"><span class="nav-number">1.</span> <span class="nav-text">kubectl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列出命名空间下所有资源对象"><span class="nav-number">2.</span> <span class="nav-text">列出命名空间下所有资源对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Patch-更新的三种操作"><span class="nav-number">3.</span> <span class="nav-text">Patch 更新的三种操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#taint"><span class="nav-number">4.</span> <span class="nav-text">taint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toleration"><span class="nav-number">5.</span> <span class="nav-text">toleration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">6.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#drain-node"><span class="nav-number">7.</span> <span class="nav-text">drain node</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nodeName-nodeSelector-Affinity"><span class="nav-number">8.</span> <span class="nav-text">nodeName&#x2F;nodeSelector&#x2F;Affinity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑上的隔离"><span class="nav-number">9.</span> <span class="nav-text">逻辑上的隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#节点状态和-Taint"><span class="nav-number">10.</span> <span class="nav-text">节点状态和 Taint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-go-client"><span class="nav-number">11.</span> <span class="nav-text">Kubernetes-go-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书"><span class="nav-number">12.</span> <span class="nav-text">证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubeadm"><span class="nav-number">13.</span> <span class="nav-text">Kubeadm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Helm"><span class="nav-number">14.</span> <span class="nav-text">Helm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加自定义-DNS-记录"><span class="nav-number">15.</span> <span class="nav-text">添加自定义 DNS 记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向容器添加-hosts-记录"><span class="nav-number">16.</span> <span class="nav-text">向容器添加 hosts 记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ingress-nginx"><span class="nav-number">17.</span> <span class="nav-text">ingress-nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CronJob-与-Job"><span class="nav-number">18.</span> <span class="nav-text">CronJob 与 Job</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#field-selector-和-labels-selector"><span class="nav-number">19.</span> <span class="nav-text">field-selector 和 labels-selector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-subPath-挂载-Volume"><span class="nav-number">20.</span> <span class="nav-text">使用 subPath 挂载 Volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建并使用-imagePullSecrets"><span class="nav-number">21.</span> <span class="nav-text">创建并使用 imagePullSecrets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sealos-部署-Kubernetes"><span class="nav-number">22.</span> <span class="nav-text">sealos 部署 Kubernetes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅地删除节点"><span class="nav-number">23.</span> <span class="nav-text">优雅地删除节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重启容器而非删除"><span class="nav-number">24.</span> <span class="nav-text">重启容器而非删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ServiceAccountTokenVolumeProjection-生成有时效的-Token"><span class="nav-number">25.</span> <span class="nav-text">ServiceAccountTokenVolumeProjection 生成有时效的 Token</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-controller-manager-10252-port-in-use"><span class="nav-number">26.</span> <span class="nav-text">kube-controller-manager 10252 port in use</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kubelet-启动时持续报错-node-not-found"><span class="nav-number">27.</span> <span class="nav-text">kubelet 启动时持续报错 node not found</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译带-debug-信息的-kubernetes-组件"><span class="nav-number">28.</span> <span class="nav-text">编译带 debug 信息的 kubernetes 组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#subpath-挂载-configmap-文件不能自动更新的问题"><span class="nav-number">29.</span> <span class="nav-text">subpath 挂载 configmap 文件不能自动更新的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OOM-时-PreStop-钩子无法发挥作用"><span class="nav-number">30.</span> <span class="nav-text">OOM 时 PreStop 钩子无法发挥作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在容器内修改系统参数"><span class="nav-number">31.</span> <span class="nav-text">在容器内修改系统参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-SecurityContext-和-Container-SecurityContext"><span class="nav-number">32.</span> <span class="nav-text">Pod SecurityContext 和 Container SecurityContext</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DaemonSet-的调度"><span class="nav-number">33.</span> <span class="nav-text">DaemonSet 的调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-终止信息"><span class="nav-number">34.</span> <span class="nav-text">Pod 终止信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-log-等级"><span class="nav-number">35.</span> <span class="nav-text">Kubernetes log 等级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#coredns"><span class="nav-number">36.</span> <span class="nav-text">coredns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#让-Pod-在节点上均匀分布"><span class="nav-number">37.</span> <span class="nav-text">让 Pod 在节点上均匀分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#升级-Kubernetes-组件和-etcd"><span class="nav-number">38.</span> <span class="nav-text">升级 Kubernetes 组件和 etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看-Kubernetes-每个版本的发布日志"><span class="nav-number">39.</span> <span class="nav-text">查看 Kubernetes 每个版本的发布日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为系统关键组件设置高优先级"><span class="nav-number">40.</span> <span class="nav-text">为系统关键组件设置高优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-proxy-的-nftables-实现"><span class="nav-number">41.</span> <span class="nav-text">kube-proxy 的 nftables 实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Service-Topology"><span class="nav-number">42.</span> <span class="nav-text">Service Topology</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-Conditions"><span class="nav-number">43.</span> <span class="nav-text">Node Conditions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多租户的思考"><span class="nav-number">44.</span> <span class="nav-text">多租户的思考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除命名空间卡在-Terminating"><span class="nav-number">45.</span> <span class="nav-text">删除命名空间卡在 Terminating</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Containerd-导出镜像"><span class="nav-number">46.</span> <span class="nav-text">Containerd 导出镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-创建过程简析"><span class="nav-number">47.</span> <span class="nav-text">Pod 创建过程简析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Liveness-Readiness-and-Startup-Probes"><span class="nav-number">48.</span> <span class="nav-text">Liveness, Readiness and Startup Probes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-的删除流程"><span class="nav-number">49.</span> <span class="nav-text">Pod 的删除流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-与-Container-状态"><span class="nav-number">50.</span> <span class="nav-text">Pod 与 Container 状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日志收集"><span class="nav-number">51.</span> <span class="nav-text">日志收集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#已用内存的计算"><span class="nav-number">52.</span> <span class="nav-text">已用内存的计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取-kubelet-profile"><span class="nav-number">53.</span> <span class="nav-text">获取 kubelet profile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Deployment-中使用-PVC"><span class="nav-number">54.</span> <span class="nav-text">Deployment 中使用 PVC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#让-Pod-中的容器按顺序启动"><span class="nav-number">55.</span> <span class="nav-text">让 Pod 中的容器按顺序启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#十二因素应用"><span class="nav-number">56.</span> <span class="nav-text">十二因素应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#书籍"><span class="nav-number">57.</span> <span class="nav-text">书籍</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#kubectl"><span class="nav-number">1.</span> <span class="nav-text">kubectl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列出命名空间下所有资源对象"><span class="nav-number">2.</span> <span class="nav-text">列出命名空间下所有资源对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Patch-更新的三种操作"><span class="nav-number">3.</span> <span class="nav-text">Patch 更新的三种操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#taint"><span class="nav-number">4.</span> <span class="nav-text">taint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toleration"><span class="nav-number">5.</span> <span class="nav-text">toleration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#etcd"><span class="nav-number">6.</span> <span class="nav-text">etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#drain-node"><span class="nav-number">7.</span> <span class="nav-text">drain node</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nodeName-nodeSelector-Affinity"><span class="nav-number">8.</span> <span class="nav-text">nodeName&#x2F;nodeSelector&#x2F;Affinity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑上的隔离"><span class="nav-number">9.</span> <span class="nav-text">逻辑上的隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#节点状态和-Taint"><span class="nav-number">10.</span> <span class="nav-text">节点状态和 Taint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-go-client"><span class="nav-number">11.</span> <span class="nav-text">Kubernetes-go-client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书"><span class="nav-number">12.</span> <span class="nav-text">证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubeadm"><span class="nav-number">13.</span> <span class="nav-text">Kubeadm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Helm"><span class="nav-number">14.</span> <span class="nav-text">Helm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加自定义-DNS-记录"><span class="nav-number">15.</span> <span class="nav-text">添加自定义 DNS 记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向容器添加-hosts-记录"><span class="nav-number">16.</span> <span class="nav-text">向容器添加 hosts 记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ingress-nginx"><span class="nav-number">17.</span> <span class="nav-text">ingress-nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CronJob-与-Job"><span class="nav-number">18.</span> <span class="nav-text">CronJob 与 Job</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#field-selector-和-labels-selector"><span class="nav-number">19.</span> <span class="nav-text">field-selector 和 labels-selector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-subPath-挂载-Volume"><span class="nav-number">20.</span> <span class="nav-text">使用 subPath 挂载 Volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建并使用-imagePullSecrets"><span class="nav-number">21.</span> <span class="nav-text">创建并使用 imagePullSecrets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sealos-部署-Kubernetes"><span class="nav-number">22.</span> <span class="nav-text">sealos 部署 Kubernetes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优雅地删除节点"><span class="nav-number">23.</span> <span class="nav-text">优雅地删除节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重启容器而非删除"><span class="nav-number">24.</span> <span class="nav-text">重启容器而非删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ServiceAccountTokenVolumeProjection-生成有时效的-Token"><span class="nav-number">25.</span> <span class="nav-text">ServiceAccountTokenVolumeProjection 生成有时效的 Token</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-controller-manager-10252-port-in-use"><span class="nav-number">26.</span> <span class="nav-text">kube-controller-manager 10252 port in use</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kubelet-启动时持续报错-node-not-found"><span class="nav-number">27.</span> <span class="nav-text">kubelet 启动时持续报错 node not found</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译带-debug-信息的-kubernetes-组件"><span class="nav-number">28.</span> <span class="nav-text">编译带 debug 信息的 kubernetes 组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#subpath-挂载-configmap-文件不能自动更新的问题"><span class="nav-number">29.</span> <span class="nav-text">subpath 挂载 configmap 文件不能自动更新的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OOM-时-PreStop-钩子无法发挥作用"><span class="nav-number">30.</span> <span class="nav-text">OOM 时 PreStop 钩子无法发挥作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在容器内修改系统参数"><span class="nav-number">31.</span> <span class="nav-text">在容器内修改系统参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-SecurityContext-和-Container-SecurityContext"><span class="nav-number">32.</span> <span class="nav-text">Pod SecurityContext 和 Container SecurityContext</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DaemonSet-的调度"><span class="nav-number">33.</span> <span class="nav-text">DaemonSet 的调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-终止信息"><span class="nav-number">34.</span> <span class="nav-text">Pod 终止信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kubernetes-log-等级"><span class="nav-number">35.</span> <span class="nav-text">Kubernetes log 等级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#coredns"><span class="nav-number">36.</span> <span class="nav-text">coredns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#让-Pod-在节点上均匀分布"><span class="nav-number">37.</span> <span class="nav-text">让 Pod 在节点上均匀分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#升级-Kubernetes-组件和-etcd"><span class="nav-number">38.</span> <span class="nav-text">升级 Kubernetes 组件和 etcd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看-Kubernetes-每个版本的发布日志"><span class="nav-number">39.</span> <span class="nav-text">查看 Kubernetes 每个版本的发布日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为系统关键组件设置高优先级"><span class="nav-number">40.</span> <span class="nav-text">为系统关键组件设置高优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kube-proxy-的-nftables-实现"><span class="nav-number">41.</span> <span class="nav-text">kube-proxy 的 nftables 实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Service-Topology"><span class="nav-number">42.</span> <span class="nav-text">Service Topology</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-Conditions"><span class="nav-number">43.</span> <span class="nav-text">Node Conditions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多租户的思考"><span class="nav-number">44.</span> <span class="nav-text">多租户的思考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除命名空间卡在-Terminating"><span class="nav-number">45.</span> <span class="nav-text">删除命名空间卡在 Terminating</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Containerd-导出镜像"><span class="nav-number">46.</span> <span class="nav-text">Containerd 导出镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-创建过程简析"><span class="nav-number">47.</span> <span class="nav-text">Pod 创建过程简析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Liveness-Readiness-and-Startup-Probes"><span class="nav-number">48.</span> <span class="nav-text">Liveness, Readiness and Startup Probes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-的删除流程"><span class="nav-number">49.</span> <span class="nav-text">Pod 的删除流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-与-Container-状态"><span class="nav-number">50.</span> <span class="nav-text">Pod 与 Container 状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日志收集"><span class="nav-number">51.</span> <span class="nav-text">日志收集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#已用内存的计算"><span class="nav-number">52.</span> <span class="nav-text">已用内存的计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取-kubelet-profile"><span class="nav-number">53.</span> <span class="nav-text">获取 kubelet profile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Deployment-中使用-PVC"><span class="nav-number">54.</span> <span class="nav-text">Deployment 中使用 PVC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#让-Pod-中的容器按顺序启动"><span class="nav-number">55.</span> <span class="nav-text">让 Pod 中的容器按顺序启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过-patch-修改-service-的-status-字段"><span class="nav-number">56.</span> <span class="nav-text">通过 patch 修改 service 的 status 字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#十二因素应用"><span class="nav-number">57.</span> <span class="nav-text">十二因素应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#书籍"><span class="nav-number">58.</span> <span class="nav-text">书籍</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
