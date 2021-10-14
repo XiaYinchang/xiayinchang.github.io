@@ -1095,6 +1095,15 @@ http://localhost:8080/api/v1/namespaces/gitlab/services/git-cp/status
 
 ```
 
+#### kubectl 部署时默认命名空间的设置
+
+Pod 中执行 kubectl apply 时如果未指定命名空间，并且待部署的资源中也没有明确指定命名空间，则会尝试从几个地方获取命名空间信息，会先尝试从环境变量 `POD_NAMESPACE` 中读取，读不到则是尝试从当前 context 中获取，如果找不到则继续尝试从 `/var/run/secrets/kubernetes.io/serviceaccount/namespace` 中获取，参考 [https://kubernetes.io/docs/reference/kubectl/overview/#in-cluster-authentication-and-namespace-overrides](https://kubernetes.io/docs/reference/kubectl/overview/#in-cluster-authentication-and-namespace-overrides)。
+可通过以下命令设置 context 中的命名空间。
+
+```bash
+kubectl config set-context --current --namespace=default
+```
+
 #### 十二因素应用
 
 - 十二因素的提出早于 Kubernetes 的大规模使用，但是一些因素和基于 Kubernetes 的服务开发部署有着很好的吻合。可参考： [https://skyao.io/learning-cloudnative/factor/](https://skyao.io/learning-cloudnative/factor/) ，[https://blog.csdn.net/zeb_perfect/article/details/52536411](https://blog.csdn.net/zeb_perfect/article/details/52536411)， [https://12factor.net/](https://12factor.net/)
