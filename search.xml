@@ -286,6 +286,143 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker 卷和文件系统权限</title>
+    <url>/post/86bd2460.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">17/10/2019</td>
+<td align="center">初始版本.</td>
+</tr>
+</tbody></table><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca" target="_blank" rel="external nofollow noopener noreferrer">Docker volumes and file system permissions</a><br>Docker 卷和文件系统权限</p><h3 id="译文"><a href="#译文" class="headerlink" title="译文"></a>译文</h3><p>Docker 容器的文件系统是临时存在的（不要在运行期间持久化数据到容器内的文件目录）。但是很多容器存在持久化数据的需求。Docker 的卷挂载功能提供了一种满足数据持久化需求的能力，但是使用时往往存在一些有关文件系统权限的陷阱。</p><a id="more"></a>
+
+
+<p>在生产环境中你一般会使用一些公有云提供商的容器编排工具和持久化存储，提供商已经帮助解决了文件权限的设置问题。在大多数已部署的设置中，您将使用容器编排机制，并且某些公共云产品提供了永久性存储，它们可能具有自己配置权限的方式。但是，在本地开发期间或在产品的早期迭代中，最简单的方法是将宿主机目录挂载为 Docker 卷的形式暴露给容器内服务使用。</p>
+<p>将主机目录配置为 Docker 卷时需要注意以下内容：</p>
+<ul>
+<li>对卷中的内容设置的文件权限在容器和宿主机看来是一样的。</li>
+<li>仅 UID（用户 ID）和 GID（组 ID）会影响文件权限。例如，用户和组的名称和密码不需要匹配，甚至不需要在主机和容器中真实存在。</li>
+<li>容器 OS 根据其自身的配置对容器内的文件进行操作。例如，如果在主机和容器中都存在用户 A，如果仅在宿主机上将用户 A 添加到组 B，则在容器内用户 A 仍将无法拥有读写归属于组 B 的文件的权限，除非在容器内也创建了组 B 并将用户 A 添加到其中。</li>
+<li>默认情况下，容器的命令以 root 身份运行</li>
+<li>可以（在基于 unix 的系统上）将文件 / 目录所有权设置为不属于任何实际存在的组的 GID</li>
+</ul>
+<p>如果你牢记上述事实，则应该能够正确配置容器和卷，并不会对文件读写权限的各种情况感到意外。如果你不熟悉 UNIX 文件权限，可以阅读该<a href="https://help.ubuntu.com/community/FilePermissions" target="_blank" rel="external nofollow noopener noreferrer">页面</a>关于文件权限的描述。</p>
+<p>下面举例说明本地开发时如何快速配置文件权限：</p>
+<p>在宿主机上将要用作卷的目录的归属组设置为未被任何已存在的组使用的 GID（此例中设置为 1024）</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chown :<span class="number">1024</span> /data/myvolume</span><br></pre></td></tr></table></figure>
+
+<p>更改目录权限以授予组成员完全访问权限（读 + 写 + 执行）</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">775</span> /data/myvolume</span><br></pre></td></tr></table></figure>
+
+<p>确保文件夹中所有新建内容都将继承归属组</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod g+s /data/myvolume</span><br></pre></td></tr></table></figure>
+
+<p>在 Dockerfile 中创建一个用户，该用户是 1024 组的成员</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">RUN addgroup --gid <span class="number">1024</span> mygroup</span><br><span class="line">RUN adduser --disabled-password --gecos <span class="string">""</span> --force-badname --ingroup <span class="number">1024</span> myuser</span><br><span class="line">USER myuser</span><br></pre></td></tr></table></figure>
+
+<p>（可选）在宿主机将当前用户添加到 1024 组中，从而可以方便地在宿主机上操作挂载为容器卷的目录的内容</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">adduser ubuntu <span class="number">1024</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的示例是一个很简单的配置，可以使得不需要使用 root 用户在容器内运行程序，也可以在主机上操作挂载为容器卷的目录的内容而无需使用主机 root 用户。这些设置过程硬编码到 Docker 镜像打包过程中使得无法在容器运行时调整 GID。如果调整，则需将 GID 作为环境变量传递到容器内，并编写一个通用的初始化脚本在容器启动时进行权限配置。DeniBertović 的这篇博客  <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/" target="_blank" rel="external nofollow noopener noreferrer">https://denibertovic.com/posts/handling-permissions-with-docker-volumes/</a>  提供了完成此类设置的指南。</p>
+]]></content>
+      <categories>
+        <category>译文</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>译文</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker 知识点与命令集合</title>
+    <url>/post/f8a08eb2.html</url>
+    <content><![CDATA[<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>参考：<a href="https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/" target="_blank" rel="external nofollow noopener noreferrer">清华镜像源</a>，<a href="https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.3e221b11R2we8Y" target="_blank" rel="external nofollow noopener noreferrer">阿里镜像源</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum remove docker docker-common docker-selinux docker-engine</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sed -i <span class="string">'s+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+'</span> /etc/yum.repos.d/docker-ce.repo</span><br><span class="line">yum install docker-ce docker-ce-cli containerd.io</span><br><span class="line">systemctl <span class="built_in">enable</span> --now docker</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<h4 id="按指定格式输出-Images-信息"><a href="#按指定格式输出-Images-信息" class="headerlink" title="按指定格式输出 Images 信息"></a>按指定格式输出 Images 信息</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker images --format <span class="string">"&#123;&#123;.ID&#125;&#125;: &#123;&#123;.Repository&#125;&#125;"</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">Placeholder</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>.ID</code></td>
+<td align="left">Image ID</td>
+</tr>
+<tr>
+<td align="left"><code>.Repository</code></td>
+<td align="left">Image repository</td>
+</tr>
+<tr>
+<td align="left"><code>.Tag</code></td>
+<td align="left">Image tag</td>
+</tr>
+</tbody></table>
+<h4 id="使用镜像源下载-docker-image"><a href="#使用镜像源下载-docker-image" class="headerlink" title="使用镜像源下载 docker image"></a>使用镜像源下载 docker image</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull golang:1.13.0 =&gt; docker pull docker.mirrors.ustc.edu.cn/library/golang:1.13.0</span><br><span class="line">docker pull rook/ceph:v1.0.6 =&gt; docker pull dockerhub.azk8s.cn/rook/ceph:v1.0.6</span><br><span class="line">docker pull gcr.io/kubernetes-helm/tiller:v2.9.1 =&gt; docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.9.1</span><br><span class="line">docker pull k8s.gcr.io/kube-apiserver:v1.14.1 =&gt; docker pull gcr.azk8s.cn/google-containers/kube-apiserver:v1.14.1</span><br><span class="line">docker pull quay.io/k8scsi/csi-node-driver-registrar:v1.1.0 =&gt; docker pull quay-mirror.qiniu.com/k8scsi/csi-node-driver-registrar:v1.1.0</span><br></pre></td></tr></table></figure>
+
+<h4 id="新建容器时加入已有容器网络"><a href="#新建容器时加入已有容器网络" class="headerlink" title="新建容器时加入已有容器网络"></a>新建容器时加入已有容器网络</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run --name b2 -it --network container:b1 --rm busybox:latest</span><br></pre></td></tr></table></figure>
+
+<h4 id="docker-容器的四种网络模型"><a href="#docker-容器的四种网络模型" class="headerlink" title="docker 容器的四种网络模型"></a>docker 容器的四种网络模型</h4><p>Bridge, Host, Container, None，参考： <a href="https://zhuanlan.zhihu.com/p/98788162" target="_blank" rel="external nofollow noopener noreferrer">Docker 的网络模式详解</a></p>
+<h4 id="查看-docker-registry-中的镜像信息"><a href="#查看-docker-registry-中的镜像信息" class="headerlink" title="查看 docker registry 中的镜像信息"></a>查看 docker registry 中的镜像信息</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -X GET https:&#x2F;&#x2F;myregistry:5000&#x2F;v2&#x2F;_catalog</span><br><span class="line">curl -X GET https:&#x2F;&#x2F;myregistry:5000&#x2F;v2&#x2F;ubuntu&#x2F;tags&#x2F;list</span><br></pre></td></tr></table></figure>
+
+<h4 id="docker-指定-tcp-监听地址"><a href="#docker-指定-tcp-监听地址" class="headerlink" title="docker 指定 tcp 监听地址"></a>docker 指定 tcp 监听地址</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 修改 &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;dockerd -H tcp:&#x2F;&#x2F;0.0.0.0:2375 -H fd:&#x2F;&#x2F; --containerd&#x3D;&#x2F;run&#x2F;containerd&#x2F;containerd.sock</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除私有-registry-中损坏的镜像"><a href="#删除私有-registry-中损坏的镜像" class="headerlink" title="删除私有 registry 中损坏的镜像"></a>删除私有 registry 中损坏的镜像</h4><p>docker pull 时报错如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@umstor01 ~]<span class="comment"># docker pull registry.umstor.io:5050/umplus/umstor-elasticsearch:6.7.1</span></span><br><span class="line">...</span><br><span class="line">filesystem layer verification failed <span class="keyword">for</span> digest sha256:08f62e37e0f75961adcf1b87778f8c25412a2865742ffe4d79cde83ac08987ca</span><br></pre></td></tr></table></figure>
+
+<p>先到仓库目录  <code>registry/v2/repositories/umplus</code> 删除  <code>umstor-elasticsearch</code> 镜像，再到  <code>docker/registry/v2/blobs/sha256</code> 目录删除  <code>08f62e37e0f75961adcf1b87778f8c25412a2865742ffe4d79c</code>。之后重启 docker registry 。</p>
+<h4 id="docker-push-时报错-file-integrity-checksum-failed"><a href="#docker-push-时报错-file-integrity-checksum-failed" class="headerlink" title="docker push 时报错 file integrity checksum failed"></a>docker push 时报错 file integrity checksum failed</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">➜  umstorlcm git:(dev) ✗ sudo docker push registry.umstor.io:5050/umplus/umstor-elasticsearch:6.7.1</span><br><span class="line">...</span><br><span class="line">file integrity checksum failed <span class="keyword">for</span> <span class="string">"usr/share/elasticsearch/plugins/opendistro_security/jjwt-api-0.10.5.jar"</span></span><br></pre></td></tr></table></figure>
+
+<p>可尝试执行 <code>sudo docker system prune -a</code> 后重新打包或拉取镜像 retag 重试 push。</p>
+<h4 id="允许非-root-用户使用-docker"><a href="#允许非-root-用户使用-docker" class="headerlink" title="允许非 root 用户使用 docker"></a>允许非 root 用户使用 docker</h4><p>参考：<a href="https://docs.docker.com/engine/install/linux-postinstall/" target="_blank" rel="external nofollow noopener noreferrer">https://docs.docker.com/engine/install/linux-postinstall/</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker $USER</span><br><span class="line">newgrp docker</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用远程服务器的-docker-服务"><a href="#使用远程服务器的-docker-服务" class="headerlink" title="使用远程服务器的 docker 服务"></a>使用远程服务器的 docker 服务</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker context create my-remote-docker-machine --docker &quot;host&#x3D;ssh:&#x2F;&#x2F;username@host:port&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="限制容器-rootfs-可用的磁盘大小"><a href="#限制容器-rootfs-可用的磁盘大小" class="headerlink" title="限制容器 rootfs 可用的磁盘大小"></a>限制容器 rootfs 可用的磁盘大小</h4><p>参见：<a href="https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/" target="_blank" rel="external nofollow noopener noreferrer">https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/</a>，<a href="https://www.thegeekdiary.com/how-to-enable-disk-quotas-on-an-xfs-file-system/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/how-to-enable-disk-quotas-on-an-xfs-file-system/</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 首先 /var/lib/docker 所在分区挂载时应添加 pquota 选项</span></span><br><span class="line">UUID=.... /home xfs defaults,uquota,pquota 0 0</span><br><span class="line"><span class="comment"># 在创建容器时添加指定相关参数</span></span><br><span class="line">$ sudo docker run -it --storage-opt size=12m alpine:latest /bin/df -h | grep overlay</span><br><span class="line">overlay 12.0M 8.0K 12.0M 0% /</span><br></pre></td></tr></table></figure>
+
+<h4 id="volume-bind-mount-tmpfs"><a href="#volume-bind-mount-tmpfs" class="headerlink" title="volume/bind-mount/tmpfs"></a>volume/bind-mount/tmpfs</h4><p>volume 由 docker 单独管理，存在于 /var/lib/docker/volumes/ 目录，独立于镜像分层，可视为通过硬链接给指定容器使用，因为 stat 看到的 inode 的 link 数量确实大于 1 ，但似乎对目录建立硬链接是不允许的，所以此处存疑。<br>bind mount 是 Kubernetes 中给容器挂载各种存储卷统一使用的形式。<br>tmpfs 在 Kubernetes 中用于保存 service token 到临时文件，之后仍然通过 bind mount 挂载给容器使用。</p>
+<h4 id="使用-xfs-作为-overlay2-的基础文件系统"><a href="#使用-xfs-作为-overlay2-的基础文件系统" class="headerlink" title="使用 xfs 作为 overlay2 的基础文件系统"></a>使用 xfs 作为 overlay2 的基础文件系统</h4><p>d_type (directory type) 是 Linux 内核的一个术语，表示 “目录类型”，是文件系统上目录信息的一个数据结构。d_type，就是这个数据结构的一个字段，这个字段用来表示文件的类型，是文件，还是管道，还是目录还是套接字等。内核从 Linux 2.6 版本开始支持，但有的文件系统未实现。对于 xfs，初始化文件系统时需要传入如下参数（可能在高版本内核中已默认开启？）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkfs.xfs -n ftype=1 /path/to/your/device</span><br></pre></td></tr></table></figure>
+
+<h4 id="overlay2"><a href="#overlay2" class="headerlink" title="overlay2"></a>overlay2</h4><p>以一个容器为例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ docker inspect 6a7bbe23dee7 | jq &#39;.[0].GraphDriver&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;Data&quot;: &#123;</span><br><span class="line">    &quot;LowerDir&quot;: &quot;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca-init&#x2F;diff:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;8f864615b27aff6f4bae9898ac47fd42f567b2abb2bd57f0767bf53af7470cd3&#x2F;diff:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;26ae8de5b32541349d625f7fa86dbe9b17dc304a406a5a557a0565f4df311546&#x2F;diff:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;be0892cc29599a864b40f886f766a6042a785cdf6a5c9e046661e60c512cb5eb&#x2F;diff&quot;,</span><br><span class="line">    &quot;MergedDir&quot;: &quot;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;merged&quot;,</span><br><span class="line">    &quot;UpperDir&quot;: &quot;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;diff&quot;,</span><br><span class="line">    &quot;WorkDir&quot;: &quot;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;work&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;Name&quot;: &quot;overlay2&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上图中可以看到使用了 overlay2，MergedDir 是最终的统一视图，通过 findmnt 命令可进一步查看：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ findmnt -T &#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;merged --notruncate</span><br><span class="line">TARGET                                                                                        SOURCE  FSTYPE  OPTIONS</span><br><span class="line">&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;merged overlay overlay rw,relatime,lowerdir&#x3D;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;l&#x2F;65ULPACJJ5HPW6N7X7O4EYT3FV:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;l&#x2F;NJSWN22VUADQPGUNVHOTOLFIYO:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;l&#x2F;ST6G6NDPWCA7DOPGPP6YY5ZQTR:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;l&#x2F;T5DURVHXWM4P7NNCW4H4TYYVSR,upperdir&#x3D;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;diff,workdir&#x3D;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;work</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 MergedDir 是挂载点，其它的目录分别以 lowerdir/upperdir/workdir 等挂载参数的形式传入，MergedDir/UpperDir/WorkDir 位于同一层，即可写层。进一步查看 overlay2 下的各层信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 顶层，即可写层，该层写入的内容在 diff 目录下</span></span><br><span class="line">$ ls /data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca</span><br><span class="line">diff  link  lower  merged  work</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看下层信息，显示的是下层的短 ID</span></span><br><span class="line">$ cat /data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca/lower</span><br><span class="line">l/65ULPACJJ5HPW6N7X7O4EYT3FV:l/NJSWN22VUADQPGUNVHOTOLFIYO:l/ST6G6NDPWCA7DOPGPP6YY5ZQTR:l/T5DURVHXWM4P7NNCW4H4TYYVS</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过短 ID 可以分别找到具体的下层，可以看到与 docker inspect 和 findmnt 中显示的层信息一致</span></span><br><span class="line">$ realpath /data/docker/overlay2/l/65ULPACJJ5HPW6N7X7O4EYT3FV</span><br><span class="line">/data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca-init/diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看下层的目录结构，和顶层类似但没有 merged 目录</span></span><br><span class="line">$ ls /data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca-init/</span><br><span class="line">diff  link  lower  work</span><br><span class="line"></span><br><span class="line"><span class="comment"># 继续查看下层信息，可以看到是记录的下层短 ID 和顶层 lower 记录的剩余 ID 是一致的</span></span><br><span class="line">$ cat /data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca-init/lower</span><br><span class="line">l/NJSWN22VUADQPGUNVHOTOLFIYO:l/ST6G6NDPWCA7DOPGPP6YY5ZQTR:l/T5DURVHXWM4P7NNCW4H4TYYVSR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 继续查看下层目录，发现是一样的</span></span><br><span class="line"><span class="comment"># 只有最下层略有不同，没有 lower 和 work 目录</span></span><br><span class="line">$ ls /data/docker/overlay2/be0892cc29599a864b40f886f766a6042a785cdf6a5c9e046661e60c512cb5eb</span><br><span class="line">diff  link</span><br></pre></td></tr></table></figure>
+
+<p>根据社区文档说明，link 文件中存放当前层的短 ID，lower 文件记录更下层的短 ID，diff 目录存放当前层的内容，work 目录由 OverlayFS 内部使用。</p>
+<h4 id="从源码编译-docker-二进制文件"><a href="#从源码编译-docker-二进制文件" class="headerlink" title="从源码编译 docker 二进制文件"></a>从源码编译 docker 二进制文件</h4><p>参考：<a href="https://ops.tips/blog/compiling-your-own-forked-docker-release/" target="_blank" rel="external nofollow noopener noreferrer">Compiling and running your own forked Docker release</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;docker&#x2F;docker-ce.git</span><br><span class="line">&#x2F;&#x2F; 检出目标版本</span><br><span class="line">git checkout v18.09.2</span><br><span class="line">&#x2F;&#x2F; 按需修改源码</span><br><span class="line">&#x2F;&#x2F; 执行编译命令</span><br><span class="line">make static DOCKER_BUILD_PKGS&#x3D;static-linux</span><br><span class="line">&#x2F;&#x2F; 查看编译结果</span><br><span class="line">tree .&#x2F;components&#x2F;packaging&#x2F;static&#x2F;build&#x2F;linux</span><br><span class="line"></span><br><span class="line">.&#x2F;components&#x2F;packaging&#x2F;static&#x2F;build&#x2F;linux</span><br><span class="line">├── docker</span><br><span class="line">│   ├── docker</span><br><span class="line">│   ├── containerd</span><br><span class="line">│   ├── containerd-ctr</span><br><span class="line">│   ├── containerd-shim</span><br><span class="line">│   ├── dockerd</span><br><span class="line">│   ├── docker-init</span><br><span class="line">│   ├── docker-proxy</span><br><span class="line">│   └── docker-runc</span><br><span class="line">└── docker-18.09.2.tgz</span><br></pre></td></tr></table></figure>
+
+<h4 id="减少镜像体积的方式"><a href="#减少镜像体积的方式" class="headerlink" title="减少镜像体积的方式"></a>减少镜像体积的方式</h4><p>将多个 RUN 语句组合在一行命令中；使用多阶段构建；使用 Alpine 作为基础镜像；使用 Go 等静态编译语言代替 Java 等动态解释语言。</p>
+<h4 id="COPY-与-ADD"><a href="#COPY-与-ADD" class="headerlink" title="COPY 与 ADD"></a>COPY 与 ADD</h4><p>COPY 比 ADD 多两个特性：可以自动解压 src 为 gzip 等压缩格式的文件到 dst 目录；src 路径可以是一个远程 URL 链接。</p>
+<h4 id="ENTRYPOINT-与-CMD"><a href="#ENTRYPOINT-与-CMD" class="headerlink" title="ENTRYPOINT 与 CMD"></a>ENTRYPOINT 与 CMD</h4><p>ENTRYPOINT 必须是可执行的程序，CMD 作为参数传递给 ENTRYPOINT。</p>
+<h4 id="清理-Docker-所有容器和镜像"><a href="#清理-Docker-所有容器和镜像" class="headerlink" title="清理 Docker 所有容器和镜像"></a>清理 Docker 所有容器和镜像</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker ps -aq</span><br><span class="line">docker stop $(docker ps -aq)</span><br><span class="line">docker rm $(docker ps -aq)</span><br><span class="line">docker rmi $(docker images -q)</span><br></pre></td></tr></table></figure>
+
+<h4 id="设置-HTTP-代理"><a href="#设置-HTTP-代理" class="headerlink" title="设置 HTTP 代理"></a>设置 HTTP 代理</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p /etc/systemd/system/docker.service.d</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'</span></span><br><span class="line"><span class="string">[Service]</span></span><br><span class="line"><span class="string">Environment="HTTP_PROXY=http://10.20.47.147:3128"</span></span><br><span class="line"><span class="string">Environment="HTTPS_PROXY=http://10.20.47.147:3128"</span></span><br><span class="line"><span class="string">Environment="NO_PROXY=localhost,127.0.0.1,10.0.0.0/8,172.0.0.0/8,100.0.0.0/8,10.8.10.222,*.some.org"</span></span><br><span class="line"><span class="string">'</span> | tee /etc/systemd/system/docker.service.d/http-proxy.conf</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag> 云计算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Envoy 知识汇总</title>
     <url>/post/111604be.html</url>
     <content><![CDATA[<h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="编写-Lua-脚本"><a href="#编写-Lua-脚本" class="headerlink" title="编写 Lua 脚本"></a>编写 Lua 脚本</h4><ul>
@@ -296,6 +433,77 @@
       </categories>
       <tags>
         <tag>Envoy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git 常用命令</title>
+    <url>/post/5fddf106.html</url>
+    <content><![CDATA[<h4 id="修改历史-commit-信息"><a href="#修改历史-commit-信息" class="headerlink" title="修改历史 commit 信息"></a>修改历史 commit 信息</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase -i HEAD~2</span><br><span class="line">pick -&gt; edit</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure><h4 id="修改-commit-时间"><a href="#修改-commit-时间" class="headerlink" title="修改 commit 时间"></a>修改 commit 时间</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置为当前时间</span><br><span class="line">GIT_COMMITTER_DATE&#x3D;&quot;$(date &#39;+%Y-%m-%d %H:%M:%S&#39;)&quot; git commit --amend --no-edit --date &quot;$(date)&quot;</span><br><span class="line"># 设置为指定时间</span><br><span class="line">GIT_COMMITTER_DATE&#x3D;&quot;2021-03-19 17:54:27 GMT+8&quot; git commit --amend --no-edit --date &quot;2021-03-19 17:54:27 GMT+8&quot;</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<h4 id="比较两个分支的不同"><a href="#比较两个分支的不同" class="headerlink" title="比较两个分支的不同"></a>比较两个分支的不同</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git diff branch_1..branch_2</span><br></pre></td></tr></table></figure>
+
+<h4 id="列出不同分支之间的所有-commit"><a href="#列出不同分支之间的所有-commit" class="headerlink" title="列出不同分支之间的所有 commit"></a>列出不同分支之间的所有 commit</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span> --left-right --cherry-pick --oneline v1.14.6..v1.14.10</span><br></pre></td></tr></table></figure>
+
+<h4 id="比较两个分支中指定文件或目录"><a href="#比较两个分支中指定文件或目录" class="headerlink" title="比较两个分支中指定文件或目录"></a>比较两个分支中指定文件或目录</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git diff mybranch master -- myfile.cs</span><br></pre></td></tr></table></figure>
+
+<h4 id="merge-时使用指定方代码解决冲突"><a href="#merge-时使用指定方代码解决冲突" class="headerlink" title="merge 时使用指定方代码解决冲突"></a>merge 时使用指定方代码解决冲突</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">git merge -X theirs origin/dev</span><br><span class="line">git merge -X ours origin/dev</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看一个文件完整的修改历史"><a href="#查看一个文件完整的修改历史" class="headerlink" title="查看一个文件完整的修改历史"></a>查看一个文件完整的修改历史</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git log --follow -p -- _config.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="将当前分支下子目录内容提交至另一个分支"><a href="#将当前分支下子目录内容提交至另一个分支" class="headerlink" title="将当前分支下子目录内容提交至另一个分支"></a>将当前分支下子目录内容提交至另一个分支</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git subtree push --prefix dist origin gh-pages</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除-submodule"><a href="#删除-submodule" class="headerlink" title="删除 submodule"></a>删除 submodule</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git submodule deinit &lt;path_to_submodule&gt;</span><br><span class="line">git rm &lt;path_to_submodule&gt;</span><br><span class="line">git commit -m &quot;Removed submodule &quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="合并所有-commit-为一个"><a href="#合并所有-commit-为一个" class="headerlink" title="合并所有 commit 为一个"></a>合并所有 commit 为一个</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase --root -i</span><br><span class="line">&#x2F;&#x2F; 使用以下命令可以将需要 rebase 的 commit 的时间全部设置为当前时间</span><br><span class="line">git rebase --ignore-date 303a824f46b497f71582e2e5d493c132b85e3e0a</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除所有没有远程分支的本地分支"><a href="#删除所有没有远程分支的本地分支" class="headerlink" title="删除所有没有远程分支的本地分支"></a>删除所有没有远程分支的本地分支</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git fetch -p &amp;&amp; git branch -vv | awk &#39;&#x2F;: gone]&#x2F;&#123;print $1&#125;&#39; | xargs git branch -d</span><br></pre></td></tr></table></figure>
+
+<h4 id="撤销某个-commit"><a href="#撤销某个-commit" class="headerlink" title="撤销某个 commit"></a>撤销某个 commit</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git revert --strategy resolve &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-ssh-替代-https-访问"><a href="#使用-ssh-替代-https-访问" class="headerlink" title="使用 ssh 替代 https 访问"></a>使用 ssh 替代 https 访问</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global url.<span class="string">"git@git.ucloudadmin.com:"</span>.insteadOf <span class="string">"https://git.ucloudadmin.com/"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="查看-commit-内容"><a href="#查看-commit-内容" class="headerlink" title="查看 commit 内容"></a>查看 commit 内容</h4><p>查看指定 commit id 的提交内容</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">git</span> <span class="string">show</span> <span class="string">67cebafce9c45a1d65fddd3d1742c4cb42851d10</span></span><br></pre></td></tr></table></figure>
+
+<p>查看最近 n 次提交内容</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">git</span> <span class="string">log</span> <span class="string">-p</span> <span class="string">-n</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="创建和删除-tag"><a href="#创建和删除-tag" class="headerlink" title="创建和删除 tag"></a>创建和删除 tag</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 删除本地 tag</span><br><span class="line">git tag -d v0.0.1</span><br><span class="line">// 删除远程仓库 tag</span><br><span class="line">git push --delete origin v0.0.1</span><br><span class="line">// 创建本地 tag</span><br><span class="line">git tag v0.0.1 -m <span class="string">"Release version 0.0.1"</span></span><br><span class="line">// 以某个 commit 为基础创建 tag</span><br><span class="line">git tag -a v0.0.1 30728cab -m <span class="string">"Release version 0.0.1"</span></span><br><span class="line">// 推送指定 tag 到远程</span><br><span class="line">git push origin v0.0.1</span><br><span class="line">// 推送所有 tag 到远程</span><br><span class="line">git push --tags</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取最近的-tag"><a href="#获取最近的-tag" class="headerlink" title="获取最近的 tag"></a>获取最近的 tag</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 获取最新的 tag</span><br><span class="line">git describe --tags $(git rev-list --tags --max-count=1)</span><br><span class="line">// 获取最新 commit 对应的 tag</span><br><span class="line">git describe --abbrev=0</span><br><span class="line">git describe --tags</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建和应用-patch"><a href="#创建和应用-patch" class="headerlink" title="创建和应用 patch"></a>创建和应用 patch</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 生成 git patch</span><br><span class="line">git diff c78bca..709fcfe &gt; /tmp/cloudprovider.patch</span><br><span class="line">// 应用 patch</span><br><span class="line">git apply /tmp/cloudprovider.patch</span><br></pre></td></tr></table></figure>
+
+<h4 id="gitlab-创建-tag-和发布附件流程"><a href="#gitlab-创建-tag-和发布附件流程" class="headerlink" title="gitlab 创建 tag 和发布附件流程"></a>gitlab 创建 tag 和发布附件流程</h4><p>参考：<a href="https://stackoverflow.com/a/55415383" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/55415383</a></p>
+<h4 id="cherry-pick-时移除不需要的修改"><a href="#cherry-pick-时移除不需要的修改" class="headerlink" title="cherry-pick 时移除不需要的修改"></a>cherry-pick 时移除不需要的修改</h4><p>参考：<a href="https://stackoverflow.com/questions/5717026/how-to-git-cherry-pick-only-changes-to-certain-files" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/5717026/how-to-git-cherry-pick-only-changes-to-certain-files</a><br>如果需要移除的修改较少，可使用以下方式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git cherry-pick -n 1683355bf81435ffdcbf332ad3558cb92853c9eb</span><br><span class="line">&#x2F;&#x2F; 丢弃该 commit 对 go.mod 文件的修改</span><br><span class="line">git restore --staged go.mod</span><br><span class="line">&#x2F;&#x2F; 或者</span><br><span class="line">git checkout HEAD go.mod</span><br><span class="line">&#x2F;&#x2F; 直接提交即可, commit 信息使用上述 commit 的</span><br><span class="line">git commit</span><br></pre></td></tr></table></figure>
+
+<p>如果大部分修改都需要移除，可采用：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git cherry-pick -n 1683355bf81435ffdcbf332ad3558cb92853c9eb</span><br><span class="line">git reset HEAD</span><br><span class="line">&#x2F;&#x2F; 添加需要保留的修改</span><br><span class="line">git add &lt;path&gt;</span><br><span class="line">&#x2F;&#x2F; 移除所有不需要保存的修改</span><br><span class="line">git clean -f</span><br></pre></td></tr></table></figure>
+
+<p>如果仅有一两项文件或目录的修改需要保留，可执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 应用对文件或目录下文件的修改</span><br><span class="line">git show SHA -- file1.txt file2.txt | git apply -</span><br><span class="line">git show SHA -- dir1 dir2 | git apply -</span><br><span class="line">&#x2F;&#x2F; 保存修改</span><br><span class="line">git add file1.txt file2.txt</span><br><span class="line">git commit -c SHA</span><br><span class="line">&#x2F;&#x2F; 或者二合一</span><br><span class="line">git show SHA -- file1.txt file2.txt | git apply --cached -</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用指定-commit-中的内容覆盖指定文件或目录"><a href="#使用指定-commit-中的内容覆盖指定文件或目录" class="headerlink" title="使用指定 commit 中的内容覆盖指定文件或目录"></a>使用指定 commit 中的内容覆盖指定文件或目录</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout c5f567 -- file1/to/restore file2/to/restore</span><br></pre></td></tr></table></figure>
+
+<h4 id="github-actions"><a href="#github-actions" class="headerlink" title="github actions"></a>github actions</h4><ul>
+<li>自动创建发布：<a href="https://github.com/actions/upload-release-asset" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/actions/upload-release-asset</a></li>
+</ul>
+<h4 id="clone-all-projects-in-group"><a href="#clone-all-projects-in-group" class="headerlink" title="clone all projects in group"></a>clone all projects in group</h4><p><a href="https://github.com/gabrie30/ghorg" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/gabrie30/ghorg</a><br>或者</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> repo <span class="keyword">in</span> $(curl -s --header <span class="string">"PRIVATE-TOKEN: your_private_token"</span> https://&lt;your-host&gt;/api/v4/groups/&lt;group_id&gt; | jq <span class="string">".projects[].ssh_url_to_repo"</span> | tr -d <span class="string">'"'</span>); <span class="keyword">do</span> git <span class="built_in">clone</span> <span class="variable">$repo</span>; <span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">git config --global http.proxy http:<span class="comment">//127.0.0.1:1080</span></span><br><span class="line">git config --global http.proxy socks5h:<span class="comment">//127.0.0.1:1080</span></span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line"><span class="comment">//#只对GitHub设置代理</span></span><br><span class="line">git config --global http.https:<span class="comment">//github.com.proxy socks5h://127.0.0.1:1080</span></span><br><span class="line">git config --global --unset http.https:<span class="comment">//github.com.proxy</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="查看所有分支的最后活跃时间"><a href="#查看所有分支的最后活跃时间" class="headerlink" title="查看所有分支的最后活跃时间"></a>查看所有分支的最后活跃时间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> branch <span class="keyword">in</span> `git branch -a`;</span><br><span class="line"><span class="keyword">do</span>;</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$branch</span> != <span class="string">"*"</span> ]; <span class="keyword">then</span>;</span><br><span class="line">    hasAct=$(git <span class="built_in">log</span> --abbrev-commit --date=relative -1 <span class="variable">$branch</span>);</span><br><span class="line">    lastActivity=$(<span class="built_in">echo</span> <span class="string">"<span class="variable">$hasAct</span>"</span> | grep Date: | sed <span class="string">'s/Date: //'</span>);</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$branch</span> last activity was\033[1;31m<span class="variable">$lastActivity</span>\033[0m"</span>;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">""</span></span><br><span class="line"><span class="keyword">fi</span>;</span><br><span class="line"><span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>开发工具</tag>
       </tags>
   </entry>
   <entry>
@@ -455,8 +663,8 @@
         <category>译文</category>
       </categories>
       <tags>
-        <tag>Go</tag>
         <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -595,8 +803,8 @@
         <category>译文</category>
       </categories>
       <tags>
-        <tag>Go</tag>
         <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -865,8 +1073,8 @@
         <category>译文</category>
       </categories>
       <tags>
-        <tag>Go</tag>
         <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -1286,8 +1494,8 @@
         <category>译文</category>
       </categories>
       <tags>
-        <tag>Go</tag>
         <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -2890,8 +3098,8 @@
         <category>开发工具</category>
       </categories>
       <tags>
-        <tag>MeshCentral</tag>
         <tag>开发工具</tag>
+        <tag>MeshCentral</tag>
       </tags>
   </entry>
   <entry>
@@ -4287,8 +4495,8 @@
         <category>译文</category>
       </categories>
       <tags>
-        <tag>Go</tag>
         <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -4615,214 +4823,6 @@
       <tags>
         <tag>RateLimit</tag>
         <tag>S3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker 知识点与命令集合</title>
-    <url>/post/f8a08eb2.html</url>
-    <content><![CDATA[<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>参考：<a href="https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/" target="_blank" rel="external nofollow noopener noreferrer">清华镜像源</a>，<a href="https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.3e221b11R2we8Y" target="_blank" rel="external nofollow noopener noreferrer">阿里镜像源</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum remove docker docker-common docker-selinux docker-engine</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">sed -i <span class="string">'s+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+'</span> /etc/yum.repos.d/docker-ce.repo</span><br><span class="line">yum install docker-ce docker-ce-cli containerd.io</span><br><span class="line">systemctl <span class="built_in">enable</span> --now docker</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-<h4 id="按指定格式输出-Images-信息"><a href="#按指定格式输出-Images-信息" class="headerlink" title="按指定格式输出 Images 信息"></a>按指定格式输出 Images 信息</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker images --format <span class="string">"&#123;&#123;.ID&#125;&#125;: &#123;&#123;.Repository&#125;&#125;"</span></span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th align="left">Placeholder</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>.ID</code></td>
-<td align="left">Image ID</td>
-</tr>
-<tr>
-<td align="left"><code>.Repository</code></td>
-<td align="left">Image repository</td>
-</tr>
-<tr>
-<td align="left"><code>.Tag</code></td>
-<td align="left">Image tag</td>
-</tr>
-</tbody></table>
-<h4 id="使用镜像源下载-docker-image"><a href="#使用镜像源下载-docker-image" class="headerlink" title="使用镜像源下载 docker image"></a>使用镜像源下载 docker image</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull golang:1.13.0 =&gt; docker pull docker.mirrors.ustc.edu.cn/library/golang:1.13.0</span><br><span class="line">docker pull rook/ceph:v1.0.6 =&gt; docker pull dockerhub.azk8s.cn/rook/ceph:v1.0.6</span><br><span class="line">docker pull gcr.io/kubernetes-helm/tiller:v2.9.1 =&gt; docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.9.1</span><br><span class="line">docker pull k8s.gcr.io/kube-apiserver:v1.14.1 =&gt; docker pull gcr.azk8s.cn/google-containers/kube-apiserver:v1.14.1</span><br><span class="line">docker pull quay.io/k8scsi/csi-node-driver-registrar:v1.1.0 =&gt; docker pull quay-mirror.qiniu.com/k8scsi/csi-node-driver-registrar:v1.1.0</span><br></pre></td></tr></table></figure>
-
-<h4 id="新建容器时加入已有容器网络"><a href="#新建容器时加入已有容器网络" class="headerlink" title="新建容器时加入已有容器网络"></a>新建容器时加入已有容器网络</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run --name b2 -it --network container:b1 --rm busybox:latest</span><br></pre></td></tr></table></figure>
-
-<h4 id="docker-容器的四种网络模型"><a href="#docker-容器的四种网络模型" class="headerlink" title="docker 容器的四种网络模型"></a>docker 容器的四种网络模型</h4><p>Bridge, Host, Container, None，参考： <a href="https://zhuanlan.zhihu.com/p/98788162" target="_blank" rel="external nofollow noopener noreferrer">Docker 的网络模式详解</a></p>
-<h4 id="查看-docker-registry-中的镜像信息"><a href="#查看-docker-registry-中的镜像信息" class="headerlink" title="查看 docker registry 中的镜像信息"></a>查看 docker registry 中的镜像信息</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -X GET https:&#x2F;&#x2F;myregistry:5000&#x2F;v2&#x2F;_catalog</span><br><span class="line">curl -X GET https:&#x2F;&#x2F;myregistry:5000&#x2F;v2&#x2F;ubuntu&#x2F;tags&#x2F;list</span><br></pre></td></tr></table></figure>
-
-<h4 id="docker-指定-tcp-监听地址"><a href="#docker-指定-tcp-监听地址" class="headerlink" title="docker 指定 tcp 监听地址"></a>docker 指定 tcp 监听地址</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 修改 &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;dockerd -H tcp:&#x2F;&#x2F;0.0.0.0:2375 -H fd:&#x2F;&#x2F; --containerd&#x3D;&#x2F;run&#x2F;containerd&#x2F;containerd.sock</span><br></pre></td></tr></table></figure>
-
-<h4 id="删除私有-registry-中损坏的镜像"><a href="#删除私有-registry-中损坏的镜像" class="headerlink" title="删除私有 registry 中损坏的镜像"></a>删除私有 registry 中损坏的镜像</h4><p>docker pull 时报错如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@umstor01 ~]<span class="comment"># docker pull registry.umstor.io:5050/umplus/umstor-elasticsearch:6.7.1</span></span><br><span class="line">...</span><br><span class="line">filesystem layer verification failed <span class="keyword">for</span> digest sha256:08f62e37e0f75961adcf1b87778f8c25412a2865742ffe4d79cde83ac08987ca</span><br></pre></td></tr></table></figure>
-
-<p>先到仓库目录  <code>registry/v2/repositories/umplus</code> 删除  <code>umstor-elasticsearch</code> 镜像，再到  <code>docker/registry/v2/blobs/sha256</code> 目录删除  <code>08f62e37e0f75961adcf1b87778f8c25412a2865742ffe4d79c</code>。之后重启 docker registry 。</p>
-<h4 id="docker-push-时报错-file-integrity-checksum-failed"><a href="#docker-push-时报错-file-integrity-checksum-failed" class="headerlink" title="docker push 时报错 file integrity checksum failed"></a>docker push 时报错 file integrity checksum failed</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">➜  umstorlcm git:(dev) ✗ sudo docker push registry.umstor.io:5050/umplus/umstor-elasticsearch:6.7.1</span><br><span class="line">...</span><br><span class="line">file integrity checksum failed <span class="keyword">for</span> <span class="string">"usr/share/elasticsearch/plugins/opendistro_security/jjwt-api-0.10.5.jar"</span></span><br></pre></td></tr></table></figure>
-
-<p>可尝试执行 <code>sudo docker system prune -a</code> 后重新打包或拉取镜像 retag 重试 push。</p>
-<h4 id="允许非-root-用户使用-docker"><a href="#允许非-root-用户使用-docker" class="headerlink" title="允许非 root 用户使用 docker"></a>允许非 root 用户使用 docker</h4><p>参考：<a href="https://docs.docker.com/engine/install/linux-postinstall/" target="_blank" rel="external nofollow noopener noreferrer">https://docs.docker.com/engine/install/linux-postinstall/</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker $USER</span><br><span class="line">newgrp docker</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用远程服务器的-docker-服务"><a href="#使用远程服务器的-docker-服务" class="headerlink" title="使用远程服务器的 docker 服务"></a>使用远程服务器的 docker 服务</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker context create my-remote-docker-machine --docker &quot;host&#x3D;ssh:&#x2F;&#x2F;username@host:port&quot;</span><br></pre></td></tr></table></figure>
-
-<h4 id="限制容器-rootfs-可用的磁盘大小"><a href="#限制容器-rootfs-可用的磁盘大小" class="headerlink" title="限制容器 rootfs 可用的磁盘大小"></a>限制容器 rootfs 可用的磁盘大小</h4><p>参见：<a href="https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/" target="_blank" rel="external nofollow noopener noreferrer">https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/</a>，<a href="https://www.thegeekdiary.com/how-to-enable-disk-quotas-on-an-xfs-file-system/" target="_blank" rel="external nofollow noopener noreferrer">https://www.thegeekdiary.com/how-to-enable-disk-quotas-on-an-xfs-file-system/</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 首先 /var/lib/docker 所在分区挂载时应添加 pquota 选项</span></span><br><span class="line">UUID=.... /home xfs defaults,uquota,pquota 0 0</span><br><span class="line"><span class="comment"># 在创建容器时添加指定相关参数</span></span><br><span class="line">$ sudo docker run -it --storage-opt size=12m alpine:latest /bin/df -h | grep overlay</span><br><span class="line">overlay 12.0M 8.0K 12.0M 0% /</span><br></pre></td></tr></table></figure>
-
-<h4 id="volume-bind-mount-tmpfs"><a href="#volume-bind-mount-tmpfs" class="headerlink" title="volume/bind-mount/tmpfs"></a>volume/bind-mount/tmpfs</h4><p>volume 由 docker 单独管理，存在于 /var/lib/docker/volumes/ 目录，独立于镜像分层，可视为通过硬链接给指定容器使用，因为 stat 看到的 inode 的 link 数量确实大于 1 ，但似乎对目录建立硬链接是不允许的，所以此处存疑。<br>bind mount 是 Kubernetes 中给容器挂载各种存储卷统一使用的形式。<br>tmpfs 在 Kubernetes 中用于保存 service token 到临时文件，之后仍然通过 bind mount 挂载给容器使用。</p>
-<h4 id="使用-xfs-作为-overlay2-的基础文件系统"><a href="#使用-xfs-作为-overlay2-的基础文件系统" class="headerlink" title="使用 xfs 作为 overlay2 的基础文件系统"></a>使用 xfs 作为 overlay2 的基础文件系统</h4><p>d_type (directory type) 是 Linux 内核的一个术语，表示 “目录类型”，是文件系统上目录信息的一个数据结构。d_type，就是这个数据结构的一个字段，这个字段用来表示文件的类型，是文件，还是管道，还是目录还是套接字等。内核从 Linux 2.6 版本开始支持，但有的文件系统未实现。对于 xfs，初始化文件系统时需要传入如下参数（可能在高版本内核中已默认开启？）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkfs.xfs -n ftype=1 /path/to/your/device</span><br></pre></td></tr></table></figure>
-
-<h4 id="overlay2"><a href="#overlay2" class="headerlink" title="overlay2"></a>overlay2</h4><p>以一个容器为例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ docker inspect 6a7bbe23dee7 | jq &#39;.[0].GraphDriver&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;Data&quot;: &#123;</span><br><span class="line">    &quot;LowerDir&quot;: &quot;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca-init&#x2F;diff:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;8f864615b27aff6f4bae9898ac47fd42f567b2abb2bd57f0767bf53af7470cd3&#x2F;diff:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;26ae8de5b32541349d625f7fa86dbe9b17dc304a406a5a557a0565f4df311546&#x2F;diff:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;be0892cc29599a864b40f886f766a6042a785cdf6a5c9e046661e60c512cb5eb&#x2F;diff&quot;,</span><br><span class="line">    &quot;MergedDir&quot;: &quot;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;merged&quot;,</span><br><span class="line">    &quot;UpperDir&quot;: &quot;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;diff&quot;,</span><br><span class="line">    &quot;WorkDir&quot;: &quot;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;work&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;Name&quot;: &quot;overlay2&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上图中可以看到使用了 overlay2，MergedDir 是最终的统一视图，通过 findmnt 命令可进一步查看：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ findmnt -T &#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;merged --notruncate</span><br><span class="line">TARGET                                                                                        SOURCE  FSTYPE  OPTIONS</span><br><span class="line">&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;merged overlay overlay rw,relatime,lowerdir&#x3D;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;l&#x2F;65ULPACJJ5HPW6N7X7O4EYT3FV:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;l&#x2F;NJSWN22VUADQPGUNVHOTOLFIYO:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;l&#x2F;ST6G6NDPWCA7DOPGPP6YY5ZQTR:&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;l&#x2F;T5DURVHXWM4P7NNCW4H4TYYVSR,upperdir&#x3D;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;diff,workdir&#x3D;&#x2F;data&#x2F;docker&#x2F;overlay2&#x2F;15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca&#x2F;work</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 MergedDir 是挂载点，其它的目录分别以 lowerdir/upperdir/workdir 等挂载参数的形式传入，MergedDir/UpperDir/WorkDir 位于同一层，即可写层。进一步查看 overlay2 下的各层信息：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 顶层，即可写层，该层写入的内容在 diff 目录下</span></span><br><span class="line">$ ls /data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca</span><br><span class="line">diff  link  lower  merged  work</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看下层信息，显示的是下层的短 ID</span></span><br><span class="line">$ cat /data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca/lower</span><br><span class="line">l/65ULPACJJ5HPW6N7X7O4EYT3FV:l/NJSWN22VUADQPGUNVHOTOLFIYO:l/ST6G6NDPWCA7DOPGPP6YY5ZQTR:l/T5DURVHXWM4P7NNCW4H4TYYVS</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过短 ID 可以分别找到具体的下层，可以看到与 docker inspect 和 findmnt 中显示的层信息一致</span></span><br><span class="line">$ realpath /data/docker/overlay2/l/65ULPACJJ5HPW6N7X7O4EYT3FV</span><br><span class="line">/data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca-init/diff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看下层的目录结构，和顶层类似但没有 merged 目录</span></span><br><span class="line">$ ls /data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca-init/</span><br><span class="line">diff  link  lower  work</span><br><span class="line"></span><br><span class="line"><span class="comment"># 继续查看下层信息，可以看到是记录的下层短 ID 和顶层 lower 记录的剩余 ID 是一致的</span></span><br><span class="line">$ cat /data/docker/overlay2/15283905a66bcb3cee77c9b03aae27c2d299356ad4a86383f833a218dd924aca-init/lower</span><br><span class="line">l/NJSWN22VUADQPGUNVHOTOLFIYO:l/ST6G6NDPWCA7DOPGPP6YY5ZQTR:l/T5DURVHXWM4P7NNCW4H4TYYVSR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 继续查看下层目录，发现是一样的</span></span><br><span class="line"><span class="comment"># 只有最下层略有不同，没有 lower 和 work 目录</span></span><br><span class="line">$ ls /data/docker/overlay2/be0892cc29599a864b40f886f766a6042a785cdf6a5c9e046661e60c512cb5eb</span><br><span class="line">diff  link</span><br></pre></td></tr></table></figure>
-
-<p>根据社区文档说明，link 文件中存放当前层的短 ID，lower 文件记录更下层的短 ID，diff 目录存放当前层的内容，work 目录由 OverlayFS 内部使用。</p>
-<h4 id="从源码编译-docker-二进制文件"><a href="#从源码编译-docker-二进制文件" class="headerlink" title="从源码编译 docker 二进制文件"></a>从源码编译 docker 二进制文件</h4><p>参考：<a href="https://ops.tips/blog/compiling-your-own-forked-docker-release/" target="_blank" rel="external nofollow noopener noreferrer">Compiling and running your own forked Docker release</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;docker&#x2F;docker-ce.git</span><br><span class="line">&#x2F;&#x2F; 检出目标版本</span><br><span class="line">git checkout v18.09.2</span><br><span class="line">&#x2F;&#x2F; 按需修改源码</span><br><span class="line">&#x2F;&#x2F; 执行编译命令</span><br><span class="line">make static DOCKER_BUILD_PKGS&#x3D;static-linux</span><br><span class="line">&#x2F;&#x2F; 查看编译结果</span><br><span class="line">tree .&#x2F;components&#x2F;packaging&#x2F;static&#x2F;build&#x2F;linux</span><br><span class="line"></span><br><span class="line">.&#x2F;components&#x2F;packaging&#x2F;static&#x2F;build&#x2F;linux</span><br><span class="line">├── docker</span><br><span class="line">│   ├── docker</span><br><span class="line">│   ├── containerd</span><br><span class="line">│   ├── containerd-ctr</span><br><span class="line">│   ├── containerd-shim</span><br><span class="line">│   ├── dockerd</span><br><span class="line">│   ├── docker-init</span><br><span class="line">│   ├── docker-proxy</span><br><span class="line">│   └── docker-runc</span><br><span class="line">└── docker-18.09.2.tgz</span><br></pre></td></tr></table></figure>
-
-<h4 id="减少镜像体积的方式"><a href="#减少镜像体积的方式" class="headerlink" title="减少镜像体积的方式"></a>减少镜像体积的方式</h4><p>将多个 RUN 语句组合在一行命令中；使用多阶段构建；使用 Alpine 作为基础镜像；使用 Go 等静态编译语言代替 Java 等动态解释语言。</p>
-<h4 id="COPY-与-ADD"><a href="#COPY-与-ADD" class="headerlink" title="COPY 与 ADD"></a>COPY 与 ADD</h4><p>COPY 比 ADD 多两个特性：可以自动解压 src 为 gzip 等压缩格式的文件到 dst 目录；src 路径可以是一个远程 URL 链接。</p>
-<h4 id="ENTRYPOINT-与-CMD"><a href="#ENTRYPOINT-与-CMD" class="headerlink" title="ENTRYPOINT 与 CMD"></a>ENTRYPOINT 与 CMD</h4><p>ENTRYPOINT 必须是可执行的程序，CMD 作为参数传递给 ENTRYPOINT。</p>
-<h4 id="清理-Docker-所有容器和镜像"><a href="#清理-Docker-所有容器和镜像" class="headerlink" title="清理 Docker 所有容器和镜像"></a>清理 Docker 所有容器和镜像</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker ps -aq</span><br><span class="line">docker stop $(docker ps -aq)</span><br><span class="line">docker rm $(docker ps -aq)</span><br><span class="line">docker rmi $(docker images -q)</span><br></pre></td></tr></table></figure>
-
-<h4 id="设置-HTTP-代理"><a href="#设置-HTTP-代理" class="headerlink" title="设置 HTTP 代理"></a>设置 HTTP 代理</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -p /etc/systemd/system/docker.service.d</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'</span></span><br><span class="line"><span class="string">[Service]</span></span><br><span class="line"><span class="string">Environment="HTTP_PROXY=http://10.20.47.147:3128"</span></span><br><span class="line"><span class="string">Environment="HTTPS_PROXY=http://10.20.47.147:3128"</span></span><br><span class="line"><span class="string">Environment="NO_PROXY=localhost,127.0.0.1,10.0.0.0/8,172.0.0.0/8,100.0.0.0/8,10.8.10.222,*.some.org"</span></span><br><span class="line"><span class="string">'</span> | tee /etc/systemd/system/docker.service.d/http-proxy.conf</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag> 云计算</tag>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git 常用命令</title>
-    <url>/post/5fddf106.html</url>
-    <content><![CDATA[<h4 id="修改历史-commit-信息"><a href="#修改历史-commit-信息" class="headerlink" title="修改历史 commit 信息"></a>修改历史 commit 信息</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase -i HEAD~2</span><br><span class="line">pick -&gt; edit</span><br><span class="line">git commit --amend</span><br><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure><h4 id="修改-commit-时间"><a href="#修改-commit-时间" class="headerlink" title="修改 commit 时间"></a>修改 commit 时间</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 设置为当前时间</span><br><span class="line">GIT_COMMITTER_DATE&#x3D;&quot;$(date &#39;+%Y-%m-%d %H:%M:%S&#39;)&quot; git commit --amend --no-edit --date &quot;$(date)&quot;</span><br><span class="line"># 设置为指定时间</span><br><span class="line">GIT_COMMITTER_DATE&#x3D;&quot;2021-03-19 17:54:27 GMT+8&quot; git commit --amend --no-edit --date &quot;2021-03-19 17:54:27 GMT+8&quot;</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-<h4 id="比较两个分支的不同"><a href="#比较两个分支的不同" class="headerlink" title="比较两个分支的不同"></a>比较两个分支的不同</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git diff branch_1..branch_2</span><br></pre></td></tr></table></figure>
-
-<h4 id="列出不同分支之间的所有-commit"><a href="#列出不同分支之间的所有-commit" class="headerlink" title="列出不同分支之间的所有 commit"></a>列出不同分支之间的所有 commit</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span> --left-right --cherry-pick --oneline v1.14.6..v1.14.10</span><br></pre></td></tr></table></figure>
-
-<h4 id="比较两个分支中指定文件或目录"><a href="#比较两个分支中指定文件或目录" class="headerlink" title="比较两个分支中指定文件或目录"></a>比较两个分支中指定文件或目录</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git diff mybranch master -- myfile.cs</span><br></pre></td></tr></table></figure>
-
-<h4 id="merge-时使用指定方代码解决冲突"><a href="#merge-时使用指定方代码解决冲突" class="headerlink" title="merge 时使用指定方代码解决冲突"></a>merge 时使用指定方代码解决冲突</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">git merge -X theirs origin/dev</span><br><span class="line">git merge -X ours origin/dev</span><br></pre></td></tr></table></figure>
-
-<h4 id="查看一个文件完整的修改历史"><a href="#查看一个文件完整的修改历史" class="headerlink" title="查看一个文件完整的修改历史"></a>查看一个文件完整的修改历史</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git log --follow -p -- _config.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="将当前分支下子目录内容提交至另一个分支"><a href="#将当前分支下子目录内容提交至另一个分支" class="headerlink" title="将当前分支下子目录内容提交至另一个分支"></a>将当前分支下子目录内容提交至另一个分支</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git subtree push --prefix dist origin gh-pages</span><br></pre></td></tr></table></figure>
-
-<h4 id="删除-submodule"><a href="#删除-submodule" class="headerlink" title="删除 submodule"></a>删除 submodule</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git submodule deinit &lt;path_to_submodule&gt;</span><br><span class="line">git rm &lt;path_to_submodule&gt;</span><br><span class="line">git commit -m &quot;Removed submodule &quot;</span><br></pre></td></tr></table></figure>
-
-<h4 id="合并所有-commit-为一个"><a href="#合并所有-commit-为一个" class="headerlink" title="合并所有 commit 为一个"></a>合并所有 commit 为一个</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git rebase --root -i</span><br><span class="line">&#x2F;&#x2F; 使用以下命令可以将需要 rebase 的 commit 的时间全部设置为当前时间</span><br><span class="line">git rebase --ignore-date 303a824f46b497f71582e2e5d493c132b85e3e0a</span><br></pre></td></tr></table></figure>
-
-<h4 id="删除所有没有远程分支的本地分支"><a href="#删除所有没有远程分支的本地分支" class="headerlink" title="删除所有没有远程分支的本地分支"></a>删除所有没有远程分支的本地分支</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git fetch -p &amp;&amp; git branch -vv | awk &#39;&#x2F;: gone]&#x2F;&#123;print $1&#125;&#39; | xargs git branch -d</span><br></pre></td></tr></table></figure>
-
-<h4 id="撤销某个-commit"><a href="#撤销某个-commit" class="headerlink" title="撤销某个 commit"></a>撤销某个 commit</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git revert --strategy resolve &lt;commit&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用-ssh-替代-https-访问"><a href="#使用-ssh-替代-https-访问" class="headerlink" title="使用 ssh 替代 https 访问"></a>使用 ssh 替代 https 访问</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global url.<span class="string">"git@git.ucloudadmin.com:"</span>.insteadOf <span class="string">"https://git.ucloudadmin.com/"</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="查看-commit-内容"><a href="#查看-commit-内容" class="headerlink" title="查看 commit 内容"></a>查看 commit 内容</h4><p>查看指定 commit id 的提交内容</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">git</span> <span class="string">show</span> <span class="string">67cebafce9c45a1d65fddd3d1742c4cb42851d10</span></span><br></pre></td></tr></table></figure>
-
-<p>查看最近 n 次提交内容</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">git</span> <span class="string">log</span> <span class="string">-p</span> <span class="string">-n</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="创建和删除-tag"><a href="#创建和删除-tag" class="headerlink" title="创建和删除 tag"></a>创建和删除 tag</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 删除本地 tag</span><br><span class="line">git tag -d v0.0.1</span><br><span class="line">// 删除远程仓库 tag</span><br><span class="line">git push --delete origin v0.0.1</span><br><span class="line">// 创建本地 tag</span><br><span class="line">git tag v0.0.1 -m <span class="string">"Release version 0.0.1"</span></span><br><span class="line">// 以某个 commit 为基础创建 tag</span><br><span class="line">git tag -a v0.0.1 30728cab -m <span class="string">"Release version 0.0.1"</span></span><br><span class="line">// 推送指定 tag 到远程</span><br><span class="line">git push origin v0.0.1</span><br><span class="line">// 推送所有 tag 到远程</span><br><span class="line">git push --tags</span><br></pre></td></tr></table></figure>
-
-<h4 id="获取最近的-tag"><a href="#获取最近的-tag" class="headerlink" title="获取最近的 tag"></a>获取最近的 tag</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 获取最新的 tag</span><br><span class="line">git describe --tags $(git rev-list --tags --max-count=1)</span><br><span class="line">// 获取最新 commit 对应的 tag</span><br><span class="line">git describe --abbrev=0</span><br><span class="line">git describe --tags</span><br></pre></td></tr></table></figure>
-
-<h4 id="创建和应用-patch"><a href="#创建和应用-patch" class="headerlink" title="创建和应用 patch"></a>创建和应用 patch</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 生成 git patch</span><br><span class="line">git diff c78bca..709fcfe &gt; /tmp/cloudprovider.patch</span><br><span class="line">// 应用 patch</span><br><span class="line">git apply /tmp/cloudprovider.patch</span><br></pre></td></tr></table></figure>
-
-<h4 id="gitlab-创建-tag-和发布附件流程"><a href="#gitlab-创建-tag-和发布附件流程" class="headerlink" title="gitlab 创建 tag 和发布附件流程"></a>gitlab 创建 tag 和发布附件流程</h4><p>参考：<a href="https://stackoverflow.com/a/55415383" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/a/55415383</a></p>
-<h4 id="cherry-pick-时移除不需要的修改"><a href="#cherry-pick-时移除不需要的修改" class="headerlink" title="cherry-pick 时移除不需要的修改"></a>cherry-pick 时移除不需要的修改</h4><p>参考：<a href="https://stackoverflow.com/questions/5717026/how-to-git-cherry-pick-only-changes-to-certain-files" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/5717026/how-to-git-cherry-pick-only-changes-to-certain-files</a><br>如果需要移除的修改较少，可使用以下方式：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git cherry-pick -n 1683355bf81435ffdcbf332ad3558cb92853c9eb</span><br><span class="line">&#x2F;&#x2F; 丢弃该 commit 对 go.mod 文件的修改</span><br><span class="line">git restore --staged go.mod</span><br><span class="line">&#x2F;&#x2F; 或者</span><br><span class="line">git checkout HEAD go.mod</span><br><span class="line">&#x2F;&#x2F; 直接提交即可, commit 信息使用上述 commit 的</span><br><span class="line">git commit</span><br></pre></td></tr></table></figure>
-
-<p>如果大部分修改都需要移除，可采用：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git cherry-pick -n 1683355bf81435ffdcbf332ad3558cb92853c9eb</span><br><span class="line">git reset HEAD</span><br><span class="line">&#x2F;&#x2F; 添加需要保留的修改</span><br><span class="line">git add &lt;path&gt;</span><br><span class="line">&#x2F;&#x2F; 移除所有不需要保存的修改</span><br><span class="line">git clean -f</span><br></pre></td></tr></table></figure>
-
-<p>如果仅有一两项文件或目录的修改需要保留，可执行：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 应用对文件或目录下文件的修改</span><br><span class="line">git show SHA -- file1.txt file2.txt | git apply -</span><br><span class="line">git show SHA -- dir1 dir2 | git apply -</span><br><span class="line">&#x2F;&#x2F; 保存修改</span><br><span class="line">git add file1.txt file2.txt</span><br><span class="line">git commit -c SHA</span><br><span class="line">&#x2F;&#x2F; 或者二合一</span><br><span class="line">git show SHA -- file1.txt file2.txt | git apply --cached -</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用指定-commit-中的内容覆盖指定文件或目录"><a href="#使用指定-commit-中的内容覆盖指定文件或目录" class="headerlink" title="使用指定 commit 中的内容覆盖指定文件或目录"></a>使用指定 commit 中的内容覆盖指定文件或目录</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout c5f567 -- file1/to/restore file2/to/restore</span><br></pre></td></tr></table></figure>
-
-<h4 id="github-actions"><a href="#github-actions" class="headerlink" title="github actions"></a>github actions</h4><ul>
-<li>自动创建发布：<a href="https://github.com/actions/upload-release-asset" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/actions/upload-release-asset</a></li>
-</ul>
-<h4 id="clone-all-projects-in-group"><a href="#clone-all-projects-in-group" class="headerlink" title="clone all projects in group"></a>clone all projects in group</h4><p><a href="https://github.com/gabrie30/ghorg" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/gabrie30/ghorg</a><br>或者</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> repo <span class="keyword">in</span> $(curl -s --header <span class="string">"PRIVATE-TOKEN: your_private_token"</span> https://&lt;your-host&gt;/api/v4/groups/&lt;group_id&gt; | jq <span class="string">".projects[].ssh_url_to_repo"</span> | tr -d <span class="string">'"'</span>); <span class="keyword">do</span> git <span class="built_in">clone</span> <span class="variable">$repo</span>; <span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">git config --global http.proxy http:<span class="comment">//127.0.0.1:1080</span></span><br><span class="line">git config --global http.proxy socks5h:<span class="comment">//127.0.0.1:1080</span></span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line"><span class="comment">//#只对GitHub设置代理</span></span><br><span class="line">git config --global http.https:<span class="comment">//github.com.proxy socks5h://127.0.0.1:1080</span></span><br><span class="line">git config --global --unset http.https:<span class="comment">//github.com.proxy</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="查看所有分支的最后活跃时间"><a href="#查看所有分支的最后活跃时间" class="headerlink" title="查看所有分支的最后活跃时间"></a>查看所有分支的最后活跃时间</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> branch <span class="keyword">in</span> `git branch -a`;</span><br><span class="line"><span class="keyword">do</span>;</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$branch</span> != <span class="string">"*"</span> ]; <span class="keyword">then</span>;</span><br><span class="line">    hasAct=$(git <span class="built_in">log</span> --abbrev-commit --date=relative -1 <span class="variable">$branch</span>);</span><br><span class="line">    lastActivity=$(<span class="built_in">echo</span> <span class="string">"<span class="variable">$hasAct</span>"</span> | grep Date: | sed <span class="string">'s/Date: //'</span>);</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$branch</span> last activity was\033[1;31m<span class="variable">$lastActivity</span>\033[0m"</span>;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">""</span></span><br><span class="line"><span class="keyword">fi</span>;</span><br><span class="line"><span class="keyword">done</span>;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>开发工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker 卷和文件系统权限</title>
-    <url>/post/86bd2460.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">17/10/2019</td>
-<td align="center">初始版本.</td>
-</tr>
-</tbody></table><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca" target="_blank" rel="external nofollow noopener noreferrer">Docker volumes and file system permissions</a><br>Docker 卷和文件系统权限</p><h3 id="译文"><a href="#译文" class="headerlink" title="译文"></a>译文</h3><p>Docker 容器的文件系统是临时存在的（不要在运行期间持久化数据到容器内的文件目录）。但是很多容器存在持久化数据的需求。Docker 的卷挂载功能提供了一种满足数据持久化需求的能力，但是使用时往往存在一些有关文件系统权限的陷阱。</p><a id="more"></a>
-
-
-<p>在生产环境中你一般会使用一些公有云提供商的容器编排工具和持久化存储，提供商已经帮助解决了文件权限的设置问题。在大多数已部署的设置中，您将使用容器编排机制，并且某些公共云产品提供了永久性存储，它们可能具有自己配置权限的方式。但是，在本地开发期间或在产品的早期迭代中，最简单的方法是将宿主机目录挂载为 Docker 卷的形式暴露给容器内服务使用。</p>
-<p>将主机目录配置为 Docker 卷时需要注意以下内容：</p>
-<ul>
-<li>对卷中的内容设置的文件权限在容器和宿主机看来是一样的。</li>
-<li>仅 UID（用户 ID）和 GID（组 ID）会影响文件权限。例如，用户和组的名称和密码不需要匹配，甚至不需要在主机和容器中真实存在。</li>
-<li>容器 OS 根据其自身的配置对容器内的文件进行操作。例如，如果在主机和容器中都存在用户 A，如果仅在宿主机上将用户 A 添加到组 B，则在容器内用户 A 仍将无法拥有读写归属于组 B 的文件的权限，除非在容器内也创建了组 B 并将用户 A 添加到其中。</li>
-<li>默认情况下，容器的命令以 root 身份运行</li>
-<li>可以（在基于 unix 的系统上）将文件 / 目录所有权设置为不属于任何实际存在的组的 GID</li>
-</ul>
-<p>如果你牢记上述事实，则应该能够正确配置容器和卷，并不会对文件读写权限的各种情况感到意外。如果你不熟悉 UNIX 文件权限，可以阅读该<a href="https://help.ubuntu.com/community/FilePermissions" target="_blank" rel="external nofollow noopener noreferrer">页面</a>关于文件权限的描述。</p>
-<p>下面举例说明本地开发时如何快速配置文件权限：</p>
-<p>在宿主机上将要用作卷的目录的归属组设置为未被任何已存在的组使用的 GID（此例中设置为 1024）</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chown :<span class="number">1024</span> /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>更改目录权限以授予组成员完全访问权限（读 + 写 + 执行）</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">775</span> /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>确保文件夹中所有新建内容都将继承归属组</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod g+s /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>在 Dockerfile 中创建一个用户，该用户是 1024 组的成员</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">RUN addgroup --gid <span class="number">1024</span> mygroup</span><br><span class="line">RUN adduser --disabled-password --gecos <span class="string">""</span> --force-badname --ingroup <span class="number">1024</span> myuser</span><br><span class="line">USER myuser</span><br></pre></td></tr></table></figure>
-
-<p>（可选）在宿主机将当前用户添加到 1024 组中，从而可以方便地在宿主机上操作挂载为容器卷的目录的内容</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">adduser ubuntu <span class="number">1024</span></span><br></pre></td></tr></table></figure>
-
-<p>上面的示例是一个很简单的配置，可以使得不需要使用 root 用户在容器内运行程序，也可以在主机上操作挂载为容器卷的目录的内容而无需使用主机 root 用户。这些设置过程硬编码到 Docker 镜像打包过程中使得无法在容器运行时调整 GID。如果调整，则需将 GID 作为环境变量传递到容器内，并编写一个通用的初始化脚本在容器启动时进行权限配置。DeniBertović 的这篇博客  <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/" target="_blank" rel="external nofollow noopener noreferrer">https://denibertovic.com/posts/handling-permissions-with-docker-volumes/</a>  提供了完成此类设置的指南。</p>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>译文</tag>
-        <tag>Docker</tag>
       </tags>
   </entry>
 </search>
