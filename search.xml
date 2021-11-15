@@ -1119,6 +1119,17 @@
       </tags>
   </entry>
   <entry>
+    <title>IPVS 模式下 NodePort 的工作过程浅析</title>
+    <url>/post/4c49613e.html</url>
+    <content><![CDATA[<p>###</p>]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>K8S PVC 在线扩容</title>
     <url>/post/99dfe25e.html</url>
     <content><![CDATA[<ol>
@@ -1171,17 +1182,6 @@
       <tags>
         <tag>Ceph</tag>
         <tag>Kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>IPVS 模式下 NodePort 的工作过程浅析</title>
-    <url>/post/4c49613e.html</url>
-    <content><![CDATA[<p>###</p>]]></content>
-      <categories>
-        <category>Kubernetes</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -4303,66 +4303,6 @@
       </tags>
   </entry>
   <entry>
-    <title>喜欢的音乐</title>
-    <url>/post/102c919d.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">04/08/2017</td>
-<td align="center">初始版本，增加’Stories’, ‘万神纪’, ‘手纸 拝启 十五の君’, ‘永遠語り～風ノ歌～’, ‘与君说’, ‘だんご大家族’.</td>
-</tr>
-<tr>
-<td align="center">04/16/2017</td>
-<td align="center">增加“锦鲤抄”。</td>
-</tr>
-</tbody></table><p>本文汇总了一些好听的歌。</p><h3 id="Stories"><a href="#Stories" class="headerlink" title="Stories"></a>Stories</h3><p>All Hail Lelouch !</p><a id="more"></a>
-
-
-<center style="padding:0px;">  <p style="font: bold 20px arial,sans-serif; margin:0px; padding:0px;">All Hail Lelouch !</p>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22805139&auto=0&height=66"></iframe>  </center>
-
-<h3 id="万神纪"><a href="#万神纪" class="headerlink" title="万神纪"></a>万神纪</h3><center style="padding:0px;">    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=459554803&auto=0&height=66"></iframe>   
-<iframe src="https://player.bilibili.com/player.html?aid=8542373" frameborder="no" allowfullscreen="true"></iframe>
-</center> 
-
-<h3 id="锦鲤抄"><a href="#锦鲤抄" class="headerlink" title="锦鲤抄"></a>锦鲤抄</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28188434&auto=0&height=66"></iframe>
-<iframe src="https://player.bilibili.com/player.html?aid=9119029" frameborder="no" allowfullscreen="true"></iframe>
-</center>  
-
-<h3 id="手纸-拝启-十五の君-信-写给十五岁的自己"><a href="#手纸-拝启-十五の君-信-写给十五岁的自己" class="headerlink" title="手纸 拝启 十五の君 (信 写给十五岁的自己)"></a>手纸 拝启 十五の君 (信 写给十五岁的自己)</h3><center style="padding:0px;">
-
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=550667&auto=1&height=66"></iframe>
-</center>
-
-<h3 id="永遠語り～風ノ歌～-永远语-风之歌"><a href="#永遠語り～風ノ歌～-永远语-风之歌" class="headerlink" title="永遠語り～風ノ歌～ (永远语 风之歌)"></a>永遠語り～風ノ歌～ (永远语 风之歌)</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=31168232&auto=0&height=66"></iframe>
-</center>
-
-<h3 id="与君说"><a href="#与君说" class="headerlink" title="与君说"></a>与君说</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=462688968&auto=0&height=66"></iframe>
-<iframe src="https://player.bilibili.com/player.html?aid=7536941" frameborder="no" allowfullscreen="true"></iframe>
-</center>
-
-<h3 id="だんご大家族-团子大家族"><a href="#だんご大家族-团子大家族" class="headerlink" title="だんご大家族 (团子大家族)"></a>だんご大家族 (团子大家族)</h3><center style="padding:0px;">
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=760533&auto=0&height=66"></iframe>
-</center>
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script>window.onload = window.onresize = function() {  $(".fluid-vids").css({ margin: "0px", padding: "0px", height: "86px"});  $("center>iframe").css({ width: "97%" });  $("center>iframe").height($("center>iframe").width() * 0.60);  $("center>br").remove();}; </script>
-]]></content>
-      <categories>
-        <category>音乐</category>
-      </categories>
-      <tags>
-        <tag>音乐</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>前端知识点滴</title>
     <url>/post/a68ff6.html</url>
     <content><![CDATA[<h4 id="swagger-client"><a href="#swagger-client" class="headerlink" title="swagger-client"></a>swagger-client</h4><p>swagger-client 是一个 js 包，可以读取并解析  Swagger 2.0 和 OpenAPI 3 的 json 文档并生成可以对文档中定义的 API 进行调用的 client，简化 api 请求过程。</p><h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><p>服务端响应的 Header 中可以设置 <code>Content-Disposition: attachment; filename=test.txt</code>  指定文件名称，一般设置 <code>Content-Type: application/octet-stream</code>  对于小的文本文件也可以设置为  <code>Content-Type: text/plain; charset=utf-8</code>  告诉浏览器可以直接在浏览器窗口打开。</p><a id="more"></a>
@@ -4461,6 +4401,66 @@
       </categories>
       <tags>
         <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>喜欢的音乐</title>
+    <url>/post/102c919d.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">04/08/2017</td>
+<td align="center">初始版本，增加’Stories’, ‘万神纪’, ‘手纸 拝启 十五の君’, ‘永遠語り～風ノ歌～’, ‘与君说’, ‘だんご大家族’.</td>
+</tr>
+<tr>
+<td align="center">04/16/2017</td>
+<td align="center">增加“锦鲤抄”。</td>
+</tr>
+</tbody></table><p>本文汇总了一些好听的歌。</p><h3 id="Stories"><a href="#Stories" class="headerlink" title="Stories"></a>Stories</h3><p>All Hail Lelouch !</p><a id="more"></a>
+
+
+<center style="padding:0px;">  <p style="font: bold 20px arial,sans-serif; margin:0px; padding:0px;">All Hail Lelouch !</p>   <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22805139&auto=0&height=66"></iframe>  </center>
+
+<h3 id="万神纪"><a href="#万神纪" class="headerlink" title="万神纪"></a>万神纪</h3><center style="padding:0px;">    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=459554803&auto=0&height=66"></iframe>   
+<iframe src="https://player.bilibili.com/player.html?aid=8542373" frameborder="no" allowfullscreen="true"></iframe>
+</center> 
+
+<h3 id="锦鲤抄"><a href="#锦鲤抄" class="headerlink" title="锦鲤抄"></a>锦鲤抄</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=28188434&auto=0&height=66"></iframe>
+<iframe src="https://player.bilibili.com/player.html?aid=9119029" frameborder="no" allowfullscreen="true"></iframe>
+</center>  
+
+<h3 id="手纸-拝启-十五の君-信-写给十五岁的自己"><a href="#手纸-拝启-十五の君-信-写给十五岁的自己" class="headerlink" title="手纸 拝启 十五の君 (信 写给十五岁的自己)"></a>手纸 拝启 十五の君 (信 写给十五岁的自己)</h3><center style="padding:0px;">
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=550667&auto=1&height=66"></iframe>
+</center>
+
+<h3 id="永遠語り～風ノ歌～-永远语-风之歌"><a href="#永遠語り～風ノ歌～-永远语-风之歌" class="headerlink" title="永遠語り～風ノ歌～ (永远语 风之歌)"></a>永遠語り～風ノ歌～ (永远语 风之歌)</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=31168232&auto=0&height=66"></iframe>
+</center>
+
+<h3 id="与君说"><a href="#与君说" class="headerlink" title="与君说"></a>与君说</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=462688968&auto=0&height=66"></iframe>
+<iframe src="https://player.bilibili.com/player.html?aid=7536941" frameborder="no" allowfullscreen="true"></iframe>
+</center>
+
+<h3 id="だんご大家族-团子大家族"><a href="#だんご大家族-团子大家族" class="headerlink" title="だんご大家族 (团子大家族)"></a>だんご大家族 (团子大家族)</h3><center style="padding:0px;">
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=760533&auto=0&height=66"></iframe>
+</center>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>window.onload = window.onresize = function() {  $(".fluid-vids").css({ margin: "0px", padding: "0px", height: "86px"});  $("center>iframe").css({ width: "97%" });  $("center>iframe").height($("center>iframe").width() * 0.60);  $("center>br").remove();}; </script>
+]]></content>
+      <categories>
+        <category>音乐</category>
+      </categories>
+      <tags>
+        <tag>音乐</tag>
       </tags>
   </entry>
   <entry>
