@@ -4125,6 +4125,31 @@
       </tags>
   </entry>
   <entry>
+    <title>公钥与证书</title>
+    <url>/post/3e994927.html</url>
+    <content><![CDATA[<h4 id="OpenSSL-生成公钥、私钥对"><a href="#OpenSSL-生成公钥、私钥对" class="headerlink" title="OpenSSL 生成公钥、私钥对"></a>OpenSSL 生成公钥、私钥对</h4><ol>
+<li>生成 RSA 公私钥对</li>
+</ol><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out private_key 4096</span><br><span class="line">openssl rsa -<span class="keyword">in</span> private_key -pubout -outform PEM -out public_key.pem</span><br></pre></td></tr></table></figure><ol start="2">
+<li>生成 ED25519 公私钥对</li>
+</ol><a id="more"></a>
+
+
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">openssl genpkey -algorithm ED25519 -out private_key</span><br><span class="line">openssl pkey -<span class="keyword">in</span> private_key -pubout -out public_key</span><br></pre></td></tr></table></figure>
+
+<h4 id="签名算法"><a href="#签名算法" class="headerlink" title="签名算法"></a>签名算法</h4><p>尽量使用 EdDSA （Ed25519）而不是 RSA，可以以更小的长度提供更高的安全性。</p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p>数字签名、数字证书与 HTTPS 是什么关系？ - 码海的回答 - 知乎 <a href="https://www.zhihu.com/question/52493697/answer/1622722013" target="_blank" rel="external nofollow noopener noreferrer">https://www.zhihu.com/question/52493697/answer/1622722013</a><br><a href="https://juejin.cn/post/6844903638117122056#heading-20" target="_blank" rel="external nofollow noopener noreferrer">https://juejin.cn/post/6844903638117122056#heading-20</a><br><a href="https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a><br><a href="https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html</a></p>
+]]></content>
+      <categories>
+        <category>证书</category>
+      </categories>
+      <tags>
+        <tag>证书</tag>
+        <tag>公钥</tag>
+        <tag>加密</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于K8S中Pod带宽限制的问题</title>
     <url>/post/2c3c5a80.html</url>
     <content><![CDATA[<table>
@@ -4231,31 +4256,6 @@
       <tags>
         <tag>Kubernetes</tag>
         <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>公钥与证书</title>
-    <url>/post/3e994927.html</url>
-    <content><![CDATA[<h4 id="OpenSSL-生成公钥、私钥对"><a href="#OpenSSL-生成公钥、私钥对" class="headerlink" title="OpenSSL 生成公钥、私钥对"></a>OpenSSL 生成公钥、私钥对</h4><ol>
-<li>生成 RSA 公私钥对</li>
-</ol><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl genrsa -out private_key 4096</span><br><span class="line">openssl rsa -<span class="keyword">in</span> private_key -pubout -outform PEM -out public_key.pem</span><br></pre></td></tr></table></figure><ol start="2">
-<li>生成 ED25519 公私钥对</li>
-</ol><a id="more"></a>
-
-
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">openssl genpkey -algorithm ED25519 -out private_key</span><br><span class="line">openssl pkey -<span class="keyword">in</span> private_key -pubout -out public_key</span><br></pre></td></tr></table></figure>
-
-<h4 id="签名算法"><a href="#签名算法" class="headerlink" title="签名算法"></a>签名算法</h4><p>尽量使用 EdDSA （Ed25519）而不是 RSA，可以以更小的长度提供更高的安全性。</p>
-<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p>数字签名、数字证书与 HTTPS 是什么关系？ - 码海的回答 - 知乎 <a href="https://www.zhihu.com/question/52493697/answer/1622722013" target="_blank" rel="external nofollow noopener noreferrer">https://www.zhihu.com/question/52493697/answer/1622722013</a><br><a href="https://juejin.cn/post/6844903638117122056#heading-20" target="_blank" rel="external nofollow noopener noreferrer">https://juejin.cn/post/6844903638117122056#heading-20</a><br><a href="https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a><br><a href="https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html</a></p>
-]]></content>
-      <categories>
-        <category>证书</category>
-      </categories>
-      <tags>
-        <tag>证书</tag>
-        <tag>公钥</tag>
-        <tag>加密</tag>
       </tags>
   </entry>
   <entry>
