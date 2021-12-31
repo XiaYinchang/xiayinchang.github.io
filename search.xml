@@ -1325,21 +1325,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Keepalived 和 Kubeadm 部署高可用 Kubernetes</title>
-    <url>/post/c9063311.html</url>
-    <content><![CDATA[<h3 id="准备-k8s-离线安装包"><a href="#准备-k8s-离线安装包" class="headerlink" title="准备 k8s 离线安装包"></a>准备 k8s 离线安装包</h3><p>在 k8s Github 仓库的 <a href="https://github.com/kubernetes/kubernetes/releases" target="_blank" rel="external nofollow noopener noreferrer">Release 页面</a>  找到最新稳定版本，点击对应的如   <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.14.md#downloads-for-v1142" target="_blank" rel="external nofollow noopener noreferrer">CHANGELOG-1.14.md</a>  链接进入该版本的安装包下载页面。分别下载 AMD64 版本的 Server 和 Node 安装包  <a href="https://dl.k8s.io/v1.14.2/kubernetes-server-linux-amd64.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">kubernetes-server-linux-amd64.tar.gz</a>  与  <a href="https://dl.k8s.io/v1.14.2/kubernetes-node-linux-amd64.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">kubernetes-node-linux-amd64.tar.gz</a>。然后使用 tar 命令解压缩并将所有文件汇总到一个集中的目录，如下，其中 coredns、etcd 和 pause 的镜像不包含在上述两个压缩包中，需要自行下载：</p><a id="more"></a>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#tree -L 2 kubernetes-1.14.2</span></span><br><span class="line">kubernetes-1.14.2</span><br><span class="line">├── apiextensions-apiserver</span><br><span class="line">├── cloud-controller-manager</span><br><span class="line">├── hyperkube</span><br><span class="line">├── images</span><br><span class="line">│   ├── cloud-controller-manager.tar</span><br><span class="line">│   ├── coredns.tar</span><br><span class="line">│   ├── etcd.tar</span><br><span class="line">│   ├── kube-apiserver.tar</span><br><span class="line">│   ├── kube-controller-manager.tar</span><br><span class="line">│   ├── kube-proxy.tar</span><br><span class="line">│   ├── kube-scheduler.tar</span><br><span class="line">│   └── pause.tar</span><br><span class="line">├── kubeadm</span><br><span class="line">├── kube-apiserver</span><br><span class="line">├── kube-controller-manager</span><br><span class="line">├── kubectl</span><br><span class="line">├── kubelet</span><br><span class="line">├── kube-proxy</span><br><span class="line">├── kube-scheduler</span><br><span class="line">└── mounter</span><br></pre></td></tr></table></figure>
-
-<h3 id="准备-ansible-环境和脚本"><a href="#准备-ansible-环境和脚本" class="headerlink" title="准备 ansible 环境和脚本"></a>准备 ansible 环境和脚本</h3>]]></content>
-      <categories>
-        <category>kubernetes</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
-        <tag>云计算</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Keycloak 使用过程记录</title>
     <url>/post/e4c4afae.html</url>
     <content><![CDATA[<h4 id="keycloak-js-sdk"><a href="#keycloak-js-sdk" class="headerlink" title="keycloak js sdk"></a>keycloak js sdk</h4><p>Angular 版本的 SDK ：<a href="https://www.npmjs.com/package/keycloak-angular" target="_blank" rel="external nofollow noopener noreferrer">https://www.npmjs.com/package/keycloak-angular</a>。为了实现 Token 刷新可以采用以下方式：</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">keycloak.onTokenExpired = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'token expired'</span>, keycloak.token);</span><br><span class="line">    keycloak.updateToken(<span class="number">30</span>).success(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'successfully get a new token'</span>, keycloak.token);</span><br><span class="line">        ...</span><br><span class="line">    &#125;).error(<span class="function"><span class="params">()</span> =&gt;</span> &#123;...&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -4826,6 +4811,21 @@
       <tags>
         <tag>RateLimit</tag>
         <tag>S3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Keepalived 和 Kubeadm 部署高可用 Kubernetes</title>
+    <url>/post/c9063311.html</url>
+    <content><![CDATA[<h3 id="准备-k8s-离线安装包"><a href="#准备-k8s-离线安装包" class="headerlink" title="准备 k8s 离线安装包"></a>准备 k8s 离线安装包</h3><p>在 k8s Github 仓库的 <a href="https://github.com/kubernetes/kubernetes/releases" target="_blank" rel="external nofollow noopener noreferrer">Release 页面</a>  找到最新稳定版本，点击对应的如   <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.14.md#downloads-for-v1142" target="_blank" rel="external nofollow noopener noreferrer">CHANGELOG-1.14.md</a>  链接进入该版本的安装包下载页面。分别下载 AMD64 版本的 Server 和 Node 安装包  <a href="https://dl.k8s.io/v1.14.2/kubernetes-server-linux-amd64.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">kubernetes-server-linux-amd64.tar.gz</a>  与  <a href="https://dl.k8s.io/v1.14.2/kubernetes-node-linux-amd64.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">kubernetes-node-linux-amd64.tar.gz</a>。然后使用 tar 命令解压缩并将所有文件汇总到一个集中的目录，如下，其中 coredns、etcd 和 pause 的镜像不包含在上述两个压缩包中，需要自行下载：</p><a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#tree -L 2 kubernetes-1.14.2</span></span><br><span class="line">kubernetes-1.14.2</span><br><span class="line">├── apiextensions-apiserver</span><br><span class="line">├── cloud-controller-manager</span><br><span class="line">├── hyperkube</span><br><span class="line">├── images</span><br><span class="line">│   ├── cloud-controller-manager.tar</span><br><span class="line">│   ├── coredns.tar</span><br><span class="line">│   ├── etcd.tar</span><br><span class="line">│   ├── kube-apiserver.tar</span><br><span class="line">│   ├── kube-controller-manager.tar</span><br><span class="line">│   ├── kube-proxy.tar</span><br><span class="line">│   ├── kube-scheduler.tar</span><br><span class="line">│   └── pause.tar</span><br><span class="line">├── kubeadm</span><br><span class="line">├── kube-apiserver</span><br><span class="line">├── kube-controller-manager</span><br><span class="line">├── kubectl</span><br><span class="line">├── kubelet</span><br><span class="line">├── kube-proxy</span><br><span class="line">├── kube-scheduler</span><br><span class="line">└── mounter</span><br></pre></td></tr></table></figure>
+
+<h3 id="准备-ansible-环境和脚本"><a href="#准备-ansible-环境和脚本" class="headerlink" title="准备 ansible 环境和脚本"></a>准备 ansible 环境和脚本</h3>]]></content>
+      <categories>
+        <category>kubernetes</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+        <tag>云计算</tag>
       </tags>
   </entry>
 </search>
