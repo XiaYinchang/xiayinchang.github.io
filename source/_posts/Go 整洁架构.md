@@ -1,8 +1,7 @@
 ---
-title: Go 整洁架构
+title: Go 整洁架构实践
 urlname: aeqw3t
 date: '2018-09-17 22:50:56 +0000'
-<br />title: Go 整洁架构实践
 layout: post
 comments: true
 categories: 译文
@@ -11,7 +10,7 @@ tags:
   - 译文
 keywords: 'Go,Architecture'
 description: go 整洁架构实践。
-abbrlink: 6c502a9a
+abbrlink: 6ff15df0
 updated: 2020-07-26 00:00:00
 ---
 

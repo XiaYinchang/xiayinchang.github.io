@@ -206,7 +206,6 @@ systemctl enable --now mariadb
 - 在 grub 引导界面临时编辑内核启动参数
 
 首先，选中要编辑的内核项，按 **e** 进入编辑页面，编辑完成后按  **Ctrl + x**  启动系统。下图为编辑内核参数直接进入救援模式。
-​
 
 ![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#height=230&id=KOcUY&margin=%5Bobject%20Object%5D&name=image.png&originHeight=230&originWidth=716&originalType=binary∶=1&size=13999&status=done&style=none&width=716)
 
