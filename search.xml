@@ -704,8 +704,8 @@
       </tags>
   </entry>
   <entry>
-    <title>Go 整洁架构</title>
-    <url>/post/6c502a9a.html</url>
+    <title>Go 整洁架构实践</title>
+    <url>/post/6ff15df0.html</url>
     <content><![CDATA[<table>
 <thead>
 <tr>
@@ -2397,7 +2397,7 @@
 <ul>
 <li>在 grub 引导界面临时编辑内核启动参数</li>
 </ul>
-<p>首先，选中要编辑的内核项，按 <strong>e</strong> 进入编辑页面，编辑完成后按  <strong>Ctrl + x</strong>  启动系统。下图为编辑内核参数直接进入救援模式。<br>​</p>
+<p>首先，选中要编辑的内核项，按 <strong>e</strong> 进入编辑页面，编辑完成后按  <strong>Ctrl + x</strong>  启动系统。下图为编辑内核参数直接进入救援模式。</p>
 <p><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#height=230&id=KOcUY&margin=%5Bobject%20Object%5D&name=image.png&originHeight=230&originWidth=716&originalType=binary%E2%88%B6=1&size=13999&status=done&style=none&width=716" alt="image.png"></p>
 <ul>
 <li>在操作系统中编辑内核启动参数并重新生成 grub 引导</li>
