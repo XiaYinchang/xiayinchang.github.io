@@ -983,6 +983,9 @@
 <li>《Go 语言从入门到进阶实战》名字俗了点，但是内容还是值得一读，作者对 Go 语言的使用还是很熟练的。</li>
 <li>《Go 语言高级编程》 <a href="https://github.com/chai2010/advanced-go-programming-book" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/chai2010/advanced-go-programming-book</a> rpc 相关的内容可以一读。</li>
 <li>Concurrency in Go</li>
+</ol>
+<p><a href="https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1571297377193-45707879-2de2-41bf-930f-47146ce64c1b.pdf" target="_blank" rel="external nofollow noopener noreferrer">Concurrency in Go.pdf</a></p>
+<ol start="4">
 <li><a href="https://tumregels.github.io/Network-Programming-with-Go/" target="_blank" rel="external nofollow noopener noreferrer">Network-Programming-with-Go</a></li>
 </ol>
 ]]></content>
@@ -2002,7 +2005,8 @@
 </tbody></table>
 </li>
 </ul>
-<h4 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h4>]]></content>
+<h4 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h4><p><a href="https://www.yuque.com/attachments/yuque/0/2020/pdf/182657/1592733448171-9fd3c848-1cef-4910-9722-4655a34dbb87.pdf" target="_blank" rel="external nofollow noopener noreferrer">Kubernetes Patterns Reusable Elements for Designing Cloud-Native Applications.pdf</a></p>
+]]></content>
       <categories>
         <category>Kubernetes</category>
       </categories>
@@ -2328,6 +2332,9 @@
 <li><a href="https://www.ibm.com/developerworks/cn/linux/l-lo-eBPF-history/index.html" target="_blank" rel="external nofollow noopener noreferrer">eBPF 简史</a></li>
 <li><a href="https://www.cnblogs.com/aquester/p/9891484.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/aquester/p/9891484.html</a></li>
 </ul>
+<p><a href="https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1576388605079-fe7121cc-ed8c-4401-ad04-3e503fbc7e82.pdf" target="_blank" rel="external nofollow noopener noreferrer">The Journey of a Packet Through the Linux Network Stack.pdf</a></p>
+<p><a href="https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1576388462144-fcd84c73-35de-40f6-aa91-4cc5e6121c57.pdf" target="_blank" rel="external nofollow noopener noreferrer">Linux Kernel Networking.pdf</a></p>
+<p><a href="https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1576388512234-3f978f9b-43af-4140-906d-8fa7f05ab6be.pdf" target="_blank" rel="external nofollow noopener noreferrer">Understanding Linux Network Internals.pdf</a></p>
 ]]></content>
       <categories>
         <category>网络</category>
@@ -3819,7 +3826,8 @@
 <li><a href="https://stuffphilwrites.com/2014/09/iptables-processing-flowchart/" target="_blank" rel="external nofollow noopener noreferrer">iptables Processing Flowchart</a></li>
 <li><a href="http://www.zsythink.net/archives/1199/" target="_blank" rel="external nofollow noopener noreferrer">iptables 详解（1）：iptables 概念</a></li>
 </ul>
-<h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4>]]></content>
+<h4 id="阅读材料"><a href="#阅读材料" class="headerlink" title="阅读材料"></a>阅读材料</h4><p><a href="https://www.yuque.com/attachments/yuque/0/2020/pdf/182657/1597492482904-08b61238-07a2-4c27-ab75-f327c7f1da2e.pdf" target="_blank" rel="external nofollow noopener noreferrer">ebpf-firewall-LPC.pdf</a></p>
+]]></content>
       <categories>
         <category>Linux,网络</category>
       </categories>
