@@ -924,4 +924,7 @@ func main() {
 1. 《Go 语言从入门到进阶实战》名字俗了点，但是内容还是值得一读，作者对 Go 语言的使用还是很熟练的。
 1. 《Go 语言高级编程》 [https://github.com/chai2010/advanced-go-programming-book](https://github.com/chai2010/advanced-go-programming-book) rpc 相关的内容可以一读。
 1. Concurrency in Go
-1. [Network-Programming-with-Go](https://tumregels.github.io/Network-Programming-with-Go/)
+
+[Concurrency in Go.pdf](https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1571297377193-45707879-2de2-41bf-930f-47146ce64c1b.pdf)
+
+4. [Network-Programming-with-Go](https://tumregels.github.io/Network-Programming-with-Go/)

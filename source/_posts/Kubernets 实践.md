@@ -1148,3 +1148,5 @@ kubectl config set-context --current --namespace=default
   后台管理任务当作一次性进程运行 |
 
 #### 书籍
+
+[Kubernetes Patterns Reusable Elements for Designing Cloud-Native Applications.pdf](https://www.yuque.com/attachments/yuque/0/2020/pdf/182657/1592733448171-9fd3c848-1cef-4910-9722-4655a34dbb87.pdf)

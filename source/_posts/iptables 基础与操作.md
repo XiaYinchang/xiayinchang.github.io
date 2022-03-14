@@ -105,3 +105,5 @@ iptables -nvL [INPUT|FORWARD|OUTPUT|myCHAINNAME] --line-numbers | less
 - [iptables 详解（1）：iptables 概念](http://www.zsythink.net/archives/1199/)
 
 #### 阅读材料
+
+[ebpf-firewall-LPC.pdf](https://www.yuque.com/attachments/yuque/0/2020/pdf/182657/1597492482904-08b61238-07a2-4c27-ab75-f327c7f1da2e.pdf)

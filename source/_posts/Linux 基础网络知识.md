@@ -504,3 +504,9 @@ XDP 是从 Linux 4.8 版本内核引入的基于 eBPF 的快速数据路径，�
 - [Express Data Path](https://www.wikiwand.com/en/Express_Data_Path)
 - [eBPF 简史](https://www.ibm.com/developerworks/cn/linux/l-lo-eBPF-history/index.html)
 - [https://www.cnblogs.com/aquester/p/9891484.html](https://www.cnblogs.com/aquester/p/9891484.html)
+
+[The Journey of a Packet Through the Linux Network Stack.pdf](https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1576388605079-fe7121cc-ed8c-4401-ad04-3e503fbc7e82.pdf)
+
+[Linux Kernel Networking.pdf](https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1576388462144-fcd84c73-35de-40f6-aa91-4cc5e6121c57.pdf)
+
+[Understanding Linux Network Internals.pdf](https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1576388512234-3f978f9b-43af-4140-906d-8fa7f05ab6be.pdf)
