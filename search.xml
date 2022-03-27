@@ -96,6 +96,76 @@
       </tags>
   </entry>
   <entry>
+    <title>Ceph 对接 Kubernetes 的两种方式</title>
+    <url>/post/466a6051.html</url>
+    <content><![CDATA[<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ul>
+<li>创建 rbd 存储池</li>
+</ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ceph osd pool create rbd 128 128</span><br><span class="line">rbd pool init rbd</span><br></pre></td></tr></table></figure><ul>
+<li>获取 ceph 集群基本信息</li>
+</ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 执行 cat 查看 ceph 配置文件</span><br><span class="line">cat &#x2F;etc&#x2F;ceph&#x2F;ceph.conf</span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">bluestore block db size &#x3D; 10737418240</span><br><span class="line">bluestore block fast create &#x3D; False</span><br><span class="line">bluestore block fast size &#x3D; 10737418240</span><br><span class="line">cluster network &#x3D; 10.10.0.0&#x2F;16</span><br><span class="line">fsid &#x3D; 5db6cfe0-e485-4884-89eb-8f926fd6d677</span><br><span class="line">mon allow pool delete &#x3D; True</span><br><span class="line">mon health preluminous compat warning &#x3D; False</span><br><span class="line">mon host &#x3D; [v2:10.10.46.236:3300,v1:10.10.46.236:6789],[v2:10.10.66.143:3300,v1:10.10.66.143:6789],[v2:10.10.178.231:3300,v1:10.10.178.231:6789]</span><br><span class="line">mon initial members &#x3D; u1,u2,u3</span><br><span class="line">mon_max_pg_per_osd &#x3D; 400</span><br><span class="line">osd pool default crush rule &#x3D; -1</span><br><span class="line">public network &#x3D; 10.10.0.0&#x2F;16</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+
+
+<p>由上述信息可知，ceph 集群 clusterid 为  5db6cfe0-e485-4884-89eb-8f926fd6d677，monitor 节点信息为：10.10.46.236:6789，10.10.66.143:6789，10.10.178.231:6789。</p>
+<ul>
+<li>获取 client.admin keyring</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  ~ cat &#x2F;etc&#x2F;ceph&#x2F;ceph.client.admin.keyring</span><br><span class="line">[client.admin]</span><br><span class="line">	key &#x3D; AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;</span><br><span class="line">	caps mds &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps mgr &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps mon &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps osd &#x3D; &quot;allow *&quot;</span><br></pre></td></tr></table></figure>
+
+<p>记录 admin 用户的 key 为  AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ==。</p>
+<h4 id="In-tree"><a href="#In-tree" class="headerlink" title="In-tree"></a>In-tree</h4><p>In-tree 插件是比较早和成熟的方式，调用不同存后端的代码包含在 Kubernetes 核心代码中，缺乏灵活性，不利于更新迭代，而且使用起来比较麻烦，需要在每个需要 PV 的命名空间都创建 role 和 secret key，不建议使用。如需使用，参见  <a href="https://medium.com/velotio-perspectives/an-innovators-guide-to-kubernetes-storage-using-ceph-a4b919f4e469" target="_blank" rel="external nofollow noopener noreferrer">An Innovator’s Guide to Kubernetes Storage Using Ceph</a> 。</p>
+<h4 id="Out-tree"><a href="#Out-tree" class="headerlink" title="Out-tree"></a>Out-tree</h4><p>Out-tree 存储插件主要是 CSI ，Kubernetes 核心代码定义了调用接口，具体的实现由第三方插件开发商自行维护，是未来主流的使用方式，目前 Ceph-CSI rbd 相关功能已经 GA。</p>
+<ul>
+<li>下载最新的 ceph-csi 代码，地址：<a href="https://github.com/ceph/ceph-csi/archive/v1.2.0.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/ceph/ceph-csi/archive/v1.2.0.tar.gz</a></li>
+<li>解压后目录结构如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  ceph-csi-1.2.0 tree -L 1</span><br><span class="line">.</span><br><span class="line">├── assets</span><br><span class="line">├── cmd</span><br><span class="line">├── deploy</span><br><span class="line">├── deploy.sh</span><br><span class="line">├── docs</span><br><span class="line">├── e2e</span><br><span class="line">├── examples</span><br><span class="line">├── Gopkg.lock</span><br><span class="line">├── Gopkg.toml</span><br><span class="line">├── LICENSE</span><br><span class="line">├── Makefile</span><br><span class="line">├── pkg</span><br><span class="line">├── README.md</span><br><span class="line">├── scripts</span><br><span class="line">├── troubleshooting</span><br><span class="line">└── vendor</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>以 rbd 配置为例，先修改  deploy/rbd/kubernetes/v1.14+/csi-config-map.yaml 文件内容，将 ceph 集群信息填写进去：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ConfigMap</span><br><span class="line">data:</span><br><span class="line">  config.json: |-</span><br><span class="line">    [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;clusterID&quot;: &quot;5db6cfe0-e485-4884-89eb-8f926fd6d677&quot;,</span><br><span class="line">        &quot;monitors&quot;: [</span><br><span class="line">          &quot;10.10.46.236&quot;,</span><br><span class="line">          &quot;10.10.66.143&quot;,</span><br><span class="line">          &quot;10.10.178.231&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-csi-config</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行以下脚本进行部署</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;examples&#x2F;rbd&#x2F;plugin-deploy.sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建 rbd-secret</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic csi-rbd-secret --from-literal&#x3D;adminID&#x3D;&quot;admin&quot; --from-literal&#x3D;adminKey&#x3D;&quot;AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;&quot; --from-literal&#x3D;userID&#x3D;&quot;admin&quot; --from-literal&#x3D;userKey&#x3D;&quot;AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 examples/rbd/storageclass.yaml 文件，主要是填上 clusterID</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apiVersion: storage.k8s.io&#x2F;v1</span><br><span class="line">kind: StorageClass</span><br><span class="line">metadata:</span><br><span class="line">   name: csi-rbd-sc</span><br><span class="line">provisioner: rbd.csi.ceph.com</span><br><span class="line">parameters:</span><br><span class="line">   # String representing a Ceph cluster to provision storage from.</span><br><span class="line">   # Should be unique across all Ceph clusters in use for provisioning,</span><br><span class="line">   # cannot be greater than 36 bytes in length, and should remain immutable for</span><br><span class="line">   # the lifetime of the StorageClass in use.</span><br><span class="line">   # Ensure to create an entry in the config map named ceph-csi-config, based on</span><br><span class="line">   # csi-config-map-sample.yaml, to accompany the string chosen to</span><br><span class="line">   # represent the Ceph cluster in clusterID below</span><br><span class="line">   clusterID: 5db6cfe0-e485-4884-89eb-8f926fd6d677</span><br><span class="line"></span><br><span class="line">   # Ceph pool into which the RBD image shall be created</span><br><span class="line">   pool: rbd</span><br><span class="line"></span><br><span class="line">   # RBD image format. Defaults to &quot;2&quot;.</span><br><span class="line">   imageFormat: &quot;2&quot;</span><br><span class="line"></span><br><span class="line">   # RBD image features. Available for imageFormat: &quot;2&quot;</span><br><span class="line">   # CSI RBD currently supports only &#96;layering&#96; feature.</span><br><span class="line">   imageFeatures: layering</span><br><span class="line"></span><br><span class="line">   # The secrets have to contain Ceph credentials with required access</span><br><span class="line">   # to the &#39;pool&#39;.</span><br><span class="line">   csi.storage.k8s.io&#x2F;provisioner-secret-name: csi-rbd-secret</span><br><span class="line">   csi.storage.k8s.io&#x2F;provisioner-secret-namespace: default</span><br><span class="line">   csi.storage.k8s.io&#x2F;node-stage-secret-name: csi-rbd-secret</span><br><span class="line">   csi.storage.k8s.io&#x2F;node-stage-secret-namespace: default</span><br><span class="line">   # Specify the filesystem type of the volume. If not specified,</span><br><span class="line">   # csi-provisioner will set default as &#96;ext4&#96;.</span><br><span class="line">   csi.storage.k8s.io&#x2F;fstype: xfs</span><br><span class="line">   # uncomment the following to use rbd-nbd as mounter on supported nodes</span><br><span class="line">   # mounter: rbd-nbd</span><br><span class="line">reclaimPolicy: Delete</span><br><span class="line">mountOptions:</span><br><span class="line">   - discard</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建 storage-class</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl apply -f examples&#x2F;rbd&#x2F;storageclass.yaml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置该 storage-class 为默认</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl patch storageclass csi-rbd-sc -p &#39;&#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;:&#123;&quot;storageclass.kubernetes.io&#x2F;is-default-class&quot;:&quot;true&quot;&#125;&#125;&#125;&#39;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>以上部署主要使用了默认值，相关插件都部署在 default 命名空间，可以根据需要进行调整。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Ceph</tag>
+        <tag>Kubernetes</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Ceph 常用操作</title>
     <url>/post/e8bac896.html</url>
     <content><![CDATA[<h4 id="删除-rbd-image-时提示有-watcher"><a href="#删除-rbd-image-时提示有-watcher" class="headerlink" title="删除 rbd image 时提示有 watcher"></a>删除 rbd image 时提示有 watcher</h4><p>查看该 image 信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd info vm-109-cloudinit --pool cloud-disk</span></span><br><span class="line">rbd image <span class="string">'vm-109-cloudinit'</span>:</span><br><span class="line">        size 4 MiB <span class="keyword">in</span> 1 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: 85a71142d8c136</span><br><span class="line">        block_name_prefix: rbd_data.85a71142d8c136</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">        op_features:</span><br><span class="line">        flags:</span><br><span class="line">        create_timestamp: Wed Aug 28 10:04:09 2019</span><br><span class="line">        access_timestamp: Mon Sep  2 13:59:31 2019</span><br><span class="line">        modify_timestamp: Mon Sep  2 13:59:31 2019</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -216,73 +286,56 @@
       </tags>
   </entry>
   <entry>
-    <title>Ceph 对接 Kubernetes 的两种方式</title>
-    <url>/post/466a6051.html</url>
-    <content><![CDATA[<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ul>
-<li>创建 rbd 存储池</li>
-</ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ceph osd pool create rbd 128 128</span><br><span class="line">rbd pool init rbd</span><br></pre></td></tr></table></figure><ul>
-<li>获取 ceph 集群基本信息</li>
-</ul><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 执行 cat 查看 ceph 配置文件</span><br><span class="line">cat &#x2F;etc&#x2F;ceph&#x2F;ceph.conf</span><br><span class="line"></span><br><span class="line">[global]</span><br><span class="line">bluestore block db size &#x3D; 10737418240</span><br><span class="line">bluestore block fast create &#x3D; False</span><br><span class="line">bluestore block fast size &#x3D; 10737418240</span><br><span class="line">cluster network &#x3D; 10.10.0.0&#x2F;16</span><br><span class="line">fsid &#x3D; 5db6cfe0-e485-4884-89eb-8f926fd6d677</span><br><span class="line">mon allow pool delete &#x3D; True</span><br><span class="line">mon health preluminous compat warning &#x3D; False</span><br><span class="line">mon host &#x3D; [v2:10.10.46.236:3300,v1:10.10.46.236:6789],[v2:10.10.66.143:3300,v1:10.10.66.143:6789],[v2:10.10.178.231:3300,v1:10.10.178.231:6789]</span><br><span class="line">mon initial members &#x3D; u1,u2,u3</span><br><span class="line">mon_max_pg_per_osd &#x3D; 400</span><br><span class="line">osd pool default crush rule &#x3D; -1</span><br><span class="line">public network &#x3D; 10.10.0.0&#x2F;16</span><br></pre></td></tr></table></figure><a id="more"></a>
+    <title>Docker 卷和文件系统权限</title>
+    <url>/post/86bd2460.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">17/10/2019</td>
+<td align="center">初始版本.</td>
+</tr>
+</tbody></table><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca" target="_blank" rel="external nofollow noopener noreferrer">Docker volumes and file system permissions</a><br>Docker 卷和文件系统权限</p><h3 id="译文"><a href="#译文" class="headerlink" title="译文"></a>译文</h3><p>Docker 容器的文件系统是临时存在的（不要在运行期间持久化数据到容器内的文件目录）。但是很多容器存在持久化数据的需求。Docker 的卷挂载功能提供了一种满足数据持久化需求的能力，但是使用时往往存在一些有关文件系统权限的陷阱。</p><a id="more"></a>
 
 
-
-
-
-<p>由上述信息可知，ceph 集群 clusterid 为  5db6cfe0-e485-4884-89eb-8f926fd6d677，monitor 节点信息为：10.10.46.236:6789，10.10.66.143:6789，10.10.178.231:6789。</p>
+<p>在生产环境中你一般会使用一些公有云提供商的容器编排工具和持久化存储，提供商已经帮助解决了文件权限的设置问题。在大多数已部署的设置中，您将使用容器编排机制，并且某些公共云产品提供了永久性存储，它们可能具有自己配置权限的方式。但是，在本地开发期间或在产品的早期迭代中，最简单的方法是将宿主机目录挂载为 Docker 卷的形式暴露给容器内服务使用。</p>
+<p>将主机目录配置为 Docker 卷时需要注意以下内容：</p>
 <ul>
-<li>获取 client.admin keyring</li>
+<li>对卷中的内容设置的文件权限在容器和宿主机看来是一样的。</li>
+<li>仅 UID（用户 ID）和 GID（组 ID）会影响文件权限。例如，用户和组的名称和密码不需要匹配，甚至不需要在主机和容器中真实存在。</li>
+<li>容器 OS 根据其自身的配置对容器内的文件进行操作。例如，如果在主机和容器中都存在用户 A，如果仅在宿主机上将用户 A 添加到组 B，则在容器内用户 A 仍将无法拥有读写归属于组 B 的文件的权限，除非在容器内也创建了组 B 并将用户 A 添加到其中。</li>
+<li>默认情况下，容器的命令以 root 身份运行</li>
+<li>可以（在基于 unix 的系统上）将文件 / 目录所有权设置为不属于任何实际存在的组的 GID</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  ~ cat &#x2F;etc&#x2F;ceph&#x2F;ceph.client.admin.keyring</span><br><span class="line">[client.admin]</span><br><span class="line">	key &#x3D; AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;</span><br><span class="line">	caps mds &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps mgr &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps mon &#x3D; &quot;allow *&quot;</span><br><span class="line">	caps osd &#x3D; &quot;allow *&quot;</span><br></pre></td></tr></table></figure>
+<p>如果你牢记上述事实，则应该能够正确配置容器和卷，并不会对文件读写权限的各种情况感到意外。如果你不熟悉 UNIX 文件权限，可以阅读该<a href="https://help.ubuntu.com/community/FilePermissions" target="_blank" rel="external nofollow noopener noreferrer">页面</a>关于文件权限的描述。</p>
+<p>下面举例说明本地开发时如何快速配置文件权限：</p>
+<p>在宿主机上将要用作卷的目录的归属组设置为未被任何已存在的组使用的 GID（此例中设置为 1024）</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chown :<span class="number">1024</span> /data/myvolume</span><br></pre></td></tr></table></figure>
 
-<p>记录 admin 用户的 key 为  AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ==。</p>
-<h4 id="In-tree"><a href="#In-tree" class="headerlink" title="In-tree"></a>In-tree</h4><p>In-tree 插件是比较早和成熟的方式，调用不同存后端的代码包含在 Kubernetes 核心代码中，缺乏灵活性，不利于更新迭代，而且使用起来比较麻烦，需要在每个需要 PV 的命名空间都创建 role 和 secret key，不建议使用。如需使用，参见  <a href="https://medium.com/velotio-perspectives/an-innovators-guide-to-kubernetes-storage-using-ceph-a4b919f4e469" target="_blank" rel="external nofollow noopener noreferrer">An Innovator’s Guide to Kubernetes Storage Using Ceph</a> 。</p>
-<h4 id="Out-tree"><a href="#Out-tree" class="headerlink" title="Out-tree"></a>Out-tree</h4><p>Out-tree 存储插件主要是 CSI ，Kubernetes 核心代码定义了调用接口，具体的实现由第三方插件开发商自行维护，是未来主流的使用方式，目前 Ceph-CSI rbd 相关功能已经 GA。</p>
-<ul>
-<li>下载最新的 ceph-csi 代码，地址：<a href="https://github.com/ceph/ceph-csi/archive/v1.2.0.tar.gz" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/ceph/ceph-csi/archive/v1.2.0.tar.gz</a></li>
-<li>解压后目录结构如下：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">➜  ceph-csi-1.2.0 tree -L 1</span><br><span class="line">.</span><br><span class="line">├── assets</span><br><span class="line">├── cmd</span><br><span class="line">├── deploy</span><br><span class="line">├── deploy.sh</span><br><span class="line">├── docs</span><br><span class="line">├── e2e</span><br><span class="line">├── examples</span><br><span class="line">├── Gopkg.lock</span><br><span class="line">├── Gopkg.toml</span><br><span class="line">├── LICENSE</span><br><span class="line">├── Makefile</span><br><span class="line">├── pkg</span><br><span class="line">├── README.md</span><br><span class="line">├── scripts</span><br><span class="line">├── troubleshooting</span><br><span class="line">└── vendor</span><br></pre></td></tr></table></figure>
+<p>更改目录权限以授予组成员完全访问权限（读 + 写 + 执行）</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">775</span> /data/myvolume</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>以 rbd 配置为例，先修改  deploy/rbd/kubernetes/v1.14+/csi-config-map.yaml 文件内容，将 ceph 集群信息填写进去：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ConfigMap</span><br><span class="line">data:</span><br><span class="line">  config.json: |-</span><br><span class="line">    [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;clusterID&quot;: &quot;5db6cfe0-e485-4884-89eb-8f926fd6d677&quot;,</span><br><span class="line">        &quot;monitors&quot;: [</span><br><span class="line">          &quot;10.10.46.236&quot;,</span><br><span class="line">          &quot;10.10.66.143&quot;,</span><br><span class="line">          &quot;10.10.178.231&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-csi-config</span><br></pre></td></tr></table></figure>
+<p>确保文件夹中所有新建内容都将继承归属组</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod g+s /data/myvolume</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>执行以下脚本进行部署</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;examples&#x2F;rbd&#x2F;plugin-deploy.sh</span><br></pre></td></tr></table></figure>
+<p>在 Dockerfile 中创建一个用户，该用户是 1024 组的成员</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">RUN addgroup --gid <span class="number">1024</span> mygroup</span><br><span class="line">RUN adduser --disabled-password --gecos <span class="string">""</span> --force-badname --ingroup <span class="number">1024</span> myuser</span><br><span class="line">USER myuser</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>创建 rbd-secret</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl create secret generic csi-rbd-secret --from-literal&#x3D;adminID&#x3D;&quot;admin&quot; --from-literal&#x3D;adminKey&#x3D;&quot;AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;&quot; --from-literal&#x3D;userID&#x3D;&quot;admin&quot; --from-literal&#x3D;userKey&#x3D;&quot;AQAheXddCD0xBhAA3KEps1mbPzcJbFVKVpIdMQ&#x3D;&#x3D;&quot;</span><br></pre></td></tr></table></figure>
+<p>（可选）在宿主机将当前用户添加到 1024 组中，从而可以方便地在宿主机上操作挂载为容器卷的目录的内容</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">adduser ubuntu <span class="number">1024</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>修改 examples/rbd/storageclass.yaml 文件，主要是填上 clusterID</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apiVersion: storage.k8s.io&#x2F;v1</span><br><span class="line">kind: StorageClass</span><br><span class="line">metadata:</span><br><span class="line">   name: csi-rbd-sc</span><br><span class="line">provisioner: rbd.csi.ceph.com</span><br><span class="line">parameters:</span><br><span class="line">   # String representing a Ceph cluster to provision storage from.</span><br><span class="line">   # Should be unique across all Ceph clusters in use for provisioning,</span><br><span class="line">   # cannot be greater than 36 bytes in length, and should remain immutable for</span><br><span class="line">   # the lifetime of the StorageClass in use.</span><br><span class="line">   # Ensure to create an entry in the config map named ceph-csi-config, based on</span><br><span class="line">   # csi-config-map-sample.yaml, to accompany the string chosen to</span><br><span class="line">   # represent the Ceph cluster in clusterID below</span><br><span class="line">   clusterID: 5db6cfe0-e485-4884-89eb-8f926fd6d677</span><br><span class="line"></span><br><span class="line">   # Ceph pool into which the RBD image shall be created</span><br><span class="line">   pool: rbd</span><br><span class="line"></span><br><span class="line">   # RBD image format. Defaults to &quot;2&quot;.</span><br><span class="line">   imageFormat: &quot;2&quot;</span><br><span class="line"></span><br><span class="line">   # RBD image features. Available for imageFormat: &quot;2&quot;</span><br><span class="line">   # CSI RBD currently supports only &#96;layering&#96; feature.</span><br><span class="line">   imageFeatures: layering</span><br><span class="line"></span><br><span class="line">   # The secrets have to contain Ceph credentials with required access</span><br><span class="line">   # to the &#39;pool&#39;.</span><br><span class="line">   csi.storage.k8s.io&#x2F;provisioner-secret-name: csi-rbd-secret</span><br><span class="line">   csi.storage.k8s.io&#x2F;provisioner-secret-namespace: default</span><br><span class="line">   csi.storage.k8s.io&#x2F;node-stage-secret-name: csi-rbd-secret</span><br><span class="line">   csi.storage.k8s.io&#x2F;node-stage-secret-namespace: default</span><br><span class="line">   # Specify the filesystem type of the volume. If not specified,</span><br><span class="line">   # csi-provisioner will set default as &#96;ext4&#96;.</span><br><span class="line">   csi.storage.k8s.io&#x2F;fstype: xfs</span><br><span class="line">   # uncomment the following to use rbd-nbd as mounter on supported nodes</span><br><span class="line">   # mounter: rbd-nbd</span><br><span class="line">reclaimPolicy: Delete</span><br><span class="line">mountOptions:</span><br><span class="line">   - discard</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>创建 storage-class</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl apply -f examples&#x2F;rbd&#x2F;storageclass.yaml</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>设置该 storage-class 为默认</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">kubectl patch storageclass csi-rbd-sc -p &#39;&#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;:&#123;&quot;storageclass.kubernetes.io&#x2F;is-default-class&quot;:&quot;true&quot;&#125;&#125;&#125;&#39;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>以上部署主要使用了默认值，相关插件都部署在 default 命名空间，可以根据需要进行调整。</li>
-</ul>
+<p>上面的示例是一个很简单的配置，可以使得不需要使用 root 用户在容器内运行程序，也可以在主机上操作挂载为容器卷的目录的内容而无需使用主机 root 用户。这些设置过程硬编码到 Docker 镜像打包过程中使得无法在容器运行时调整 GID。如果调整，则需将 GID 作为环境变量传递到容器内，并编写一个通用的初始化脚本在容器启动时进行权限配置。DeniBertović 的这篇博客  <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/" target="_blank" rel="external nofollow noopener noreferrer">https://denibertovic.com/posts/handling-permissions-with-docker-volumes/</a>  提供了完成此类设置的指南。</p>
 ]]></content>
       <categories>
-        <category>Kubernetes</category>
+        <category>译文</category>
       </categories>
       <tags>
-        <tag>Ceph</tag>
-        <tag>Kubernetes</tag>
+        <tag>Docker</tag>
+        <tag>译文</tag>
       </tags>
   </entry>
   <entry>
@@ -367,59 +420,6 @@
       <tags>
         <tag>Docker</tag>
         <tag> 云计算</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker 卷和文件系统权限</title>
-    <url>/post/86bd2460.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">17/10/2019</td>
-<td align="center">初始版本.</td>
-</tr>
-</tbody></table><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca" target="_blank" rel="external nofollow noopener noreferrer">Docker volumes and file system permissions</a><br>Docker 卷和文件系统权限</p><h3 id="译文"><a href="#译文" class="headerlink" title="译文"></a>译文</h3><p>Docker 容器的文件系统是临时存在的（不要在运行期间持久化数据到容器内的文件目录）。但是很多容器存在持久化数据的需求。Docker 的卷挂载功能提供了一种满足数据持久化需求的能力，但是使用时往往存在一些有关文件系统权限的陷阱。</p><a id="more"></a>
-
-
-<p>在生产环境中你一般会使用一些公有云提供商的容器编排工具和持久化存储，提供商已经帮助解决了文件权限的设置问题。在大多数已部署的设置中，您将使用容器编排机制，并且某些公共云产品提供了永久性存储，它们可能具有自己配置权限的方式。但是，在本地开发期间或在产品的早期迭代中，最简单的方法是将宿主机目录挂载为 Docker 卷的形式暴露给容器内服务使用。</p>
-<p>将主机目录配置为 Docker 卷时需要注意以下内容：</p>
-<ul>
-<li>对卷中的内容设置的文件权限在容器和宿主机看来是一样的。</li>
-<li>仅 UID（用户 ID）和 GID（组 ID）会影响文件权限。例如，用户和组的名称和密码不需要匹配，甚至不需要在主机和容器中真实存在。</li>
-<li>容器 OS 根据其自身的配置对容器内的文件进行操作。例如，如果在主机和容器中都存在用户 A，如果仅在宿主机上将用户 A 添加到组 B，则在容器内用户 A 仍将无法拥有读写归属于组 B 的文件的权限，除非在容器内也创建了组 B 并将用户 A 添加到其中。</li>
-<li>默认情况下，容器的命令以 root 身份运行</li>
-<li>可以（在基于 unix 的系统上）将文件 / 目录所有权设置为不属于任何实际存在的组的 GID</li>
-</ul>
-<p>如果你牢记上述事实，则应该能够正确配置容器和卷，并不会对文件读写权限的各种情况感到意外。如果你不熟悉 UNIX 文件权限，可以阅读该<a href="https://help.ubuntu.com/community/FilePermissions" target="_blank" rel="external nofollow noopener noreferrer">页面</a>关于文件权限的描述。</p>
-<p>下面举例说明本地开发时如何快速配置文件权限：</p>
-<p>在宿主机上将要用作卷的目录的归属组设置为未被任何已存在的组使用的 GID（此例中设置为 1024）</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chown :<span class="number">1024</span> /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>更改目录权限以授予组成员完全访问权限（读 + 写 + 执行）</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">775</span> /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>确保文件夹中所有新建内容都将继承归属组</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod g+s /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>在 Dockerfile 中创建一个用户，该用户是 1024 组的成员</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">RUN addgroup --gid <span class="number">1024</span> mygroup</span><br><span class="line">RUN adduser --disabled-password --gecos <span class="string">""</span> --force-badname --ingroup <span class="number">1024</span> myuser</span><br><span class="line">USER myuser</span><br></pre></td></tr></table></figure>
-
-<p>（可选）在宿主机将当前用户添加到 1024 组中，从而可以方便地在宿主机上操作挂载为容器卷的目录的内容</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">adduser ubuntu <span class="number">1024</span></span><br></pre></td></tr></table></figure>
-
-<p>上面的示例是一个很简单的配置，可以使得不需要使用 root 用户在容器内运行程序，也可以在主机上操作挂载为容器卷的目录的内容而无需使用主机 root 用户。这些设置过程硬编码到 Docker 镜像打包过程中使得无法在容器运行时调整 GID。如果调整，则需将 GID 作为环境变量传递到容器内，并编写一个通用的初始化脚本在容器启动时进行权限配置。DeniBertović 的这篇博客  <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/" target="_blank" rel="external nofollow noopener noreferrer">https://denibertovic.com/posts/handling-permissions-with-docker-volumes/</a>  提供了完成此类设置的指南。</p>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>译文</tag>
       </tags>
   </entry>
   <entry>
