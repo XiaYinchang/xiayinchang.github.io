@@ -4537,42 +4537,6 @@
       </tags>
   </entry>
   <entry>
-    <title>树莓派 3B 编译安装 zfs</title>
-    <url>/post/6adad945.html</url>
-    <content><![CDATA[<ul>
-<li>安装依赖</li>
-</ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt remove 3.6-trunk-rpi</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install build-essential autoconf libtool gawk alien fakeroot</span><br><span class="line">sudo apt install dkms zlib1g-dev uuid-dev libattr1-dev libblkid-dev libselinux-dev libudev-dev libssl-dev parted lsscsi wget ksh</span><br><span class="line">sudo apt install python3-dev python3-setuptools python3-cffi</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-<ul>
-<li>安装内核头文件</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt upgrade raspberrypi-kernel raspberrypi-kernel-headers</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>从<a href="https://github.com/zfsonlinux/zfs/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载源代码并解压</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/zfsonlinux/zfs/releases/download/zfs-0.8.1/zfs-0.8.1.tar.gz &amp;&amp; tar zxf zfs-0.8.1.tar.gz</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>编译安装</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ../zfs-0.8.1</span><br><span class="line">autoreconf --install --force</span><br><span class="line">./configure --with-config=srpm</span><br><span class="line">sed -E <span class="string">'s/(^RPMBUILD = rpmbuild.*)/\1 --target=armhf/'</span> -i Makefile</span><br><span class="line">make pkg-utils deb-dkms</span><br><span class="line"><span class="keyword">for</span> deb <span class="keyword">in</span> *.deb; <span class="keyword">do</span> sudo dpkg -i <span class="string">"<span class="variable">$deb</span>"</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>重启系统</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>存储</tag>
-        <tag>树莓派</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>正则表达式</title>
     <url>/post/2f57a694.html</url>
     <content><![CDATA[<h4 id="匹配除空格以外的字符"><a href="#匹配除空格以外的字符" class="headerlink" title="匹配除空格以外的字符"></a>匹配除空格以外的字符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">\S+ 或 [^\s]+</span><br></pre></td></tr></table></figure><h4 id><a href="#" class="headerlink" title="(?!), (?:), (?=)"></a>(?!), (?:), (?=)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(?:pattern)</span><br><span class="line">非获取匹配，匹配pattern但不获取匹配结果，不进行存储供以后使用。这在使用或字符“(|)”来组合一个模式的各个部分是很有用。例如“industr(?:y|ies)”就是一个比“industry|industries”更简略的表达式。</span><br><span class="line">(?=pattern)</span><br><span class="line">非获取匹配，正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，该匹配不需要获取供以后使用。例如，“Windows(?=95|98|NT|2000)”能匹配“Windows2000”中的“Windows”，但不能匹配“Windows3.1”中的“Windows”。预查不消耗字符，也就是说，在一个匹配发生后，在最后一次匹配之后立即开始下一次匹配的搜索，而不是从包含预查的字符之后开始。</span><br><span class="line">(?!pattern)</span><br><span class="line">非获取匹配，正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，该匹配不需要获取供以后使用。例如“Windows(?!95|98|NT|2000)”能匹配“Windows3.1”中的“Windows”，但不能匹配“Windows2000”中的“Windows”。</span><br><span class="line">(?&lt;=pattern)</span><br><span class="line">非获取匹配，反向肯定预查，与正向肯定预查类似，只是方向相反。例如，“(?&lt;=95|98|NT|2000)Windows”能匹配“2000Windows”中的“Windows”，但不能匹配“3.1Windows”中的“Windows”。</span><br><span class="line">(?&lt;!pattern)</span><br><span class="line">非获取匹配，反向否定预查，与正向否定预查类似，只是方向相反。例如“(?&lt;!95|98|NT|2000)Windows”能匹配“3.1Windows”中的“Windows”，但不能匹配“2000Windows”中的“Windows”。这个地方不正确，有问题</span><br><span class="line">(?P&lt;profile&gt;pattern)</span><br><span class="line">?P&lt;value&gt;的意思就是命名一个名字为value的组，匹配规则符合后面的 pattern</span><br></pre></td></tr></table></figure>]]></content>
@@ -4720,6 +4684,42 @@
       <tags>
         <tag>笔记</tag>
         <tag>系统测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>树莓派 3B 编译安装 zfs</title>
+    <url>/post/6adad945.html</url>
+    <content><![CDATA[<ul>
+<li>安装依赖</li>
+</ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt remove 3.6-trunk-rpi</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install build-essential autoconf libtool gawk alien fakeroot</span><br><span class="line">sudo apt install dkms zlib1g-dev uuid-dev libattr1-dev libblkid-dev libselinux-dev libudev-dev libssl-dev parted lsscsi wget ksh</span><br><span class="line">sudo apt install python3-dev python3-setuptools python3-cffi</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<ul>
+<li>安装内核头文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt upgrade raspberrypi-kernel raspberrypi-kernel-headers</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>从<a href="https://github.com/zfsonlinux/zfs/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载源代码并解压</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/zfsonlinux/zfs/releases/download/zfs-0.8.1/zfs-0.8.1.tar.gz &amp;&amp; tar zxf zfs-0.8.1.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编译安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ../zfs-0.8.1</span><br><span class="line">autoreconf --install --force</span><br><span class="line">./configure --with-config=srpm</span><br><span class="line">sed -E <span class="string">'s/(^RPMBUILD = rpmbuild.*)/\1 --target=armhf/'</span> -i Makefile</span><br><span class="line">make pkg-utils deb-dkms</span><br><span class="line"><span class="keyword">for</span> deb <span class="keyword">in</span> *.deb; <span class="keyword">do</span> sudo dpkg -i <span class="string">"<span class="variable">$deb</span>"</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重启系统</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>存储</tag>
+        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
