@@ -40,6 +40,20 @@ kubectl top pod --no-headers --all-namespaces | sort --reverse --key 4 --numeric
 kubectl get pods --watch-only | while read line ; do echo -e "$(date +"%Y-%m-%d %H:%M:%S.%3N")\t pods\t $line" ; done
 # 重启容器
 kubectl rollout restart deployment your_deployment_name
+# 获取
+kubectl get svc pg-debug -n core -o jsonpath='{.spec.ports[].nodePort}'
+# 使用 annotation 查询对象
+kubectl get deploy -o=jsonpath='{.items[?(@.spec.template.metadata.annotations.prometheus\.io/scrape=="true")].metadata.name}'
+```
+
+#### 判断 deploy ready
+
+```bash
+kubectl rollout status deployment/<deployment-name>
+if [[ "$?" -ne 0 ]] then
+    echo "deployment failed!"
+    exit 1
+fi
 ```
 
 #### 列出命名空间下所有资源对象
@@ -611,6 +625,10 @@ nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 ```
 
+- 实现泛域名解析
+
+借助 lua 脚本实现，参考：[https://www.bookstack.cn/read/kubernetes-practice-guide/best-practice-wildcard-domain-forward.md](https://www.bookstack.cn/read/kubernetes-practice-guide/best-practice-wildcard-domain-forward.md)
+
 #### CronJob 与 Job
 
 建议设置  startingDeadlineSeconds 值以防止从最后一次调度到当前时间错过的调度次数超过 100 导致不再进行调度（使用 etcd 备份数据恢复集群时可能出现这种情况），参考：[https://www.jianshu.com/p/3e3b18414e45](https://www.jianshu.com/p/3e3b18414e45)。
@@ -757,7 +775,7 @@ kill 1
 
 参考：[https://developer.aliyun.com/article/742572](https://developer.aliyun.com/article/742572)，[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection),[https://www.alibabacloud.com/help/zh/doc-detail/160384.htm](https://www.alibabacloud.com/help/zh/doc-detail/160384.htm)
 kube-apiserver
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#height=824&id=iJVjL&margin=%5Bobject%20Object%5D&name=image.png&originHeight=824&originWidth=983&originalType=binary∶=1&size=117967&status=done&style=none&width=983)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#crop=0&crop=0&crop=1&crop=1&height=824&id=iJVjL&margin=%5Bobject%20Object%5D&name=image.png&originHeight=824&originWidth=983&originalType=binary∶=1&rotation=0&showTitle=false&size=117967&status=done&style=none&title=&width=983)
 
 ```
 --service-account-issuer=kubernetes.default.svc \
@@ -767,7 +785,7 @@ kube-apiserver
 ```
 
 kube-controller-manager
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#height=363&id=FIfGF&margin=%5Bobject%20Object%5D&name=image.png&originHeight=363&originWidth=924&originalType=binary∶=1&size=65129&status=done&style=none&width=924)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#crop=0&crop=0&crop=1&crop=1&height=363&id=FIfGF&margin=%5Bobject%20Object%5D&name=image.png&originHeight=363&originWidth=924&originalType=binary∶=1&rotation=0&showTitle=false&size=65129&status=done&style=none&title=&width=924)
 
 ```
 --controllers=*,bootstrapsigner,tokencleaner,root-ca-cert-publisher \
@@ -923,6 +941,7 @@ curl -X PUT http://127.0.0.1:8081/debug/flags/v -d "3"
 #### coredns
 
 coredns 支持多种数据来源插件，对于 Kubernetes 的支持是通过 watch Service/Pod/Endpoints/Namespaces 资源动态增删解析记录实现的。
+coredns 实现泛域名解析
 
 #### 让 Pod 在节点上均匀分布
 
@@ -1102,6 +1121,16 @@ Pod 中执行 kubectl apply 时如果未指定命名空间，并且待部署的�
 
 ```bash
 kubectl config set-context --current --namespace=default
+```
+
+#### 在 Pod 中屏蔽 serviceaccount 自动挂载
+
+一种是设置 Pod 的 automountServiceAccountToken 参数，禁止当前 Pod 自动挂载；一种是设置 ServiceAccount 的 automountServiceAccountToken 参数，默认所有 Pod 不自动挂载；一种是 Pod 挂载后再通过自定义挂载覆盖掉自动挂载的目录 `/var/run/secrets/kubernetes.io/serviceaccount`。
+
+#### port-forward 转发 Pod 端口到本地
+
+```bash
+kubectl port-forward --address 0.0.0.0 pod/mypod 8888:5000
 ```
 
 #### 十二因素应用
