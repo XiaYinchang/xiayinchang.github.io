@@ -1525,6 +1525,44 @@
       </tags>
   </entry>
   <entry>
+    <title>Kubernetes 监控</title>
+    <url>/post/b0106d49.html</url>
+    <content><![CDATA[<p>Prometheus 是 Kubernetes 监控体系中的一等公民，也是云原生场景中监控体系的事实标准。Prometheus、Grafana、AlertManager 是云原生监控告警体系的标准配置。对于大规模分布式多集群系统的监控，Thanos 是一个强有力的补充。</p><h3 id="Kubernetes-中监控数据的来源"><a href="#Kubernetes-中监控数据的来源" class="headerlink" title="Kubernetes 中监控数据的来源"></a>Kubernetes 中监控数据的来源</h3><a id="more"></a>
+<p>Kubernetes 中的监控数据，可分为以下几个部分：</p>
+<h4 id="cAdvisor"><a href="#cAdvisor" class="headerlink" title="cAdvisor"></a>cAdvisor</h4><p>cAdvisor 提供容器层级的监控数据，包括容器的内存和 CPU 使用量等。cAdvisor 本身是一个可以独立使用的工具，在 Kubernetes 中 cAdvisor 已经被集成在 Kubelet 的代码中。cAdvisor 的基本原理是监测 cgroup (/sys/fs/cgroup/cpu) 目录下文件和目录的变化，为对应的容器增加 handler 去定期读取容器对应的 cgroup 统计信息；还有一些数据如网络收发字节数是从 <code>/proc/PID/net/dev</code> 中定期读取，参考：<a href="https://www.cnblogs.com/elnino/p/10346439.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/elnino/p/10346439.html</a>。</p>
+<h4 id="Kubernetes-Metrics-Server"><a href="#Kubernetes-Metrics-Server" class="headerlink" title="Kubernetes Metrics Server"></a>Kubernetes Metrics Server</h4><p>Metrics Server 汇集从 kubelet(cAdvisor) 收集到的容器信息，用于支持 Kubernetes 内部自动伸缩器和调度器的工作，并不建议作为外部监控体系的数据采集入口。Metrics Server 仅将数据临时保留于内存中，通过 kube-apiserver 将其作为标准的 Kubernetes 资源对象暴露出去，资源组为 <code>metrics.k8s.io</code>，用户可通过 kube-apiserver 访问 <code>/apis/metrics.k8s.io/v1beta1/nodes</code> 路径获取统计数据。</p>
+<h4 id="Node-Exporter"><a href="#Node-Exporter" class="headerlink" title="Node Exporter"></a>Node Exporter</h4><p>Node Exporter 是 Prometheus 社区提供的主要用于 Linux 平台获取节点监控信息的工具，其主要工作是提取节点上硬件和系统内核提供的各种统计信息，并以 Prometheus 标准数据格式暴露出来。</p>
+<h4 id="Kube-State-Metrics"><a href="#Kube-State-Metrics" class="headerlink" title="Kube-State-Metrics"></a>Kube-State-Metrics</h4><p>kube-state-metrics 是 Kubernetes 社区提供的对 Kubernetes 原生资源对象的状态信息进行统计的组件，通过它暴露的信息可以获知指定 Pod 的 CPU Request/Limit 值，可以获知 Pod 是处于 Running 或者 Failed 状态，获知 Deployment 预期副本数和当前实际副本数等，这些信息同样以 Prometheus 标准数据格式提供，方便与监控系统对接。</p>
+<h4 id="Kubernetes-控制组件"><a href="#Kubernetes-控制组件" class="headerlink" title="Kubernetes 控制组件"></a>Kubernetes 控制组件</h4><p>Kubernetes 控制组件的控制组件 API Server, Scheduler, Controller, and Etcd 都提供了组件本身的监控信息。</p>
+<h4 id="用户应用"><a href="#用户应用" class="headerlink" title="用户应用"></a>用户应用</h4><p>用户应用往往也会暴露一些统计信息，尤其是提供 Web 服务的 HTTP Server 端，经常借助于 Prometheus 成熟的 SDK 暴露 RED (Request Rate, Error Rate, and Duration) 数据和程序的堆栈用量。</p>
+<h3 id="监控信息的分类"><a href="#监控信息的分类" class="headerlink" title="监控信息的分类"></a>监控信息的分类</h3><p>获取监控数据之后，可对数据按照分门别类地进行汇总和展示，便于运维人员观测系统性能和排故。Kubernetes 的监控数据可按照集群、节点、Pod（容器）、控制组件和应用进行划分。<br>集群信息包括集群整体的资源总量和使用量，如节点数量、容器数量，异常容器数量，命名空间数量，总的 CPU 核数和已用核数，总的内存大小和已用内存，集群网络吞吐等；节点信息包括每个节点的资源总量和用量，容器数量，网络和磁盘 IO 等；Pod 和容器的 CPU 及内存用量；控制组件的健康状态和 HTTP 及 GRPC 调用次数和成功率；应用内部的业务生成的统计信息。</p>
+<h3 id="Prometheus"><a href="#Prometheus" class="headerlink" title="Prometheus"></a>Prometheus</h3><h4 id="yaml-部署"><a href="#yaml-部署" class="headerlink" title="yaml 部署"></a>yaml 部署</h4><p><a href="https://github.com/prometheus-operator/kube-prometheus" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/prometheus-operator/kube-prometheus</a></p>
+<h4 id="helm-chart-部署"><a href="#helm-chart-部署" class="headerlink" title="helm chart 部署"></a>helm chart 部署</h4><p>prometheus stack 部署以及一些 exporter：<a href="https://github.com/prometheus-community/helm-charts/tree/main/charts" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/prometheus-community/helm-charts/tree/main/charts</a></p>
+<h4 id="blackbox-exporter"><a href="#blackbox-exporter" class="headerlink" title="blackbox_exporter"></a>blackbox_exporter</h4><p>blackbox_exporter 是社区提供的黑盒监测机制，默认监听端口 9115，允许通过 HTTP 、 HTTPS 、DNS 、TCP 和 ICMP 探测端点。在 exporter 中，可以定义一系列执行特定检查的模块，例：检查正在运行的 web 服务器，或者 DNS 解析记录。黑盒监控主要用于探活，因为很多应用并没有提供内部 metrics 接口，无法获取应用内部更多的信息，应用对于我们来说是一个黑盒，只能利用存在已久的协议简单探测应用的存活状态。类似于 MySQL exporter 的采集模块则可以将 MySQL 内部本身提供的 metrics 信息导出成 Prometheus 支持的标准格式。实际上 exporter 多是为了将一些 Prometheus 出现之前的应用暴露的形式各异的监控信息导出为 Prometheus 标准格式。而在 Prometheus 广泛流行之后开发的应用，导出的监控信息基本都遵循 Prometheus 标准格式，不再需要 exporter 中转。</p>
+<h4 id="relabel"><a href="#relabel" class="headerlink" title="relabel"></a>relabel</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 替换 address 端口</span><br><span class="line">- source_labels:</span><br><span class="line">  - __address__</span><br><span class="line">  separator:     &#39;:&#39;</span><br><span class="line">  regex:         &#39;(.*):(.*)&#39;</span><br><span class="line">  target_label:  &#39;__address__&#39;</span><br><span class="line">  replacement:   &#39;$&#123;1&#125;:10249&#39;</span><br></pre></td></tr></table></figure>
+
+<h4 id="重新加载配置"><a href="#重新加载配置" class="headerlink" title="重新加载配置"></a>重新加载配置</h4><p>启动时添加  –web.enable-lifecycle 参数，重新加载配置使用 <code>curl -X POST http://localhost:9090/-/reload</code> 。</p>
+<h4 id="校验配置的有效性"><a href="#校验配置的有效性" class="headerlink" title="校验配置的有效性"></a>校验配置的有效性</h4><p>从 <a href="https://github.com/prometheus/prometheus/releases" target="_blank" rel="external nofollow noopener noreferrer">Prometheus 仓库</a>下载的可执行文件包含了 promtool 工具用于校验配置和 rule 的有效性。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat &gt;prometheus.yml &lt;&lt;<span class="string">'EOF'</span></span><br><span class="line">scrape_configs:</span><br><span class="line">- job_name: prometehus</span><br><span class="line">static_configs:</span><br><span class="line">  - targets: [<span class="string">'localhost:9090'</span>]</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">./promtool check config prometheus.yml</span><br><span class="line">Checking prometheus.yml</span><br><span class="line">  FAILED: parsing YAML file prometheus.yml: yaml: unmarshal errors:</span><br><span class="line">  line 3: field static_configs not found <span class="keyword">in</span> <span class="built_in">type</span> config.plain</span><br></pre></td></tr></table></figure>
+
+<h4 id="通过指定标签列出所有可用的监控指标"><a href="#通过指定标签列出所有可用的监控指标" class="headerlink" title="通过指定标签列出所有可用的监控指标"></a>通过指定标签列出所有可用的监控指标</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sum by(__name__)(&#123;app=<span class="string">"bar"</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="PromQL-基础使用"><a href="#PromQL-基础使用" class="headerlink" title="PromQL 基础使用"></a>PromQL 基础使用</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 一个标签同时满足多个匹配条件</span></span><br><span class="line">varnish_main_client_req&#123;namespace=~<span class="string">".*3.*"</span>,namespace!~<span class="string">".*env4.*"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<li><a href="https://blog.freshtracks.io/a-deep-dive-into-kubernetes-metrics-b190cc97f0f6" target="_blank" rel="external nofollow noopener noreferrer">A Deep Dive into Kubernetes Metrics</a></li>
+<li><a href="https://stackoverflow.com/questions/49135746/prometheus-grouping-metrics-by-metric-names" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/49135746/prometheus-grouping-metrics-by-metric-names</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
+        <tag>监控</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Kubernetes 集群升级</title>
     <url>/post/67293294.html</url>
     <content><![CDATA[<h3 id="基本问题"><a href="#基本问题" class="headerlink" title="基本问题"></a>基本问题</h3><p>Kubernetes 小版本的升级要简单很多，一般只需要原地替换组件并重启组件即可，不会引发 Pod 重启，不会对业务造成影响，这是因为小版本更多的是维护性的 bug 修复，不会发生大的特性变更。相对的，大版本升级就会面临很多问题，尤其是 Pod 重启可能对业务造成的影响，另一个棘手的问题是资源对象所属资源组及版本的变更。目前查询资料获得的升级方案多是在解决第一个问题，第二个问题鲜有提及，本文也未有方案。</p><a id="more"></a>
@@ -4805,44 +4843,6 @@
       <tags>
         <tag>RateLimit</tag>
         <tag>S3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Kubernetes 监控</title>
-    <url>/post/b0106d49.html</url>
-    <content><![CDATA[<p>Prometheus 是 Kubernetes 监控体系中的一等公民，也是云原生场景中监控体系的事实标准。Prometheus、Grafana、AlertManager 是云原生监控告警体系的标准配置。对于大规模分布式多集群系统的监控，Thanos 是一个强有力的补充。</p><h3 id="Kubernetes-中监控数据的来源"><a href="#Kubernetes-中监控数据的来源" class="headerlink" title="Kubernetes 中监控数据的来源"></a>Kubernetes 中监控数据的来源</h3><a id="more"></a>
-<p>Kubernetes 中的监控数据，可分为以下几个部分：</p>
-<h4 id="cAdvisor"><a href="#cAdvisor" class="headerlink" title="cAdvisor"></a>cAdvisor</h4><p>cAdvisor 提供容器层级的监控数据，包括容器的内存和 CPU 使用量等。cAdvisor 本身是一个可以独立使用的工具，在 Kubernetes 中 cAdvisor 已经被集成在 Kubelet 的代码中。cAdvisor 的基本原理是监测 cgroup (/sys/fs/cgroup/cpu) 目录下文件和目录的变化，为对应的容器增加 handler 去定期读取容器对应的 cgroup 统计信息；还有一些数据如网络收发字节数是从 <code>/proc/PID/net/dev</code> 中定期读取，参考：<a href="https://www.cnblogs.com/elnino/p/10346439.html" target="_blank" rel="external nofollow noopener noreferrer">https://www.cnblogs.com/elnino/p/10346439.html</a>。</p>
-<h4 id="Kubernetes-Metrics-Server"><a href="#Kubernetes-Metrics-Server" class="headerlink" title="Kubernetes Metrics Server"></a>Kubernetes Metrics Server</h4><p>Metrics Server 汇集从 kubelet(cAdvisor) 收集到的容器信息，用于支持 Kubernetes 内部自动伸缩器和调度器的工作，并不建议作为外部监控体系的数据采集入口。Metrics Server 仅将数据临时保留于内存中，通过 kube-apiserver 将其作为标准的 Kubernetes 资源对象暴露出去，资源组为 <code>metrics.k8s.io</code>，用户可通过 kube-apiserver 访问 <code>/apis/metrics.k8s.io/v1beta1/nodes</code> 路径获取统计数据。</p>
-<h4 id="Node-Exporter"><a href="#Node-Exporter" class="headerlink" title="Node Exporter"></a>Node Exporter</h4><p>Node Exporter 是 Prometheus 社区提供的主要用于 Linux 平台获取节点监控信息的工具，其主要工作是提取节点上硬件和系统内核提供的各种统计信息，并以 Prometheus 标准数据格式暴露出来。</p>
-<h4 id="Kube-State-Metrics"><a href="#Kube-State-Metrics" class="headerlink" title="Kube-State-Metrics"></a>Kube-State-Metrics</h4><p>kube-state-metrics 是 Kubernetes 社区提供的对 Kubernetes 原生资源对象的状态信息进行统计的组件，通过它暴露的信息可以获知指定 Pod 的 CPU Request/Limit 值，可以获知 Pod 是处于 Running 或者 Failed 状态，获知 Deployment 预期副本数和当前实际副本数等，这些信息同样以 Prometheus 标准数据格式提供，方便与监控系统对接。</p>
-<h4 id="Kubernetes-控制组件"><a href="#Kubernetes-控制组件" class="headerlink" title="Kubernetes 控制组件"></a>Kubernetes 控制组件</h4><p>Kubernetes 控制组件的控制组件 API Server, Scheduler, Controller, and Etcd 都提供了组件本身的监控信息。</p>
-<h4 id="用户应用"><a href="#用户应用" class="headerlink" title="用户应用"></a>用户应用</h4><p>用户应用往往也会暴露一些统计信息，尤其是提供 Web 服务的 HTTP Server 端，经常借助于 Prometheus 成熟的 SDK 暴露 RED (Request Rate, Error Rate, and Duration) 数据和程序的堆栈用量。</p>
-<h3 id="监控信息的分类"><a href="#监控信息的分类" class="headerlink" title="监控信息的分类"></a>监控信息的分类</h3><p>获取监控数据之后，可对数据按照分门别类地进行汇总和展示，便于运维人员观测系统性能和排故。Kubernetes 的监控数据可按照集群、节点、Pod（容器）、控制组件和应用进行划分。<br>集群信息包括集群整体的资源总量和使用量，如节点数量、容器数量，异常容器数量，命名空间数量，总的 CPU 核数和已用核数，总的内存大小和已用内存，集群网络吞吐等；节点信息包括每个节点的资源总量和用量，容器数量，网络和磁盘 IO 等；Pod 和容器的 CPU 及内存用量；控制组件的健康状态和 HTTP 及 GRPC 调用次数和成功率；应用内部的业务生成的统计信息。</p>
-<h3 id="Prometheus"><a href="#Prometheus" class="headerlink" title="Prometheus"></a>Prometheus</h3><h4 id="yaml-部署"><a href="#yaml-部署" class="headerlink" title="yaml 部署"></a>yaml 部署</h4><p><a href="https://github.com/prometheus-operator/kube-prometheus" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/prometheus-operator/kube-prometheus</a></p>
-<h4 id="helm-chart-部署"><a href="#helm-chart-部署" class="headerlink" title="helm chart 部署"></a>helm chart 部署</h4><p>prometheus stack 部署以及一些 exporter：<a href="https://github.com/prometheus-community/helm-charts/tree/main/charts" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/prometheus-community/helm-charts/tree/main/charts</a></p>
-<h4 id="blackbox-exporter"><a href="#blackbox-exporter" class="headerlink" title="blackbox_exporter"></a>blackbox_exporter</h4><p>blackbox_exporter 是社区提供的黑盒监测机制，默认监听端口 9115，允许通过 HTTP 、 HTTPS 、DNS 、TCP 和 ICMP 探测端点。在 exporter 中，可以定义一系列执行特定检查的模块，例：检查正在运行的 web 服务器，或者 DNS 解析记录。黑盒监控主要用于探活，因为很多应用并没有提供内部 metrics 接口，无法获取应用内部更多的信息，应用对于我们来说是一个黑盒，只能利用存在已久的协议简单探测应用的存活状态。类似于 MySQL exporter 的采集模块则可以将 MySQL 内部本身提供的 metrics 信息导出成 Prometheus 支持的标准格式。实际上 exporter 多是为了将一些 Prometheus 出现之前的应用暴露的形式各异的监控信息导出为 Prometheus 标准格式。而在 Prometheus 广泛流行之后开发的应用，导出的监控信息基本都遵循 Prometheus 标准格式，不再需要 exporter 中转。</p>
-<h4 id="relabel"><a href="#relabel" class="headerlink" title="relabel"></a>relabel</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 替换 address 端口</span><br><span class="line">- source_labels:</span><br><span class="line">  - __address__</span><br><span class="line">  separator:     &#39;:&#39;</span><br><span class="line">  regex:         &#39;(.*):(.*)&#39;</span><br><span class="line">  target_label:  &#39;__address__&#39;</span><br><span class="line">  replacement:   &#39;$&#123;1&#125;:10249&#39;</span><br></pre></td></tr></table></figure>
-
-<h4 id="重新加载配置"><a href="#重新加载配置" class="headerlink" title="重新加载配置"></a>重新加载配置</h4><p>启动时添加  –web.enable-lifecycle 参数，重新加载配置使用 <code>curl -X POST http://localhost:9090/-/reload</code> 。</p>
-<h4 id="校验配置的有效性"><a href="#校验配置的有效性" class="headerlink" title="校验配置的有效性"></a>校验配置的有效性</h4><p>从 <a href="https://github.com/prometheus/prometheus/releases" target="_blank" rel="external nofollow noopener noreferrer">Prometheus 仓库</a>下载的可执行文件包含了 promtool 工具用于校验配置和 rule 的有效性。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat &gt;prometheus.yml &lt;&lt;<span class="string">'EOF'</span></span><br><span class="line">scrape_configs:</span><br><span class="line">- job_name: prometehus</span><br><span class="line">static_configs:</span><br><span class="line">  - targets: [<span class="string">'localhost:9090'</span>]</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">./promtool check config prometheus.yml</span><br><span class="line">Checking prometheus.yml</span><br><span class="line">  FAILED: parsing YAML file prometheus.yml: yaml: unmarshal errors:</span><br><span class="line">  line 3: field static_configs not found <span class="keyword">in</span> <span class="built_in">type</span> config.plain</span><br></pre></td></tr></table></figure>
-
-<h4 id="通过指定标签列出所有可用的监控指标"><a href="#通过指定标签列出所有可用的监控指标" class="headerlink" title="通过指定标签列出所有可用的监控指标"></a>通过指定标签列出所有可用的监控指标</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sum by(__name__)(&#123;app=<span class="string">"bar"</span>&#125;)</span><br></pre></td></tr></table></figure>
-
-<h4 id="PromQL-基础使用"><a href="#PromQL-基础使用" class="headerlink" title="PromQL 基础使用"></a>PromQL 基础使用</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 一个标签同时满足多个匹配条件</span></span><br><span class="line">varnish_main_client_req&#123;namespace=~<span class="string">".*3.*"</span>,namespace!~<span class="string">".*env4.*"</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
-<li><a href="https://blog.freshtracks.io/a-deep-dive-into-kubernetes-metrics-b190cc97f0f6" target="_blank" rel="external nofollow noopener noreferrer">A Deep Dive into Kubernetes Metrics</a></li>
-<li><a href="https://stackoverflow.com/questions/49135746/prometheus-grouping-metrics-by-metric-names" target="_blank" rel="external nofollow noopener noreferrer">https://stackoverflow.com/questions/49135746/prometheus-grouping-metrics-by-metric-names</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Kubernetes</category>
-      </categories>
-      <tags>
-        <tag>Kubernetes</tag>
-        <tag>监控</tag>
       </tags>
   </entry>
 </search>
