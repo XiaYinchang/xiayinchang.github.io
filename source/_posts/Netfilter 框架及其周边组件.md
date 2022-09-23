@@ -23,10 +23,10 @@ Netfilter 提供了五种钩子（参考[Linux Kernel Communication — Netfilte
 ![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576396676777-643a7090-d522-4f7b-a4a8-e1d20742681a.png#align=left&display=inline&height=237&margin=%5Bobject%20Object%5D&name=image.png&originHeight=474&originWidth=1330&size=35302&status=done&style=none&width=665)
 
 1. NF_IP_PER_ROUNTING — 当数据包到达计算机立即触发。
-1. NF_IP_LOCAL_IN — 当数据包的目的地就是当前计算机时触发。
-1. NF_IP_FORWARD — 当数据包目的地址是其它的网络接口时触发。
-1. NF_IP_POST_ROUTING — 当数据包即将从计算机发出时触发。
-1. NF_IP_LOCAL_OUT — 当数据包由本地生成并发向外部时触发。
+2. NF_IP_LOCAL_IN — 当数据包的目的地就是当前计算机时触发。
+3. NF_IP_FORWARD — 当数据包目的地址是其它的网络接口时触发。
+4. NF_IP_POST_ROUTING — 当数据包即将从计算机发出时触发。
+5. NF_IP_LOCAL_OUT — 当数据包由本地生成并发向外部时触发。
 
 基于 Netfilter 钩子 API 实现的内核模块主要有 ebtables、arptables、ip(6)tables、nf_tables、NAT、connection tracking 等。如下是维基百科上关于 Netfilter 相关组件的一张示意图：
 ![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576376326201-8e54e0c3-4710-47c7-ae4d-07f66be4452f.png#align=left&display=inline&height=421&margin=%5Bobject%20Object%5D&name=image.png&originHeight=451&originWidth=800&size=58313&status=done&style=none&width=746)

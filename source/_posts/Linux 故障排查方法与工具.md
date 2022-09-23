@@ -18,26 +18,26 @@ updated: 2020-10-21 00:00:00
 #### CPU 密集型
 
 1. `stress-ng --cpu 2 --timeout 600 模拟 CPU` 负载；
-1. 通过 `uptime` 可以观察到，系统平均负载很高，通过 `mpstat -P ALL 1 5` 或 `top` 观察到 2 个 CPU 使用率很高，平均负载也很高，而 iowait 为 0 ，说明进程是 CPU 密集型的，一般是由进程使用 CPU 密集导致系统平均负载变高;
-1. 通过 `pidstat -u 1` 查看是哪个进程导致 CPU 使用率较高。
+2. 通过 `uptime` 可以观察到，系统平均负载很高，通过 `mpstat -P ALL 1 5` 或 `top` 观察到 2 个 CPU 使用率很高，平均负载也很高，而 iowait 为 0 ，说明进程是 CPU 密集型的，一般是由进程使用 CPU 密集导致系统平均负载变高;
+3. 通过 `pidstat -u 1` 查看是哪个进程导致 CPU 使用率较高。
 
 #### I/O 密集型
 
 1. `stress-ng -i 4 --hdd 1 --timeout 600` 模拟磁盘 IO；
-1. 可以通过 `uptime` 观察到，系统平均负载很高，通过 `mpstat -P ALL 1 5` 或 `top` 观察到 CPU 使用率很低，iowait 很高，一直在等待 IO 处理，说明是 IO 密集型的场景；
-1. 通过 `pidstat -d 1` 可以查看哪个进程磁盘读写速度高，也可以通过 `iotop` 查看 IO 高的进程。
+2. 可以通过 `uptime` 观察到，系统平均负载很高，通过 `mpstat -P ALL 1 5` 或 `top` 观察到 CPU 使用率很低，iowait 很高，一直在等待 IO 处理，说明是 IO 密集型的场景；
+3. 通过 `pidstat -d 1` 可以查看哪个进程磁盘读写速度高，也可以通过 `iotop` 查看 IO 高的进程。
 
 #### 大量进程争抢 CPU
 
 1. `stress-ng -c 16 --timeout 600` 模拟大量进程；
-1. 通过 `uptime` 观察到系统平均负载很高，通过通过 `mpstat -P ALL 1 5` 或 `top` 观察到 CPU 使用率也很高，iowait 为 0，说明此进程是 CPU 密集型的，或者在进行 CPU 的争用；
-1. 通过 `pidstat -u 1` 观察到 wait 指标很高，则说明进程间存在 CPU 争用的情况，可以判断系统中存在大量的进程在等待使用 CPU；大量的进程，超出了 CPU 的计算能力，导致的系统的平均负载很高;
-1. 通过 `pidstat -w 1` 也可以看到存在大量的非自愿进程上下文切换。
+2. 通过 `uptime` 观察到系统平均负载很高，通过通过 `mpstat -P ALL 1 5` 或 `top` 观察到 CPU 使用率也很高，iowait 为 0，说明此进程是 CPU 密集型的，或者在进行 CPU 的争用；
+3. 通过 `pidstat -u 1` 观察到 wait 指标很高，则说明进程间存在 CPU 争用的情况，可以判断系统中存在大量的进程在等待使用 CPU；大量的进程，超出了 CPU 的计算能力，导致的系统的平均负载很高;
+4. 通过 `pidstat -w 1` 也可以看到存在大量的非自愿进程上下文切换。
 
 #### 单进程多线程争抢 CPU
 
 1. `sysbench --threads=10 --time=300 threads run` 模拟多线程；
-1. 观察步骤类似大量进程争抢，不同的是 `pidstat -w 1 10` 看到 sysbench 无上下文切换，因为默认显示的是进程间的上下文切换；而使用 `pidstat -w -t` 可以看到存在大量 sysbench 相关的非自愿上下文切换。
+2. 观察步骤类似大量进程争抢，不同的是 `pidstat -w 1 10` 看到 sysbench 无上下文切换，因为默认显示的是进程间的上下文切换；而使用 `pidstat -w -t` 可以看到存在大量 sysbench 相关的非自愿上下文切换。
 
 #### 网络包注入
 

@@ -26,8 +26,8 @@ reclaimPolicy: Delete
 volumeBindingMode: Immediate
 ```
 
-1. 在所有 master 节点上安装好 ceph-common 包，并且拷贝 ceph 配置文件到每个 master 节点的 /etc/ceph 目录，确保 `ceph -s` 能够输出正常的结果。
-1. 执行以下命令从某一 kube-controller-manager 容器中拷贝出 kube-controller-manager 可执行文件以备后用：
+2. 在所有 master 节点上安装好 ceph-common 包，并且拷贝 ceph 配置文件到每个 master 节点的 /etc/ceph 目录，确保 `ceph -s` 能够输出正常的结果。
+3. 执行以下命令从某一 kube-controller-manager 容器中拷贝出 kube-controller-manager 可执行文件以备后用：
 
 ```
 kubectl -n kube-system cp kube-controller-manager-节点名:usr/local/bin/kube-controller-manager .

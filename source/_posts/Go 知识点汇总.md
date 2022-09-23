@@ -825,7 +825,7 @@ func DoSomething() error {
 #### WebAssembly
 
 1. 作者通过一系列 hack 过程成功实现了将一个 go 语言写的工具 [pdfcpu](https://github.com/pdfcpu/pdfcpu)  编译为  wasm 文件并运行在浏览器中，其中有使用到一个浏览器端基于内存的文件系统 [BrowserFS](https://github.com/jvilk/BrowserFS) （实现了 Node JS 的 fs 库的 API）对 pdf 文件进行操作，很有意思。博客地址：[https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn](https://dev.to/wcchoi/browser-side-pdf-processing-with-go-and-webassembly-13hn)，代码地址：[https://github.com/wcchoi/go-wasm-pdfcpu](https://github.com/wcchoi/go-wasm-pdfcpu)。
-1. vugu 使用 go 实现的类似于 vue 的前端框架，用 go 替代 JavaScript 写逻辑：[https://github.com/vugu/vugu](https://github.com/vugu/vugu)。
+2. vugu 使用 go 实现的类似于 vue 的前端框架，用 go 替代 JavaScript 写逻辑：[https://github.com/vugu/vugu](https://github.com/vugu/vugu)。
 
 #### TCP 与 UDP 编程
 
@@ -905,25 +905,25 @@ func main() {
 #### 开源库
 
 1. Linux 操作系统功能调用  [osutil](https://github.com/tredoe/osutil)， 可以用以生成 Linux 用户密码的 Hash。
-1. 一个强大的请求限速库  [https://github.com/didip/tollbooth](https://github.com/didip/tollbooth)，可以根据请求头或者源 IP 限速。
-1. Go 社区提供的实现了令牌桶算法的限速包  [https://godoc.org/golang.org/x/time/rate](https://godoc.org/golang.org/x/time/rate)，一个简单的例子  [https://pliutau.com/rate-limit-http-requests/](https://pliutau.com/rate-limit-http-requests/) 。
-1. 一个创建和解压 zip 文件的库，在调用标准库 `archive/zip`  基础上做了些友好封装：[https://github.com/pierrre/archivefile](https://github.com/pierrre/archivefile)。
-1. 一个 Markdown 转 PDF 的库，只是不支持中文字符：[https://github.com/mandolyte/mdtopdf](https://github.com/mandolyte/mdtopdf)。
-1. 可以从文件中加载环境变量的库  [github.com/joho/godotenv](https://github.com/joho/godotenv) ，不过使用 [github.com/spf13/viper](https://github.com/spf13/viper) 可能更佳，参考：[https://levelup.gitconnected.com/a-no-nonsense-guide-to-environment-variables-in-go-55d7661f09b0](https://levelup.gitconnected.com/a-no-nonsense-guide-to-environment-variables-in-go-55d7661f09b0)，[https://towardsdatascience.com/use-environment-variable-in-your-next-golang-project-39e17c3aaa66](https://towardsdatascience.com/use-environment-variable-in-your-next-golang-project-39e17c3aaa66)。
-1. 获取文件系统事件通知：[https://github.com/fsnotify/fsnotify](https://github.com/fsnotify/fsnotify)。
-1. 获取内核事件：[https://github.com/euank/go-kmsg-parser/](https://github.com/euank/go-kmsg-parser/)。
+2. 一个强大的请求限速库  [https://github.com/didip/tollbooth](https://github.com/didip/tollbooth)，可以根据请求头或者源 IP 限速。
+3. Go 社区提供的实现了令牌桶算法的限速包  [https://godoc.org/golang.org/x/time/rate](https://godoc.org/golang.org/x/time/rate)，一个简单的例子  [https://pliutau.com/rate-limit-http-requests/](https://pliutau.com/rate-limit-http-requests/) 。
+4. 一个创建和解压 zip 文件的库，在调用标准库 `archive/zip`  基础上做了些友好封装：[https://github.com/pierrre/archivefile](https://github.com/pierrre/archivefile)。
+5. 一个 Markdown 转 PDF 的库，只是不支持中文字符：[https://github.com/mandolyte/mdtopdf](https://github.com/mandolyte/mdtopdf)。
+6. 可以从文件中加载环境变量的库  [github.com/joho/godotenv](https://github.com/joho/godotenv) ，不过使用 [github.com/spf13/viper](https://github.com/spf13/viper) 可能更佳，参考：[https://levelup.gitconnected.com/a-no-nonsense-guide-to-environment-variables-in-go-55d7661f09b0](https://levelup.gitconnected.com/a-no-nonsense-guide-to-environment-variables-in-go-55d7661f09b0)，[https://towardsdatascience.com/use-environment-variable-in-your-next-golang-project-39e17c3aaa66](https://towardsdatascience.com/use-environment-variable-in-your-next-golang-project-39e17c3aaa66)。
+7. 获取文件系统事件通知：[https://github.com/fsnotify/fsnotify](https://github.com/fsnotify/fsnotify)。
+8. 获取内核事件：[https://github.com/euank/go-kmsg-parser/](https://github.com/euank/go-kmsg-parser/)。
 
 #### 参考资料
 
 1. [HTTP/2 Cleartext (H2C) golang example](https://github.com/thrawn01/h2c-golang-example)
-1. [https://mrwaggel.be/post/golang-transfer-a-file-over-a-tcp-socket/](https://mrwaggel.be/post/golang-transfer-a-file-over-a-tcp-socket/)
-1. [http://networkbit.ch/golang-ssh-client/#multiple_commands](http://networkbit.ch/golang-ssh-client/#multiple_commands)
+2. [https://mrwaggel.be/post/golang-transfer-a-file-over-a-tcp-socket/](https://mrwaggel.be/post/golang-transfer-a-file-over-a-tcp-socket/)
+3. [http://networkbit.ch/golang-ssh-client/#multiple_commands](http://networkbit.ch/golang-ssh-client/#multiple_commands)
 
 #### 书籍
 
 1. 《Go 语言从入门到进阶实战》名字俗了点，但是内容还是值得一读，作者对 Go 语言的使用还是很熟练的。
-1. 《Go 语言高级编程》 [https://github.com/chai2010/advanced-go-programming-book](https://github.com/chai2010/advanced-go-programming-book) rpc 相关的内容可以一读。
-1. Concurrency in Go
+2. 《Go 语言高级编程》 [https://github.com/chai2010/advanced-go-programming-book](https://github.com/chai2010/advanced-go-programming-book) rpc 相关的内容可以一读。
+3. Concurrency in Go
 
 [Concurrency in Go.pdf](https://www.yuque.com/attachments/yuque/0/2019/pdf/182657/1571297377193-45707879-2de2-41bf-930f-47146ce64c1b.pdf)
 

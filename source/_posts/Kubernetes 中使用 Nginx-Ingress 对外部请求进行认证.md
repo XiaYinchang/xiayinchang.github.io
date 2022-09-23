@@ -58,8 +58,8 @@ spec:
 上面的 ingress 配置指示 ingress-nginx 将所有路径为  `api.microservice-1.myapp.com/secure/` 的外部请求首先转发到部署在集群内的认证服务的  `/authenticate` 端点，其基本过程如下：
 
 1. 客户端向  `api.microservice-1.myapp.com/secure/*` 发起 API 请求；
-1. 请求到达 ingress-nginx 控制器，控制器将其转给认证服务的  `/authenticate` 端点；
-1. 如果认证服务返回  `200 Ok` 则继续讲该请求转给  `microservice-1` 服务。
+2. 请求到达 ingress-nginx 控制器，控制器将其转给认证服务的  `/authenticate` 端点；
+3. 如果认证服务返回  `200 Ok` 则继续讲该请求转给  `microservice-1` 服务。
 
 #### auth-response-headers
 
@@ -86,9 +86,9 @@ spec:
 ```
 
 1. 客户端向 api.microservice-1.myapp.com/secure/\* 发起 API 请求；
-1. 请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；
-1. 认证服务在认证过程中解析出  `UserID`，在返回的  `200 Ok` 响应中带上 `UserID` 头信息；
-1. ingress-nginx 控制器从认证服务的响应中获取  UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给  `microservice-1` 服务。
+2. 请求到达 ingress-nginx 控制器，控制器将其转给认证服务的 /authenticate 端点；
+3. 认证服务在认证过程中解析出  `UserID`，在返回的  `200 Ok` 响应中带上 `UserID` 头信息；
+4. ingress-nginx 控制器从认证服务的响应中获取  UserID 信息并添加到初始的客户端请求头中，并将客户请求传递给  `microservice-1` 服务。
 
 ![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575347734772-e086bf98-4064-49c8-9f46-6f951898dc86.png#align=left&display=inline&height=1064&name=image.png&originHeight=1064&originWidth=1248&size=81349&status=done&style=none&width=1248)
 
@@ -99,9 +99,9 @@ spec:
 在看到这篇文章之前，我们已经进行了类似的实践，我们的认证中心基于 [keycloak](https://github.com/keycloak/keycloak) 实现，keycloak 部署于 Kubernetes 集群内，为了能够无侵入地为已有的业务微服务（实现所用的语言有 Go 和 Python）添加基于 keycloak 的认证过程，我们希望能够使用类似 [keycloak-gatekeeper](https://github.com/keycloak/keycloak-gatekeeper) 的机制在请求到达业务微服务之前实现认证和授权。keycloak-gatekeeper 实现了认证／授权／反向代理的功能，它可以根据配置的规则，针对每个 HTTP 请求（Method 和 URL）进行基于角色的授权，通过认证和授权的请求会代理向业务微服务发起请求。由于我们已经使用 ingress-nginx 作为服务入口即反向代理服务器，所以 keycloak-gatekeeper 反向代理的功能是我们不需要的，因此我对 keycloak-gatekeeper 做了一些裁剪形成了  [nginx-ingress-keycloak-auth](https://github.com/XiaYinchang/nginx-ingress-keycloak-auth)，主要完成了以下改造：
 
 1. 移除反向代理相关代码。
-1. 与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。
-1. 在入口中间件中（EntrypointMiddleware）中将 `req *http.Request`  对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的  "X-Original-Url" 和  "X-Original-Method" 请求头解析出的内容以便复用原有的认证和授权逻辑。
-1. 对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。
+2. 与 ingress-nginx auth-url 接口对接起来，针对通过授权的请求直接返回 200（不再执行反向代理）。
+3. 在入口中间件中（EntrypointMiddleware）中将 `req *http.Request`  对象的 URL 和 Method 信息更改为从 ingress-nginx 传递的  "X-Original-Url" 和  "X-Original-Method" 请求头解析出的内容以便复用原有的认证和授权逻辑。
+4. 对代码结构进行了调整使其更符合 Go 项目的通用项目结构模式。
 
 #### LDAP 对接 ingress-nginx
 
