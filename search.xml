@@ -3818,32 +3818,6 @@
       </tags>
   </entry>
   <entry>
-    <title>macOS 使用相关</title>
-    <url>/post/e9aa727.html</url>
-    <content><![CDATA[<h4 id="安装-source-code-pro-字体"><a href="#安装-source-code-pro-字体" class="headerlink" title="安装  source-code-pro 字体"></a>安装  source-code-pro 字体</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew tap homebrew&#x2F;cask-fonts &amp;&amp; brew cask install font-source-code-pro</span><br></pre></td></tr></table></figure><h4 id="解决字体模糊"><a href="#解决字体模糊" class="headerlink" title="解决字体模糊"></a>解决字体模糊</h4><p>开启  HiDPI 参考：<a href="https://github.com/xzhih/one-key-hidpi" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/xzhih/one-key-hidpi</a></p><a id="more"></a>
-
-
-<h4 id="VMware-fusion-开机启动虚拟机"><a href="#VMware-fusion-开机启动虚拟机" class="headerlink" title="VMware fusion 开机启动虚拟机"></a>VMware fusion 开机启动虚拟机</h4><p>参考：<a href="https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e" target="_blank" rel="external nofollow noopener noreferrer">https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e</a></p>
-<h4 id="homebrew-使用国内镜像源"><a href="#homebrew-使用国内镜像源" class="headerlink" title="homebrew 使用国内镜像源"></a>homebrew 使用国内镜像源</h4><p>安装 homebre</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;bin&#x2F;zsh -c &quot;$(curl -fsSL https:&#x2F;&#x2F;gitee.com&#x2F;cunkai&#x2F;HomebrewCN&#x2F;raw&#x2F;master&#x2F;Homebrew.sh)&quot;</span><br></pre></td></tr></table></figure>
-
-<p>配置国内镜像源，参考：<a href="https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob" target="_blank" rel="external nofollow noopener noreferrer">https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob</a>，<a href="https://blog.csdn.net/iroguel/article/details/93481795" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/iroguel/article/details/93481795</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/bin/ruby -e <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="安装-iproute2"><a href="#安装-iproute2" class="headerlink" title="安装 iproute2"></a>安装 iproute2</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew install iproute2mac</span><br></pre></td></tr></table></figure>
-
-<h4 id="强制退出进程"><a href="#强制退出进程" class="headerlink" title="强制退出进程"></a>强制退出进程</h4><p>Command + Option + Shift + Esc</p>
-<h4 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install --cask docker</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>开发工具</category>
-      </categories>
-      <tags>
-        <tag>开发工具</tag>
-        <tag>macOS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>iptables 基础与操作</title>
     <url>/post/26e8b8c9.html</url>
     <content><![CDATA[<h4 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h4><p>从逻辑上讲，大体可分为网络防火墙和主机防火墙，网络防火墙在流量入口的最前端，保护后端网络中所有主机，主机防火墙在流量末端保护本机服务；从物理上讲，可分为硬件防火墙和软件防火墙，网络防火墙往往借助专用硬件设备及其可编程特性配置保护规则，实现高性能流量过滤，主机防火墙则多借助通用服务器和系统内核特性实现纯软件层面的过滤。部署 Linux 系统的主机上可借助内核的 Netfilter 框架实现流量过滤，iptables 正是基于 Netfilter 实现的应用最广的防火墙工具。和很多系统工具一样，iptables 由运行于内核空间的功能模块和运行于用户空间的入口程序共同构成，而我们常用的 iptables 命令行工具就是运行于用户空间的入口程序。iptables 虽然应用广泛，但其规则匹配过程的效率低下也受到诟病，尤其在 Kubernetes 等云原生应用场景中性能问题更为明显，这也促使基于 IPVS 的 kube-proxy 大规模取代了基于 iptables 的模式。从 CentOS 8 开始，旨在取代 iptables 的 nftables 开始成为默认的包过滤工具，它从设计上解决了 iptables 的缺陷并优化了使用体验，值得后续关注。另一项近期更为活跃的技术是 eBPF（extended BPF），起源于 92 年的 BSD Packet Filter，随后进行了全新设计并在 Linux 3.17 版本内核中以 eBPF 为名正式引入，传统的 BPF 以 cBPF 之名继续保留用于兼容。随后，eBPF 的应用领域不断拓宽，不再局限于网络流量的过滤与分析，大有成为 Linux 通用的性能监测基础架构的趋势，尤其在云原生时代，可观测性的重要性愈发突出，eBPF 大有可为。 bpfilter 就是基于 eBPF 构建的新一代包过滤内核模块，或许未来会替代 iptables/nftables ，但目前似乎进展缓慢，参考 <a href="https://lwn.net/Articles/822744/" target="_blank" rel="external nofollow noopener noreferrer">Rethinking bpfilter and user-mode helpers</a>。</p><a id="more"></a>
@@ -3869,6 +3843,32 @@
       <tags>
         <tag>网络</tag>
         <tag>iptables</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>macOS 使用相关</title>
+    <url>/post/e9aa727.html</url>
+    <content><![CDATA[<h4 id="安装-source-code-pro-字体"><a href="#安装-source-code-pro-字体" class="headerlink" title="安装  source-code-pro 字体"></a>安装  source-code-pro 字体</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew tap homebrew&#x2F;cask-fonts &amp;&amp; brew cask install font-source-code-pro</span><br></pre></td></tr></table></figure><h4 id="解决字体模糊"><a href="#解决字体模糊" class="headerlink" title="解决字体模糊"></a>解决字体模糊</h4><p>开启  HiDPI 参考：<a href="https://github.com/xzhih/one-key-hidpi" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/xzhih/one-key-hidpi</a></p><a id="more"></a>
+
+
+<h4 id="VMware-fusion-开机启动虚拟机"><a href="#VMware-fusion-开机启动虚拟机" class="headerlink" title="VMware fusion 开机启动虚拟机"></a>VMware fusion 开机启动虚拟机</h4><p>参考：<a href="https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e" target="_blank" rel="external nofollow noopener noreferrer">https://gist.github.com/jasoncodes/613198/bb94f7d9a1aa0f1bbb42deddcbca9b2dc532ff7e</a></p>
+<h4 id="homebrew-使用国内镜像源"><a href="#homebrew-使用国内镜像源" class="headerlink" title="homebrew 使用国内镜像源"></a>homebrew 使用国内镜像源</h4><p>安装 homebre</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;bin&#x2F;zsh -c &quot;$(curl -fsSL https:&#x2F;&#x2F;gitee.com&#x2F;cunkai&#x2F;HomebrewCN&#x2F;raw&#x2F;master&#x2F;Homebrew.sh)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>配置国内镜像源，参考：<a href="https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob" target="_blank" rel="external nofollow noopener noreferrer">https://developer.aliyun.com/mirror/homebrew?spm=a2c6h.13651102.0.0.3e221b11ZOeaob</a>，<a href="https://blog.csdn.net/iroguel/article/details/93481795" target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/iroguel/article/details/93481795</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/bin/ruby -e <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="安装-iproute2"><a href="#安装-iproute2" class="headerlink" title="安装 iproute2"></a>安装 iproute2</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">brew install iproute2mac</span><br></pre></td></tr></table></figure>
+
+<h4 id="强制退出进程"><a href="#强制退出进程" class="headerlink" title="强制退出进程"></a>强制退出进程</h4><p>Command + Option + Shift + Esc</p>
+<h4 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install --cask docker</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>开发工具</tag>
+        <tag>macOS</tag>
       </tags>
   </entry>
   <entry>
