@@ -2178,6 +2178,18 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux 内存管理基础知识</title>
+    <url>/post/51188647.html</url>
+    <content><![CDATA[<h4 id="buffer-与-cache"><a href="#buffer-与-cache" class="headerlink" title="buffer 与 cache"></a>buffer 与 cache</h4><p>buffer 一般用于数据的批量处理，减少操作次数；cache 一般是缓存一部分文件内容在内存，命中缓存时就不需要从磁盘读取，减少 I/O 读操作。</p>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>内存管理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux 基础网络知识</title>
     <url>/post/52b545c8.html</url>
     <content><![CDATA[<h4 id="DNS-域名服务器数量"><a href="#DNS-域名服务器数量" class="headerlink" title="DNS 域名服务器数量"></a>DNS 域名服务器数量</h4><p>通常，在 Linux 系统中，可在 /etc/resolv.conf 中配置 DNS 域名服务器，如下：</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cat /etc/resolv.conf</span></span><br><span class="line">nameserver 10.23.255.1</span><br><span class="line">nameserver 10.23.255.2</span><br><span class="line">nameserver 114.114.114.114</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -2929,18 +2941,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>故障排查</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 内存管理基础知识</title>
-    <url>/post/51188647.html</url>
-    <content><![CDATA[<h4 id="buffer-与-cache"><a href="#buffer-与-cache" class="headerlink" title="buffer 与 cache"></a>buffer 与 cache</h4><p>buffer 一般用于数据的批量处理，减少操作次数；cache 一般是缓存一部分文件内容在内存，命中缓存时就不需要从磁盘读取，减少 I/O 读操作。</p>]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>内存管理</tag>
       </tags>
   </entry>
   <entry>
