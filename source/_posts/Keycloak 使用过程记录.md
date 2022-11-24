@@ -41,7 +41,7 @@ keycloak.onTokenExpired = () => {
 
 #### Admin cli
 
-在 keycloak 容器镜像中 admin cli 位于` /opt/jboss/keycloak/bin/` 目录下：
+在 keycloak 容器镜像中 admin cli 位于` /opt/jboss/keycloak/bin/` 目录下：
 
 ```
 // 配置授权信息

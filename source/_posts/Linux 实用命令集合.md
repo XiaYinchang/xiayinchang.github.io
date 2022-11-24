@@ -305,7 +305,7 @@ sudo apt-get autoremove --purge
 
 - 替换 tab 为空格
 
-`:%s/\t/ /g`
+`:%s/\t/  /g`
 
 - 复制
 

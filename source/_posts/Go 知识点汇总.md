@@ -438,7 +438,7 @@ commit=$(git rev-parse HEAD)
 #### go 编译相关问题
 
 etcd 编译时 GO 依赖包版本报错的解决方法: [https://aiops.red/archives/571](https://aiops.red/archives/571)
-编译完成的程序在容器内运行时提示：`exec user process caused "no such file or directory"`，一般是因为程序编译时没有禁用 CGO :  `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go `。
+编译完成的程序在容器内运行时提示：`exec user process caused "no such file or directory"`，一般是因为程序编译时没有禁用 CGO :  `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/csi-resizer ./cmd/csi-resizer/main.go `。
 在已经指定使用 `-mod=vendor` 进行编译时仍提示  `build uk8s/uk8s-report: cannot load github.com/montanaflynn/stats: no Go source files`，可能是因为  `github.com/montanaflynn/stats` 是个 subemodule。
 
 #### Unicode 字符编码
