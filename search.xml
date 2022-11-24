@@ -2467,7 +2467,7 @@
 <ul>
 <li>替换 tab 为空格</li>
 </ul>
-<p><code>:%s/\t/ /g</code></p>
+<p><code>:%s/\t/  /g</code></p>
 <ul>
 <li>复制</li>
 </ul>
