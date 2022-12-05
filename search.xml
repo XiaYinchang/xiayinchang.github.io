@@ -166,6 +166,59 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker 卷和文件系统权限</title>
+    <url>/post/86bd2460.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th align="center">Date</th>
+<th align="center">Log</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">17/10/2019</td>
+<td align="center">初始版本.</td>
+</tr>
+</tbody></table><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca" target="_blank" rel="external nofollow noopener noreferrer">Docker volumes and file system permissions</a><br>Docker 卷和文件系统权限</p><h3 id="译文"><a href="#译文" class="headerlink" title="译文"></a>译文</h3><p>Docker 容器的文件系统是临时存在的（不要在运行期间持久化数据到容器内的文件目录）。但是很多容器存在持久化数据的需求。Docker 的卷挂载功能提供了一种满足数据持久化需求的能力，但是使用时往往存在一些有关文件系统权限的陷阱。</p><a id="more"></a>
+
+
+<p>在生产环境中你一般会使用一些公有云提供商的容器编排工具和持久化存储，提供商已经帮助解决了文件权限的设置问题。在大多数已部署的设置中，您将使用容器编排机制，并且某些公共云产品提供了永久性存储，它们可能具有自己配置权限的方式。但是，在本地开发期间或在产品的早期迭代中，最简单的方法是将宿主机目录挂载为 Docker 卷的形式暴露给容器内服务使用。</p>
+<p>将主机目录配置为 Docker 卷时需要注意以下内容：</p>
+<ul>
+<li>对卷中的内容设置的文件权限在容器和宿主机看来是一样的。</li>
+<li>仅 UID（用户 ID）和 GID（组 ID）会影响文件权限。例如，用户和组的名称和密码不需要匹配，甚至不需要在主机和容器中真实存在。</li>
+<li>容器 OS 根据其自身的配置对容器内的文件进行操作。例如，如果在主机和容器中都存在用户 A，如果仅在宿主机上将用户 A 添加到组 B，则在容器内用户 A 仍将无法拥有读写归属于组 B 的文件的权限，除非在容器内也创建了组 B 并将用户 A 添加到其中。</li>
+<li>默认情况下，容器的命令以 root 身份运行</li>
+<li>可以（在基于 unix 的系统上）将文件 / 目录所有权设置为不属于任何实际存在的组的 GID</li>
+</ul>
+<p>如果你牢记上述事实，则应该能够正确配置容器和卷，并不会对文件读写权限的各种情况感到意外。如果你不熟悉 UNIX 文件权限，可以阅读该<a href="https://help.ubuntu.com/community/FilePermissions" target="_blank" rel="external nofollow noopener noreferrer">页面</a>关于文件权限的描述。</p>
+<p>下面举例说明本地开发时如何快速配置文件权限：</p>
+<p>在宿主机上将要用作卷的目录的归属组设置为未被任何已存在的组使用的 GID（此例中设置为 1024）</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chown :<span class="number">1024</span> /data/myvolume</span><br></pre></td></tr></table></figure>
+
+<p>更改目录权限以授予组成员完全访问权限（读 + 写 + 执行）</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">775</span> /data/myvolume</span><br></pre></td></tr></table></figure>
+
+<p>确保文件夹中所有新建内容都将继承归属组</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod g+s /data/myvolume</span><br></pre></td></tr></table></figure>
+
+<p>在 Dockerfile 中创建一个用户，该用户是 1024 组的成员</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">RUN addgroup --gid <span class="number">1024</span> mygroup</span><br><span class="line">RUN adduser --disabled-password --gecos <span class="string">""</span> --force-badname --ingroup <span class="number">1024</span> myuser</span><br><span class="line">USER myuser</span><br></pre></td></tr></table></figure>
+
+<p>（可选）在宿主机将当前用户添加到 1024 组中，从而可以方便地在宿主机上操作挂载为容器卷的目录的内容</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">adduser ubuntu <span class="number">1024</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的示例是一个很简单的配置，可以使得不需要使用 root 用户在容器内运行程序，也可以在主机上操作挂载为容器卷的目录的内容而无需使用主机 root 用户。这些设置过程硬编码到 Docker 镜像打包过程中使得无法在容器运行时调整 GID。如果调整，则需将 GID 作为环境变量传递到容器内，并编写一个通用的初始化脚本在容器启动时进行权限配置。DeniBertović 的这篇博客  <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/" target="_blank" rel="external nofollow noopener noreferrer">https://denibertovic.com/posts/handling-permissions-with-docker-volumes/</a>  提供了完成此类设置的指南。</p>
+]]></content>
+      <categories>
+        <category>译文</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>译文</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Ceph 常用操作</title>
     <url>/post/e8bac896.html</url>
     <content><![CDATA[<h4 id="删除-rbd-image-时提示有-watcher"><a href="#删除-rbd-image-时提示有-watcher" class="headerlink" title="删除 rbd image 时提示有 watcher"></a>删除 rbd image 时提示有 watcher</h4><p>查看该 image 信息</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@openstack-compute-02:~<span class="comment"># rbd info vm-109-cloudinit --pool cloud-disk</span></span><br><span class="line">rbd image <span class="string">'vm-109-cloudinit'</span>:</span><br><span class="line">        size 4 MiB <span class="keyword">in</span> 1 objects</span><br><span class="line">        order 22 (4 MiB objects)</span><br><span class="line">        snapshot_count: 0</span><br><span class="line">        id: 85a71142d8c136</span><br><span class="line">        block_name_prefix: rbd_data.85a71142d8c136</span><br><span class="line">        format: 2</span><br><span class="line">        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">        op_features:</span><br><span class="line">        flags:</span><br><span class="line">        create_timestamp: Wed Aug 28 10:04:09 2019</span><br><span class="line">        access_timestamp: Mon Sep  2 13:59:31 2019</span><br><span class="line">        modify_timestamp: Mon Sep  2 13:59:31 2019</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -283,59 +336,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>Ceph</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker 卷和文件系统权限</title>
-    <url>/post/86bd2460.html</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th align="center">Date</th>
-<th align="center">Log</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">17/10/2019</td>
-<td align="center">初始版本.</td>
-</tr>
-</tbody></table><h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca" target="_blank" rel="external nofollow noopener noreferrer">Docker volumes and file system permissions</a><br>Docker 卷和文件系统权限</p><h3 id="译文"><a href="#译文" class="headerlink" title="译文"></a>译文</h3><p>Docker 容器的文件系统是临时存在的（不要在运行期间持久化数据到容器内的文件目录）。但是很多容器存在持久化数据的需求。Docker 的卷挂载功能提供了一种满足数据持久化需求的能力，但是使用时往往存在一些有关文件系统权限的陷阱。</p><a id="more"></a>
-
-
-<p>在生产环境中你一般会使用一些公有云提供商的容器编排工具和持久化存储，提供商已经帮助解决了文件权限的设置问题。在大多数已部署的设置中，您将使用容器编排机制，并且某些公共云产品提供了永久性存储，它们可能具有自己配置权限的方式。但是，在本地开发期间或在产品的早期迭代中，最简单的方法是将宿主机目录挂载为 Docker 卷的形式暴露给容器内服务使用。</p>
-<p>将主机目录配置为 Docker 卷时需要注意以下内容：</p>
-<ul>
-<li>对卷中的内容设置的文件权限在容器和宿主机看来是一样的。</li>
-<li>仅 UID（用户 ID）和 GID（组 ID）会影响文件权限。例如，用户和组的名称和密码不需要匹配，甚至不需要在主机和容器中真实存在。</li>
-<li>容器 OS 根据其自身的配置对容器内的文件进行操作。例如，如果在主机和容器中都存在用户 A，如果仅在宿主机上将用户 A 添加到组 B，则在容器内用户 A 仍将无法拥有读写归属于组 B 的文件的权限，除非在容器内也创建了组 B 并将用户 A 添加到其中。</li>
-<li>默认情况下，容器的命令以 root 身份运行</li>
-<li>可以（在基于 unix 的系统上）将文件 / 目录所有权设置为不属于任何实际存在的组的 GID</li>
-</ul>
-<p>如果你牢记上述事实，则应该能够正确配置容器和卷，并不会对文件读写权限的各种情况感到意外。如果你不熟悉 UNIX 文件权限，可以阅读该<a href="https://help.ubuntu.com/community/FilePermissions" target="_blank" rel="external nofollow noopener noreferrer">页面</a>关于文件权限的描述。</p>
-<p>下面举例说明本地开发时如何快速配置文件权限：</p>
-<p>在宿主机上将要用作卷的目录的归属组设置为未被任何已存在的组使用的 GID（此例中设置为 1024）</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chown :<span class="number">1024</span> /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>更改目录权限以授予组成员完全访问权限（读 + 写 + 执行）</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod <span class="number">775</span> /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>确保文件夹中所有新建内容都将继承归属组</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">chmod g+s /data/myvolume</span><br></pre></td></tr></table></figure>
-
-<p>在 Dockerfile 中创建一个用户，该用户是 1024 组的成员</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">RUN addgroup --gid <span class="number">1024</span> mygroup</span><br><span class="line">RUN adduser --disabled-password --gecos <span class="string">""</span> --force-badname --ingroup <span class="number">1024</span> myuser</span><br><span class="line">USER myuser</span><br></pre></td></tr></table></figure>
-
-<p>（可选）在宿主机将当前用户添加到 1024 组中，从而可以方便地在宿主机上操作挂载为容器卷的目录的内容</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">adduser ubuntu <span class="number">1024</span></span><br></pre></td></tr></table></figure>
-
-<p>上面的示例是一个很简单的配置，可以使得不需要使用 root 用户在容器内运行程序，也可以在主机上操作挂载为容器卷的目录的内容而无需使用主机 root 用户。这些设置过程硬编码到 Docker 镜像打包过程中使得无法在容器运行时调整 GID。如果调整，则需将 GID 作为环境变量传递到容器内，并编写一个通用的初始化脚本在容器启动时进行权限配置。DeniBertović 的这篇博客  <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/" target="_blank" rel="external nofollow noopener noreferrer">https://denibertovic.com/posts/handling-permissions-with-docker-volumes/</a>  提供了完成此类设置的指南。</p>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>译文</tag>
       </tags>
   </entry>
   <entry>
@@ -3872,17 +3872,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实用容器镜像</title>
-    <url>/post/8f9fb710.html</url>
-    <content><![CDATA[<h4 id="基于-Alpine-的-logrotate-镜像"><a href="#基于-Alpine-的-logrotate-镜像" class="headerlink" title="基于 Alpine 的 logrotate 镜像"></a>基于 Alpine 的 logrotate 镜像</h4><p>借助 crond 实现定时执行 logrotate：<a href="https://github.com/linkyard/docker-logrotate" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/linkyard/docker-logrotate</a>。</p>]]></content>
-      <categories>
-        <category>容器</category>
-      </categories>
-      <tags>
-        <tag>容器</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>为 Proxmox 制作包含 cloud-init 的虚拟机模板</title>
     <url>/post/6c44975c.html</url>
     <content><![CDATA[<h4 id="安装-Centos"><a href="#安装-Centos" class="headerlink" title="安装 Centos"></a>安装 Centos</h4><p>在我搭建的 Proxmox 平台中使用了 Ceph 作为虚拟机的后端存储，为了提高虚拟机磁盘性能，在安装虚拟机的时候使用 LVM raid0 逻辑分区挂载根目录。</p><ul>
@@ -3965,6 +3954,17 @@
         <tag> 云计算</tag>
         <tag>Proxmox</tag>
         <tag>虚拟机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实用容器镜像</title>
+    <url>/post/8f9fb710.html</url>
+    <content><![CDATA[<h4 id="基于-Alpine-的-logrotate-镜像"><a href="#基于-Alpine-的-logrotate-镜像" class="headerlink" title="基于 Alpine 的 logrotate 镜像"></a>基于 Alpine 的 logrotate 镜像</h4><p>借助 crond 实现定时执行 logrotate：<a href="https://github.com/linkyard/docker-logrotate" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/linkyard/docker-logrotate</a>。</p>]]></content>
+      <categories>
+        <category>容器</category>
+      </categories>
+      <tags>
+        <tag>容器</tag>
       </tags>
   </entry>
   <entry>
