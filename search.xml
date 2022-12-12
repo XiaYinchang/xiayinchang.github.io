@@ -1378,17 +1378,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Kubernetes CNI</title>
-    <url>/post/2e65e43b.html</url>
-    <content><![CDATA[<h3 id="CNI-插件"><a href="#CNI-插件" class="headerlink" title="CNI 插件"></a>CNI 插件</h3><h4 id="antrea"><a href="#antrea" class="headerlink" title="antrea"></a>antrea</h4><p>基于  Open vSwitch 的 CNI 插件，<a href="https://github.com/vmware-tanzu/antrea" target="_blank" rel="external nofollow noopener noreferrer">github.com/vmware-tanzu/antrea</a>。</p>]]></content>
-      <categories>
-        <category>Kubernetes</category>
-      </categories>
-      <tags>
-        <tag>Kubernetes</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Kubernetes CSI</title>
     <url>/post/d1098827.html</url>
     <content><![CDATA[<h4 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h4><p>在 Kubernetes 中，容器运行结束后其文件系统也随即被销毁，因此无法在容器中直接存储需要持久化的数据；另一方面，Kubernetes 以 Pod 为单位管理多个有一定关联关系的容器，这些容器之间的数据共享也是一个需要解决的一个问题。为此，Kubernetes 中引入了 Volume 的概念，与 Docker 中 Volume 概念的不同之处在于 Kubernetes 中的 Volume 有着完善的生命周期管理，一个 Volume 的生命周期和对应的 Pod 的一致，因此 Pod 中的容器的重启不会造成 Volume 中数据的丢失，且多个容器可以通过挂载同一个 Volume 共享数据，另外单个 Pod 支持使用多个多种类型的 Volume。通过 Volume 的抽象，容器只需要挂载 Volume 到文件系统的某个目录使用它而不必关心 Volume 的存储后端到底是什么类型。</p><a id="more"></a>
@@ -1499,6 +1488,17 @@
       <tags>
         <tag>译文</tag>
         <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Kubernetes CNI</title>
+    <url>/post/2e65e43b.html</url>
+    <content><![CDATA[<h3 id="CNI-插件"><a href="#CNI-插件" class="headerlink" title="CNI 插件"></a>CNI 插件</h3><h4 id="antrea"><a href="#antrea" class="headerlink" title="antrea"></a>antrea</h4><p>基于  Open vSwitch 的 CNI 插件，<a href="https://github.com/vmware-tanzu/antrea" target="_blank" rel="external nofollow noopener noreferrer">github.com/vmware-tanzu/antrea</a>。</p>]]></content>
+      <categories>
+        <category>Kubernetes</category>
+      </categories>
+      <tags>
+        <tag>Kubernetes</tag>
       </tags>
   </entry>
   <entry>
