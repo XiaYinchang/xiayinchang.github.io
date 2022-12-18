@@ -3151,22 +3151,6 @@
       </tags>
   </entry>
   <entry>
-    <title>PostgreSQL 使用</title>
-    <url>/post/8d587d49.html</url>
-    <content><![CDATA[<h4 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo -u postgres psql</span><br><span class="line">ALTER USER postgres WITH PASSWORD <span class="string">'postgres'</span>;</span><br></pre></td></tr></table></figure><h4 id="备份和恢复数据库"><a href="#备份和恢复数据库" class="headerlink" title="备份和恢复数据库"></a>备份和恢复数据库</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 备份</span><br><span class="line">pg_dump mydatabase &gt; data.backup</span><br><span class="line">// 恢复</span><br><span class="line">psql</span><br><span class="line">create database mydatabase;</span><br><span class="line">psql -f data.backup mydatabase</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-<h4 id="通用的可操作多种数据库的命令行工具"><a href="#通用的可操作多种数据库的命令行工具" class="headerlink" title="通用的可操作多种数据库的命令行工具"></a>通用的可操作多种数据库的命令行工具</h4><p><a href="https://github.com/xo/usql" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/xo/usql</a></p>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Netfilter 框架及其周边组件</title>
     <url>/post/d617cc74.html</url>
     <content><![CDATA[<h3 id="Netfilter"><a href="#Netfilter" class="headerlink" title="Netfilter"></a>Netfilter</h3><p>Netfilter 是  Linux 2.4.x 及后续版本内核引入的包过滤框架。Netfilter 包含了一组内核钩子 API ，周边内核组件可以使用这些钩子在网络栈中注册回调函数。每一个在网络栈中流通的包到达相应的钩子时，就会触发相应的回调函数，从而能够完成包过滤、网络地址（端口）转换和网络包协议头修改等各种操作。<br>Netfilter 提供了五种钩子（参考<a href="https://medium.com/@GoldenOak/linux-kernel-communication-part-1-netfilter-hooks-15c07a5a5c4e" target="_blank" rel="external nofollow noopener noreferrer">Linux Kernel Communication — Netfilter Hooks</a>），如下：<br><img src="https://cdn.nlark.com/yuque/0/2019/png/182657/1576396676777-643a7090-d522-4f7b-a4a8-e1d20742681a.png#align=left&display=inline&height=237&margin=%5Bobject%20Object%5D&name=image.png&originHeight=474&originWidth=1330&size=35302&status=done&style=none&width=665" alt="image.png"></p><a id="more"></a>
@@ -3220,6 +3204,22 @@
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PostgreSQL 使用</title>
+    <url>/post/8d587d49.html</url>
+    <content><![CDATA[<h4 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo -u postgres psql</span><br><span class="line">ALTER USER postgres WITH PASSWORD <span class="string">'postgres'</span>;</span><br></pre></td></tr></table></figure><h4 id="备份和恢复数据库"><a href="#备份和恢复数据库" class="headerlink" title="备份和恢复数据库"></a>备份和恢复数据库</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">// 备份</span><br><span class="line">pg_dump mydatabase &gt; data.backup</span><br><span class="line">// 恢复</span><br><span class="line">psql</span><br><span class="line">create database mydatabase;</span><br><span class="line">psql -f data.backup mydatabase</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<h4 id="通用的可操作多种数据库的命令行工具"><a href="#通用的可操作多种数据库的命令行工具" class="headerlink" title="通用的可操作多种数据库的命令行工具"></a>通用的可操作多种数据库的命令行工具</h4><p><a href="https://github.com/xo/usql" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/xo/usql</a></p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
