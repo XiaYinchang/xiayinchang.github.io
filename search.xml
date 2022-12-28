@@ -3872,17 +3872,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实用容器镜像</title>
-    <url>/post/8f9fb710.html</url>
-    <content><![CDATA[<h4 id="基于-Alpine-的-logrotate-镜像"><a href="#基于-Alpine-的-logrotate-镜像" class="headerlink" title="基于 Alpine 的 logrotate 镜像"></a>基于 Alpine 的 logrotate 镜像</h4><p>借助 crond 实现定时执行 logrotate：<a href="https://github.com/linkyard/docker-logrotate" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/linkyard/docker-logrotate</a>。</p>]]></content>
-      <categories>
-        <category>容器</category>
-      </categories>
-      <tags>
-        <tag>容器</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>为 Proxmox 制作包含 cloud-init 的虚拟机模板</title>
     <url>/post/6c44975c.html</url>
     <content><![CDATA[<h4 id="安装-Centos"><a href="#安装-Centos" class="headerlink" title="安装 Centos"></a>安装 Centos</h4><p>在我搭建的 Proxmox 平台中使用了 Ceph 作为虚拟机的后端存储，为了提高虚拟机磁盘性能，在安装虚拟机的时候使用 LVM raid0 逻辑分区挂载根目录。</p><ul>
@@ -3965,6 +3954,17 @@
         <tag> 云计算</tag>
         <tag>Proxmox</tag>
         <tag>虚拟机</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实用容器镜像</title>
+    <url>/post/8f9fb710.html</url>
+    <content><![CDATA[<h4 id="基于-Alpine-的-logrotate-镜像"><a href="#基于-Alpine-的-logrotate-镜像" class="headerlink" title="基于 Alpine 的 logrotate 镜像"></a>基于 Alpine 的 logrotate 镜像</h4><p>借助 crond 实现定时执行 logrotate：<a href="https://github.com/linkyard/docker-logrotate" target="_blank" rel="external nofollow noopener noreferrer">https://github.com/linkyard/docker-logrotate</a>。</p>]]></content>
+      <categories>
+        <category>容器</category>
+      </categories>
+      <tags>
+        <tag>容器</tag>
       </tags>
   </entry>
   <entry>
