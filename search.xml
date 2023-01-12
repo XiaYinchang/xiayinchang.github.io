@@ -4421,45 +4421,6 @@
       </tags>
   </entry>
   <entry>
-    <title>在 Go 中不要拷贝锁</title>
-    <url>/post/6b348626.html</url>
-    <content><![CDATA[<h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://eli.thegreenplace.net/2018/beware-of-copying-mutexes-in-go/" target="_blank" rel="external nofollow noopener noreferrer">Beware of copying mutexes in Go</a></p><p>假设我们定义了一个包含一个映射表（ map）的结构体，我们想要使用结构体的方法去修改映射表的内容，如下是一个例子：</p><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Container <span class="keyword">struct</span> &#123;</span><br><span class="line">  counters <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Container)</span> <span class="title">inc</span><span class="params">(name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  c.counters[name]++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  c := Container&#123;counters: <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"a"</span>: <span class="number">0</span>, <span class="string">"b"</span>: <span class="number">0</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line">  doIncrement := <span class="function"><span class="keyword">func</span><span class="params">(name <span class="keyword">string</span>, n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">      c.inc(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  doIncrement(<span class="string">"a"</span>, <span class="number">100000</span>)</span><br><span class="line"></span><br><span class="line">  fmt.Println(c.counters)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-
-<p>代码中 <code>Container</code> 包含了一个由计数器组成的映射表，使用计数器名称作为索引。<code>Container</code> 的 inc 方法会去增加指定计数器的值（假设指定计数器已经存在）。main 函数中使用 for 循环调用 inc 方法多次。<br>运行这段代码，输出如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">map[a:100000 b:0]</span><br></pre></td></tr></table></figure>
-
-<p>现在我们想在两个 goroutine 中并发调用 inc 方法。由于我们担心竞争情况，我们使用一个互斥锁来保护关键区域:</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">  <span class="string">"sync"</span></span><br><span class="line">  <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Container <span class="keyword">struct</span> &#123;</span><br><span class="line">  sync.Mutex                       <span class="comment">// &lt;-- Added a mutex</span></span><br><span class="line">  counters <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Container)</span> <span class="title">inc</span><span class="params">(name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  c.Lock()                         <span class="comment">// &lt;-- Added locking of the mutex</span></span><br><span class="line">  <span class="keyword">defer</span> c.Unlock()</span><br><span class="line">  c.counters[name]++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  c := Container&#123;counters: <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"a"</span>: <span class="number">0</span>, <span class="string">"b"</span>: <span class="number">0</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line">  doIncrement := <span class="function"><span class="keyword">func</span><span class="params">(name <span class="keyword">string</span>, n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">      c.inc(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">go</span> doIncrement(<span class="string">"a"</span>, <span class="number">100000</span>)</span><br><span class="line">  <span class="keyword">go</span> doIncrement(<span class="string">"a"</span>, <span class="number">100000</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Wait a bit for the goroutines to finish</span></span><br><span class="line">  time.Sleep(<span class="number">300</span> * time.Millisecond)</span><br><span class="line">  fmt.Println(c.counters)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>你预期的输出结果会是什么呢？我得到了如下输出：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">fatal error: concurrent <span class="keyword">map</span> writes</span><br><span class="line"></span><br><span class="line">goroutine <span class="number">5</span> [running]:</span><br><span class="line">runtime.throw(<span class="number">0x4b765b</span>, <span class="number">0x15</span>)</span><br><span class="line"></span><br><span class="line">&lt;...&gt; more goroutine stacks</span><br><span class="line">exit status <span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<p>我们已经很小心地使用锁保护共享变量，那到底是哪里出错了？你能看出来如何去修复这个错误吗？提示：只需要一个字符的变动即可。<br>这段代码的问题在于 inc 方法定义在了 Container 上，而不是 _Container，因此每次调用 inc 方法 Container 实例都会被复制一次。换种说法，inc 是一个值接收器而不是指针接收器。因此 inc 的每次调用并不能真正修改最初的 Container 实例。<br>但是，等一下，既然如此，那为什么我们的第一个例子能够正常工作呢？在只有一个 goroutine 的例子中，我们也是按值传递了 c 到 inc 函数，但是它确实起作用了。main 函数确实观察到了 inc 函数对映射表的修改。这是因为映射表比较特殊：它是引用类型，而不是值类型。存在 Container 中的并不是真正的映射表的数据，而是一个指向映射表数据的指针。因此，就算我们创建了一个 Container 的副本，它的 counters 成员仍然保存了相同映射表数据的地址。<br>所以说第一个例子的代码也是错误的。尽管这段代码可以工作，但它显然违反了 Go 社区的<a href="https://golang.org/doc/faq#methods_on_values_or_pointers" target="_blank" rel="external nofollow noopener noreferrer">编程指南</a>：修改对象内容的方法应该定义在类型指针上，而不是类型值上。这里使用映射表给我造成了一个安全上的错觉。作为练习，尝试使用单个 int 类型的计数器替代最初例子中的映射表，然后注意 inc 方法只是修改了计数器的副本，所以在 main 函数中看不到这种修改的效果。<br>Mutex 是值类型（参见 <a href="https://golang.org/src/sync/mutex.go" target="_blank" rel="external nofollow noopener noreferrer">Go 源码</a>中的定义，注释中很清楚地写明了不要拷贝互斥锁），因此拷贝是错误的行为。拷贝只是创建了一个完全不同的新的互斥锁，因此它的互斥功能不再有效。<br>因此，针对上述代码的一个字符的修正就是在定义 inc 方法时在 Container 前添加一个 _ 号：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Container)</span> <span class="title">inc</span><span class="params">(name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  c.Lock()</span><br><span class="line">  <span class="keyword">defer</span> c.Unlock()</span><br><span class="line">  c.counters[name]++</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样， 就会将 c 的指针传入 inc 方法，实际上是对调用方持有的内存中同一个 Container 实例的引用。<br>这不是一个少见的错误。实际上， go vet 会对此发出警告：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">go</span> tool vet method-mutex-value-receiver.<span class="keyword">go</span></span><br><span class="line">method-mutex-value-receiver.<span class="keyword">go</span>:<span class="number">19</span>: inc passes lock by value: main.Container</span><br></pre></td></tr></table></figure>
-
-<p>这种情况经常出现在 HTTP 处理函数中，这些处理函数在不需要开发人员显示使用 go 语句的情况下被并发地调用。我会在随后的博文中详述这一点。<br>我觉得这个问题对于认识 Go 语言中的值接收器和指针接收器的区别有很大的帮助。为了把问题说清楚，下面给出一个和之前代码无关的示例。这个例子用到了 Go 中使用 &amp; 操作符创建指针和使用 %p 格式化输出指针值的功能：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Container <span class="keyword">struct</span> &#123;</span><br><span class="line">  i <span class="keyword">int</span></span><br><span class="line">  s <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Container)</span> <span class="title">byValMethod</span><span class="params">()</span></span> &#123;</span><br><span class="line">  fmt.Printf(<span class="string">"byValMethod got &amp;c=%p, &amp;(c.s)=%p\n"</span>, &amp;c, &amp;(c.s))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Container)</span> <span class="title">byPtrMethod</span><span class="params">()</span></span> &#123;</span><br><span class="line">  fmt.Printf(<span class="string">"byPtrMethod got &amp;c=%p, &amp;(c.s)=%p\n"</span>, c, &amp;(c.s))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">var</span> c Container</span><br><span class="line">  fmt.Printf(<span class="string">"in main &amp;c=%p, &amp;(c.s)=%p\n"</span>, &amp;c, &amp;(c.s))</span><br><span class="line"></span><br><span class="line">  c.byValMethod()</span><br><span class="line">  c.byPtrMethod()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>输出结果如下（这是在我的电脑上的输出，和你电脑上的变量地址可能不一样，但是地址之间的关系是一样的）：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">in main &amp;c=<span class="number">0xc00000a060</span>, &amp;(c.s)=<span class="number">0xc00000a068</span></span><br><span class="line">byValMethod got &amp;c=<span class="number">0xc00000a080</span>, &amp;(c.s)=<span class="number">0xc00000a088</span></span><br><span class="line">byPtrMethod got &amp;c=<span class="number">0xc00000a060</span>, &amp;(c.s)=<span class="number">0xc00000a068</span></span><br></pre></td></tr></table></figure>
-
-<p>main 函数创建了一个 Container 实例并打印出了实例的地址及实例成员变量 s 的地址，接着调用了实例的两个方法。<br>byValMethod 方法有一个值接收器，它打印出的地址和 main 函数中打印出的不一样因为接收到的是 c 的一个副本。另一方面，byPtrMethod 方法有一个指针接收器并且它观察到的地址和 main 函数中的一致，因为它获取到的是最初的 c，而不是一个副本。</p>
-<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><h4 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h4><p>Go 语言中还有一种锁：读写锁（RWMutex），读写锁也是值类型，也不能拷贝。</p>
-]]></content>
-      <categories>
-        <category>译文</category>
-      </categories>
-      <tags>
-        <tag>译文</tag>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>喜欢的音乐</title>
     <url>/post/102c919d.html</url>
     <content><![CDATA[<table>
@@ -4520,17 +4481,42 @@
       </tags>
   </entry>
   <entry>
-    <title>敏捷笔记</title>
-    <url>/post/d753fa14.html</url>
-    <content><![CDATA[<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><p>Epic【史诗级故事】，可简单理解为软件的版本好了，不需要太详细的秒速，但是要说清楚这个版本需要哪些大功能。<br>Feature【特性】，你都在【史诗级故事】中说好了要哪些大功能了，那作为它的子级的【特性】自然就是每个你需要的大功能的描述，但是由于一个大功能的实现有许多众所周知或者实际做了才知道的前置的或者后发的条件，所以【特性】的完成一定被项目中所有成员认可是一个较长的过程，所以肯定还需要进一步细化。<br>Story【用户故事/积压工作项】，把特性细化了以后就是这个了，故事之所以叫故事是因为内容读起来就像故事，参考中小学生作文吧，故事的三要素：参与者、行为、结果，（管理员在 XX 界面点击了【XXX】按钮后，界面跳转至【XXXX】界面）仅供参考。可以看出，故事要细致，描述细节，有明确的验收标准，任何人看完都应该知道如何操作，测试人员也可以以此来作为测试用例。<br>Task【任务】，这是只有开发才知道的细节了，上面几个都是无论什么人都能看懂的东西，任务描述的应该是开发中的细节，比如（修改 AAA 类的 BBB 方法，提升执行效率）或者（将 XXX 功能的原有做法改为使用命令模式），只有开发才懂得的细节，由于此类工作也需要耗时，而且耗时可能还不短，这会违背“快速迭代”的基本价值观，所以当一个【故事】涉及到此类的行为时，就可能需要较长时间来迭代，所以应该在【故事】下建立【任务】来说明工作的具体内容。</p><a id="more"></a>
-<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://wiki.mbalib.com/wiki/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91" target="_blank" rel="external nofollow noopener noreferrer">https://wiki.mbalib.com/wiki/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91</a></p>
+    <title>在 Go 中不要拷贝锁</title>
+    <url>/post/6b348626.html</url>
+    <content><![CDATA[<h3 id="原文"><a href="#原文" class="headerlink" title="原文"></a>原文</h3><p><a href="https://eli.thegreenplace.net/2018/beware-of-copying-mutexes-in-go/" target="_blank" rel="external nofollow noopener noreferrer">Beware of copying mutexes in Go</a></p><p>假设我们定义了一个包含一个映射表（ map）的结构体，我们想要使用结构体的方法去修改映射表的内容，如下是一个例子：</p><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Container <span class="keyword">struct</span> &#123;</span><br><span class="line">  counters <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Container)</span> <span class="title">inc</span><span class="params">(name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  c.counters[name]++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  c := Container&#123;counters: <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"a"</span>: <span class="number">0</span>, <span class="string">"b"</span>: <span class="number">0</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line">  doIncrement := <span class="function"><span class="keyword">func</span><span class="params">(name <span class="keyword">string</span>, n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">      c.inc(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  doIncrement(<span class="string">"a"</span>, <span class="number">100000</span>)</span><br><span class="line"></span><br><span class="line">  fmt.Println(c.counters)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>代码中 <code>Container</code> 包含了一个由计数器组成的映射表，使用计数器名称作为索引。<code>Container</code> 的 inc 方法会去增加指定计数器的值（假设指定计数器已经存在）。main 函数中使用 for 循环调用 inc 方法多次。<br>运行这段代码，输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">map[a:100000 b:0]</span><br></pre></td></tr></table></figure>
+
+<p>现在我们想在两个 goroutine 中并发调用 inc 方法。由于我们担心竞争情况，我们使用一个互斥锁来保护关键区域:</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">  <span class="string">"sync"</span></span><br><span class="line">  <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Container <span class="keyword">struct</span> &#123;</span><br><span class="line">  sync.Mutex                       <span class="comment">// &lt;-- Added a mutex</span></span><br><span class="line">  counters <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Container)</span> <span class="title">inc</span><span class="params">(name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  c.Lock()                         <span class="comment">// &lt;-- Added locking of the mutex</span></span><br><span class="line">  <span class="keyword">defer</span> c.Unlock()</span><br><span class="line">  c.counters[name]++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  c := Container&#123;counters: <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>&#123;<span class="string">"a"</span>: <span class="number">0</span>, <span class="string">"b"</span>: <span class="number">0</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line">  doIncrement := <span class="function"><span class="keyword">func</span><span class="params">(name <span class="keyword">string</span>, n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; n; i++ &#123;</span><br><span class="line">      c.inc(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">go</span> doIncrement(<span class="string">"a"</span>, <span class="number">100000</span>)</span><br><span class="line">  <span class="keyword">go</span> doIncrement(<span class="string">"a"</span>, <span class="number">100000</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Wait a bit for the goroutines to finish</span></span><br><span class="line">  time.Sleep(<span class="number">300</span> * time.Millisecond)</span><br><span class="line">  fmt.Println(c.counters)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你预期的输出结果会是什么呢？我得到了如下输出：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">fatal error: concurrent <span class="keyword">map</span> writes</span><br><span class="line"></span><br><span class="line">goroutine <span class="number">5</span> [running]:</span><br><span class="line">runtime.throw(<span class="number">0x4b765b</span>, <span class="number">0x15</span>)</span><br><span class="line"></span><br><span class="line">&lt;...&gt; more goroutine stacks</span><br><span class="line">exit status <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>我们已经很小心地使用锁保护共享变量，那到底是哪里出错了？你能看出来如何去修复这个错误吗？提示：只需要一个字符的变动即可。<br>这段代码的问题在于 inc 方法定义在了 Container 上，而不是 _Container，因此每次调用 inc 方法 Container 实例都会被复制一次。换种说法，inc 是一个值接收器而不是指针接收器。因此 inc 的每次调用并不能真正修改最初的 Container 实例。<br>但是，等一下，既然如此，那为什么我们的第一个例子能够正常工作呢？在只有一个 goroutine 的例子中，我们也是按值传递了 c 到 inc 函数，但是它确实起作用了。main 函数确实观察到了 inc 函数对映射表的修改。这是因为映射表比较特殊：它是引用类型，而不是值类型。存在 Container 中的并不是真正的映射表的数据，而是一个指向映射表数据的指针。因此，就算我们创建了一个 Container 的副本，它的 counters 成员仍然保存了相同映射表数据的地址。<br>所以说第一个例子的代码也是错误的。尽管这段代码可以工作，但它显然违反了 Go 社区的<a href="https://golang.org/doc/faq#methods_on_values_or_pointers" target="_blank" rel="external nofollow noopener noreferrer">编程指南</a>：修改对象内容的方法应该定义在类型指针上，而不是类型值上。这里使用映射表给我造成了一个安全上的错觉。作为练习，尝试使用单个 int 类型的计数器替代最初例子中的映射表，然后注意 inc 方法只是修改了计数器的副本，所以在 main 函数中看不到这种修改的效果。<br>Mutex 是值类型（参见 <a href="https://golang.org/src/sync/mutex.go" target="_blank" rel="external nofollow noopener noreferrer">Go 源码</a>中的定义，注释中很清楚地写明了不要拷贝互斥锁），因此拷贝是错误的行为。拷贝只是创建了一个完全不同的新的互斥锁，因此它的互斥功能不再有效。<br>因此，针对上述代码的一个字符的修正就是在定义 inc 方法时在 Container 前添加一个 _ 号：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Container)</span> <span class="title">inc</span><span class="params">(name <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">  c.Lock()</span><br><span class="line">  <span class="keyword">defer</span> c.Unlock()</span><br><span class="line">  c.counters[name]++</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样， 就会将 c 的指针传入 inc 方法，实际上是对调用方持有的内存中同一个 Container 实例的引用。<br>这不是一个少见的错误。实际上， go vet 会对此发出警告：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">$ <span class="keyword">go</span> tool vet method-mutex-value-receiver.<span class="keyword">go</span></span><br><span class="line">method-mutex-value-receiver.<span class="keyword">go</span>:<span class="number">19</span>: inc passes lock by value: main.Container</span><br></pre></td></tr></table></figure>
+
+<p>这种情况经常出现在 HTTP 处理函数中，这些处理函数在不需要开发人员显示使用 go 语句的情况下被并发地调用。我会在随后的博文中详述这一点。<br>我觉得这个问题对于认识 Go 语言中的值接收器和指针接收器的区别有很大的帮助。为了把问题说清楚，下面给出一个和之前代码无关的示例。这个例子用到了 Go 中使用 &amp; 操作符创建指针和使用 %p 格式化输出指针值的功能：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Container <span class="keyword">struct</span> &#123;</span><br><span class="line">  i <span class="keyword">int</span></span><br><span class="line">  s <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Container)</span> <span class="title">byValMethod</span><span class="params">()</span></span> &#123;</span><br><span class="line">  fmt.Printf(<span class="string">"byValMethod got &amp;c=%p, &amp;(c.s)=%p\n"</span>, &amp;c, &amp;(c.s))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Container)</span> <span class="title">byPtrMethod</span><span class="params">()</span></span> &#123;</span><br><span class="line">  fmt.Printf(<span class="string">"byPtrMethod got &amp;c=%p, &amp;(c.s)=%p\n"</span>, c, &amp;(c.s))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">var</span> c Container</span><br><span class="line">  fmt.Printf(<span class="string">"in main &amp;c=%p, &amp;(c.s)=%p\n"</span>, &amp;c, &amp;(c.s))</span><br><span class="line"></span><br><span class="line">  c.byValMethod()</span><br><span class="line">  c.byPtrMethod()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下（这是在我的电脑上的输出，和你电脑上的变量地址可能不一样，但是地址之间的关系是一样的）：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">in main &amp;c=<span class="number">0xc00000a060</span>, &amp;(c.s)=<span class="number">0xc00000a068</span></span><br><span class="line">byValMethod got &amp;c=<span class="number">0xc00000a080</span>, &amp;(c.s)=<span class="number">0xc00000a088</span></span><br><span class="line">byPtrMethod got &amp;c=<span class="number">0xc00000a060</span>, &amp;(c.s)=<span class="number">0xc00000a068</span></span><br></pre></td></tr></table></figure>
+
+<p>main 函数创建了一个 Container 实例并打印出了实例的地址及实例成员变量 s 的地址，接着调用了实例的两个方法。<br>byValMethod 方法有一个值接收器，它打印出的地址和 main 函数中打印出的不一样因为接收到的是 c 的一个副本。另一方面，byPtrMethod 方法有一个指针接收器并且它观察到的地址和 main 函数中的一致，因为它获取到的是最初的 c，而不是一个副本。</p>
+<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><h4 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h4><p>Go 语言中还有一种锁：读写锁（RWMutex），读写锁也是值类型，也不能拷贝。</p>
 ]]></content>
       <categories>
-        <category>敏捷</category>
+        <category>译文</category>
       </categories>
       <tags>
-        <tag>敏捷</tag>
-        <tag>agile</tag>
+        <tag>译文</tag>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -4543,6 +4529,20 @@
       <tags>
         <tag>Kubernetes</tag>
         <tag>Operator</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>敏捷笔记</title>
+    <url>/post/d753fa14.html</url>
+    <content><![CDATA[<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><p>Epic【史诗级故事】，可简单理解为软件的版本好了，不需要太详细的秒速，但是要说清楚这个版本需要哪些大功能。<br>Feature【特性】，你都在【史诗级故事】中说好了要哪些大功能了，那作为它的子级的【特性】自然就是每个你需要的大功能的描述，但是由于一个大功能的实现有许多众所周知或者实际做了才知道的前置的或者后发的条件，所以【特性】的完成一定被项目中所有成员认可是一个较长的过程，所以肯定还需要进一步细化。<br>Story【用户故事/积压工作项】，把特性细化了以后就是这个了，故事之所以叫故事是因为内容读起来就像故事，参考中小学生作文吧，故事的三要素：参与者、行为、结果，（管理员在 XX 界面点击了【XXX】按钮后，界面跳转至【XXXX】界面）仅供参考。可以看出，故事要细致，描述细节，有明确的验收标准，任何人看完都应该知道如何操作，测试人员也可以以此来作为测试用例。<br>Task【任务】，这是只有开发才知道的细节了，上面几个都是无论什么人都能看懂的东西，任务描述的应该是开发中的细节，比如（修改 AAA 类的 BBB 方法，提升执行效率）或者（将 XXX 功能的原有做法改为使用命令模式），只有开发才懂得的细节，由于此类工作也需要耗时，而且耗时可能还不短，这会违背“快速迭代”的基本价值观，所以当一个【故事】涉及到此类的行为时，就可能需要较长时间来迭代，所以应该在【故事】下建立【任务】来说明工作的具体内容。</p><a id="more"></a>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://wiki.mbalib.com/wiki/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91" target="_blank" rel="external nofollow noopener noreferrer">https://wiki.mbalib.com/wiki/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91</a></p>
+]]></content>
+      <categories>
+        <category>敏捷</category>
+      </categories>
+      <tags>
+        <tag>敏捷</tag>
+        <tag>agile</tag>
       </tags>
   </entry>
   <entry>
@@ -4812,6 +4812,18 @@
       </tags>
   </entry>
   <entry>
+    <title>认证与鉴权</title>
+    <url>/post/df65a2b0.html</url>
+    <content><![CDATA[<h4 id="IAM"><a href="#IAM" class="headerlink" title="IAM"></a>IAM</h4><p>可帮助理解 IAM 的博客：<a href="https://blog.gruntwork.io/a-comprehensive-guide-to-authenticating-to-aws-on-the-command-line-63656a686799" target="_blank" rel="external nofollow noopener noreferrer">https://blog.gruntwork.io/a-comprehensive-guide-to-authenticating-to-aws-on-the-command-line-63656a686799</a></p><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4>]]></content>
+      <categories>
+        <category>认证与鉴权</category>
+      </categories>
+      <tags>
+        <tag>认证</tag>
+        <tag>鉴权</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>限制单位时间请求次数</title>
     <url>/post/cb6f39ed.html</url>
     <content><![CDATA[<h4 id="Rate-Limit"><a href="#Rate-Limit" class="headerlink" title="Rate Limit"></a>Rate Limit</h4><p>在众多的反向代理服务器中，实现请求次数限制的功能往往称作 rate-limit。   Rate-limit 在公网环境下实际上主要是为了防止 DoS 攻击。Rate-limit 实现了对每个客户端单位时间内请求次数的限制，例如 5 r/s，就是限制每个客户端 1s 之内针对该服务端只能发起 5 个 Http 请求。其原理往往是基于客户端请求中的某些标志性信息（一般是 IP）使用某种限流算法在服务端做出相应处理：如果该客户端的单位时间请求次数超出限制，服务端直接返回状态码为 429 的响应，在 Http 规范中，状态码 429 含义为“请求次数过多”。</p><a id="more"></a>
@@ -4831,18 +4843,6 @@
       <tags>
         <tag>RateLimit</tag>
         <tag>S3</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>认证与鉴权</title>
-    <url>/post/df65a2b0.html</url>
-    <content><![CDATA[<h4 id="IAM"><a href="#IAM" class="headerlink" title="IAM"></a>IAM</h4><p>可帮助理解 IAM 的博客：<a href="https://blog.gruntwork.io/a-comprehensive-guide-to-authenticating-to-aws-on-the-command-line-63656a686799" target="_blank" rel="external nofollow noopener noreferrer">https://blog.gruntwork.io/a-comprehensive-guide-to-authenticating-to-aws-on-the-command-line-63656a686799</a></p><h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4>]]></content>
-      <categories>
-        <category>认证与鉴权</category>
-      </categories>
-      <tags>
-        <tag>认证</tag>
-        <tag>鉴权</tag>
       </tags>
   </entry>
 </search>
