@@ -159,7 +159,7 @@ func main() {
 
 #### 包导入过程
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&display=inline&height=424&margin=%5Bobject%20Object%5D&name=image.png&originHeight=424&originWidth=953&size=146883&status=done&style=none&width=953)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1572858912878-86d89e2a-168b-43ad-9e9b-70068b16e723.png#align=left&display=inline&height=424&name=image.png&originHeight=424&originWidth=953&size=146883&status=done&style=none&width=953)
 
 #### godoc 与 go doc
 
@@ -486,7 +486,7 @@ condition 1 tmpTimes > 6
 
 配置的最佳方式是使用环境变量，这是最符合 **_十二因素应用_** （Twelve-Factor App）的配置方式；但我们写程序时很多时候会考虑到不同的部署方式和配置方式，所以会有兼容命令行参数配置和配置文件（如 json/yaml ）的需求。使用  [github.com/spf13/viper](https://github.com/spf13/viper) 能够满足我们的需求（参考：[Reading Configuration Files and Environment Variables in GO ](https://medium.com/@bnprashanth256/reading-configuration-files-and-environment-variables-in-go-golang-c2607f912b63)），但是对于同一参数的不同配置方式的优先级如何安排需要考虑一下，一般而言配置文件作为静态数据我们认为其优先级最低，但环境变量和命令行参数谁的优先级更多似乎并无定论（在 viper 中可以确定的是环境变量的优先级高于配置文件，但命令行参数还未明确测试），我的考虑是命令行参数的优先级应当高于环境变量，因为命令参数属于更细粒度的控制参数，就像我们在使用常用的 Linux 工具一样，环境变量往往只设置一次且只设置诸如 Token 一类的短期不变且有一定安全需求的配置，而命令行参数则可能每次运行程序都会略作调整，所以命令行参数的优先级更高一些。基于此，结合 viper 库写一些辅助代码可以实现这个需求。
 补充：后续在 viper 源代码中看到了，确实也是命令行参数的优先级更高，官方文档也有描述，如下
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592419877483-67f0c574-00b4-4e50-9b21-801a6ee24604.png#align=left&display=inline&height=591&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1182&originWidth=1918&size=270747&status=done&style=none&width=959)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592419877483-67f0c574-00b4-4e50-9b21-801a6ee24604.png#align=left&display=inline&height=591&name=image.png&originHeight=1182&originWidth=1918&size=270747&status=done&style=none&width=959)
 
 #### 当结构体内嵌套的结构体字段重名时
 

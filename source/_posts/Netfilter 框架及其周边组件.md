@@ -20,7 +20,7 @@ updated: 2020-08-30 00:00:00
 
 Netfilter 是  Linux 2.4.x 及后续版本内核引入的包过滤框架。Netfilter 包含了一组内核钩子 API ，周边内核组件可以使用这些钩子在网络栈中注册回调函数。每一个在网络栈中流通的包到达相应的钩子时，就会触发相应的回调函数，从而能够完成包过滤、网络地址（端口）转换和网络包协议头修改等各种操作。
 Netfilter 提供了五种钩子（参考[Linux Kernel Communication — Netfilter Hooks](https://medium.com/@GoldenOak/linux-kernel-communication-part-1-netfilter-hooks-15c07a5a5c4e)），如下：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576396676777-643a7090-d522-4f7b-a4a8-e1d20742681a.png#align=left&display=inline&height=237&margin=%5Bobject%20Object%5D&name=image.png&originHeight=474&originWidth=1330&size=35302&status=done&style=none&width=665)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576396676777-643a7090-d522-4f7b-a4a8-e1d20742681a.png#align=left&display=inline&height=237&name=image.png&originHeight=474&originWidth=1330&size=35302&status=done&style=none&width=665)
 
 1. NF_IP_PER_ROUNTING — 当数据包到达计算机立即触发。
 2. NF_IP_LOCAL_IN — 当数据包的目的地就是当前计算机时触发。
@@ -29,9 +29,9 @@ Netfilter 提供了五种钩子（参考[Linux Kernel Communication — Netfilte
 5. NF_IP_LOCAL_OUT — 当数据包由本地生成并发向外部时触发。
 
 基于 Netfilter 钩子 API 实现的内核模块主要有 ebtables、arptables、ip(6)tables、nf_tables、NAT、connection tracking 等。如下是维基百科上关于 Netfilter 相关组件的一张示意图：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576376326201-8e54e0c3-4710-47c7-ae4d-07f66be4452f.png#align=left&display=inline&height=421&margin=%5Bobject%20Object%5D&name=image.png&originHeight=451&originWidth=800&size=58313&status=done&style=none&width=746)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576376326201-8e54e0c3-4710-47c7-ae4d-07f66be4452f.png#align=left&display=inline&height=421&name=image.png&originHeight=451&originWidth=800&size=58313&status=done&style=none&width=746)
 下图是数据包在 Netfilter 框架中的流动过程：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576390222986-8e61ba27-7ac7-4695-a7e0-0ad91e7ee581.png#align=left&display=inline&height=215&margin=%5Bobject%20Object%5D&name=image.png&originHeight=475&originWidth=1650&size=186592&status=done&style=none&width=746)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576390222986-8e61ba27-7ac7-4695-a7e0-0ad91e7ee581.png#align=left&display=inline&height=215&name=image.png&originHeight=475&originWidth=1650&size=186592&status=done&style=none&width=746)
 
 ### ebtables
 
@@ -56,7 +56,7 @@ ebtables 和我们熟悉的 iptables 很像，也有规则（rules）、链（ch
 - BROUTING 链：应用规则决定对数据帧进行 bridge or route。
 
 下图是一个 iptables 与 ebtables 工作流图：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576390449967-dd24ea02-2232-41fd-bd07-33aea0a350de.png#align=left&display=inline&height=352&margin=%5Bobject%20Object%5D&name=image.png&originHeight=703&originWidth=1696&size=126471&status=done&style=none&width=848)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576390449967-dd24ea02-2232-41fd-bd07-33aea0a350de.png#align=left&display=inline&height=352&name=image.png&originHeight=703&originWidth=1696&size=126471&status=done&style=none&width=848)
 
 ### arptables
 
@@ -91,7 +91,7 @@ iptables -t nat -A POSTROUTING -s 10.8.0.0/255.255.255.0 -o eth0 -j MASQUERADE
 ```
 
 一张可供参考的 iptables 工作流图，需要注意的是只有对发起新连接（包括和已经存在的连接有 related 关系的请求）的请求才会去重新匹配 nat 表中的规则，而其它表中的规则对每一个到来的数据包都会匹配一遍，这得益于基于 Netfilter 的另一个组件 connection tracking 系统，它记录了每一个连接的信息，从而使得同一个连接上的数据包不必经过重新匹配 nat 规则就可获知应当如何传递。
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576394377796-20f9f09a-67df-418a-96a0-96c9201f59c5.png#align=left&display=inline&height=851&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1133&originWidth=730&size=78757&status=done&style=none&width=548)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576394377796-20f9f09a-67df-418a-96a0-96c9201f59c5.png#align=left&display=inline&height=851&name=image.png&originHeight=1133&originWidth=730&size=78757&status=done&style=none&width=548)
 
 ### conntrack
 

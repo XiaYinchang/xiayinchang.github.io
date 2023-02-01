@@ -53,7 +53,7 @@ posix_spawn() 所做的操作和  fork()/execve() 一致，所以推荐使用 �
 那么在创建线程时，内核是怎样为每个线程分配栈空间的呢？
 进程 / 线程的创建主要是由 clone 系统调用完成的。而 clone 系统调用的参数中有一个 void \*child_stack，它就是用来指向所创建的进程 / 线程的堆栈指针。而在该进程 / 线程在用户态下是通过调用 pthread_create 库函数而陷入内核的。对于 pthread_create 函数，它则会调用一个名为 pthread_allocate_stack 的函数，专门用来为所创建的线程分配的栈空间（通过 mmap 系统调用）。然后再将这个栈空间的地址传递给 clone 系统调用。这也是为什么线程组中的每个线程都有自己的栈空间。
 每个进程或线程都有三个数据结构，分别是 struct thread_info, struct task_struct 和 内核栈，它们都在内核空间中，如下：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576311106924-9fb6ef15-10d8-487f-8989-90af8c06ef5a.png#align=left&display=inline&height=418&margin=%5Bobject%20Object%5D&name=image.png&originHeight=836&originWidth=1242&size=92406&status=done&style=none&width=621)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576311106924-9fb6ef15-10d8-487f-8989-90af8c06ef5a.png#align=left&display=inline&height=418&name=image.png&originHeight=836&originWidth=1242&size=92406&status=done&style=none&width=621)
 
 #### 内核线程
 
@@ -155,7 +155,7 @@ Nginx 要保证它的高可用高可靠性，若使用多线程，由于线程�
 
 #### 进程状态
 
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1598691917078-859b6014-e14a-40f5-b73b-e7a290079d48.png#align=left&display=inline&height=670&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1339&originWidth=1562&size=646894&status=done&style=none&width=781)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1598691917078-859b6014-e14a-40f5-b73b-e7a290079d48.png#align=left&display=inline&height=670&name=image.png&originHeight=1339&originWidth=1562&size=646894&status=done&style=none&width=781)
 
 #### subreaper 进程
 

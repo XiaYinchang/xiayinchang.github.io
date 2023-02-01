@@ -20,9 +20,9 @@ updated: 2021-03-11 00:00:00
 #### 数据包经过防火墙的流程
 
 一个帮助理解的流程图：
-![iptables.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1598403804093-3e5e0ccb-8aca-4b18-ab91-73b8dd83c0bc.png#align=left&display=inline&height=400&margin=%5Bobject%20Object%5D&name=iptables.png&originHeight=533&originWidth=1012&size=56394&status=done&style=none&width=759)
+![iptables.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1598403804093-3e5e0ccb-8aca-4b18-ab91-73b8dd83c0bc.png#align=left&display=inline&height=400&name=iptables.png&originHeight=533&originWidth=1012&size=56394&status=done&style=none&width=759)
 另一个更准确的流程图：
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1598402936150-d2584938-7100-4ffb-b675-1b578645cbc4.png#align=left&display=inline&height=764&margin=%5Bobject%20Object%5D&name=image.png&originHeight=3054&originWidth=2399&size=1900518&status=done&style=none&width=600)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1598402936150-d2584938-7100-4ffb-b675-1b578645cbc4.png#align=left&display=inline&height=764&name=image.png&originHeight=3054&originWidth=2399&size=1900518&status=done&style=none&width=600)
 
 #### 常用操作
 

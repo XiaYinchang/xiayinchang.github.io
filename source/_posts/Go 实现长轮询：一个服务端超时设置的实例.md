@@ -32,7 +32,7 @@ abbrlink: f5f8beb0
 
 有很多原因告诫我们永远不要用第一种方式，而是选择 2-4 中的某一种。在我们的使用场景中，我们想要给已经存在的 REST API 添加只读的获取实时更新的特性，所以长轮询看起来是一种非常自然和简单的实现方式。
 不幸的是，基本上没有关于长轮询的标准或规范。这意味着一切只能自己动手。我们设计了如下的请求序列：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575783155078-b299a29e-2114-4667-ad30-947580207315.png#align=left&display=inline&height=526&margin=%5Bobject%20Object%5D&name=image.png&originHeight=526&originWidth=579&size=95727&status=done&style=none&width=579)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575783155078-b299a29e-2114-4667-ad30-947580207315.png#align=left&display=inline&height=526&name=image.png&originHeight=526&originWidth=579&size=95727&status=done&style=none&width=579)
 注意请求超时时我们返回 304（未改变） 状态码而不是 504（服务端超时）。我们使用了请求头 prefer 来发送轮询参数。
 下面是一个实现了上述轮询序列的简单例子（只是使用了 URL 传递查询参数）：
 

@@ -62,7 +62,7 @@ updated: 2020-07-26 00:00:00
 - vendor ：第三方包目录
 
 整洁架构的概念分层如下图所示：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575442901636-ce111580-647a-485d-adfd-bed678fc98ee.png#align=left&display=inline&height=567&margin=%5Bobject%20Object%5D&name=image.png&originHeight=567&originWidth=772&size=383132&status=done&style=none&width=772)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1575442901636-ce111580-647a-485d-adfd-bed678fc98ee.png#align=left&display=inline&height=567&name=image.png&originHeight=567&originWidth=772&size=383132&status=done&style=none&width=772)
 整个架构共有四层，从外到内依次为蓝绿红黄层，除了作为应用目录的蓝色层，其余各层分别表示了：
 
 - interface: 绿色层

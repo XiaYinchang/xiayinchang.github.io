@@ -24,7 +24,7 @@ updated: 2020-06-20 00:00:00
 #### 安装部署
 
 MeshCentral 的功能较为丰富，这里我仅结合自己的使用需求实施较为简单的部署。MeshCentral 部署在我之前购买的阿里云虚拟机上，其基本信息如下，目前已稳定运行了两年，我的博客也部署在同一台虚拟机上：
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592718150625-fce9a72d-93b0-4421-a548-2bae46f3ccbc.png#align=left&display=inline&height=268&margin=%5Bobject%20Object%5D&name=image.png&originHeight=536&originWidth=2676&size=133276&status=done&style=none&width=1338)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592718150625-fce9a72d-93b0-4421-a548-2bae46f3ccbc.png#align=left&display=inline&height=268&name=image.png&originHeight=536&originWidth=2676&size=133276&status=done&style=none&width=1338)
 使用 nvm 安装 NodeJS ：
 
 ```bash
@@ -84,20 +84,20 @@ systemctl status meshcentral
 
 meshcentral 默认监听在 8080 和 8443 端口，8080 端口可使用 http 访问，8443 端口需使用 https 访问，默认情况下，http 访问 8080 端口会重定向至 8443 https 访问。由于我们使用的私有证书，浏览器会提示非安全链接，忽略即可。初次登录时由于无用户，所以会提示创建用户，并授予该用户管理员权限。
 登录后需要先创建设备组，填好设备组名称，设备组类型使用默认的 "Manage using a software agent" 即可， 如下：
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592724691670-56251d09-9d0d-4e45-841a-1d84cdbd5ddf.png#align=left&display=inline&height=413&margin=%5Bobject%20Object%5D&name=image.png&originHeight=826&originWidth=2364&size=278961&status=done&style=none&width=1182)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592724691670-56251d09-9d0d-4e45-841a-1d84cdbd5ddf.png#align=left&display=inline&height=413&name=image.png&originHeight=826&originWidth=2364&size=278961&status=done&style=none&width=1182)
 然后向设备组中添加设备，根据操作系统选择部署 MeshAgent 的方式，若远程节点操作系统为 Linux ，则会生成一个脚本，到远程节点上去执行该脚本即可，Windows 和 macOS 则是下载一个安装包到节点上部署。
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592725026046-9d018b1f-9b75-423f-8915-7421a188e5f9.png#align=left&display=inline&height=399&margin=%5Bobject%20Object%5D&name=image.png&originHeight=798&originWidth=2270&size=190398&status=done&style=none&width=1135)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592725026046-9d018b1f-9b75-423f-8915-7421a188e5f9.png#align=left&display=inline&height=399&name=image.png&originHeight=798&originWidth=2270&size=190398&status=done&style=none&width=1135)
 
 #### 开启 WebRTC
 
 #### 操作使用体验
 
 远程桌面
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592725895076-877202e7-75d8-4421-9563-43a098870059.png#align=left&display=inline&height=796&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1592&originWidth=2612&size=3526151&status=done&style=none&width=1306)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592725895076-877202e7-75d8-4421-9563-43a098870059.png#align=left&display=inline&height=796&name=image.png&originHeight=1592&originWidth=2612&size=3526151&status=done&style=none&width=1306)
 终端
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592725982695-c2d7c4e7-39b3-492a-b4cd-30609eecbbff.png#align=left&display=inline&height=409&margin=%5Bobject%20Object%5D&name=image.png&originHeight=818&originWidth=1810&size=235964&status=done&style=none&width=905)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592725982695-c2d7c4e7-39b3-492a-b4cd-30609eecbbff.png#align=left&display=inline&height=409&name=image.png&originHeight=818&originWidth=1810&size=235964&status=done&style=none&width=905)
 文件传输
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592726016995-65c4a6eb-da88-4d68-be49-564918406ee1.png#align=left&display=inline&height=545&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1090&originWidth=1566&size=131995&status=done&style=none&width=783)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592726016995-65c4a6eb-da88-4d68-be49-564918406ee1.png#align=left&display=inline&height=545&name=image.png&originHeight=1090&originWidth=1566&size=131995&status=done&style=none&width=783)
 
 #### WebRTC 阅读材料
 

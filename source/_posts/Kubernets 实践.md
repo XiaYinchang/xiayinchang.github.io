@@ -775,7 +775,7 @@ kill 1
 
 参考：[https://developer.aliyun.com/article/742572](https://developer.aliyun.com/article/742572)，[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection),[https://www.alibabacloud.com/help/zh/doc-detail/160384.htm](https://www.alibabacloud.com/help/zh/doc-detail/160384.htm)
 kube-apiserver
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#crop=0&crop=0&crop=1&crop=1&height=824&id=iJVjL&margin=%5Bobject%20Object%5D&name=image.png&originHeight=824&originWidth=983&originalType=binary∶=1&rotation=0&showTitle=false&size=117967&status=done&style=none&title=&width=983)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427070015-35b14a0a-4cf8-48cf-ae25-db4531f0b8b1.png#height=824&id=iJVjL&name=image.png&originHeight=824&originWidth=983&originalType=binary∶=1&rotation=0&showTitle=false&size=117967&status=done&style=none&title=&width=983)
 
 ```
 --service-account-issuer=kubernetes.default.svc \
@@ -785,7 +785,7 @@ kube-apiserver
 ```
 
 kube-controller-manager
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#crop=0&crop=0&crop=1&crop=1&height=363&id=FIfGF&margin=%5Bobject%20Object%5D&name=image.png&originHeight=363&originWidth=924&originalType=binary∶=1&rotation=0&showTitle=false&size=65129&status=done&style=none&title=&width=924)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1586427180951-d8f9d830-5f94-4bb3-bbd6-640dd513b3f2.png#height=363&id=FIfGF&name=image.png&originHeight=363&originWidth=924&originalType=binary∶=1&rotation=0&showTitle=false&size=65129&status=done&style=none&title=&width=924)
 
 ```
 --controllers=*,bootstrapsigner,tokencleaner,root-ca-cert-publisher \

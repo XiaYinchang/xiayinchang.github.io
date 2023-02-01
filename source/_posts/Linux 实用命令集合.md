@@ -207,7 +207,7 @@ systemctl enable --now mariadb
 
 首先，选中要编辑的内核项，按 **e** 进入编辑页面，编辑完成后按  **Ctrl + x**  启动系统。下图为编辑内核参数直接进入救援模式。
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#height=230&id=KOcUY&margin=%5Bobject%20Object%5D&name=image.png&originHeight=230&originWidth=716&originalType=binary∶=1&size=13999&status=done&style=none&width=716)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1570848156874-4feb1fc6-38d3-4dc2-a3f9-ff076f94291e.png#height=230&id=KOcUY&name=image.png&originHeight=230&originWidth=716&originalType=binary∶=1&size=13999&status=done&style=none&width=716)
 
 - 在操作系统中编辑内核启动参数并重新生成 grub 引导
 
@@ -301,7 +301,7 @@ sudo apt-get autoremove --purge
 
 - 替换空格为换行
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#height=25&id=vqX5r&margin=%5Bobject%20Object%5D&name=image.png&originHeight=25&originWidth=160&originalType=binary∶=1&size=2640&status=done&style=none&width=160)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1559296752599-dea00714-5a9b-40e4-9f26-b2aff1323c3c.png#height=25&id=vqX5r&name=image.png&originHeight=25&originWidth=160&originalType=binary∶=1&size=2640&status=done&style=none&width=160)
 
 - 替换 tab 为空格
 
@@ -459,7 +459,7 @@ top -H -p 26200
 ```
 
 另一个分辨方式是线程共享地址空间，一个进程中的所有线程具有相同的 VIRT，RES 和 SHR ，如下图：
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592743812467-47c3df1f-4677-4969-a005-3bff19a08a40.png#height=771&id=ddR0q&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1542&originWidth=2700&originalType=binary∶=1&size=902573&status=done&style=none&width=1350)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1592743812467-47c3df1f-4677-4969-a005-3bff19a08a40.png#height=771&id=ddR0q&name=image.png&originHeight=1542&originWidth=2700&originalType=binary∶=1&size=902573&status=done&style=none&width=1350)
 
 #### fuser 找到正在使用某个文件的进程
 

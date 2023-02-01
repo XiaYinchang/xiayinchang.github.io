@@ -37,11 +37,11 @@ https://mirrors.tuna.tsinghua.edu.cn/centos/7.6.1810/isos/x86_64/CentOS-7-x86_64
 ```
 
 三个控制节点配置相同，可以在创建完成一个虚拟机后使用 VMware 提供的 clone 功能直接复制出其余的（复制得到的虚拟机需要重新生成 MAC 地址，否则会造成地址冲突），配置详情如下：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align=left&display=inline&height=702&margin=%5Bobject%20Object%5D&name=image.png&originHeight=702&originWidth=891&size=68225&status=done&style=none&width=891)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1558868599415-e0c7d40e-0869-4bdb-b9cd-c03d2ca01291.png#align=left&display=inline&height=702&name=image.png&originHeight=702&originWidth=891&size=68225&status=done&style=none&width=891)
 两个计算节点在上图配置的基础上提升了内存、处理器和硬盘配置，这里硬盘容量设置较大是为了后续在 OpenStack 环境中部署 Kubernetes 等其它系统做准备，可根据个人需要缩减：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png#align=left&display=inline&height=696&margin=%5Bobject%20Object%5D&name=image.png&originHeight=696&originWidth=885&size=68338&status=done&style=none&width=885)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1558868727583-2c08f21e-a5cd-4226-9050-fe9a3a935143.png#align=left&display=inline&height=696&name=image.png&originHeight=696&originWidth=885&size=68338&status=done&style=none&width=885)
 所有节点配置两张网卡：一张用于 OpenStack 管理网，通过 NAT 连接外网；一张用于 Neutron 网络，直接桥接到外部网络。可根据个人需求调整连接外部网络的方式，VMware 虚拟网络信息如下：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png#align=left&display=inline&height=614&margin=%5Bobject%20Object%5D&name=image.png&originHeight=614&originWidth=617&size=55558&status=done&style=none&width=617)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1558869217104-6d5aa106-722c-4a3a-a398-6aec413ea9c2.png#align=left&display=inline&height=614&name=image.png&originHeight=614&originWidth=617&size=55558&status=done&style=none&width=617)
 虚拟机创建完成后进入操作系统检查 IP 地址获取情况：
 
 ```bash
@@ -113,7 +113,7 @@ compute-02
 
 为了方便命令行登录节点，可通过 ssh-copy-id 将宿主机 ssh public-key 拷贝到各虚拟节点，之后在 ssh 登录时无需再输入密码。
 为了方便在所有虚拟机和宿主机之间共享文件，我们可以使用 VMware 的文件共享机制将宿主机目录挂载到虚拟机中。首先，在虚拟机的属性配置中添加要共享的文件夹，如下是将宿主机上的 /infra/vmshare 目录共享给虚拟机：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1558870518738-a48e46b4-d616-4a1b-9c17-f11fc2595b76.png#align=left&display=inline&height=590&margin=%5Bobject%20Object%5D&name=image.png&originHeight=701&originWidth=886&size=70490&status=done&style=none&width=746)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1558870518738-a48e46b4-d616-4a1b-9c17-f11fc2595b76.png#align=left&display=inline&height=590&name=image.png&originHeight=701&originWidth=886&size=70490&status=done&style=none&width=746)
 
 只有上图的设置还不够，我们需要进入到虚拟机内部将共享的文件夹挂载到本地目录才能使用，如下，该命令的涵义是将名称为 vmshare 的共享挂载到本地 /vmshare 目录：
 

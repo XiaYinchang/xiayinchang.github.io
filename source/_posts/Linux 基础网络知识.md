@@ -102,19 +102,19 @@ WebSocket 一般用于浏览器与应用服务器之间的交互，它是类似�
 10. TCP 连接参考文档：[https://blog.csdn.net/guyuealian/article/details/52535294](https://blog.csdn.net/guyuealian/article/details/52535294) ，[https://stackoverflow.com/questions/289194/what-is-maximum-segment-lifetime/35000966](https://stackoverflow.com/questions/289194/what-is-maximum-segment-lifetime/35000966)， [https://www.wikiwand.com/en/Transmission_Control_Protocol](https://www.wikiwand.com/en/Transmission_Control_Protocol)，[https://stackoverflow.com/questions/4677925/who-first-sets-tcp-fin-flag-in-client-server-connection](https://stackoverflow.com/questions/4677925/who-first-sets-tcp-fin-flag-in-client-server-connection)
 11. 一张助于理解的图：
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1571478423292-36b18cb8-3312-42ed-940e-40b15315d38d.png#align=left&display=inline&height=793&margin=%5Bobject%20Object%5D&name=image.png&originHeight=793&originWidth=796&size=62072&status=done&style=none&width=796)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1571478423292-36b18cb8-3312-42ed-940e-40b15315d38d.png#align=left&display=inline&height=793&name=image.png&originHeight=793&originWidth=796&size=62072&status=done&style=none&width=796)
 
 #### Linux 内核网络相关函数调用关系图
 
-![linux-net.jpeg](https://cdn.nlark.com/yuque/0/2019/jpeg/182657/1571896927566-028e0063-6be9-4472-a446-66ac67ca17f5.jpeg#align=left&display=inline&height=1952&margin=%5Bobject%20Object%5D&name=linux-net.jpeg&originHeight=1952&originWidth=3489&size=1016557&status=done&style=none&width=3489)
+![linux-net.jpeg](https://cdn.nlark.com/yuque/0/2019/jpeg/182657/1571896927566-028e0063-6be9-4472-a446-66ac67ca17f5.jpeg#align=left&display=inline&height=1952&name=linux-net.jpeg&originHeight=1952&originWidth=3489&size=1016557&status=done&style=none&width=3489)
 
 #### 简略数据收发流图
 
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1597494298490-a685c988-d4f4-4d89-8edb-af96e7b55d0a.png#align=left&display=inline&height=547&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1093&originWidth=1545&size=268899&status=done&style=none&width=772.5)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1597494298490-a685c988-d4f4-4d89-8edb-af96e7b55d0a.png#align=left&display=inline&height=547&name=image.png&originHeight=1093&originWidth=1545&size=268899&status=done&style=none&width=772.5)
 
 #### Qdisc 在 Linux 网络栈中的位置
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1571898730049-ed53082d-e336-42cd-aa59-7233ebb6d57c.png#align=left&display=inline&height=913&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1475&originWidth=1205&size=325485&status=done&style=none&width=746)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1571898730049-ed53082d-e336-42cd-aa59-7233ebb6d57c.png#align=left&display=inline&height=913&name=image.png&originHeight=1475&originWidth=1205&size=325485&status=done&style=none&width=746)
 
 #### 网络路由过程
 
@@ -258,9 +258,9 @@ RFC793 文档 2.7 章节第二段说到：
 也就是说，TUN/TAP  接口是虚拟接口，没有相关的物理设备。用户空间程序可以连接到 TUN/TAP 接口，并处理发送到接口的流量。
 TUN 接口是虚拟 IP 点对点接口，而 TAP 接口是虚拟以太网接口。 这意味着用户程序只能从 / 向 TUN 接口读 / 写 IP 数据包，从 / 向 TAP 接口读 / 写以太网帧。
 TUN 接口的典型用例是 IP 隧道。 例如，OpenVPN 从 tun0 等 TUN 接口接收数据包，并在将其发送到真正的以太网接口 eth0 之前对其进行加密。 然后，对端网络上的 OpenVPN 客户端接收来自 eth0 的数据包，并在将其发送到 tun0 之前对其进行解密。 换句话说，OpenVPN 作为 tun0 和 eth0 之间的代理工作，并在两个主机之间通过互联网创建加密的 UDP 连接。
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576386544299-80e5dc93-9f94-475c-9c4e-ba06248e534e.png#align=left&display=inline&height=474&margin=%5Bobject%20Object%5D&name=image.png&originHeight=559&originWidth=879&size=160518&status=done&style=none&width=746)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576386544299-80e5dc93-9f94-475c-9c4e-ba06248e534e.png#align=left&display=inline&height=474&name=image.png&originHeight=559&originWidth=879&size=160518&status=done&style=none&width=746)
 TAP 接口的典型用例是虚拟网络。 例如，在 Linux Bridge Part 1 中，我们已经看到，当我们使用桥接网络在 KVM 中创建一个 VM 时，它会创建一个类似 vnet0 的 TAP 接口，并将其添加到 Linux 桥。 在这种情况下，KVM 是用于读取和写入 TAP 接口的 usersapce 程序。 当 VM0 向它的 eth0 发送一个数据包时，KVM 将其发送到 TAP 接口 vnet0，以便桥接器将其转发到 vnet1。 然后 KVM 接收它并将其发送给 VM1 的 eth0。
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576386832999-494d3049-2e09-4f79-a962-d68a84ff1820.png#align=left&display=inline&height=341&margin=%5Bobject%20Object%5D&name=image.png&originHeight=341&originWidth=521&size=21678&status=done&style=none&width=521)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576386832999-494d3049-2e09-4f79-a962-d68a84ff1820.png#align=left&display=inline&height=341&name=image.png&originHeight=341&originWidth=521&size=21678&status=done&style=none&width=521)
 `ip tuntap`  命令可用于管理  TUN/TAP 接口。例如:
 
 ```bash
@@ -440,7 +440,7 @@ EOF
 
 #### OSI 开放互联模型
 
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1593480135479-c91d4d48-b51e-4746-931c-5c1533e624b6.png#align=left&display=inline&height=794&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1587&originWidth=1120&size=505862&status=done&style=none&width=560)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1593480135479-c91d4d48-b51e-4746-931c-5c1533e624b6.png#align=left&display=inline&height=794&name=image.png&originHeight=1587&originWidth=1120&size=505862&status=done&style=none&width=560)
 
 #### tcp_tw_reuse 和 SO_REUSEADDR
 
@@ -458,7 +458,7 @@ SO_REUSEPORT 主要是允许多个 socket 绑定到同一个端口上进行监�
 在 SO_REUSEPORT 没有出现之前，多线程编程一般有两种方式处理客户端请求：① 指派一条线程专门进行 accept ，获取 socket 后分派给 worker 线程。这种方法使得进行 accept 的线程成为了单点，容易成为性能的瓶颈。② 多个线程同时进行 accept ，这种方法的问题是协议栈/调度器中的一些机制导致每个线程 accept 成功的概率不均匀，可能出现几个 CPU 撑死几个 CPU 饿死的情况，导致负载不均衡。且多个线程监听同一个 socket 会出现惊群现象，造成 CPU 资源的浪费，而为了解决惊群现象引入了共享锁机制，又会带来处理性能的下降。
 而引入 SO_REUSEPORT 之后，每个 worker 线程均拥有自己的 socket，内核负责把用户请求通过 hash 映射均匀地分发给各个 worker 线程，避免了共享锁的竞争带来的消耗和性能下降。各个线程中 accept socket 不一样，有新连接建立时，内核只会唤醒一个线程来 accept ，不会出现惊群现象并且保证唤醒的均衡性。
 多个 socket 的一个问题是其中一个 worker 线程阻塞时会造成所有分发到该线程的请求均被阻塞，参见：[从 SO_REUSEPORT 服务器的一个弊端看多队列服务模型](https://blog.csdn.net/dog250/article/details/107227145)。
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1596547632756-09311bd2-899c-45f8-83e7-165af8e2a16f.png#align=left&display=inline&height=393&margin=%5Bobject%20Object%5D&name=image.png&originHeight=785&originWidth=850&size=90942&status=done&style=none&width=425)    ![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1596547640520-425396fc-a06a-4590-ac4f-a4351a70bc83.png#align=left&display=inline&height=390&margin=%5Bobject%20Object%5D&name=image.png&originHeight=780&originWidth=850&size=94147&status=done&style=none&width=425)
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1596547632756-09311bd2-899c-45f8-83e7-165af8e2a16f.png#align=left&display=inline&height=393&name=image.png&originHeight=785&originWidth=850&size=90942&status=done&style=none&width=425)    ![image.png](https://cdn.nlark.com/yuque/0/2020/png/182657/1596547640520-425396fc-a06a-4590-ac4f-a4351a70bc83.png#align=left&display=inline&height=390&name=image.png&originHeight=780&originWidth=850&size=94147&status=done&style=none&width=425)
 
 #### QUIC
 

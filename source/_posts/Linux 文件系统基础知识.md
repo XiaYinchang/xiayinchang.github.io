@@ -27,12 +27,12 @@ dentry 是仅存在于内存的目录项缓存，为了提高查找性能而设�
 在存储介质中，每个文件对应唯一的 inode 结点，但是每个文件又可以有多个文件名。即可以通过不同的文件名访问同一个文件。这里多个文件名对应一个文件的关系在数据结构中表示就是 dentry 和 inode 的关系。
 Inode 中不存储文件的名字，它只存储节点号；而 dentry 则保存有名字和与其对应的节点号，所以就可以通过不同的 dentry 访问同一个 inode。
 指向同一个 inode 的不同的 dentry 则是通过文件链接（ln 命令）来实现的。
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&display=inline&height=150&margin=%5Bobject%20Object%5D&name=image.png&originHeight=299&originWidth=441&size=14934&status=done&style=none&width=220.5)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1576301246896-71a41644-8a76-4077-82dc-e758fc49f277.png#align=left&display=inline&height=150&name=image.png&originHeight=299&originWidth=441&size=14934&status=done&style=none&width=220.5)
 参考： [https://www.wikiwand.com/en/Inode](https://www.wikiwand.com/en/Inode)，[https://unix.stackexchange.com/a/4403](https://unix.stackexchange.com/a/4403)，[https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html](https://marcoguerri.github.io/linux/2016/09/19/on-vfs-dentry-inodes.html)
 
 #### 软链接和硬链接的区别
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&margin=%5Bobject%20Object%5D&name=image.png&originHeight=255&originWidth=514&size=34517&status=done&style=none&width=514)
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/182657/1573195363300-6e1b32b6-8636-48a9-a84c-def0811985fb.png#align=left&display=inline&height=255&name=image.png&originHeight=255&originWidth=514&size=34517&status=done&style=none&width=514)
 
 - 参考：[https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link](https://stackoverflow.com/questions/185899/what-is-the-difference-between-a-symbolic-link-and-a-hard-link)
 - 硬链接是对 inode 的引用，只有所有引用都删除后 inode 才会被删除，删除源文件，通过硬链接创建的文件仍然能够访问之前保存的数据；软链接指向源文件，源文件被删除后，访问软链接会提示文件不存在， inode 一般在源文件删除后即被删除（除非有硬链接指向该 inode）。
