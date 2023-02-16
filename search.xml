@@ -1,37 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Centos 编译安装 zfs</title>
-    <url>/post/dc552b49.html</url>
-    <content><![CDATA[<ul>
-<li>安装依赖</li>
-</ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum groupinstall <span class="string">"Development Tools"</span></span><br><span class="line">yum install zlib-devel libuuid-devel libattr-devel libblkid-devel libselinux-devel libudev-devel</span><br><span class="line">yum install parted lsscsi ksh openssl-devel elfutils-libelf-devel</span><br><span class="line">yum install kernel-devel-$(uname -r)</span><br></pre></td></tr></table></figure><a id="more"></a>
-
-
-<ul>
-<li>从<a href="https://github.com/zfsonlinux/zfs/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载源代码并解压</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/zfsonlinux/zfs/releases/download/zfs-0.8.1/zfs-0.8.1.tar.gz &amp;&amp; tar zxf zfs-0.8.1.tar.gz</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>编译安装</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ../zfs-0.8.1</span><br><span class="line">sh autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make -s -j$(nproc)</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>重启系统</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Centos</tag>
-        <tag>存储</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ArchLinux 常用命令</title>
     <url>/post/bda105fe.html</url>
     <content><![CDATA[<h4 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -Sy archlinux-keyring</span><br><span class="line">sudo pacman -Syuu</span><br><span class="line">sudo pacman -S systemd --overwrite &#39;*&#39;</span><br><span class="line">sudo pacman -S systemd-sysvcompat --overwrite &#39;*&#39;</span><br><span class="line">&#x2F;&#x2F; 自动获取最快的镜像源</span><br><span class="line">sudo reflector --verbose -c &#39;China&#39; -l 20 -p http --sort rate --save &#x2F;etc&#x2F;pacman.d&#x2F;mirrorlist</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -93,6 +62,37 @@
       <tags>
         <tag>Linux</tag>
         <tag>ArchLinux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Centos 编译安装 zfs</title>
+    <url>/post/dc552b49.html</url>
+    <content><![CDATA[<ul>
+<li>安装依赖</li>
+</ul><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum groupinstall <span class="string">"Development Tools"</span></span><br><span class="line">yum install zlib-devel libuuid-devel libattr-devel libblkid-devel libselinux-devel libudev-devel</span><br><span class="line">yum install parted lsscsi ksh openssl-devel elfutils-libelf-devel</span><br><span class="line">yum install kernel-devel-$(uname -r)</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<ul>
+<li>从<a href="https://github.com/zfsonlinux/zfs/releases" target="_blank" rel="external nofollow noopener noreferrer">这里</a>下载源代码并解压</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://github.com/zfsonlinux/zfs/releases/download/zfs-0.8.1/zfs-0.8.1.tar.gz &amp;&amp; tar zxf zfs-0.8.1.tar.gz</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编译安装</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ../zfs-0.8.1</span><br><span class="line">sh autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make -s -j$(nproc)</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重启系统</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Centos</tag>
+        <tag>存储</tag>
       </tags>
   </entry>
   <entry>
